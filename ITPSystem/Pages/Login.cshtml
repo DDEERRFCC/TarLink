@@ -1,0 +1,27 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form method="post">
+    <div>
+        <label>Email:</label><br />
+        <input type="email" name="Email" placeholder="Enter Email" required />
+    </div>
+    <div>
+        <label>Password:</label><br />
+        <input type="password" name="Password" placeholder="Enter Password" required />
+    </div>
+    <div style="margin-top:10px;">
+        <!-- This is the actual login button -->
+        <button type="submit">Login</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red">@Model.ErrorMessage</p>
+}
