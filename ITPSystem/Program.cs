@@ -25,5 +25,3 @@ app.UseSession();
 app.MapRazorPages();
 
 app.Run();
-
-//test comment
