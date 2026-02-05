@@ -1,9 +1,0 @@
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.csproj.AssemblyReference.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\rpswa.dswa.cache.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.AssemblyInfoInputs.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.AssemblyInfo.cs
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.csproj.CoreCompileInputs.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.RazorAssemblyInfo.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net10.0\ITPSystem.RazorAssemblyInfo.cs
