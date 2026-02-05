@@ -17,12 +17,15 @@
    ```bash
    git clone https://github.com/DDEERRFCC/TarLink.git
 
-git pull origin main
+2. Pull the repository:
+   ```bash
+   git pull origin main
 
-
-git add .
-git commit -m "Describe your changes"
-git push origin main
+2. Keep Going the repository:
+   ```bash
+   git add .
+   git commit -m "Describe your changes"
+   git push origin main
 
 
 
