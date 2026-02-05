@@ -5,8 +5,8 @@
 
 ### Prerequisites
 - Visual Studio (latest version recommended)
-- .NET SDK
-- MySQL Server
+- .NET SDK 8.*** version
+- MySQL Server (MySql Workbench)
 - Git
 
 ---
@@ -26,6 +26,3 @@
    git add .
    git commit -m "Describe your changes"
    git push origin main
-
-
-
