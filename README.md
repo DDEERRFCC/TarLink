@@ -64,6 +64,7 @@ It helps manage internship applications, job postings, student profiles, and pro
 
 2. Keep Going the repository:
    ```bash
+   git pull
    git add .
-   git commit -m "Describe your changes"
-   git push origin main
+   git commit -m "My changes"
+   git push
