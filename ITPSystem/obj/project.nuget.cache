@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UqanEKueKeE=",
+  "dgSpecHash": "3v1P8Zxpc7I=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\ITPSystem\\ITPSystem.csproj",
+  "projectFilePath": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\ITPSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kimch\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\kimch\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
