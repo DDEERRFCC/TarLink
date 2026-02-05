@@ -1,2 +1,0 @@
-# TarLink
-TarUMT FYP ITP SYSTEM
