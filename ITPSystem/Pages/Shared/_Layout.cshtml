@@ -11,15 +11,23 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">ITPSystem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- Logo + System Name -->
+                <a class="navbar-brand d-flex align-items-center gap-2" asp-area="" asp-page="/Index">
+                    <img src="~/images/itp-logo.png" alt="ITP Logo" style="height:80px; width:auto;" />
+                </a>
+
+                <!-- Toggler / Mobile Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav ms-auto"> <!-- ms-auto pushes links to the right -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
@@ -28,6 +36,7 @@
                         </li>
                     </ul>
                 </div>
+
             </div>
         </nav>
     </header>
@@ -49,4 +58,5 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

@@ -1,17 +1,118 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "ITP System";
 }
 
-<form method="get" asp-page="/Login">
-    <button type="submit"
-        style="padding:8px 16px; background-color:green; color:white; border:none; border-radius:4px;">
-        Login
-    </button>
-</form>
+<style>
+    body {
+        background-color: #f5f7fb;
+    }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    .portal-container {
+        max-width: 1000px;
+        margin: 60px auto;
+        text-align: center;
+    }
+
+    .portal-title {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .portal-subtitle {
+        color: #666;
+        margin-bottom: 50px;
+    }
+
+    .portal-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 30px;
+    }
+
+    .portal-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease;
+    }
+
+    .portal-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .portal-card h3 {
+        margin-bottom: 15px;
+    }
+
+    .portal-card p {
+        color: #555;
+        margin-bottom: 25px;
+    }
+
+    .portal-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .student {
+        background-color: #007bff;
+    }
+
+    .supervisor {
+        background-color: #28a745;
+    }
+
+    .committee {
+        background-color: #6f42c1;
+    }
+</style>
+
+<div class="portal-container">
+    <div class="portal-title">ITP Management System</div>
+    <div class="portal-subtitle">
+        Select your portal to continue
+    </div>
+
+    <div class="portal-grid">
+
+        <!-- Student Portal -->
+        <div class="portal-card">
+            <h3>🎓 Student</h3>
+            <p>Submit reports, view progress, and manage your internship.</p>
+            <form method="get" asp-page="/Login">
+                <input type="hidden" name="role" value="Student" />
+                <button class="portal-btn student" type="submit">Student Login</button>
+            </form>
+        </div>
+
+        <!-- Supervisor Portal -->
+        <div class="portal-card">
+            <h3>🧑‍🏫 Supervisor</h3>
+            <p>Monitor students, review submissions, and give feedback.</p>
+            <form method="get" asp-page="/Login">
+                <input type="hidden" name="role" value="Supervisor" />
+                <button class="portal-btn supervisor" type="submit">Supervisor Login</button>
+            </form>
+        </div>
+
+        <!-- Committee Portal -->
+        <div class="portal-card">
+            <h3>🏛 Committee</h3>
+            <p>Approve records, manage assessments, and generate reports.</p>
+            <form method="get" asp-page="/Login">
+                <input type="hidden" name="role" value="Committee" />
+                <button class="portal-btn committee" type="submit">Committee Login</button>
+            </form>
+        </div>
+
+    </div>
 </div>

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QrX87gkxw0xjxtwldTrRp+8vhySujJVRsxxZmIH7NJI=",
+  "Hash": "U2AwzPgovZFxOfkej3XC238tuVHVmvb+Oo6W8fYJqBU=",
   "Source": "ITPSystem",
   "BasePath": "_content/ITPSystem",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\images\\itp-logo.png",
+      "SourceId": "ITPSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\",
+      "BasePath": "_content/ITPSystem",
+      "RelativePath": "images/itp-logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\itp-logo.png"
     },
     {
       "Identity": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\js\\site.js",

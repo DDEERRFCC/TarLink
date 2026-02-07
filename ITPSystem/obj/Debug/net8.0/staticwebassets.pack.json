@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\images\\itp-logo.png",
+      "PackagePath": "staticwebassets\\images\\itp-logo.png"
+    },
+    {
       "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

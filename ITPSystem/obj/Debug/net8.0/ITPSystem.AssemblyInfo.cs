@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITPSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+333d729222de30a26b8653493b60198290891578")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0815cceb51657927d9b7717e09b98b619fc9ebe4")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITPSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITPSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
