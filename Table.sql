@@ -152,15 +152,14 @@ CREATE TABLE studentapplication (
     gender VARCHAR(1),
     studentEmail VARCHAR(255),
     contactDate VARCHAR(255),
-    company VARCHAR(255),
-    companyAddress VARCHAR(255),
-    companyPhone VARCHAR(255),
-    companyEmail VARCHAR(255),
-    companyContactDate VARCHAR(255),
-    alumni DOUBLE,
-    adviser VARCHAR(255),
-    adviserEmail VARCHAR(255),
-    adviserContactDate VARCHAR(255),
+    comName VARCHAR(255),
+    comAddress VARCHAR(255),
+    comSupervisor VARCHAR(255),
+    comSupervisorEmail VARCHAR(255),
+    comSupervisorContact VARCHAR(255),
+    alowance DOUBLE,
+    ucSupervisorEmail VARCHAR(255),
+    ucSupervisorContact VARCHAR(255),
     applyStatus TINYINT,
     remark VARCHAR(500),
     cohortId INT,
@@ -173,7 +172,7 @@ CREATE TABLE studentapplication (
     permanentAddress VARCHAR(500),
     permanentContact VARCHAR(45),
     healthRemark VARCHAR(255),
-    ProgrammingKnowledge VARCHAR(255),
+    programmingKnowledge VARCHAR(255),
     databaseKnowledge VARCHAR(255),
     networkingKnowledge VARCHAR(255),
     templateVersion TINYINT(1),
@@ -181,8 +180,8 @@ CREATE TABLE studentapplication (
     formActknowledgement VARCHAR(255),
     letterIdentry VARCHAR(255),
     otherEvidence VARCHAR(255),
-    doCofferer VARCHAR(255),
-    doCoffererEmail VARCHAR(255),
+    doVerifyer VARCHAR(255),
+    doVerifyerEmail VARCHAR(255),
     isAgreed TINYINT(1),
     password VARCHAR(255),
     INDEX idx_studentID (studentID),
@@ -190,7 +189,7 @@ CREATE TABLE studentapplication (
     INDEX idx_applyStatus (applyStatus),
     INDEX idx_studentEmail (studentEmail(100)),
     INDEX idx_personalEmail (personalEmail(100)),
-    INDEX idx_company (company(100)),
+    INDEX idx_comName (comName(100)),
     CONSTRAINT fk_studentapplication_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id)
 );
 -- ==============================
@@ -246,10 +245,14 @@ CREATE TABLE pullback (
 -- ==============================
 CREATE TABLE sysuser (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(50) UNIQUE,
     password VARCHAR(255),
     role VARCHAR(30),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ic_number VARCHAR(20),
+    application_id BIGINT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_sysuser_studentapplication FOREIGN KEY (application_id) REFERENCES studentapplication(application_id)
 );
 -- ==============================
 -- SYSTEM CONFIG TABLE

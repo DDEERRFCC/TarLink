@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ITPSystem.Data;
 using ITPSystem.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
 
 public class LoginModel : PageModel
 {
@@ -31,11 +28,8 @@ public class LoginModel : PageModel
             return Page();
         }
 
-        // Hash password using SHA256
-        string hashedPassword = HashPassword(Password);
-
-        var user = _db.Users
-            .FirstOrDefault(u => u.Email == Email && u.PasswordHash == hashedPassword);
+        var user = _db.SysUsers
+            .FirstOrDefault(u => u.email == Email && u.password == Password);
 
         if (user == null)
         {
@@ -43,24 +37,23 @@ public class LoginModel : PageModel
             return Page();
         }
 
-        // Set session values
-        HttpContext.Session.SetString("UserRole", user.Role!);
-        HttpContext.Session.SetString("UserName", user.Name!);
+        // Set session
+        HttpContext.Session.SetString("UserRole", user.role ?? "");
+        HttpContext.Session.SetString("UserID", user.user_id.ToString());
 
-        // Redirect based on role
-        return user.Role switch
+        if (user.role == "Student" && user.application_id.HasValue)
         {
-            "Student" => RedirectToPage("/Student/Dashboard"),
-            "Committee" => RedirectToPage("/Committee/Dashboard"),
-            "Supervisor" => RedirectToPage("/Supervisor/Dashboard"),
-            _ => Page()
-        };
-    }
+            var student = _db.StudentApplications.FirstOrDefault(s => s.application_id == user.application_id.Value);
+            if (student != null)
+            {
+                HttpContext.Session.SetString("StudentName", student.studentName ?? "");
+                HttpContext.Session.SetString("StudentID", student.studentID ?? "");
+            }
 
-    private string HashPassword(string password)
-    {
-        using var sha256 = SHA256.Create();
-        byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-        return Convert.ToHexString(bytes);
+            return RedirectToPage("/Student/Dashboard");
+        }
+
+        // Add Supervisor / Committee later
+        return Page();
     }
 }
