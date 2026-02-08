@@ -13,5 +13,6 @@ namespace ITPSystem.Data
         // Add these DbSets
         public DbSet<StudentApplication> StudentApplications { get; set; }
         public DbSet<SysUser> SysUsers { get; set; }
+        public DbSet<Cohort> Cohorts { get; set; }
     }
 }

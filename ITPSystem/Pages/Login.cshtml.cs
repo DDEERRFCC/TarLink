@@ -29,7 +29,7 @@ public class LoginModel : PageModel
         }
 
         var user = _db.SysUsers
-            .FirstOrDefault(u => u.email == Email && u.password == Password);
+            .FirstOrDefault(u => u.email == Email && u.password_hash == Password);
 
         if (user == null)
         {

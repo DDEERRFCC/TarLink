@@ -12,8 +12,11 @@ public class StudentSignupModel : PageModel
         _db = db;
     }
 
+    // For Cohort dropdown
+    public List<Cohort> Cohorts { get; set; } = new List<Cohort>();
+
     [BindProperty]
-    public StudentApplication Student { get; set; } = new StudentApplication();
+    public StudentApplication Student { get; set; } = new();
 
     [BindProperty]
     public string Email { get; set; } = string.Empty;
@@ -27,37 +30,61 @@ public class StudentSignupModel : PageModel
     [TempData]
     public string? Message { get; set; }
 
+    //Shows available cohorts on signup page
+
+    public void LoadCohorts()
+    {
+        var today = DateTime.Today;
+        Cohorts = _db.Cohorts
+            .Where(c => c.isActive
+                        && c.startDate <= today
+                        && c.endDate >= today)
+            .OrderBy(c => c.startDate)
+            .ToList();
+    }
     public void OnGet()
     {
+        LoadCohorts();
     }
 
     public IActionResult OnPost()
     {
+        LoadCohorts(); // ✅ Must reload for postbacks
+
         if (!ModelState.IsValid)
+            return Page();
+
+        using var tx = _db.Database.BeginTransaction();
+
+        try
         {
+            _db.StudentApplications.Add(Student);
+            _db.SaveChanges();
+
+            var sysuser = new SysUser
+            {
+                email = Email,
+                username = Username,
+                ic_number = ICNumber,
+                password_hash = ICNumber,
+                role = "student",
+                application_id = Student.application_id,
+                is_active = true,
+                is_locked = false
+            };
+            _db.SysUsers.Add(sysuser);
+            _db.SaveChanges();
+
+            tx.Commit();
+
+            Message = "Signup successful! Please login using your email and NRIC.";
             return Page();
         }
-
-        // 1️⃣ Insert into studentapplication first
-        Student.timeStamp = DateTime.Now;
-        _db.StudentApplications.Add(Student);
-        _db.SaveChanges();
-
-        // 2️⃣ Insert into sysuser for login
-        var sysuser = new SysUser
+        catch (Exception ex)
         {
-            email = Email,
-            username = Username,
-            ic_number = ICNumber,
-            password = ICNumber, // default password = IC/NRIC
-            role = "Student",
-            application_id = Student.application_id,
-        };
-
-        _db.SysUsers.Add(sysuser);
-        _db.SaveChanges();
-
-        Message = "Signup successful! Please login using your email and NRIC.";
-        return RedirectToPage("/Login");
+            tx.Rollback();
+            ModelState.AddModelError("", "Signup failed: " + ex.Message);
+            return Page();
+        }
     }
 }

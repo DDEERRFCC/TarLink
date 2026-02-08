@@ -144,53 +144,56 @@ CREATE TABLE studentcv (
 -- ==============================
 -- STUDENT APPLICATION TABLE
 -- ==============================
+-- Example of improved structure
 CREATE TABLE studentapplication (
-    application_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    timeStamp DATETIME,
-    studentID VARCHAR(45),
-    studentName VARCHAR(255),
-    gender VARCHAR(1),
-    studentEmail VARCHAR(255),
-    contactDate VARCHAR(255),
+    application_id INT AUTO_INCREMENT PRIMARY KEY,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    studentID VARCHAR(45) NOT NULL UNIQUE,
+    studentName VARCHAR(255) NOT NULL,
+    gender ENUM('M', 'F', 'O') DEFAULT 'O',
+    studentEmail VARCHAR(255) NOT NULL,
+    contactDate DATE,
     comName VARCHAR(255),
-    comAddress VARCHAR(255),
+    comAddress VARCHAR(500),
     comSupervisor VARCHAR(255),
     comSupervisorEmail VARCHAR(255),
     comSupervisorContact VARCHAR(255),
-    alowance DOUBLE,
+    allowance DECIMAL(10, 2),
+    ucSupervisor VARCHAR(255),
     ucSupervisorEmail VARCHAR(255),
     ucSupervisorContact VARCHAR(255),
-    applyStatus TINYINT,
-    remark VARCHAR(500),
-    cohortId INT,
+    applyStatus ENUM('pending', 'approved', 'rejected', 'withdrawn') DEFAULT 'pending',
+    remark TEXT,
+    level TINYINT,
+    cohortId INT NOT NULL,
     programme VARCHAR(4),
     groupNo INT,
-    CGPA DOUBLE,
-    ownTranspot TINYINT(1),
-    temAddress VARCHAR(500),
-    personalEmail VARCHAR(150),
-    permanentAddress VARCHAR(500),
+    CGPA DECIMAL(3, 2),
+    ownTransport TINYINT(1) DEFAULT 0,
+    tempAddress VARCHAR(500),
+    personalEmail VARCHAR(255),
+    permanentAddress TEXT,
     permanentContact VARCHAR(45),
-    healthRemark VARCHAR(255),
-    programmingKnowledge VARCHAR(255),
-    databaseKnowledge VARCHAR(255),
-    networkingKnowledge VARCHAR(255),
-    templateVersion TINYINT(1),
-    formAcceptence VARCHAR(255),
-    formActknowledgement VARCHAR(255),
-    letterIdentry VARCHAR(255),
+    healthRemark TEXT,
+    programmingKnowledge VARCHAR(50),
+    databaseKnowledge VARCHAR(50),
+    networkingKnowledge VARCHAR(50),
+    templateVersion TINYINT DEFAULT 1,
+    formAcceptance VARCHAR(255),
+    formAcknowledgement VARCHAR(255),
+    letterIdentity VARCHAR(255),
     otherEvidence VARCHAR(255),
-    doVerifyer VARCHAR(255),
-    doVerifyerEmail VARCHAR(255),
-    isAgreed TINYINT(1),
-    password VARCHAR(255),
+    doVerifier VARCHAR(255),
+    doVerifierEmail VARCHAR(255),
+    isAgreed TINYINT(1) DEFAULT 0,
     INDEX idx_studentID (studentID),
     INDEX idx_cohortId (cohortId),
     INDEX idx_applyStatus (applyStatus),
-    INDEX idx_studentEmail (studentEmail(100)),
-    INDEX idx_personalEmail (personalEmail(100)),
-    INDEX idx_comName (comName(100)),
-    CONSTRAINT fk_studentapplication_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id)
+    INDEX idx_studentEmail (studentEmail),
+    INDEX idx_personalEmail (personalEmail),
+    INDEX idx_comName (comName),
+    CONSTRAINT fk_studentapplication_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 -- ==============================
 -- STUDENT STATUS TABLE
@@ -246,14 +249,40 @@ CREATE TABLE pullback (
 CREATE TABLE sysuser (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
-    username VARCHAR(50) UNIQUE,
-    password VARCHAR(255),
-    role VARCHAR(30),
-    ic_number VARCHAR(20),
-    application_id BIGINT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('committee', 'supervisor', 'student') NOT NULL DEFAULT 'student',
+    ic_number VARCHAR(20) UNIQUE NULL,
+    -- Changed to allow NULL
+    application_id INT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    is_locked BOOLEAN DEFAULT FALSE,
+    login_attempts TINYINT DEFAULT 0,
+    last_login_at TIMESTAMP NULL,
+    password_changed_at TIMESTAMP NULL,
+    password_reset_token VARCHAR(100) NULL,
+    password_reset_expires TIMESTAMP NULL,
+    email_verified_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_sysuser_studentapplication FOREIGN KEY (application_id) REFERENCES studentapplication(application_id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    -- Essential indexes (avoiding redundancy)
+    INDEX idx_role (role),
+    INDEX idx_application_id (application_id),
+    INDEX idx_is_active (is_active),
+    INDEX idx_is_locked (is_locked),
+    -- Added for admin queries
+    -- Foreign key constraint
+    CONSTRAINT fk_sysuser_studentapplication FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE
+    SET NULL ON UPDATE CASCADE
 );
+-- Optional: Add a trigger to enforce role-application_id consistency
+DELIMITER // CREATE TRIGGER check_application_id_role_update BEFORE
+UPDATE ON sysuser FOR EACH ROW BEGIN IF NEW.role != 'student'
+    AND NEW.application_id IS NOT NULL THEN SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = 'Only students can have an application_id';
+END IF;
+END;
+studentapplication DELIMITER;
 -- ==============================
 -- SYSTEM CONFIG TABLE
 -- ==============================
