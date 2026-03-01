@@ -1,7 +1,6 @@
 -- ==============================
 -- COHORT DATA    
 -- ==============================
-
 INSERT INTO cohort (
         description,
         startDate,
@@ -741,9 +740,7 @@ VALUES (
         1,
         'hashed_password_707'
     );
--- ==============================
--- SYS USER DATA    
--- ==============================
+--SYSUSER DATA
 INSERT INTO sysuser (
         email,
         username,
@@ -751,98 +748,83 @@ INSERT INTO sysuser (
         role,
         ic_number,
         application_id,
-        created_at
+        is_active,
+        is_locked,
+        login_attempts,
+        last_login_at,
+        password_changed_at,
+        email_verified_at
     )
-VALUES -- Student users
+VALUES -- Committee (no IC, password set to a placeholder since rule applies to IC users)
     (
-        'john.lee@ucstudent.edu.my',
-        'john_lee123',
-        'hashed_password_1',
-        'student',
-        '010101-14-1234',
+        'committee1@univ.edu.my',
+        'committee1',
+        'committee123',
+        'committee',
+        NULL,
+        NULL,
+        TRUE,
+        FALSE,
+        0,
+        '2026-02-25 09:10:00',
+        '2026-02-01 08:00:00',
+        '2026-02-01 08:05:00'
+    ),
+    -- Supervisor (no IC, password set to a placeholder since rule applies to IC users)
+    (
+        'supervisor1@univ.edu.my',
+        'sv_rahman',
+        'supervisor123',
+        'supervisor',
+        NULL,
+        NULL,
+        TRUE,
+        FALSE,
         1,
-        '2024-02-01 09:00:00'
+        '2026-02-24 14:30:00',
+        '2026-01-15 10:20:00',
+        '2026-01-15 10:25:00'
+    ),
+    -- Students (password = ic_number without '-')
+    (
+        'student1@univ.edu.my',
+        'sinnee22',
+        '020101011234',
+        'student',
+        '020101-01-1234',
+        NULL,
+        TRUE,
+        FALSE,
+        0,
+        '2026-02-26 08:05:00',
+        '2026-02-10 12:00:00',
+        '2026-02-10 12:10:00'
     ),
     (
-        'sarah.chen@ucstudent.edu.my',
-        'sarah_chen99',
-        'hashed_password_2',
+        'student2@univ.edu.my',
+        'amir_fyp',
+        '991231105678',
         'student',
-        '020202-08-5678',
+        '991231-10-5678',
+        NULL,
+        TRUE,
+        FALSE,
         2,
-        '2024-02-02 10:30:00'
+        '2026-02-23 20:12:00',
+        '2026-02-05 09:45:00',
+        NULL
     ),
     (
-        'hafiz.abdullah@ucstudent.edu.my',
-        'hafiz_a88',
-        'hashed_password_3',
+        'student3@univ.edu.my',
+        'lisa_qs',
+        '000505052468',
         'student',
-        '030303-10-9012',
-        3,
-        '2024-02-03 11:15:00'
-    ),
-    (
-        'nurul.izzah@ucstudent.edu.my',
-        'nurul_izzah',
-        'hashed_password_4',
-        'student',
-        '040404-12-3456',
-        6,
-        '2024-02-10 14:20:00'
-    ),
-    (
-        'chris.wong@ucstudent.edu.my',
-        'chris_wong',
-        'hashed_password_5',
-        'student',
-        '050505-01-7890',
-        7,
-        '2024-02-15 16:45:00'
-    ),
-    -- Industry supervisors
-    (
-        'robert.wong@maybank.com',
-        'robert_w_maybank',
-        'hashed_password_6',
-        'industry_supervisor',
-        '650505-05-1111',
+        '000505-05-2468',
         NULL,
-        '2024-01-15 08:00:00'
-    ),
-    (
-        'jennifer.ho@maxis.com.my',
-        'jen_ho_maxis',
-        'hashed_password_7',
-        'industry_supervisor',
-        '701212-12-2222',
+        FALSE,
+        TRUE,
+        5,
         NULL,
-        '2024-01-20 09:30:00'
-    ),
-    (
-        'sandra.lim@dell.com',
-        'sandra_dell',
-        'hashed_password_8',
-        'industry_supervisor',
-        '750808-08-3333',
-        NULL,
-        '2024-01-25 10:45:00'
-    ),
-    -- UC staff
-    (
-        'admin@ucintern.edu.my',
-        'super_admin',
-        'admin_hashed_123',
-        'admin',
-        '801010-10-0001',
-        NULL,
-        '2023-12-01 00:00:00'
-    ),
-    (
-        'coordinator.fyp@uc.edu.my',
-        'fyp_coordinator',
-        'coord_hashed_456',
-        'coordinator',
-        '820202-02-0002',
-        NULL,
-        '2024-01-10 08:30:00'
+        '2026-01-20 16:00:00',
+        NULL
     );

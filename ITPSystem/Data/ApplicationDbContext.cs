@@ -14,5 +14,8 @@ namespace ITPSystem.Data
         public DbSet<StudentApplication> StudentApplications { get; set; }
         public DbSet<SysUser> SysUsers { get; set; }
         public DbSet<Cohort> Cohorts { get; set; }
+
+
     }
+
 }

@@ -13,13 +13,19 @@
         "packagesPath": "C:\\Users\\kimch\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\kimch\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\kimch\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -52,6 +58,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[9.6.0, )"
+            },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.5.0, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",

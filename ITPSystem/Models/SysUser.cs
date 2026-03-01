@@ -19,8 +19,8 @@ namespace ITPSystem.Models
         public string username { get; set; } = string.Empty;
 
         [Required]
-        [Column("password_hash")]
-        public string password_hash { get; set; } = string.Empty;
+        [Column("password")]
+        public string password { get; set; } = string.Empty;
 
         [Required]
         [StringLength(20)]
@@ -48,7 +48,7 @@ namespace ITPSystem.Models
 
         public DateTime? email_verified_at { get; set; }
 
-        public DateTime created_at { get; set; }
+        public DateTime created_at { get; set; } = DateTime.Now;
 
         public DateTime updated_at { get; set; }
 

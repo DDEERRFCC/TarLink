@@ -250,7 +250,7 @@ CREATE TABLE sysuser (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     role ENUM('committee', 'supervisor', 'student') NOT NULL DEFAULT 'student',
     ic_number VARCHAR(20) UNIQUE NULL,
     -- Changed to allow NULL
@@ -275,14 +275,6 @@ CREATE TABLE sysuser (
     CONSTRAINT fk_sysuser_studentapplication FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE
     SET NULL ON UPDATE CASCADE
 );
--- Optional: Add a trigger to enforce role-application_id consistency
-DELIMITER // CREATE TRIGGER check_application_id_role_update BEFORE
-UPDATE ON sysuser FOR EACH ROW BEGIN IF NEW.role != 'student'
-    AND NEW.application_id IS NOT NULL THEN SIGNAL SQLSTATE '45000'
-SET MESSAGE_TEXT = 'Only students can have an application_id';
-END IF;
-END;
-studentapplication DELIMITER;
 -- ==============================
 -- SYSTEM CONFIG TABLE
 -- ==============================

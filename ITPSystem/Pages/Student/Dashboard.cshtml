@@ -1,4 +1,11 @@
 @page
+@model StudentDashboardModel
 @using Microsoft.AspNetCore.Http
 <h2>Student Dashboard</h2>
+
+@if (TempData["SuccessMessage"] is string successMessage && !string.IsNullOrWhiteSpace(successMessage))
+{
+    <div class="alert alert-success">@successMessage</div>
+}
+
 <p>Welcome, @HttpContext.Session.GetString("UserName")!</p>
