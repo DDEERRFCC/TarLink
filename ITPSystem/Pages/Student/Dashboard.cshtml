@@ -1,11 +1,360 @@
 @page
 @model StudentDashboardModel
 @using Microsoft.AspNetCore.Http
-<h2>Student Dashboard</h2>
+@{
+    ViewData["Title"] = "Student Dashboard";
+    var studentName = HttpContext.Session.GetString("UserName") ?? "Student";
+    var studentId = HttpContext.Session.GetString("StudentID") ?? "Not linked";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+        --itp-bg-1: #f4f7fb;
+        --itp-bg-2: #e5edf7;
+        --itp-text: #1f2937;
+        --itp-muted: #5a677b;
+        --itp-primary: #0e7490;
+        --itp-primary-dark: #155e75;
+        --itp-accent: #f59e0b;
+        --itp-card: #ffffff;
+        --itp-border: #d7e2ee;
+    }
+
+    .student-portal {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 10% 10%, #d7f0ff 0%, transparent 28%),
+            radial-gradient(circle at 85% 18%, #ffe8bf 0%, transparent 23%),
+            linear-gradient(160deg, var(--itp-bg-1), var(--itp-bg-2));
+        padding: 2rem 0 2.5rem;
+    }
+
+    .itp-shell {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .itp-hero {
+        background: linear-gradient(125deg, #0f172a, #134e4a 70%, #0e7490);
+        color: #fff;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+        animation: fade-up .5s ease-out;
+    }
+
+    .itp-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .itp-card {
+        background: var(--itp-card);
+        border: 1px solid var(--itp-border);
+        border-radius: 16px;
+        padding: 1rem;
+        box-shadow: 0 10px 24px rgba(26, 40, 60, 0.08);
+        animation: fade-up .55s ease-out;
+    }
+
+    .itp-title {
+        color: var(--itp-text);
+        margin: 0 0 .35rem;
+        font-size: 1.02rem;
+        font-weight: 700;
+    }
+
+    .itp-muted {
+        color: var(--itp-muted);
+        margin: 0;
+        font-size: .94rem;
+    }
+
+    .itp-pill {
+        display: inline-block;
+        padding: .35rem .7rem;
+        border-radius: 999px;
+        background: rgba(14, 116, 144, .15);
+        color: var(--itp-primary-dark);
+        font-weight: 600;
+        font-size: .83rem;
+    }
+
+    .itp-progress-wrap {
+        margin-top: .65rem;
+        background: #dfe9f4;
+        border-radius: 99px;
+        height: 12px;
+        overflow: hidden;
+    }
+
+    .itp-progress-bar {
+        height: 100%;
+        width: 42%;
+        background: linear-gradient(90deg, #0e7490, #14b8a6);
+        border-radius: 99px;
+    }
+
+    .itp-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .65rem;
+        margin-top: .6rem;
+    }
+
+    .itp-action {
+        text-decoration: none;
+        background: #f6fbff;
+        border: 1px solid #cde6f4;
+        color: #0f3f54;
+        border-radius: 12px;
+        padding: .65rem .8rem;
+        font-weight: 600;
+        transition: all .2s ease;
+    }
+
+    .itp-action:hover {
+        transform: translateY(-1px);
+        border-color: #89cce8;
+        color: #0d3344;
+    }
+
+    .itp-deadline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: .6rem 0;
+        border-bottom: 1px dashed #d6e2ef;
+    }
+
+    .itp-deadline:last-child {
+        border-bottom: 0;
+    }
+
+    .itp-date {
+        font-weight: 700;
+        color: #92400e;
+        background: #fff1d6;
+        padding: .28rem .58rem;
+        border-radius: 9px;
+        font-size: .83rem;
+    }
+
+    .itp-profile-btn {
+        display: inline-block;
+        margin-top: .9rem;
+        text-decoration: none;
+        background: #f59e0b;
+        color: #1f2937;
+        font-weight: 700;
+        padding: .5rem .85rem;
+        border-radius: 10px;
+        transition: all .2s ease;
+    }
+
+    .itp-profile-btn:hover {
+        transform: translateY(-1px);
+        background: #fbbf24;
+        color: #111827;
+    }
+
+    .itp-docs {
+        grid-column: 1 / -1;
+    }
+
+    .itp-doc-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: .8rem;
+        margin-top: .75rem;
+    }
+
+    .itp-doc-item {
+        border: 1px solid #d6e2ef;
+        border-radius: 12px;
+        padding: .75rem;
+        background: #fbfdff;
+    }
+
+    .itp-doc-title {
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0 0 .45rem;
+        font-size: .95rem;
+    }
+
+    .itp-doc-actions {
+        display: flex;
+        gap: .45rem;
+        flex-wrap: wrap;
+    }
+
+    .itp-doc-btn {
+        text-decoration: none;
+        font-size: .84rem;
+        font-weight: 600;
+        border-radius: 9px;
+        padding: .35rem .6rem;
+        border: 1px solid #c6d9ea;
+        color: #0f3f54;
+        background: #f2f8fd;
+    }
+
+    .itp-doc-btn:hover {
+        background: #e3f1fb;
+    }
+
+    .itp-badge-ok, .itp-badge-missing {
+        display: inline-block;
+        font-size: .75rem;
+        padding: .16rem .45rem;
+        border-radius: 999px;
+        margin-bottom: .45rem;
+    }
+
+    .itp-badge-ok {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .itp-badge-missing {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    @@keyframes fade-up {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @@media (max-width: 900px) {
+        .itp-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="student-portal">
+    <div class="itp-shell">
+        <div class="itp-hero">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                <div>
+                    <div class="itp-pill">ITP Student Portal</div>
+                    <h2 class="mt-2 mb-1">Welcome back, @studentName</h2>
+                    <p class="mb-0" style="opacity:.92;">Track your internship progress, deadlines, and submission tasks in one place.</p>
+                    <a asp-page="/Student/Profile" class="itp-profile-btn">My Profile</a>
+                </div>
+                <div class="text-end">
+                    <div style="font-size:.85rem;opacity:.85;">Student ID</div>
+                    <div style="font-weight:700;font-size:1.15rem;">@studentId</div>
+                </div>
+            </div>
+        </div>
 
 @if (TempData["SuccessMessage"] is string successMessage && !string.IsNullOrWhiteSpace(successMessage))
 {
-    <div class="alert alert-success">@successMessage</div>
+        <div class="alert alert-success mt-3 mb-0">@successMessage</div>
 }
 
-<p>Welcome, @HttpContext.Session.GetString("UserName")!</p>
+        <div class="itp-grid">
+            <section class="itp-card">
+                <h3 class="itp-title">Internship Status</h3>
+                <p class="itp-muted">Application approved and currently in progress.</p>
+                <div class="itp-progress-wrap">
+                    <div class="itp-progress-bar"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <small class="itp-muted">Week 6 of 14</small>
+                    <small style="font-weight:700;color:#0e7490;">42% Complete</small>
+                </div>
+
+                <div class="itp-actions">
+                    <a class="itp-action" href="#">Submit Progress Report</a>
+                    <a class="itp-action" href="#">Update Company Details</a>
+                    <a class="itp-action" href="#">View Appointment Letter</a>
+                    <a class="itp-action" href="#">Contact Supervisor</a>
+                </div>
+            </section>
+
+            <section class="itp-card">
+                <h3 class="itp-title">Upcoming Deadlines</h3>
+                <div class="itp-deadline">
+                    <div>
+                        <div style="font-weight:600;color:#1f2937;">Monthly Report #2</div>
+                        <small class="itp-muted">Upload PDF and reflection notes</small>
+                    </div>
+                    <span class="itp-date">Mar 10</span>
+                </div>
+                <div class="itp-deadline">
+                    <div>
+                        <div style="font-weight:600;color:#1f2937;">Supervisor Evaluation</div>
+                        <small class="itp-muted">Ensure supervisor receives form link</small>
+                    </div>
+                    <span class="itp-date">Mar 18</span>
+                </div>
+                <div class="itp-deadline">
+                    <div>
+                        <div style="font-weight:600;color:#1f2937;">Final Report Draft</div>
+                        <small class="itp-muted">Submit for committee review</small>
+                    </div>
+                    <span class="itp-date">Apr 02</span>
+                </div>
+            </section>
+
+            <section class="itp-card">
+                <h3 class="itp-title">Profile Snapshot</h3>
+                <p class="itp-muted mb-2">Keep your profile updated for smooth internship tracking.</p>
+                <div class="row g-2">
+                    <div class="col-6"><strong>Name:</strong> @studentName</div>
+                    <div class="col-6"><strong>ID:</strong> @studentId</div>
+                    <div class="col-6"><strong>Role:</strong> Student</div>
+                    <div class="col-6"><strong>Portal:</strong> ITP System</div>
+                </div>
+                <a asp-page="/Student/Profile" class="itp-action mt-3 d-inline-block">Open Full Profile</a>
+            </section>
+
+            <section class="itp-card">
+                <h3 class="itp-title">Announcements</h3>
+                <p class="itp-muted mb-2">Important updates from ITP committee:</p>
+                <ul class="mb-0" style="padding-left:1.1rem;color:#334155;">
+                    <li>All students must submit weekly attendance by Friday 6:00 PM.</li>
+                    <li>Final presentation schedule will be released in April.</li>
+                    <li>Check your email for revised report template guidelines.</li>
+                </ul>
+            </section>
+
+            <section class="itp-card itp-docs">
+                <h3 class="itp-title">My Documents</h3>
+                <p class="itp-muted">Document sample PDFs for viewing or downloading.</p>
+
+                <div class="itp-doc-list">
+                    @foreach (var doc in Model.Documents)
+                    {
+                        <article class="itp-doc-item">
+                            @if (doc.Exists)
+                            {
+                                <span class="itp-badge-ok">Available</span>
+                            }
+                            else
+                            {
+                                <span class="itp-badge-missing">Missing File</span>
+                            }
+
+                            <h4 class="itp-doc-title">@doc.Title</h4>
+                            <div class="itp-doc-actions">
+                                <a class="itp-doc-btn" href="@doc.WebPath" target="_blank" rel="noopener">View</a>
+                                <a class="itp-doc-btn" href="@doc.WebPath" download>Download</a>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

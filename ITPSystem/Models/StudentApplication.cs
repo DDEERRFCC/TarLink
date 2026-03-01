@@ -54,6 +54,9 @@ namespace ITPSystem.Models
         [StringLength(255)]
         public string? ucSupervisorEmail { get; set; }
 
+        [StringLength(255)]
+        public string? ucSupervisorContact { get; set; }
+
         // ===== Personal / Contact =====
         [StringLength(255)]
         public string? personalEmail { get; set; }
