@@ -6,8 +6,16 @@ namespace ITPSystem.Data
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) { }
+            : base(options)
+        {
+        }
 
-        public DbSet<User> Users { get; set; }
+        // Add these DbSets
+        public DbSet<StudentApplication> StudentApplications { get; set; }
+        public DbSet<SysUser> SysUsers { get; set; }
+        public DbSet<Cohort> Cohorts { get; set; }
+
+
     }
+
 }
