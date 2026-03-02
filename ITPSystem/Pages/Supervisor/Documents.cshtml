@@ -1,0 +1,57 @@
+@page
+@model ITPSystem.Pages.Supervisor.DocumentsModel
+<h2>Document Review</h2>
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="alert alert-success">@Model.Message</div>
+}
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Company</th>
+            <th>Acceptance</th>
+            <th>Acknowledgement</th>
+            <th>Final/Other</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model.Students)
+        {
+            <tr>
+                <td>@s.studentName (@s.studentID)</td>
+                <td>@s.comName</td>
+                <td>@(s.formAcceptance ?? "-")</td>
+                <td>@(s.formAcknowledgement ?? "-")</td>
+                <td>@(s.otherEvidence ?? "-")</td>
+                <td>
+                    <form method="post" class="mb-1">
+                        <input type="hidden" name="applicationId" value="@s.application_id" />
+                        <select name="documentType" class="form-select form-select-sm mb-1">
+                            <option value="formAcceptance">Acceptance</option>
+                            <option value="formAcknowledgement">Acknowledgement</option>
+                            <option value="letterIdentity">Letter</option>
+                            <option value="otherEvidence">Other</option>
+                        </select>
+                        <button class="btn btn-outline-primary btn-sm w-100" asp-page-handler="Download" type="submit">Download</button>
+                    </form>
+                    <form method="post" class="d-flex gap-1">
+                        <input type="hidden" name="applicationId" value="@s.application_id" />
+                        <select name="documentType" class="form-select form-select-sm">
+                            <option value="formAcceptance">Acceptance</option>
+                            <option value="formAcknowledgement">Acknowledgement</option>
+                            <option value="letterIdentity">Letter</option>
+                            <option value="otherEvidence">Other</option>
+                        </select>
+                        <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Remarks" />
+                        <button class="btn btn-success btn-sm" asp-page-handler="Approve" type="submit">Approve</button>
+                        <button class="btn btn-danger btn-sm" asp-page-handler="Reject" type="submit">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

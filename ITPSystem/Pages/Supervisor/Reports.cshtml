@@ -1,0 +1,41 @@
+@page
+@model ITPSystem.Pages.Supervisor.ReportsModel
+<h2>Progress Report Review</h2>
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="alert alert-success">@Model.Message</div>
+}
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Month</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Remark</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.StudentName (@item.StudentId)</td>
+                <td>@item.Report.month</td>
+                <td>@item.Report.dueDate?.ToString("yyyy-MM-dd")</td>
+                <td>@Model.GetStatusLabel(item.Report.status)</td>
+                <td>@item.Report.remark</td>
+                <td>
+                    <form method="post" class="d-flex gap-1">
+                        <input type="hidden" name="reportId" value="@item.Report.report_id" />
+                        <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Remarks" />
+                        <button class="btn btn-success btn-sm" type="submit" asp-page-handler="Approve">Approve</button>
+                        <button class="btn btn-danger btn-sm" type="submit" asp-page-handler="Reject">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
