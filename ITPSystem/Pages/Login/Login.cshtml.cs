@@ -60,6 +60,7 @@ public class LoginModel : PageModel
         HttpContext.Session.SetString("UserRole", user.role ?? "");
         HttpContext.Session.SetString("UserID", user.user_id.ToString());
         HttpContext.Session.SetString("UserName", user.username ?? user.email);
+        HttpContext.Session.SetString("UserEmail", user.email ?? "");
 
         var normalizedRole = user.role?.Trim().ToLowerInvariant() ?? string.Empty;
 

@@ -28,6 +28,8 @@ namespace ITPSystem.Models
         [StringLength(255)]
         public string studentEmail { get; set; } = string.Empty;
 
+        public DateTime? contactDate { get; set; }
+
         [Required]
         [Range(1, 2)]
         public byte? level { get; set; }  // 1 = Diploma, 2 = Degree
@@ -46,6 +48,25 @@ namespace ITPSystem.Models
 
         [Required]
         public int? groupNo { get; set; }
+
+        // ===== Company =====
+        [StringLength(255)]
+        public string? comName { get; set; }
+
+        [StringLength(500)]
+        public string? comAddress { get; set; }
+
+        [StringLength(255)]
+        public string? comSupervisor { get; set; }
+
+        [StringLength(255)]
+        public string? comSupervisorEmail { get; set; }
+
+        [StringLength(255)]
+        public string? comSupervisorContact { get; set; }
+
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal? allowance { get; set; }
 
         // ===== Supervisor =====
         [StringLength(255)]
@@ -87,6 +108,29 @@ namespace ITPSystem.Models
         // ===== Application Status =====
         [Column(TypeName = "ENUM('pending','approved','rejected','withdrawn')")]
         public string? applyStatus { get; set; } = "pending";
+
+        public string? remark { get; set; }
+
+        // ===== Documents =====
+        [StringLength(255)]
+        public string? formAcceptance { get; set; }
+
+        [StringLength(255)]
+        public string? formAcknowledgement { get; set; }
+
+        [StringLength(255)]
+        public string? letterIdentity { get; set; }
+
+        [StringLength(255)]
+        public string? otherEvidence { get; set; }
+
+        [StringLength(255)]
+        public string? doVerifier { get; set; }
+
+        [StringLength(255)]
+        public string? doVerifierEmail { get; set; }
+
+        public bool isAgreed { get; set; } = false;
 
         // ===== Navigation =====
         [ForeignKey("cohortId")]

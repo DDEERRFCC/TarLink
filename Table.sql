@@ -21,6 +21,9 @@ person,
 sysuser,
 sysconfig,
 ucsupervisor;
+assessmentmark;
+notification;
+documentreview;
 SET FOREIGN_KEY_CHECKS = 1;
 -- ==============================
 -- PERSON TABLE
@@ -297,4 +300,54 @@ CREATE TABLE ucsupervisor (
     faculty VARCHAR(45),
     campus VARCHAR(45),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- ==============================
+-- ASSESSMENT MARK TABLE
+-- ==============================
+CREATE TABLE assessmentmark (
+    mark_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    application_id INT NOT NULL,
+    supervisor_user_id INT NOT NULL,
+    rubric_item VARCHAR(120) NOT NULL,
+    score DECIMAL(5, 2) NOT NULL,
+    max_score DECIMAL(5, 2) NOT NULL,
+    remarks TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_assessmentmark_application (application_id),
+    INDEX idx_assessmentmark_supervisor (supervisor_user_id),
+    CONSTRAINT fk_assessmentmark_application FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_assessmentmark_supervisor FOREIGN KEY (supervisor_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+-- ==============================
+-- NOTIFICATION TABLE
+-- ==============================
+CREATE TABLE notification (
+    notification_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    from_user_id INT NOT NULL,
+    to_user_id INT NOT NULL,
+    type VARCHAR(60) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    message TEXT NULL,
+    is_read TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_notification_to_user (to_user_id, is_read),
+    INDEX idx_notification_created_at (created_at),
+    CONSTRAINT fk_notification_from_user FOREIGN KEY (from_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_notification_to_user FOREIGN KEY (to_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+-- ==============================
+-- DOCUMENT REVIEW TABLE
+-- ==============================
+CREATE TABLE documentreview (
+    review_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    application_id INT NOT NULL,
+    reviewed_by INT NOT NULL,
+    document_type VARCHAR(60) NOT NULL,
+    status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+    remarks TEXT NULL,
+    reviewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_documentreview_application (application_id),
+    INDEX idx_documentreview_reviewed_by (reviewed_by),
+    CONSTRAINT fk_documentreview_application FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_documentreview_user FOREIGN KEY (reviewed_by) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );

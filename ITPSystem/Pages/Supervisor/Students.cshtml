@@ -1,0 +1,34 @@
+@page
+@model ITPSystem.Pages.Supervisor.StudentsModel
+<h2>Student & Internship Tracking</h2>
+
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Academic</th>
+            <th>Company</th>
+            <th>Allowance</th>
+            <th>Internship Period</th>
+            <th>Supervisor</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model.Students)
+        {
+            <tr>
+                <td>@s.studentName<br /><small>@s.studentID</small></td>
+                <td>CGPA: @(s.CGPA?.ToString("0.00") ?? "-")<br />Programme: @s.programme</td>
+                <td>@(s.comName ?? "-")<br /><small>@(s.comAddress ?? "-")</small></td>
+                <td>@(s.allowance?.ToString("0.00") ?? "-")</td>
+                <td>@Model.GetCohortRange(s.cohortId)</td>
+                <td>@(s.comSupervisor ?? "-")<br /><small>@(s.ucSupervisor ?? "-")</small></td>
+                <td>
+                    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Documents">Documents</a>
+                    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Reports">Reports</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
