@@ -83,7 +83,7 @@ public class StudentSignupModel : PageModel
                 email = Email,
                 username = Username,
                 ic_number = ICNumber,
-                password = ICNumber.Replace("-", ""),
+                password_hash = ICNumber.Replace("-", ""),
                 role = "student",
                 application_id = Student.application_id,
                 is_active = true,

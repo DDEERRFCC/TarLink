@@ -253,7 +253,7 @@ CREATE TABLE sysuser (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     role ENUM('committee', 'supervisor', 'student') NOT NULL DEFAULT 'student',
     ic_number VARCHAR(20) UNIQUE NULL,
     -- Changed to allow NULL

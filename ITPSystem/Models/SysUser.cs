@@ -19,8 +19,8 @@ namespace ITPSystem.Models
         public string username { get; set; } = string.Empty;
 
         [Required]
-        [Column("password")]
-        public string password { get; set; } = string.Empty;
+        [Column("password_hash")]
+        public string password_hash { get; set; } = string.Empty;
 
         [Required]
         [StringLength(20)]

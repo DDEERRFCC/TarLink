@@ -1,339 +1,257 @@
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ITPSystem.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ITPSystem.pdb
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Humanizer.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Mono.TextTemplating.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\MySqlConnector.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.CodeDom.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Composition.AttributedModel.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Composition.Convention.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Composition.Hosting.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Composition.Runtime.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Composition.TypedParts.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.csproj.AssemblyReference.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.AssemblyInfoInputs.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.AssemblyInfo.cs
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.csproj.CoreCompileInputs.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.RazorAssemblyInfo.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.RazorAssemblyInfo.cs
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets.build.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets.development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\scopedcss\bundle\ITPSystem.styles.css
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\scopedcss\projectbundle\ITPSystem.bundle.scp.css
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.csproj.Up2Date
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\refint\ITPSystem.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.pdb
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.genruntimeconfig.cache
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ref\ITPSystem.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\ITPSystem.sourcelink.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Google.Protobuf.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\K4os.Compression.LZ4.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\K4os.Compression.LZ4.Streams.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\K4os.Hash.xxHash.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\MySql.Data.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Security.Permissions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ZstdSharp.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\runtimes\win-x64\native\comerr64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\runtimes\win-x64\native\gssapi64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\runtimes\win-x64\native\k5sprt64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\runtimes\win-x64\native\krb5_64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\runtimes\win-x64\native\krbcc64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\ITPSystem.exe
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ITPSystem.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ITPSystem.pdb
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\BouncyCastle.Cryptography.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Google.Protobuf.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Humanizer.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\K4os.Compression.LZ4.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\K4os.Compression.LZ4.Streams.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\K4os.Hash.xxHash.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.CodeAnalysis.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.CodeAnalysis.Workspaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.EntityFrameworkCore.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.Extensions.DependencyModel.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Mono.TextTemplating.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\MySql.Data.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\MySqlConnector.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\Pomelo.EntityFrameworkCore.MySql.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.CodeDom.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Composition.AttributedModel.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Composition.Convention.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Composition.Hosting.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Composition.Runtime.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Composition.TypedParts.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Configuration.ConfigurationManager.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Security.Cryptography.ProtectedData.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Security.Permissions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ZstdSharp.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\cs\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\de\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\es\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\fr\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\it\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ja\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ko\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pl\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pt-BR\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ru\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\tr\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win-x64\native\comerr64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win-x64\native\gssapi64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win-x64\native\k5sprt64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win-x64\native\krb5_64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win-x64\native\krbcc64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets\msbuild.ITPSystem.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets\msbuild.build.ITPSystem.props
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ITPSystem.props
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ITPSystem.props
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ITPSystem.exe
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ITPSystem.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ITPSystem.pdb
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\BouncyCastle.Cryptography.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Google.Protobuf.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Humanizer.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\K4os.Compression.LZ4.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\K4os.Compression.LZ4.Streams.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\K4os.Hash.xxHash.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.CodeAnalysis.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.CodeAnalysis.CSharp.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.CodeAnalysis.Workspaces.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.EntityFrameworkCore.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.Extensions.DependencyModel.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Mono.TextTemplating.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\MySql.Data.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\MySqlConnector.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\Pomelo.EntityFrameworkCore.MySql.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.CodeDom.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Composition.AttributedModel.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Composition.Convention.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Composition.Hosting.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Composition.Runtime.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Composition.TypedParts.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Configuration.ConfigurationManager.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Security.Cryptography.ProtectedData.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Security.Permissions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ZstdSharp.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\cs\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\de\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\es\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\fr\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\it\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ja\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ko\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pl\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pt-BR\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ru\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\tr\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hans\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hant\Microsoft.CodeAnalysis.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\es\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\it\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\runtimes\win-x64\native\comerr64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\runtimes\win-x64\native\gssapi64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\runtimes\win-x64\native\k5sprt64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\runtimes\win-x64\native\krb5_64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\runtimes\win-x64\native\krbcc64.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\appsettings.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build\appsettings.Development.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build\appsettings.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build\global.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.deps.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.runtimeconfig.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.staticwebassets.endpoints.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.staticwebassets.runtime.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\global.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ITPSystem.staticwebassets.runtime.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ITPSystem.exe
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ITPSystem.deps.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ITPSystem.runtimeconfig.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ITPSystem.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ITPSystem.pdb
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Google.Protobuf.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Humanizer.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\K4os.Compression.LZ4.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\K4os.Compression.LZ4.Streams.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\K4os.Hash.xxHash.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\MySql.Data.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\System.Windows.Extensions.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ZstdSharp.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\comerr64.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\gssapi64.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\k5sprt64.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\krb5_64.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\krbcc64.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.csproj.AssemblyReference.cache
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.AssemblyInfoInputs.cache
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.AssemblyInfo.cs
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.csproj.CoreCompileInputs.cache
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.RazorAssemblyInfo.cache
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.RazorAssemblyInfo.cs
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.sourcelink.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\scopedcss\bundle\ITPSystem.styles.css
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\scopedcss\projectbundle\ITPSystem.bundle.scp.css
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.csproj.Up2Date
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.dll
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\refint\ITPSystem.dll
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.pdb
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ITPSystem.genruntimeconfig.cache
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\ref\ITPSystem.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\appsettings.Development.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\appsettings.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\bin_temp_build\appsettings.Development.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\bin_temp_build\appsettings.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\bin_temp_build\global.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\bin_temp_build\ITPSystem.deps.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\bin_temp_build\ITPSystem.runtimeconfig.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\bin_temp_build\ITPSystem.staticwebassets.endpoints.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\bin_temp_build\ITPSystem.staticwebassets.runtime.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\global.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ITPSystem.staticwebassets.runtime.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ITPSystem.staticwebassets.endpoints.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ITPSystem.exe
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ITPSystem.deps.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ITPSystem.runtimeconfig.json
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ITPSystem.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ITPSystem.pdb
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\BouncyCastle.Cryptography.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Google.Protobuf.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Humanizer.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\K4os.Compression.LZ4.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\K4os.Compression.LZ4.Streams.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\K4os.Hash.xxHash.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.Bcl.AsyncInterfaces.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.CodeAnalysis.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.CodeAnalysis.CSharp.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.CodeAnalysis.Workspaces.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.EntityFrameworkCore.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.EntityFrameworkCore.Abstractions.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.EntityFrameworkCore.Design.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.EntityFrameworkCore.Relational.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.Extensions.DependencyModel.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Microsoft.Extensions.Logging.Abstractions.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Mono.TextTemplating.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\MySql.Data.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\MySqlConnector.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\Pomelo.EntityFrameworkCore.MySql.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.CodeDom.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Composition.AttributedModel.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Composition.Convention.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Composition.Hosting.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Composition.Runtime.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Composition.TypedParts.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Configuration.ConfigurationManager.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Security.Cryptography.ProtectedData.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Security.Permissions.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\System.Windows.Extensions.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ZstdSharp.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\cs\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\de\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\es\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\fr\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\it\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ja\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ko\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pl\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pt-BR\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ru\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\tr\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\runtimes\win-x64\native\comerr64.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\runtimes\win-x64\native\gssapi64.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\runtimes\win-x64\native\k5sprt64.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\runtimes\win-x64\native\krb5_64.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\runtimes\win-x64\native\krbcc64.dll
+c:\Users\User\TarLink\ITPSystem\bin_temp_build_verify\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\appsettings.Development.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\appsettings.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\bin_temp_build\appsettings.Development.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\bin_temp_build\appsettings.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\bin_temp_build\global.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\bin_temp_build\ITPSystem.deps.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\bin_temp_build\ITPSystem.runtimeconfig.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\bin_temp_build\ITPSystem.staticwebassets.endpoints.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\bin_temp_build\ITPSystem.staticwebassets.runtime.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\global.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\ITPSystem.deps.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\ITPSystem.runtimeconfig.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\ITPSystem.staticwebassets.endpoints.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\bin_temp_build_verify\ITPSystem.staticwebassets.runtime.json
+C:\Users\User\TarLink\ITPSystem\bin\Debug\net8.0\ITPSystem.staticwebassets.endpoints.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\User\TarLink\ITPSystem\obj\Debug\net8.0\swae.build.ex.cache

@@ -159,7 +159,7 @@ VALUES (
 INSERT INTO sysuser (
         email,
         username,
-        password,
+        password_hash,
         role,
         ic_number,
         application_id,

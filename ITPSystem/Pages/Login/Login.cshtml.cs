@@ -36,7 +36,7 @@ public class LoginModel : PageModel
         var user = _db.SysUsers
             .FirstOrDefault(u =>
                 (u.email == loginInput || u.username == loginInput) &&
-                u.password == Password);
+                u.password_hash == Password);
 
         if (user == null)
         {
@@ -81,7 +81,7 @@ public class LoginModel : PageModel
             else
             {
                 // Fallback so dashboard still has a display name.
-                HttpContext.Session.SetString("UserName", user.username ?? user.email);
+                HttpContext.Session.SetString("UserName", user.username ?? user.email ?? "");
             }
 
             SuccessMessage = "Login successful.";
