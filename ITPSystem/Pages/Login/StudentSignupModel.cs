@@ -22,15 +22,6 @@ public class StudentSignupModel : PageModel
 
     [BindProperty]
     [Required]
-    [EmailAddress]
-    public string Email { get; set; } = string.Empty;
-
-    [BindProperty]
-    [Required]
-    public string Username { get; set; } = string.Empty;
-
-    [BindProperty]
-    [Required]
     public string ICNumber { get; set; } = string.Empty;
 
     [TempData]
@@ -56,9 +47,15 @@ public class StudentSignupModel : PageModel
     public IActionResult OnPost()
     {
         LoadCohorts(); // Must reload for postbacks
-        Email = Email?.Trim() ?? string.Empty;
-        Username = Username?.Trim() ?? string.Empty;
         ICNumber = ICNumber?.Trim() ?? string.Empty;
+        Student.studentEmail = Student.studentEmail?.Trim() ?? string.Empty;
+        Student.studentID = Student.studentID?.Trim() ?? string.Empty;
+        Student.number_ic = ICNumber;
+        ModelState.Remove("Student.number_ic");
+        if (string.IsNullOrWhiteSpace(Student.number_ic))
+        {
+            ModelState.AddModelError("Student.number_ic", "The number_ic field is required.");
+        }
 
         if (!ModelState.IsValid)
             return Page();
@@ -80,8 +77,8 @@ public class StudentSignupModel : PageModel
 
             var sysuser = new SysUser
             {
-                email = Email,
-                username = Username,
+                email = Student.studentEmail,
+                username = Student.studentID,
                 ic_number = ICNumber,
                 password = ICNumber.Replace("-", ""),
                 role = "student",
@@ -96,7 +93,7 @@ public class StudentSignupModel : PageModel
 
             tx.Commit();
 
-            Message = "Signup successful! Please login using your email and NRIC.";
+            Message = "Signup successful! Please login using your student email and NRIC.";
             return Page();
         }
         catch (DbUpdateException ex)

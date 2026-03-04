@@ -34,12 +34,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cTG9naW4uY3NodG1s
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/CommitteeLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cQ29tbWl0dGVlTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/StudentLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cU3R1ZGVudExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/StudentSignup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cU3R1ZGVudFNpZ251cC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/SupervisorLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cU3VwZXJ2aXNvckxvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Privacy.cshtml]
@@ -52,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/OwnCompanyRequest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxPd25Db21wYW55UmVxdWVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/Profile.cshtml]

@@ -4,194 +4,284 @@
     ViewData["Title"] = "Student Signup";
 }
 
-<div class="container mt-5" style="max-width: 900px;">
-    <h3 class="mb-4 text-center">Student Signup</h3>
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
 
-    @* ================== SUCCESS MESSAGE ================== *@
-    @if (Model.Message != null)
-    {
-        <div class="alert alert-success text-center">
-            @Model.Message
-        </div>
+    .signup-page {
+        font-family: "Manrope", "Segoe UI", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 8% 15%, rgba(14, 116, 144, .18), transparent 24%),
+            radial-gradient(circle at 90% 10%, rgba(245, 158, 11, .2), transparent 22%),
+            linear-gradient(155deg, #f3f8fc, #e8f0f7);
+        padding: 2rem 0 2.5rem;
     }
 
-    @* ================== VALIDATION ERRORS ================== *@
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <strong>Please fix the following errors:</strong>
-            <ul>
-                @foreach (var entry in ViewData.ModelState)
-                {
-                    foreach (var error in entry.Value.Errors)
-                    {
-                        <li>@entry.Key: @error.ErrorMessage</li>
-                    }
-                }
-            </ul>
-        </div>
+    .signup-shell {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 0 1rem;
     }
 
-    <form method="post">
+    .signup-header {
+        background: linear-gradient(125deg, #0f172a, #155e75 70%, #0891b2);
+        color: #fff;
+        border-radius: 18px;
+        padding: 1.2rem 1.3rem;
+        box-shadow: 0 16px 36px rgba(15, 23, 42, .2);
+        margin-bottom: 1rem;
+    }
 
-        <!-- LOGIN INFO -->
-        <h5 class="border-bottom pb-2">Login Information</h5>
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label>Email</label>
-                <input asp-for="Email" class="form-control" required />
-            </div>
-            <div class="col-md-4">
-                <label>Username</label>
-                <input asp-for="Username" class="form-control" required />
-            </div>
-            <div class="col-md-4">
-                <label>NRIC</label>
-                <input asp-for="ICNumber" class="form-control" required />
+    .signup-card {
+        background: #fff;
+        border: 1px solid #d6e2ef;
+        border-radius: 16px;
+        box-shadow: 0 10px 24px rgba(28, 44, 64, .1);
+        overflow: hidden;
+    }
+
+    .section-block {
+        border-bottom: 1px solid #edf3f8;
+        padding: 1rem;
+    }
+
+    .section-block:last-child {
+        border-bottom: 0;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        margin: 0 0 .8rem;
+        font-size: 1rem;
+        font-weight: 800;
+        color: #1f2937;
+    }
+
+    .section-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.45rem;
+        height: 1.45rem;
+        border-radius: 999px;
+        background: #dff3fc;
+        color: #0c4a6e;
+        font-size: .76rem;
+        font-weight: 800;
+    }
+
+    .signup-label {
+        font-size: .84rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: .3rem;
+    }
+
+    .signup-input, .signup-select, .signup-textarea {
+        border: 1px solid #c7d7e8;
+        border-radius: 10px;
+        padding: .52rem .65rem;
+        font-size: .92rem;
+        background: #fff;
+    }
+
+    .signup-input:focus, .signup-select:focus, .signup-textarea:focus {
+        outline: none;
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, .15);
+    }
+
+    .signup-actions {
+        padding: 1rem;
+        background: #f8fbfe;
+        border-top: 1px solid #e5eef7;
+    }
+
+    .signup-submit {
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        padding: .68rem 1rem;
+        font-weight: 800;
+        color: #fff;
+        background: linear-gradient(90deg, #0e7490, #0ea5a4);
+    }
+</style>
+
+<div class="signup-page">
+    <div class="signup-shell">
+        <div class="signup-header">
+            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                <div>
+                    <div style="opacity:.86;font-size:.86rem;">ITP System</div>
+                    <h3 class="mb-1">Student Internship Signup</h3>
+                    <p class="mb-0" style="opacity:.92;">Fill in your details once. You can update profile fields later from your dashboard.</p>
+                </div>
+                <a asp-page="/Login/StudentLogin" class="btn btn-light btn-sm">Back</a>
             </div>
         </div>
 
-        <!-- ACADEMIC DETAILS -->
-        <h5 class="border-bottom pb-2 mt-4">Academic Details</h5>
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label>Level</label>
-                <select asp-for="Student.level" class="form-select">
-                    <option value="">-- Select One --</option>
-                    <option value="1">Diploma</option>
-                    <option value="2">Degree</option>
-                </select>
-            </div>
+        @if (Model.Message != null)
+        {
+            <div class="alert alert-success">@Model.Message</div>
+        }
 
-            <div class="col-md-3">
-                <label>Cohort</label>
-                <select asp-for="Student.cohortId" class="form-select">
-                    <option value="">-- Select One --</option>
-                    @foreach (var c in Model.Cohorts)
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <strong>Please fix the following errors:</strong>
+                <ul class="mb-0 mt-1">
+                    @foreach (var entry in ViewData.ModelState)
                     {
-                        <option value="@c.cohort_id"
-                                selected="@(Model.Student.cohortId == c.cohort_id ? "selected" : null)">
-                            @c.description
-                        </option>
+                        foreach (var error in entry.Value.Errors)
+                        {
+                            <li>@entry.Key: @error.ErrorMessage</li>
+                        }
                     }
-                </select>
+                </ul>
             </div>
+        }
 
-            <div class="col-md-3">
-                <label>Programme</label>
-                <select asp-for="Student.programme" class="form-select">
-                    <option value="">-- Select One --</option>
-                    <option value="RSD">RSD</option>
-                    <option value="RIT">RIT</option>
-                </select>
+        <form method="post" class="signup-card">
+            <section class="section-block">
+                <h5 class="section-title"><span class="section-badge">1</span>Academic Details</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="signup-label">Level</label>
+                        <select asp-for="Student.level" class="form-select signup-select">
+                            <option value="">-- Select One --</option>
+                            <option value="1">Diploma</option>
+                            <option value="2">Degree</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="signup-label">Cohort</label>
+                        <select asp-for="Student.cohortId" class="form-select signup-select">
+                            <option value="">-- Select One --</option>
+                            @foreach (var c in Model.Cohorts)
+                            {
+                                <option value="@c.cohort_id"
+                                        selected="@(Model.Student.cohortId == c.cohort_id ? "selected" : null)">
+                                    @c.description
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="signup-label">Programme</label>
+                        <select asp-for="Student.programme" class="form-select signup-select">
+                            <option value="">-- Select One --</option>
+                            <option value="RSD">RSD</option>
+                            <option value="RIT">RIT</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="signup-label">Tutorial Group</label>
+                        <input asp-for="Student.groupNo" class="form-control signup-input" placeholder="1 - 5" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="signup-label">Student ID</label>
+                        <input asp-for="Student.studentID" class="form-control signup-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Student Email</label>
+                        <input asp-for="Student.studentEmail" class="form-control signup-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">CGPA</label>
+                        <input asp-for="Student.CGPA" type="number" step="0.01" class="form-control signup-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">University Supervisor</label>
+                        <input asp-for="Student.ucSupervisor" class="form-control signup-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">University Supervisor Email</label>
+                        <input asp-for="Student.ucSupervisorEmail" class="form-control signup-input" />
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h5 class="section-title"><span class="section-badge">2</span>Personal Data</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="signup-label">NRIC</label>
+                        <input asp-for="ICNumber" class="form-control signup-input" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Full Name</label>
+                        <input asp-for="Student.studentName" class="form-control signup-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Gender</label>
+                        <select asp-for="Student.gender" class="form-select signup-select">
+                            <option value="">-- Select One --</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Own Transport</label>
+                        <select asp-for="Student.ownTransport" class="form-select signup-select">
+                            <option value="">-- Select One --</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Health Remark</label>
+                        <textarea asp-for="Student.healthRemark" class="form-control signup-textarea" rows="2"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h5 class="section-title"><span class="section-badge">3</span>Contact Information</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="signup-label">Personal Email</label>
+                        <input asp-for="Student.personalEmail" class="form-control signup-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Mobile Number</label>
+                        <input asp-for="Student.permanentContact" class="form-control signup-input" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Term Address</label>
+                        <textarea asp-for="Student.tempAddress" class="form-control signup-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="signup-label">Permanent Address</label>
+                        <textarea asp-for="Student.permanentAddress" class="form-control signup-textarea" rows="3"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h5 class="section-title"><span class="section-badge">4</span>Technical Knowledge</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="signup-label">Programming</label>
+                        <textarea asp-for="Student.programmingKnowledge" class="form-control signup-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="signup-label">Database</label>
+                        <textarea asp-for="Student.databaseKnowledge" class="form-control signup-textarea" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="signup-label">Networking</label>
+                        <textarea asp-for="Student.networkingKnowledge" class="form-control signup-textarea" rows="3"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <div class="signup-actions">
+                <button type="submit" class="signup-submit">Submit Application</button>
             </div>
-
-            <div class="col-md-3">
-                <label>Tutorial Group</label>
-                <input asp-for="Student.groupNo" class="form-control" placeholder="1 - 5" />
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label>Student ID</label>
-                <input asp-for="Student.studentID" class="form-control" />
-            </div>
-            <div class="col-md-4">
-                <label>Student Email</label>
-                <input asp-for="Student.studentEmail" class="form-control" />
-            </div>
-            <div class="col-md-4">
-                <label>CGPA</label>
-                <input asp-for="Student.CGPA" type="number" step="0.01" class="form-control" />
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label>University Supervisor</label>
-                <input asp-for="Student.ucSupervisor" class="form-control" />
-            </div>
-            <div class="col-md-6">
-                <label>University Supervisor Email</label>
-                <input asp-for="Student.ucSupervisorEmail" class="form-control" />
-            </div>
-        </div>
-
-        <!-- PERSONAL DATA -->
-        <h5 class="border-bottom pb-2 mt-4">Personal Data</h5>
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label>Full Name</label>
-                <input asp-for="Student.studentName" class="form-control" />
-            </div>
-            <div class="col-md-6">
-                <label>Gender</label>
-                <select asp-for="Student.gender" class="form-select">
-                    <option value="">-- Select One --</option>
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                    <option value="O">Other</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label>Own Transport</label>
-                <select asp-for="Student.ownTransport" class="form-select">
-                    <option value="">-- Select One --</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label>Health Remark</label>
-                <textarea asp-for="Student.healthRemark" class="form-control"></textarea>
-            </div>
-        </div>
-
-        <!-- CONTACT INFO -->
-        <h5 class="border-bottom pb-2 mt-4">Contact Information</h5>
-        <div class="mb-3">
-            <label>Personal Email</label>
-            <input asp-for="Student.personalEmail" class="form-control" />
-        </div>
-
-        <div class="mb-3">
-            <label>Term Address</label>
-            <textarea asp-for="Student.tempAddress" class="form-control"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label>Permanent Address</label>
-            <textarea asp-for="Student.permanentAddress" class="form-control"></textarea>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label>Mobile Number</label>
-                <input asp-for="Student.permanentContact" class="form-control" />
-            </div>
-        </div>
-
-        <!-- TECHNICAL KNOWLEDGE -->
-        <h5 class="border-bottom pb-2 mt-4">Technical Knowledge</h5>
-        <div class="mb-3">
-            <label>Programming Knowledge</label>
-            <textarea asp-for="Student.programmingKnowledge" class="form-control"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label>Database Knowledge</label>
-            <textarea asp-for="Student.databaseKnowledge" class="form-control"></textarea>
-        </div>
-
-        <div class="mb-4">
-            <label>Networking Knowledge</label>
-            <textarea asp-for="Student.networkingKnowledge" class="form-control"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">Submit Application</button>
-    </form>
+        </form>
+    </div>
 </div>

@@ -85,7 +85,12 @@
                 <h2 class="mb-1">Student Profile</h2>
                 <p class="mb-0" style="opacity:.9;">Manage your own details and review your assigned supervisor details.</p>
             </div>
-            <a asp-page="/Student/Dashboard" class="btn btn-light btn-sm">Back to Dashboard</a>
+            <div class="d-flex gap-2">
+                <a asp-page="/Student/Dashboard" class="btn btn-light btn-sm">Back to Dashboard</a>
+                <form method="post" asp-page-handler="Logout" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+            </div>
         </div>
 
         @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))

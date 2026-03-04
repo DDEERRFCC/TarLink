@@ -8,7 +8,7 @@ public class CommitteeDashboardModel : PageModel
         var role = HttpContext.Session.GetString("UserRole");
         if (!string.Equals(role, "committee", StringComparison.OrdinalIgnoreCase))
         {
-            return RedirectToPage("/Login/Login");
+            return RedirectToPage("/Login/CommitteeLogin");
         }
 
         return Page();

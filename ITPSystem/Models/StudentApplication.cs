@@ -16,6 +16,10 @@ namespace ITPSystem.Models
 
         // ===== Academic Info =====
         [Required]
+        [StringLength(20)]
+        public string number_ic { get; set; } = string.Empty;
+
+        [Required]
         [StringLength(45)]
         public string studentID { get; set; } = string.Empty;
 
@@ -104,6 +108,8 @@ namespace ITPSystem.Models
 
         [StringLength(50)]
         public string? networkingKnowledge { get; set; }
+
+        public byte? templateVersion { get; set; } = 1;
 
         // ===== Application Status =====
         [Column(TypeName = "ENUM('pending','approved','rejected','withdrawn')")]

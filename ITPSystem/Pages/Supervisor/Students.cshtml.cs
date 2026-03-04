@@ -24,7 +24,7 @@ namespace ITPSystem.Pages.Supervisor
             var userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
             if (role != "supervisor" || string.IsNullOrWhiteSpace(userEmail))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             CohortMap = _db.Cohorts.AsNoTracking().ToDictionary(c => c.cohort_id);
@@ -48,4 +48,5 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
+
 

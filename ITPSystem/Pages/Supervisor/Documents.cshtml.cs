@@ -3,6 +3,7 @@ using ITPSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace ITPSystem.Pages.Supervisor
 {
@@ -26,7 +27,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!IsSupervisor(out _))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             LoadStudents();
@@ -45,9 +46,36 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnPostDownload(int applicationId, string documentType)
         {
+            return DownloadDocument(applicationId, documentType, asAttachment: true);
+        }
+
+        public IActionResult OnGetView(int applicationId, string documentType)
+        {
+            return DownloadDocument(applicationId, documentType, asAttachment: false);
+        }
+
+        public IActionResult OnGetDownload(int applicationId, string documentType)
+        {
+            return DownloadDocument(applicationId, documentType, asAttachment: true);
+        }
+
+        public string? GetDocumentFileName(StudentApplication student, string documentType)
+        {
+            return documentType switch
+            {
+                "formAcceptance" => student.formAcceptance,
+                "formAcknowledgement" => student.formAcknowledgement,
+                "letterIdentity" => student.letterIdentity,
+                "otherEvidence" => student.otherEvidence,
+                _ => null
+            };
+        }
+
+        private IActionResult DownloadDocument(int applicationId, string documentType, bool asAttachment)
+        {
             if (!IsSupervisor(out _))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             var student = _db.StudentApplications.AsNoTracking().FirstOrDefault(s => s.application_id == applicationId);
@@ -57,14 +85,7 @@ namespace ITPSystem.Pages.Supervisor
                 return RedirectToPage();
             }
 
-            var fileName = documentType switch
-            {
-                "formAcceptance" => student.formAcceptance,
-                "formAcknowledgement" => student.formAcknowledgement,
-                "letterIdentity" => student.letterIdentity,
-                "otherEvidence" => student.otherEvidence,
-                _ => null
-            };
+            var fileName = GetDocumentFileName(student, documentType);
 
             if (string.IsNullOrWhiteSpace(fileName))
             {
@@ -73,7 +94,8 @@ namespace ITPSystem.Pages.Supervisor
             }
 
             var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
-            var fullPath = Path.Combine(uploadsPath, fileName);
+            var safeFileName = Path.GetFileName(fileName);
+            var fullPath = Path.Combine(uploadsPath, safeFileName);
 
             if (!System.IO.File.Exists(fullPath))
             {
@@ -81,15 +103,25 @@ namespace ITPSystem.Pages.Supervisor
                 return RedirectToPage();
             }
 
-            var contentType = "application/octet-stream";
-            return PhysicalFile(fullPath, contentType, Path.GetFileName(fileName));
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(safeFileName, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            if (asAttachment)
+            {
+                return PhysicalFile(fullPath, contentType, safeFileName);
+            }
+
+            return PhysicalFile(fullPath, contentType);
         }
 
         private IActionResult SaveReview(int applicationId, string documentType, string status, string? remarks)
         {
             if (!IsSupervisor(out var supervisorId))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             var student = _db.StudentApplications.AsNoTracking().FirstOrDefault(s => s.application_id == applicationId);
@@ -146,4 +178,5 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
+
 

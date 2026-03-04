@@ -24,7 +24,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!IsSupervisor(out _))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             LoadItems();
@@ -55,7 +55,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!IsSupervisor(out var supervisorId))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             var report = _db.ProgressReports.FirstOrDefault(r => r.report_id == reportId);
@@ -133,4 +133,5 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
+
 

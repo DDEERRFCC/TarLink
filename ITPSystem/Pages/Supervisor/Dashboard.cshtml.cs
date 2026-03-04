@@ -30,7 +30,7 @@ namespace ITPSystem.Pages.Supervisor
 
             if (string.IsNullOrWhiteSpace(userEmail) || userRole != "supervisor")
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             UserName = HttpContext.Session.GetString("UserName") ?? userEmail;
@@ -54,4 +54,5 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
+
 
