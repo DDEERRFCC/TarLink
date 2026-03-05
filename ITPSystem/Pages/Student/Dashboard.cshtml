@@ -150,6 +150,22 @@
         font-size: .83rem;
     }
 
+    .itp-deadlines-scroll {
+        margin-top: .35rem;
+        max-height: 260px;
+        overflow-y: auto;
+        padding-right: .35rem;
+    }
+
+    .itp-deadlines-scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .itp-deadlines-scroll::-webkit-scrollbar-thumb {
+        background: #c6d9ea;
+        border-radius: 999px;
+    }
+
     .itp-profile-btn {
         display: inline-block;
         margin-top: .9rem;
@@ -196,11 +212,28 @@
         grid-column: 1 / -1;
     }
 
+    .itp-required-list {
+        margin: .75rem 0 0;
+        padding-left: 1.2rem;
+        color: #1f2937;
+    }
+
+    .itp-required-list li {
+        margin-bottom: .35rem;
+        font-weight: 600;
+    }
+
     .itp-doc-list {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         gap: .8rem;
         margin-top: .75rem;
+    }
+
+    .itp-doc-separator {
+        margin: 1rem 0 .5rem;
+        border: 0;
+        border-top: 1px solid #d6e2ef;
     }
 
     .itp-doc-item {
@@ -462,36 +495,34 @@
                 </div>
 
                 <div class="itp-actions">
-                    <a class="itp-action" href="#">Submit Progress Report</a>
-                    <a class="itp-action" href="#">Update Company Details</a>
-                    <a class="itp-action" href="#">View Appointment Letter</a>
-                    <a class="itp-action" href="#">Contact Supervisor</a>
+                    @if (string.Equals(Model.Status?.Trim(), "Approved", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a class="itp-action" asp-page="/Student/MyProgressReport">My Progress Report</a>
+                    }
                 </div>
             </section>
 
             <section class="itp-card">
                 <h3 class="itp-title">Upcoming Deadlines</h3>
-                <div class="itp-deadline">
-                    <div>
-                        <div style="font-weight:600;color:#1f2937;">Monthly Report #2</div>
-                        <small class="itp-muted">Upload PDF and reflection notes</small>
+                @if (Model.ReportDeadlines.Count == 0)
+                {
+                    <p class="itp-muted mb-0">No report due dates configured for your cohort yet.</p>
+                }
+                else
+                {
+                    <div class="itp-deadlines-scroll">
+                        @foreach (var deadline in Model.ReportDeadlines)
+                        {
+                            <div class="itp-deadline">
+                                <div>
+                                    <div style="font-weight:600;color:#1f2937;">@deadline.Title</div>
+                                    <small class="itp-muted">@deadline.Note</small>
+                                </div>
+                                <span class="itp-date">@deadline.Date.ToString("MMM dd")</span>
+                            </div>
+                        }
                     </div>
-                    <span class="itp-date">Mar 10</span>
-                </div>
-                <div class="itp-deadline">
-                    <div>
-                        <div style="font-weight:600;color:#1f2937;">Supervisor Evaluation</div>
-                        <small class="itp-muted">Ensure supervisor receives form link</small>
-                    </div>
-                    <span class="itp-date">Mar 18</span>
-                </div>
-                <div class="itp-deadline">
-                    <div>
-                        <div style="font-weight:600;color:#1f2937;">Final Report Draft</div>
-                        <small class="itp-muted">Submit for committee review</small>
-                    </div>
-                    <span class="itp-date">Apr 02</span>
-                </div>
+                }
             </section>
 
             <section class="itp-card">
@@ -544,6 +575,36 @@
                         </article>
                     }
                 </div>
+                
+                @if (Model.ApprovedStatusDocuments.Count > 0)
+                {
+                    <hr class="itp-doc-separator" />
+                    <p class="itp-muted">The following documents are required to pass to your company supervisor during your first day of your internship.</p>
+                    <div class="itp-doc-list">
+                        @foreach (var doc in Model.ApprovedStatusDocuments)
+                        {
+                            <article class="itp-doc-item">
+                                @if (doc.Exists)
+                                {
+                                    <span class="itp-badge-ok">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="itp-badge-missing">Missing File</span>
+                                }
+
+                                <h4 class="itp-doc-title">@doc.Title</h4>
+                                <div class="itp-doc-actions">
+                                    @if (doc.CanView)
+                                    {
+                                        <a class="itp-doc-btn" href="@doc.ViewPath" target="_blank" rel="noopener">View</a>
+                                    }
+                                    <a class="itp-doc-btn" href="@doc.DownloadPath">Download</a>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
             </section>
 
             <section class="itp-card">

@@ -11,7 +11,7 @@
     <thead>
         <tr>
             <th>Student</th>
-            <th>Month</th>
+            <th>Report</th>
             <th>Due Date</th>
             <th>Status</th>
             <th>Remark</th>
@@ -23,8 +23,8 @@
         {
             <tr>
                 <td>@item.StudentName (@item.StudentId)</td>
-                <td>@item.Report.month</td>
-                <td>@item.Report.dueDate?.ToString("yyyy-MM-dd")</td>
+                <td>@Model.GetReportTitle(item.Report)</td>
+                <td>@item.Report.dueDate.ToString("yyyy-MM-dd")</td>
                 <td>@Model.GetStatusLabel(item.Report.status)</td>
                 <td>@item.Report.remark</td>
                 <td>

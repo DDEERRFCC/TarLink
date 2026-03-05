@@ -218,13 +218,6 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win-x64\native\krb5_64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win-x64\native\krbcc64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_temp_build\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_temp_build\ITPSystem.staticwebassets.runtime.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\appsettings.Development.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\appsettings.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\.codex_build_out\bin_temp_build\appsettings.Development.json

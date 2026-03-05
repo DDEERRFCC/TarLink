@@ -28,6 +28,7 @@ namespace ITPSystem.Models
         public DateTime? report3DueDate { get; set; }
         public DateTime? report4DueDate { get; set; }
         public DateTime? report5DueDate { get; set; }
+        public DateTime? report6DueDate { get; set; }
         public DateTime? finalReportDueDate { get; set; }
 
         // ===== Exam & Evaluation =====

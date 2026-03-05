@@ -94,6 +94,7 @@ CREATE TABLE cohort (
     report3DueDate DATE,
     report4DueDate DATE,
     report5DueDate DATE,
+    report6DueDate DATE,
     finalReportDueDate DATE,
     examStartDate DATE,
     examEndDate DATE,
@@ -224,15 +225,21 @@ CREATE TABLE studentaccess (
 -- ==============================
 CREATE TABLE progressreport (
     report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    timeStamp DATETIME,
-    lastUpdate DATETIME,
-    applicantId BIGINT,
-    cohortId INT,
-    month VARCHAR(50),
-    dueDate DATE,
-    status TINYINT,
-    remark LONGTEXT,
-    CONSTRAINT fk_progressreport_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    applicantId INT NOT NULL,
+    cohortId INT NOT NULL,
+    reportType ENUM('progress', 'final') NOT NULL DEFAULT 'progress',
+    reportNo TINYINT NULL,
+    -- 1..6 for progress, NULL for final
+    dueDate DATE NOT NULL,
+    status TINYINT NOT NULL DEFAULT 0,
+    -- 0=pending,1=submitted,2=approved,3=rejected
+    remark TEXT NULL,
+    file_path VARCHAR(500) NULL,
+    UNIQUE KEY uq_report (applicantId, cohortId, reportType, reportNo),
+    CONSTRAINT fk_progressreport_applicant FOREIGN KEY (applicantId) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_progressreport_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 -- ==============================
 -- PULLBACK TABLE

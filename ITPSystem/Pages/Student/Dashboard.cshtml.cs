@@ -25,8 +25,10 @@ public class StudentDashboardModel : PageModel
     }
 
     public List<DocumentItem> Documents { get; private set; } = new();
+    public List<DocumentItem> ApprovedStatusDocuments { get; private set; } = new();
     public List<CompanyOptionItem> CompanyOptions { get; private set; } = new();
     public List<Announcement> Announcements { get; private set; } = new();
+    public List<DeadlineItem> ReportDeadlines { get; private set; } = new();
     public string Cohort { get; private set; } = "-";
     public string InternPeriod { get; private set; } = "-";
     public string Status { get; private set; } = "-";
@@ -54,6 +56,13 @@ public class StudentDashboardModel : PageModel
         public int CompanyId { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<string> Addresses { get; set; } = new();
+    }
+
+    public class DeadlineItem
+    {
+        public string Title { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public string Note { get; set; } = string.Empty;
     }
 
     public class CompanyDetailInput
@@ -175,7 +184,11 @@ public class StudentDashboardModel : PageModel
             "DownloadParentAcknowledgementForm.pdf",
             "CompanySupervisorEvaluationForm.xlsx",
             "ProgressReportTemplate.docx",
-            "FinalReportTemplate.docx"
+            "FinalReportTemplate.docx",
+            "StudentSupportLetter.pdf",
+            "AppointmentConfirmationLetter.pdf",
+            "CompanySupervisorEvaluationForm.pdf",
+            "WarningLetter.pdf"
         };
 
         var safeFileName = Path.GetFileName(file ?? string.Empty);
@@ -184,7 +197,7 @@ public class StudentDashboardModel : PageModel
             return NotFound();
         }
 
-        var formDir = Path.Combine(_env.ContentRootPath, "Form");
+        var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
         var fullPath = Path.Combine(formDir, safeFileName);
         if (!System.IO.File.Exists(fullPath))
         {
@@ -207,7 +220,7 @@ public class StudentDashboardModel : PageModel
 
     private void LoadDocuments()
     {
-        var formDir = Path.Combine(_env.ContentRootPath, "Form");
+        var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
         var requiredDocs = new (string Title, string FileName, bool CanView)[]
         {
             ("Company Acceptance Letter", "DownloadCompanyAcceptanceLetter.pdf", true),
@@ -215,7 +228,8 @@ public class StudentDashboardModel : PageModel
             ("Parent Acknowledgement Form", "DownloadParentAcknowledgementForm.pdf", true),
             ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.xlsx", false),
             ("Progress Report Template", "ProgressReportTemplate.docx", false),
-            ("Final Report Template", "FinalReportTemplate.docx", false)
+            ("Final Report Template", "FinalReportTemplate.docx", false),
+            ("Student Support Letter", "StudentSupportLetter.pdf", true)
         };
 
         Documents = requiredDocs
@@ -228,6 +242,28 @@ public class StudentDashboardModel : PageModel
                 CanView = d.CanView
             })
             .ToList();
+
+        ApprovedStatusDocuments = new();
+        if (string.Equals(Status?.Trim(), "Approved", StringComparison.OrdinalIgnoreCase))
+        {
+            var approvedDocs = new (string Title, string FileName, bool CanView)[]
+            {
+                ("Appointment Confirmation Letter", "AppointmentConfirmationLetter.pdf", true),
+                ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.pdf", true),
+                ("Warning Letter", "WarningLetter.pdf", true)
+            };
+
+            ApprovedStatusDocuments = approvedDocs
+                .Select(d => new DocumentItem
+                {
+                    Title = d.Title,
+                    ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = false }) ?? "#",
+                    DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = true }) ?? "#",
+                    Exists = System.IO.File.Exists(Path.Combine(formDir, d.FileName)),
+                    CanView = d.CanView
+                })
+                .ToList();
+        }
     }
 
     private void LoadStudentDashboardInfo(bool setInputFromDb)
@@ -253,6 +289,7 @@ public class StudentDashboardModel : PageModel
         CurrentFormAcknowledgementFile = string.IsNullOrWhiteSpace(student.formAcknowledgement) ? "-" : student.formAcknowledgement;
         CurrentLetterIdentityFile = string.IsNullOrWhiteSpace(student.letterIdentity) ? "-" : student.letterIdentity;
         CurrentOtherEvidenceFile = string.IsNullOrWhiteSpace(student.otherEvidence) ? "-" : student.otherEvidence;
+        BuildReportDeadlines(student.Cohort);
 
         if (setInputFromDb)
         {
@@ -262,6 +299,52 @@ public class StudentDashboardModel : PageModel
             Input.CompanySupervisorName = student.comSupervisor;
             Input.CompanySupervisorEmail = student.comSupervisorEmail;
         }
+    }
+
+    private void BuildReportDeadlines(Cohort? cohort)
+    {
+        ReportDeadlines = new();
+        if (cohort == null)
+        {
+            return;
+        }
+
+        void AddProgressDeadline(int no, DateTime? dueDate, string? monthName)
+        {
+            if (!dueDate.HasValue)
+            {
+                return;
+            }
+
+            var monthPart = string.IsNullOrWhiteSpace(monthName) ? string.Empty : $" ({monthName.Trim()})";
+            ReportDeadlines.Add(new DeadlineItem
+            {
+                Title = $"Progress Report {no}{monthPart}",
+                Date = dueDate.Value,
+                Note = "Submit your report before due date."
+            });
+        }
+
+        AddProgressDeadline(1, cohort.report1DueDate, cohort.reportMonth1);
+        AddProgressDeadline(2, cohort.report2DueDate, cohort.reportMonth2);
+        AddProgressDeadline(3, cohort.report3DueDate, cohort.reportMonth3);
+        AddProgressDeadline(4, cohort.report4DueDate, cohort.reportMonth4);
+        AddProgressDeadline(5, cohort.report5DueDate, cohort.reportMonth5);
+        AddProgressDeadline(6, cohort.report6DueDate, cohort.reportMonth6);
+
+        if (cohort.finalReportDueDate.HasValue)
+        {
+            ReportDeadlines.Add(new DeadlineItem
+            {
+                Title = "Final Report",
+                Date = cohort.finalReportDueDate.Value,
+                Note = "Submit your final report draft."
+            });
+        }
+
+        ReportDeadlines = ReportDeadlines
+            .OrderBy(d => d.Date)
+            .ToList();
     }
 
     private void LoadCompanyOptions()

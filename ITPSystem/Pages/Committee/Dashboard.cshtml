@@ -1,5 +1,80 @@
 @page
 @model CommitteeDashboardModel
-@using Microsoft.AspNetCore.Http
-<h2>Committee Dashboard</h2>
-<p>Welcome, @HttpContext.Session.GetString("UserName")!</p>
+@{
+    ViewData["Title"] = "Committee Dashboard";
+    ViewData["CommitteePageTitle"] = "Committee Dashboard";
+}
+
+<style>
+    .committee-stat {
+        border: 1px solid #d7e4f1;
+        border-radius: 14px;
+        padding: .9rem .95rem;
+        background: #fff;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+        height: 100%;
+    }
+
+    .committee-stat-label {
+        color: #567;
+        font-size: .86rem;
+        font-weight: 600;
+    }
+
+    .committee-stat-value {
+        color: #0f172a;
+        font-size: 1.45rem;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-top: .25rem;
+    }
+</style>
+
+<div class="committee-page">
+    <partial name="_CommitteeHeader" />
+
+    <partial name="_CommitteeNav" />
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-4">
+            <div class="committee-stat">
+                <div class="committee-stat-label">Total Students</div>
+                <div class="committee-stat-value">@Model.TotalStudents</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="committee-stat">
+                <div class="committee-stat-label">Pending Students</div>
+                <div class="committee-stat-value">@Model.PendingStudents</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="committee-stat">
+                <div class="committee-stat-label">Approved Students</div>
+                <div class="committee-stat-value">@Model.ApprovedStudents</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="committee-stat">
+                <div class="committee-stat-label">Companies</div>
+                <div class="committee-stat-value">@Model.TotalCompanies</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="committee-stat">
+                <div class="committee-stat-label">Submitted Reports</div>
+                <div class="committee-stat-value">@Model.SubmittedReports</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="committee-stat">
+                <div class="committee-stat-label">Pending Reports</div>
+                <div class="committee-stat-value">@Model.PendingReports</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info mb-0">
+        Committee modules are ready in the navigation above. Pages with unavailable model mappings are marked as "placeholder".
+    </div>
+</div>

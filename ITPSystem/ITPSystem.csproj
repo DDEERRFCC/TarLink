@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <DefaultItemExcludes>$(DefaultItemExcludes);bin_temp/**;obj_temp/**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);bin_temp/**;bin_temp*/**;obj_temp/**;obj_temp*/**;.codex_build_out*/**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
