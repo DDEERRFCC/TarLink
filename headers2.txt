@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Date: Thu, 05 Mar 2026 08:45:32 GMT
+Server: Kestrel
+Cache-Control: no-cache, no-store
+Pragma: no-cache
+Set-Cookie: .AspNetCore.Mvc.CookieTempDataProvider=CfDJ8EQbWldSl4xIsIOGh7wB5CUUeKnXHEnXHLI8-mhEFvxwKSbhorjNfeYwjw-hQs98BliLhXBkdibTmrI2QNy9GfV8ngn4TOO6yvq5rnkBYsI8pqRgLSlibQqOMAFuAeK_9KrCotBXVXLHsRol4UA4exHFGO04DU_2AiBY-qKQVlKV; path=/; samesite=lax; httponly
+Transfer-Encoding: chunked
+

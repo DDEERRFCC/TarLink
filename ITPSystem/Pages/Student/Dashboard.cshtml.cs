@@ -1,17 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Hosting;
+using ITPSystem.Data;
 
 public class StudentDashboardModel : PageModel
 {
     private readonly IWebHostEnvironment _env;
+    private readonly ApplicationDbContext _db;
 
-    public StudentDashboardModel(IWebHostEnvironment env)
+    public StudentDashboardModel(IWebHostEnvironment env, ApplicationDbContext db)
     {
         _env = env;
+        _db = db;
     }
 
     public List<DocumentItem> Documents { get; private set; } = new();
+    public string ApplicationStatus { get; private set; } = "pending";
+    public string? ApplicationRemark { get; private set; }
 
     public class DocumentItem
     {
@@ -29,6 +34,7 @@ public class StudentDashboardModel : PageModel
         }
 
         LoadDocuments();
+        LoadApplicationStatus();
 
         return Page();
     }
@@ -55,5 +61,29 @@ public class StudentDashboardModel : PageModel
                 Exists = System.IO.File.Exists(Path.Combine(docsDir, d.FileName))
             })
             .ToList();
+    }
+
+    private void LoadApplicationStatus()
+    {
+        var rawUserId = HttpContext.Session.GetString("UserID");
+        if (!int.TryParse(rawUserId, out var userId))
+        {
+            return;
+        }
+
+        var user = _db.SysUsers.FirstOrDefault(u => u.user_id == userId);
+        if (user?.application_id == null)
+        {
+            return;
+        }
+
+        var application = _db.StudentApplications
+            .FirstOrDefault(a => a.application_id == user.application_id.Value);
+
+        if (application != null)
+        {
+            ApplicationStatus = application.applyStatus ?? "pending";
+            ApplicationRemark = application.remark;
+        }
     }
 }

@@ -1,6 +1,9 @@
 @page
 @model ITPSystem.Pages.Supervisor.ReportsModel
 <h2>Progress Report Review</h2>
+<div class="mb-3">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
+</div>
 
 @if (!string.IsNullOrWhiteSpace(Model.Message))
 {

@@ -1,0 +1,11 @@
+HTTP/1.1 302 Found
+Content-Length: 0
+Date: Thu, 05 Mar 2026 08:45:31 GMT
+Server: Kestrel
+Cache-Control: no-cache,no-store
+Expires: -1
+Location: /Supervisor/Dashboard
+Pragma: no-cache
+Set-Cookie: .AspNetCore.Mvc.CookieTempDataProvider=CfDJ8EQbWldSl4xIsIOGh7wB5CU5rU-t2ljQ5lZtwAZXOAk2VUeNGh_fCh5FfI1R4TdHTX9tYqrJN9OALWLwPSFYeaeb48Jtr5aQ1urA_gc5xfOoHC2A6slWBvF4zZeo4pIVZJ7Q_K6a3sg_StF0iuoHCvVdQc5mrA1Pg2Agpj67-byk; path=/; samesite=lax; httponly
+Set-Cookie: .AspNetCore.Session=CfDJ8EQbWldSl4xIsIOGh7wB5CUZytnahRCVqU%2B4F3n3RdiCfPBj8J%2BtY2lOtJu6eMgbt57wosDrfdXxKKOHeh4HAl3JzizTuGafCzFLVlGCDWNSfha71o3k5dJqIh3h1u2%2FuNbN6jSeB0gNiVqg0nXJw0cj5bq6azklzLbT3416Adru; path=/; samesite=lax; httponly
+

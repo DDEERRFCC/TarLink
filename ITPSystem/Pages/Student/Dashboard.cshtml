@@ -5,6 +5,19 @@
     ViewData["Title"] = "Student Dashboard";
     var studentName = HttpContext.Session.GetString("UserName") ?? "Student";
     var studentId = HttpContext.Session.GetString("StudentID") ?? "Not linked";
+    var status = Model.ApplicationStatus?.Trim().ToLowerInvariant() ?? "pending";
+    var statusText = status switch
+    {
+        "approved" => "Approved",
+        "rejected" => "Rejected",
+        _ => "Pending"
+    };
+    var statusBadgeClass = status switch
+    {
+        "approved" => "bg-success",
+        "rejected" => "bg-danger",
+        _ => "bg-warning text-dark"
+    };
 }
 
 <style>
@@ -355,13 +368,20 @@
 
             <section class="itp-card">
                 <h3 class="itp-title">Internship Status</h3>
-                <p class="itp-muted">Application approved and currently in progress.</p>
+                <p class="itp-muted">
+                    Application status:
+                    <span class="badge @statusBadgeClass">@statusText</span>
+                </p>
+                @if (!string.IsNullOrWhiteSpace(Model.ApplicationRemark))
+                {
+                    <p class="itp-muted mb-2">Supervisor remark: @Model.ApplicationRemark</p>
+                }
                 <div class="itp-progress-wrap">
-                    <div class="itp-progress-bar"></div>
+                    <div class="itp-progress-bar" style="width:@(status == "approved" ? "100%" : status == "rejected" ? "0%" : "42%")"></div>
                 </div>
                 <div class="d-flex justify-content-between mt-2">
-                    <small class="itp-muted">Week 6 of 14</small>
-                    <small style="font-weight:700;color:#0e7490;">42% Complete</small>
+                    <small class="itp-muted">Application Review</small>
+                    <small style="font-weight:700;color:#0e7490;">@statusText</small>
                 </div>
 
                 <div class="itp-actions">
