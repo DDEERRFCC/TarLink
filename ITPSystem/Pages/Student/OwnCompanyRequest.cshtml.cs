@@ -75,6 +75,12 @@ public class OwnCompanyRequestModel : PageModel
             return Page();
         }
 
+        var userId = GetCurrentUserId();
+        if (userId == null)
+        {
+            return RedirectToPage("/Login/StudentLogin");
+        }
+
         if (!Input.ConfirmNoRelationship)
         {
             ModelState.AddModelError(nameof(Input.ConfirmNoRelationship), "You must confirm this declaration.");
@@ -89,6 +95,39 @@ public class OwnCompanyRequestModel : PageModel
         student.comAddress = Input.CompanyAddress.Trim();
         student.isAgreed = Input.ConfirmNoRelationship;
         student.updated_at = DateTime.Now;
+
+        var pendingRequest = _db.CompanyRequests
+            .Where(r => r.requested_by == userId.Value && r.status == "pending")
+            .OrderByDescending(r => r.requested_at)
+            .FirstOrDefault();
+
+        if (pendingRequest == null)
+        {
+            _db.CompanyRequests.Add(new CompanyRequest
+            {
+                requested_by = userId.Value,
+                company_name = student.comName ?? Input.CompanyName.Trim(),
+                address1 = student.comAddress ?? Input.CompanyAddress.Trim(),
+                contact_name = student.studentName,
+                contact_email = Input.StudentEmail.Trim(),
+                contact_phone = student.permanentContact,
+                status = "pending",
+                decision_remark = null,
+                reviewed_by = null,
+                reviewed_at = null,
+                requested_at = DateTime.Now,
+                updated_at = DateTime.Now
+            });
+        }
+        else
+        {
+            pendingRequest.company_name = student.comName ?? Input.CompanyName.Trim();
+            pendingRequest.address1 = student.comAddress ?? Input.CompanyAddress.Trim();
+            pendingRequest.contact_name = student.studentName;
+            pendingRequest.contact_email = Input.StudentEmail.Trim();
+            pendingRequest.contact_phone = student.permanentContact;
+            pendingRequest.updated_at = DateTime.Now;
+        }
 
         _db.SaveChanges();
         StatusMessage = "Own company request details saved successfully.";
@@ -118,6 +157,12 @@ public class OwnCompanyRequestModel : PageModel
 
         var studentQuery = asNoTracking ? _db.StudentApplications.AsNoTracking() : _db.StudentApplications;
         return studentQuery.FirstOrDefault(s => s.application_id == user.application_id.Value);
+    }
+
+    private int? GetCurrentUserId()
+    {
+        var userIdText = HttpContext.Session.GetString("UserID");
+        return int.TryParse(userIdText, out var userId) ? userId : null;
     }
 }
 

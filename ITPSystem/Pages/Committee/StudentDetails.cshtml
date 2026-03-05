@@ -1,0 +1,246 @@
+@page
+@model CommitteeStudentDetailsModel
+@{
+    ViewData["CommitteePageTitle"] = "Student Details";
+}
+
+<div class="committee-page">
+<partial name="_CommitteeHeader" />
+<partial name="_CommitteeNav" />
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Student Details</h5>
+    <a asp-page="/Committee/Students" class="btn btn-sm btn-outline-secondary">Back to Student List</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row g-2">
+            <div class="col-md-3"><strong>Application ID:</strong> @Model.Input.application_id</div>
+            <div class="col-md-3"><strong>Created:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+            <div class="col-md-3"><strong>Last Update:</strong> @Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+        </div>
+    </div>
+</div>
+
+<form method="post" asp-page-handler="Save">
+    <input type="hidden" asp-for="Input.application_id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">Basic Information</div>
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label asp-for="Input.number_ic" class="form-label">IC Number</label>
+                    <input asp-for="Input.number_ic" class="form-control form-control-sm" />
+                    <span asp-validation-for="Input.number_ic" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.studentID" class="form-label">Student ID</label>
+                    <input asp-for="Input.studentID" class="form-control form-control-sm" />
+                    <span asp-validation-for="Input.studentID" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.studentName" class="form-label">Student Name</label>
+                    <input asp-for="Input.studentName" class="form-control form-control-sm" />
+                    <span asp-validation-for="Input.studentName" class="text-danger"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.studentEmail" class="form-label">Student Email</label>
+                    <input asp-for="Input.studentEmail" class="form-control form-control-sm" />
+                    <span asp-validation-for="Input.studentEmail" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-2">
+                    <label asp-for="Input.contactDate" class="form-label">Contact Date</label>
+                    <input asp-for="Input.contactDate" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.level" class="form-label">Level</label>
+                    <select asp-for="Input.level" class="form-select form-select-sm">
+                        <option value="1">Diploma</option>
+                        <option value="2">Degree</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.gender" class="form-label">Gender</label>
+                    <select asp-for="Input.gender" class="form-select form-select-sm">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.CGPA" class="form-label">CGPA</label>
+                    <input asp-for="Input.CGPA" type="number" step="0.01" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.cohortId" class="form-label">Cohort</label>
+                    <select asp-for="Input.cohortId" class="form-select form-select-sm">
+                        @foreach (var c in Model.Cohorts)
+                        {
+                            <option value="@c.cohort_id">@((c.description ?? $"Cohort {c.cohort_id}") + (c.isActive ? " (Active)" : ""))</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label asp-for="Input.programme" class="form-label">Programme</label>
+                    <input asp-for="Input.programme" maxlength="4" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-1">
+                    <label asp-for="Input.groupNo" class="form-label">Group No</label>
+                    <input asp-for="Input.groupNo" type="number" class="form-control form-control-sm" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">Company and Supervisor</div>
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-md-4"><label asp-for="Input.comName" class="form-label">Company Name</label><input asp-for="Input.comName" class="form-control form-control-sm" /></div>
+                <div class="col-md-8"><label asp-for="Input.comAddress" class="form-label">Company Address</label><input asp-for="Input.comAddress" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.comSupervisor" class="form-label">Company Supervisor</label><input asp-for="Input.comSupervisor" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.comSupervisorEmail" class="form-label">Company Supervisor Email</label><input asp-for="Input.comSupervisorEmail" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.comSupervisorContact" class="form-label">Company Supervisor Contact</label><input asp-for="Input.comSupervisorContact" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.allowance" class="form-label">Allowance</label><input asp-for="Input.allowance" type="number" step="0.01" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.ucSupervisor" class="form-label">UC Supervisor</label><input asp-for="Input.ucSupervisor" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.ucSupervisorEmail" class="form-label">UC Supervisor Email</label><input asp-for="Input.ucSupervisorEmail" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.ucSupervisorContact" class="form-label">UC Supervisor Contact</label><input asp-for="Input.ucSupervisorContact" class="form-control form-control-sm" /></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">Contact, Skills, and Status</div>
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-md-4"><label asp-for="Input.personalEmail" class="form-label">Personal Email</label><input asp-for="Input.personalEmail" class="form-control form-control-sm" /></div>
+                <div class="col-md-4"><label asp-for="Input.tempAddress" class="form-label">Temporary Address</label><input asp-for="Input.tempAddress" class="form-control form-control-sm" /></div>
+                <div class="col-md-4"><label asp-for="Input.permanentAddress" class="form-label">Permanent Address</label><input asp-for="Input.permanentAddress" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.permanentContact" class="form-label">Permanent Contact</label><input asp-for="Input.permanentContact" class="form-control form-control-sm" /></div>
+                <div class="col-md-2"><label asp-for="Input.ownTransport" class="form-label">Own Transport</label><select asp-for="Input.ownTransport" class="form-select form-select-sm"><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div class="col-md-3"><label asp-for="Input.programmingKnowledge" class="form-label">Programming Knowledge</label><input asp-for="Input.programmingKnowledge" class="form-control form-control-sm" /></div>
+                <div class="col-md-2"><label asp-for="Input.databaseKnowledge" class="form-label">Database Knowledge</label><input asp-for="Input.databaseKnowledge" class="form-control form-control-sm" /></div>
+                <div class="col-md-2"><label asp-for="Input.networkingKnowledge" class="form-label">Networking Knowledge</label><input asp-for="Input.networkingKnowledge" class="form-control form-control-sm" /></div>
+                <div class="col-md-2"><label asp-for="Input.templateVersion" class="form-label">Template Version</label><input asp-for="Input.templateVersion" type="number" class="form-control form-control-sm" /></div>
+                <div class="col-md-2"><label asp-for="Input.applyStatus" class="form-label">Application Status</label><select asp-for="Input.applyStatus" class="form-select form-select-sm"><option value="pending">pending</option><option value="approved">approved</option><option value="rejected">rejected</option><option value="withdrawn">withdrawn</option></select></div>
+                <div class="col-md-2"><label asp-for="Input.isAgreed" class="form-label">Agreed</label><select asp-for="Input.isAgreed" class="form-select form-select-sm"><option value="true">Yes</option><option value="false">No</option></select></div>
+                <div class="col-md-3"><label asp-for="Input.doVerifier" class="form-label">DO Verifier</label><input asp-for="Input.doVerifier" class="form-control form-control-sm" /></div>
+                <div class="col-md-3"><label asp-for="Input.doVerifierEmail" class="form-label">DO Verifier Email</label><input asp-for="Input.doVerifierEmail" class="form-control form-control-sm" /></div>
+                <div class="col-md-12"><label asp-for="Input.healthRemark" class="form-label">Health Remark</label><textarea asp-for="Input.healthRemark" class="form-control form-control-sm" rows="2"></textarea></div>
+                <div class="col-md-12"><label asp-for="Input.remark" class="form-label">Committee Remark</label><textarea asp-for="Input.remark" class="form-control form-control-sm" rows="2"></textarea></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">Document Fields</div>
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <label asp-for="Input.formAcceptance" class="form-label">Form Acceptance</label>
+                    <input asp-for="Input.formAcceptance" class="form-control form-control-sm" />
+                    @if (!string.IsNullOrWhiteSpace(Model.Input.formAcceptance))
+                    {
+                        <div class="mt-1">
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="formAcceptance"
+                               asp-route-download="false"
+                               target="_blank" rel="noopener">View</a>
+                            <a class="btn btn-sm btn-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="formAcceptance"
+                               asp-route-download="true">Download</a>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.formAcknowledgement" class="form-label">Form Acknowledgement</label>
+                    <input asp-for="Input.formAcknowledgement" class="form-control form-control-sm" />
+                    @if (!string.IsNullOrWhiteSpace(Model.Input.formAcknowledgement))
+                    {
+                        <div class="mt-1">
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="formAcknowledgement"
+                               asp-route-download="false"
+                               target="_blank" rel="noopener">View</a>
+                            <a class="btn btn-sm btn-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="formAcknowledgement"
+                               asp-route-download="true">Download</a>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.letterIdentity" class="form-label">Letter Identity</label>
+                    <input asp-for="Input.letterIdentity" class="form-control form-control-sm" />
+                    @if (!string.IsNullOrWhiteSpace(Model.Input.letterIdentity))
+                    {
+                        <div class="mt-1">
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="letterIdentity"
+                               asp-route-download="false"
+                               target="_blank" rel="noopener">View</a>
+                            <a class="btn btn-sm btn-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="letterIdentity"
+                               asp-route-download="true">Download</a>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.otherEvidence" class="form-label">Other Evidence</label>
+                    <input asp-for="Input.otherEvidence" class="form-control form-control-sm" />
+                    @if (!string.IsNullOrWhiteSpace(Model.Input.otherEvidence))
+                    {
+                        <div class="mt-1">
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="otherEvidence"
+                               asp-route-download="false"
+                               target="_blank" rel="noopener">View</a>
+                            <a class="btn btn-sm btn-primary"
+                               asp-page-handler="Document"
+                               asp-route-applicationId="@Model.Input.application_id"
+                               asp-route-field="otherEvidence"
+                               asp-route-download="true">Download</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mb-4">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a asp-page="/Committee/Students" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+<form method="post" asp-page-handler="Delete" onsubmit="return confirm('Delete this student record?');">
+    <input type="hidden" name="applicationId" value="@Model.Input.application_id" />
+    <button type="submit" class="btn btn-danger">Delete Student</button>
+</form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -20,6 +20,8 @@ namespace ITPSystem.Data
         public DbSet<DocumentReview> DocumentReviews { get; set; }
         public DbSet<ProgressReport> ProgressReports { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<StudentCv> StudentCvs { get; set; }
+        public DbSet<CompanyRequest> CompanyRequests { get; set; }
 
 
 

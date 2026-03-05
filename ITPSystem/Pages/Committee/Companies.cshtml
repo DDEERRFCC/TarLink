@@ -8,24 +8,84 @@
 <partial name="_CommitteeHeader" />
 <partial name="_CommitteeNav" />
 
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
+}
+
+<div class="d-flex gap-2 mb-3">
+    <a asp-page="/Committee/AddCompany" class="btn btn-sm btn-success">Add Company</a>
+    <a asp-page="/Committee/ImportCompanies" class="btn btn-sm btn-outline-primary">Import Company</a>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Search</label>
+                <input name="Search" value="@Model.Search" class="form-control form-control-sm" placeholder="Name, address, reg no, website" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Status</label>
+                <select name="StatusFilter" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    <option value="1" selected="@(Model.StatusFilter == "1")">1</option>
+                    <option value="0" selected="@(Model.StatusFilter == "0")">0</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Visibility</label>
+                <select name="VisibilityFilter" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    <option value="1" selected="@(Model.VisibilityFilter == "1")">1</option>
+                    <option value="0" selected="@(Model.VisibilityFilter == "0")">0</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Vacancy Level</label>
+                <select name="VacancyLevelFilter" class="form-select form-select-sm">
+                    <option value="">All</option>
+                    <option value="Diploma" selected="@(Model.VacancyLevelFilter == "Diploma")">Diploma</option>
+                    <option value="Degree" selected="@(Model.VacancyLevelFilter == "Degree")">Degree</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-sm btn-primary w-100">Apply</button>
+                <a asp-page="/Committee/Companies" class="btn btn-sm btn-outline-secondary w-100">Reset</a>
+            </div>
+        </form>
+        <div class="mt-2 small text-muted">
+            Number of companies: @Model.FilteredCompanies / @Model.TotalCompanies
+        </div>
+    </div>
+</div>
+
 <div class="table-responsive">
     <table class="table table-sm table-bordered align-middle">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Address</th>
                 <th>Status</th>
                 <th>Visibility</th>
+                <th style="width:110px;">Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var c in Model.Companies)
             {
                 <tr>
+                    <td>@c.company_id</td>
                     <td>@c.name</td>
                     <td>@string.Join(", ", new[] { c.address1, c.address2, c.address3 }.Where(x => !string.IsNullOrWhiteSpace(x)))</td>
                     <td>@c.status</td>
                     <td>@c.visibility</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary"
+                           asp-page="/Committee/CompanyDetails"
+                           asp-route-companyId="@c.company_id">Details</a>
+                    </td>
                 </tr>
             }
         </tbody>

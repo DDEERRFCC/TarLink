@@ -1,0 +1,133 @@
+@page
+@model CommitteeCompanyDetailsModel
+@{
+    ViewData["CommitteePageTitle"] = "Company Details";
+}
+
+<div class="committee-page">
+<partial name="_CommitteeHeader" />
+<partial name="_CommitteeNav" />
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Company Details</h5>
+    <a asp-page="/Committee/Companies" class="btn btn-sm btn-outline-secondary">Back to Company List</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="post" asp-page-handler="Save" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Input.company_id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+            <div class="row g-2 mb-2">
+                <div class="col-md-3"><strong>Company ID:</strong> @Model.Input.company_id</div>
+                <div class="col-md-4"><strong>Created:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+                <div class="col-md-5"><strong>Last Update:</strong> @Model.LastUpdatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+            </div>
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <label asp-for="Input.name" class="form-label">Name</label>
+                    <input asp-for="Input.name" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.regNo" class="form-label">Reg No</label>
+                    <input asp-for="Input.regNo" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.vacancyLevel" class="form-label">Vacancy Level</label>
+                    <select asp-for="Input.vacancyLevel" class="form-select form-select-sm">
+                        <option value="">-- Select --</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="Degree">Degree</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.address1" class="form-label">Address 1</label>
+                    <input asp-for="Input.address1" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.address2" class="form-label">Address 2</label>
+                    <input asp-for="Input.address2" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.address3" class="form-label">Address 3</label>
+                    <input asp-for="Input.address3" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.lastVisit" class="form-label">Last Visit</label>
+                    <input asp-for="Input.lastVisit" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.lastContact" class="form-label">Last Contact</label>
+                    <input asp-for="Input.lastContact" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.totalNoOfStaff" class="form-label">Total Staff</label>
+                    <input asp-for="Input.totalNoOfStaff" type="number" min="0" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.industryInvolved" class="form-label">Industry</label>
+                    <input asp-for="Input.industryInvolved" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.productsAndServices" class="form-label">Products & Services</label>
+                    <input asp-for="Input.productsAndServices" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.companyBackground" class="form-label">Company Background</label>
+                    <input asp-for="Input.companyBackground" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.website" class="form-label">Website</label>
+                    <input asp-for="Input.website" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.remark" class="form-label">Remark</label>
+                    <input asp-for="Input.remark" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.status" class="form-label">Status</label>
+                    <select asp-for="Input.status" class="form-select form-select-sm">
+                        <option value="1">1</option>
+                        <option value="0">0</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.visibility" class="form-label">Visibility</label>
+                    <select asp-for="Input.visibility" class="form-select form-select-sm">
+                        <option value="1">1</option>
+                        <option value="0">0</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.logoFile" class="form-label">Logo</label>
+                    <input asp-for="Input.logoFile" type="file" class="form-control form-control-sm" />
+                    <div class="small text-muted">Current: @(Model.HasLogo ? "Uploaded" : "None")</div>
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="Input.ssmCertFile" class="form-label">SSM Cert</label>
+                    <input asp-for="Input.ssmCertFile" type="file" class="form-control form-control-sm" />
+                    <div class="small text-muted">Current: @(Model.HasSsmCert ? "Uploaded" : "None")</div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-page="/Committee/Companies" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<form method="post" asp-page-handler="Delete" onsubmit="return confirm('Delete this company record?');">
+    <input type="hidden" name="companyId" value="@Model.Input.company_id" />
+    <button type="submit" class="btn btn-danger">Delete Company</button>
+</form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

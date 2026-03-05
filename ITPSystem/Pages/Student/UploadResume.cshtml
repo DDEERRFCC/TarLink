@@ -1,0 +1,181 @@
+@page
+@model StudentUploadResumeModel
+@{
+    ViewData["Title"] = "Upload Resume / CV";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    .resume-page {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 8% 10%, #d8f1ff 0%, transparent 28%),
+            radial-gradient(circle at 90% 15%, #ffecc8 0%, transparent 24%),
+            linear-gradient(160deg, #eef4fb, #dfeaf6);
+        padding: 1.6rem 0 2rem;
+    }
+
+    .resume-shell {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .resume-hero {
+        background: linear-gradient(125deg, #0f172a, #14532d 72%, #0ea5a1);
+        color: #fff;
+        border-radius: 18px;
+        padding: 1.2rem 1.3rem;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, .2);
+    }
+
+    .resume-pill {
+        display: inline-block;
+        font-weight: 700;
+        font-size: .78rem;
+        background: rgba(255, 255, 255, .18);
+        border: 1px solid rgba(255, 255, 255, .3);
+        border-radius: 999px;
+        padding: .2rem .6rem;
+        margin-bottom: .35rem;
+    }
+
+    .resume-card {
+        margin-top: 1rem;
+        background: #fff;
+        border: 1px solid #cfdeee;
+        border-radius: 14px;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, .08);
+    }
+
+    .resume-card-head {
+        padding: 1rem 1rem .3rem;
+    }
+
+    .resume-card-body {
+        padding: .8rem 1rem 1rem;
+    }
+
+    .resume-title {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .resume-sub {
+        margin: .25rem 0 0;
+        color: #516175;
+        font-size: .92rem;
+    }
+
+    .resume-label {
+        font-size: .87rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: .25rem;
+    }
+
+    .resume-input {
+        border-radius: 10px;
+        border: 1px solid #c9d9e8;
+        padding: .55rem .65rem;
+        font-size: .92rem;
+    }
+
+    .resume-btn {
+        border: 0;
+        border-radius: 10px;
+        background: linear-gradient(90deg, #0f766e, #0ea5a1);
+        color: #fff;
+        font-weight: 700;
+        padding: .52rem .9rem;
+    }
+
+    .resume-link {
+        display: inline-block;
+        text-decoration: none;
+        border: 1px solid #bdd7ea;
+        color: #0f3f54;
+        background: #f4fbff;
+        border-radius: 10px;
+        padding: .43rem .7rem;
+        font-weight: 700;
+        margin-right: .4rem;
+    }
+
+    .resume-back {
+        text-decoration: none;
+        color: #0f172a;
+        background: #f8fafc;
+        border: 1px solid #dbe4ef;
+        border-radius: 10px;
+        padding: .42rem .7rem;
+        font-weight: 700;
+    }
+</style>
+
+<div class="resume-page">
+    <div class="resume-shell">
+        <section class="resume-hero">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                <div>
+                    <div class="resume-pill">Student Portal</div>
+                    <h2 class="mb-1">Upload Resume / CV</h2>
+                    <p class="mb-0" style="opacity:.9;">Upload your latest resume file for committee and supervisor review.</p>
+                </div>
+                <a asp-page="/Student/Dashboard" class="resume-back">Back to Dashboard</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mt-3 mb-0">@Model.StatusMessage</div>
+        }
+
+        <section class="resume-card">
+            <div class="resume-card-head">
+                <h3 class="resume-title">Current Resume</h3>
+                <p class="resume-sub">View or download your current uploaded file.</p>
+            </div>
+            <div class="resume-card-body">
+                @if (Model.HasResume)
+                {
+                    <p class="mb-2"><strong>File:</strong> @Model.CurrentResumeFileName</p>
+                    <a asp-page-handler="ResumeFile" asp-route-download="false" target="_blank" rel="noopener" class="resume-link">View</a>
+                    <a asp-page-handler="ResumeFile" asp-route-download="true" class="resume-link">Download</a>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">No resume uploaded yet.</p>
+                }
+            </div>
+        </section>
+
+        <section class="resume-card">
+            <div class="resume-card-head">
+                <h3 class="resume-title">Upload New Resume</h3>
+                <p class="resume-sub">Allowed file types: .pdf, .doc, .docx (max 10MB).</p>
+            </div>
+            <div class="resume-card-body">
+                <form method="post" asp-page-handler="Upload" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.ResumeFile" class="resume-label">Resume File</label>
+                        <input asp-for="Input.ResumeFile" type="file" class="form-control resume-input" />
+                        <span asp-validation-for="Input.ResumeFile" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="resume-btn">Upload Resume</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

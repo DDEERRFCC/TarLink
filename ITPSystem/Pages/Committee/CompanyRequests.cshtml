@@ -8,7 +8,130 @@
 <partial name="_CommitteeHeader" />
 <partial name="_CommitteeNav" />
 
-<div class="alert alert-warning mb-0">
-    Placeholder: `companyrequest` table exists in DB design but is not mapped in `ApplicationDbContext` yet.
-</div>
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-success">@Model.StatusMessage</div>
+}
+
+<h5 class="mb-2">Pending Requests</h5>
+@if (Model.PendingRequests.Count == 0)
+{
+    <div class="alert alert-secondary">No pending requests.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Company</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Remark</th>
+                    <th>Requested At</th>
+                    <th>Reviewed</th>
+                    <th style="width: 360px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.PendingRequests)
+                {
+                    <tr>
+                        <td>@r.request_id</td>
+                        <td>@r.company_name</td>
+                        <td>@r.address1</td>
+                        <td>
+                            <div>@(string.IsNullOrWhiteSpace(r.contact_name) ? "-" : r.contact_name)</div>
+                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_email) ? "-" : r.contact_email)</div>
+                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_phone) ? "-" : r.contact_phone)</div>
+                        </td>
+                        <td><span class="badge text-bg-light border">@r.status</span></td>
+                        <td>@(string.IsNullOrWhiteSpace(r.decision_remark) ? "-" : r.decision_remark)</td>
+                        <td>@r.requested_at.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            @if (r.reviewed_at.HasValue)
+                            {
+                                <div>@r.reviewed_at.Value.ToString("yyyy-MM-dd HH:mm")</div>
+                                <div class="small text-muted">By: @r.reviewed_by</div>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                        <td>
+                            <form method="post" asp-page-handler="Decide" class="d-flex flex-column gap-1">
+                                <input type="hidden" name="Input.request_id" value="@r.request_id" />
+                                <select name="Input.status" class="form-select form-select-sm">
+                                    <option value="pending" selected="@(r.status == "pending")">pending</option>
+                                    <option value="approved" selected="@(r.status == "approved")">approved</option>
+                                    <option value="rejected" selected="@(r.status == "rejected")">rejected</option>
+                                    <option value="cancelled" selected="@(r.status == "cancelled")">cancelled</option>
+                                </select>
+                                <input name="Input.decision_remark" class="form-control form-control-sm" placeholder="Decision remark" value="@r.decision_remark" />
+                                <button type="submit" class="btn btn-sm btn-primary">Save Decision</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<h5 class="mt-4 mb-2">History</h5>
+@if (Model.HistoryRequests.Count == 0)
+{
+    <div class="alert alert-secondary mb-0">No history yet.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Company</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Remark</th>
+                    <th>Requested At</th>
+                    <th>Reviewed</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.HistoryRequests)
+                {
+                    <tr>
+                        <td>@r.request_id</td>
+                        <td>@r.company_name</td>
+                        <td>@r.address1</td>
+                        <td>
+                            <div>@(string.IsNullOrWhiteSpace(r.contact_name) ? "-" : r.contact_name)</div>
+                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_email) ? "-" : r.contact_email)</div>
+                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_phone) ? "-" : r.contact_phone)</div>
+                        </td>
+                        <td><span class="badge text-bg-light border">@r.status</span></td>
+                        <td>@(string.IsNullOrWhiteSpace(r.decision_remark) ? "-" : r.decision_remark)</td>
+                        <td>@r.requested_at.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            @if (r.reviewed_at.HasValue)
+                            {
+                                <div>@r.reviewed_at.Value.ToString("yyyy-MM-dd HH:mm")</div>
+                                <div class="small text-muted">By: @r.reviewed_by</div>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
 </div>

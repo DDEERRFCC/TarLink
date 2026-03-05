@@ -20,10 +20,11 @@ company,
 person,
 sysuser,
 sysconfig,
-ucsupervisor;
-assessmentmark;
-notification;
-documentreview;
+ucsupervisor,
+assessmentmark,
+notification,
+documentreview,
+announcement;
 SET FOREIGN_KEY_CHECKS = 1;
 -- ==============================
 -- PERSON TABLE
@@ -120,11 +121,25 @@ CREATE TABLE cohort (
 -- ==============================
 CREATE TABLE companyrequest (
     request_id INT AUTO_INCREMENT PRIMARY KEY,
-    company_id INT NOT NULL,
-    request_type VARCHAR(50),
-    status VARCHAR(30),
+    requested_by INT NULL,  -- who submitted (optional)
+
+    company_name VARCHAR(250) NOT NULL,
+    address1 VARCHAR(500) NOT NULL,
+
+    contact_name VARCHAR(150) NULL,
+    contact_email VARCHAR(255) NULL,
+    contact_phone VARCHAR(30) NULL,
+
+    status ENUM('pending','approved','rejected','cancelled') NOT NULL DEFAULT 'pending',
+    decision_remark TEXT NULL,
+    reviewed_by INT NULL,
+    reviewed_at DATETIME NULL,
+
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_companyrequest_company FOREIGN KEY (company_id) REFERENCES company(company_id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    INDEX idx_status (status),
+    INDEX idx_company_name (company_name)
 );
 -- ==============================
 -- APPOINTMENT LETTER TEMPLATE
@@ -134,16 +149,6 @@ CREATE TABLE appointmentlettertemplate (
     template_name VARCHAR(100),
     content TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
--- ==============================
--- STUDENT CV TABLE
--- ==============================
-CREATE TABLE studentcv (
-    cv_id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    file_path VARCHAR(255),
-    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_studentcv_person FOREIGN KEY (student_id) REFERENCES person(person_id)
 );
 -- ==============================
 -- STUDENT APPLICATION TABLE
@@ -199,6 +204,18 @@ CREATE TABLE studentapplication (
     INDEX idx_personalEmail (personalEmail),
     INDEX idx_comName (comName),
     CONSTRAINT fk_studentapplication_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+-- ==============================
+-- STUDENT CV TABLE
+-- ==============================
+CREATE TABLE studentcv (
+    cv_id INT AUTO_INCREMENT PRIMARY KEY,
+    application_id INT NOT NULL,
+    file_path VARCHAR(500) NOT NULL,
+    file_name VARCHAR(255) NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_application_id (application_id),
+    CONSTRAINT fk_studentcv_studentapplication FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- ==============================
 -- STUDENT STATUS TABLE

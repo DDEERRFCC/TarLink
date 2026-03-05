@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zlt5UL33GBQ6xPsVmDYrGWYZH/AA0aCNU0eqj2ExZec=",
+  "Hash": "cHWiWbuoY/IGH5yaHaN6VPTi106rOpWgAt/P1gml4QU=",
   "Source": "ITPSystem",
   "BasePath": "_content/ITPSystem",
   "Mode": "Default",
@@ -1459,6 +1459,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\uploads\\formAcceptance_20260305172400975_4ca62668f1a34e81acbccefecc994124.docx",
+      "SourceId": "ITPSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\",
+      "BasePath": "_content/ITPSystem",
+      "RelativePath": "uploads/formAcceptance_20260305172400975_4ca62668f1a34e81acbccefecc994124.docx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\formAcceptance_20260305172400975_4ca62668f1a34e81acbccefecc994124.docx"
     }
   ]
 }
