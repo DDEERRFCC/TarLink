@@ -155,7 +155,7 @@ VALUES (
         'Ms. Noraini Salleh',
         'noraini.salleh@utm.my'
     );
---SYSUSER DATA
+-- SYSUSER DATA
 INSERT INTO sysuser (
         email,
         username,
@@ -241,5 +241,343 @@ VALUES -- Committee (no IC, password set to a placeholder since rule applies to 
         5,
         NULL,
         '2026-01-20 16:00:00',
+        NULL
+    );
+INSERT INTO company (
+        created_at,
+        lastUpdate,
+        lastVisit,
+        lastContact,
+        regNo,
+        vacancyLevel,
+        name,
+        address1,
+        address2,
+        address3,
+        totalNoOfStaff,
+        industryInvolved,
+        productsAndServices,
+        companyBackground,
+        logo,
+        website,
+        ssmCert,
+        status,
+        visibility,
+        remark
+    )
+VALUES (
+        NOW(),
+        NOW(),
+        '2026-02-10',
+        '2026-02-05',
+        '201901012345',
+        'High',
+        'Maju Bina Engineering Sdn Bhd',
+        'No. 18, Jalan Industri 3/1',
+        'Taman Perindustrian Tebrau',
+        '81100 Johor Bahru, Johor',
+        120,
+        'Construction & Engineering',
+        'Civil works, infrastructure, building construction',
+        'CIDB-registered contractor focusing on industrial and commercial projects.',
+        NULL,
+        'https://majubina.com.my',
+        NULL,
+        1,
+        1,
+        'Preferred vendor for campus projects'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-01-20',
+        '2026-01-18',
+        '202002019876',
+        'Medium',
+        'Seri Murni Facilities Management Sdn Bhd',
+        'Level 9, Menara Seri Murni',
+        'Jalan Tun Razak',
+        '50400 Kuala Lumpur',
+        75,
+        'Facilities Management',
+        'Building maintenance, M&E services, cleaning, security coordination',
+        'Provides integrated facilities management services for offices and institutions.',
+        NULL,
+        'https://serimurnifm.my',
+        NULL,
+        1,
+        1,
+        'Strong SLA and reporting'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-02-22',
+        '2026-02-20',
+        '201803045678',
+        'Low',
+        'Bumi Agro Supplies Sdn Bhd',
+        'Lot 22, Jalan Bukit Pasir',
+        'Bukit Pasir',
+        '84200 Muar, Johor',
+        35,
+        'Agriculture & Supply Chain',
+        'Fertiliser, irrigation parts, farm tools',
+        'Regional supplier supporting SMEs and plantations in Southern Malaysia.',
+        NULL,
+        'https://bumiagro.my',
+        NULL,
+        1,
+        1,
+        'Mostly seasonal hiring'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-02-28',
+        '2026-02-27',
+        '202101067890',
+        'High',
+        'Nusa Digital Solutions Sdn Bhd',
+        'A-12-3, Solaris Dutamas',
+        'Jalan Dutamas 1',
+        '50480 Kuala Lumpur',
+        60,
+        'Information Technology',
+        'Web apps, mobile apps, cloud integration, cybersecurity basics',
+        'Software house serving SMEs with custom systems and dashboards.',
+        NULL,
+        'https://nusadigital.my',
+        NULL,
+        1,
+        1,
+        'Open to internships (IT / data)'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-01-12',
+        '2026-01-10',
+        '201705023456',
+        'Medium',
+        'Kencana Green Materials Sdn Bhd',
+        'No. 7, Jalan Perusahaan 2',
+        'Kawasan Perindustrian Bukit Minyak',
+        '14100 Simpang Ampat, Pulau Pinang',
+        90,
+        'Manufacturing (Construction Materials)',
+        'Eco bricks, lightweight blocks, recycled aggregates',
+        'Manufactures greener building materials for local contractors and developers.',
+        NULL,
+        'https://kencanagreen.my',
+        NULL,
+        1,
+        1,
+        'Requires QA/QC staff'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-02-03',
+        '2026-01-29',
+        '201606078901',
+        'Low',
+        'Selatan Logistics & Warehouse Sdn Bhd',
+        'PTD 10188, Jalan Gudang 5',
+        'Kawasan Perindustrian Pasir Gudang',
+        '81700 Pasir Gudang, Johor',
+        140,
+        'Logistics & Warehousing',
+        '3PL services, cold chain, local distribution',
+        'Provides warehousing and distribution services for FMCG and industrial clients.',
+        NULL,
+        'https://selatanlogistics.my',
+        NULL,
+        1,
+        1,
+        'Hiring depends on contract wins'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-02-14',
+        '2026-02-12',
+        '201910045612',
+        'Medium',
+        'Teguh M&E Services Sdn Bhd',
+        'No. 25, Jalan Teknologi 4',
+        'Taman Teknologi Malaysia',
+        '57000 Kuala Lumpur',
+        55,
+        'Mechanical & Electrical',
+        'Electrical wiring, fire alarm, HVAC servicing',
+        'M&E specialist for commercial fit-outs and maintenance contracts.',
+        NULL,
+        'https://teguhme.my',
+        NULL,
+        1,
+        1,
+        'Good for site exposure'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-01-30',
+        '2026-01-28',
+        '201404012399',
+        'High',
+        'Pantai Reka Architects Sdn Bhd',
+        'Suite 6A-2, Wisma Pantai',
+        'Jalan Pantai Baru',
+        '59200 Kuala Lumpur',
+        28,
+        'Architecture & Design',
+        'Architectural design, authority submissions, BIM modelling',
+        'Design studio focusing on residential and mixed-use developments.',
+        NULL,
+        'https://pantaireka.my',
+        NULL,
+        1,
+        1,
+        'Actively recruiting junior BIM modellers'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-02-18',
+        '2026-02-16',
+        '202212034567',
+        'Medium',
+        'Metro Safety & Training Sdn Bhd',
+        'No. 3A, Jalan SS 15/4',
+        'Subang Jaya',
+        '47500 Selangor',
+        22,
+        'Safety & Training',
+        'OSH training, site safety audits, documentation support',
+        'Provides OSH compliance support and training programmes for contractors.',
+        NULL,
+        'https://metrosafety.my',
+        NULL,
+        1,
+        1,
+        'Good trainer team'
+    ),
+    (
+        NOW(),
+        NOW(),
+        '2026-02-25',
+        '2026-02-23',
+        '201508067777',
+        'Low',
+        'Rimbun Food Manufacturing Sdn Bhd',
+        'Lot 8, Jalan Industri Ringan 1',
+        'Kawasan Industri Ringan Senai',
+        '81400 Senai, Johor',
+        200,
+        'Food Manufacturing',
+        'Packaged sauces, ready-to-eat meals, OEM production',
+        'Food manufacturer supplying retailers and offering OEM services.',
+        NULL,
+        'https://rimbunfood.my',
+        NULL,
+        1,
+        1,
+        'Mostly production roles'
+    );
+-- Pick a creator (committee user if available, else any user)
+SET @creator_id = COALESCE(
+        (
+            SELECT user_id
+            FROM sysuser
+            WHERE role = 'committee'
+            ORDER BY user_id
+            LIMIT 1
+        ), (
+            SELECT user_id
+            FROM sysuser
+            ORDER BY user_id
+            LIMIT 1
+        )
+    );
+-- Pick an active cohort if available (can be NULL if no cohort yet)
+SET @active_cohort_id = (
+        SELECT cohort_id
+        FROM cohort
+        WHERE isActive = 1
+        ORDER BY startDate DESC
+        LIMIT 1
+    );
+-- Insert 5 announcements
+INSERT INTO announcement (
+        created_by_user_id,
+        title,
+        message,
+        target_role,
+        cohort_id,
+        faculty,
+        campus,
+        is_published,
+        publish_at,
+        expire_at
+    )
+VALUES (
+        @creator_id,
+        'System Notice: Portal Maintenance',
+        'The internship portal will undergo maintenance this weekend. Some services may be unavailable during this period. Please plan your submissions earlier to avoid disruption.',
+        'all',
+        NULL,
+        NULL,
+        NULL,
+        1,
+        NOW(),
+        DATE_ADD(NOW(), INTERVAL 7 DAY)
+    ),
+    (
+        @creator_id,
+        'Reminder: Progress Report Submission',
+        'This is a reminder to submit your monthly progress report before the due date. Late submissions may affect your status and evaluation.',
+        'student',
+        @active_cohort_id,
+        NULL,
+        NULL,
+        1,
+        NOW(),
+        DATE_ADD(NOW(), INTERVAL 14 DAY)
+    ),
+    (
+        @creator_id,
+        'Internship Briefing Session',
+        'A briefing session will be held for students to explain the internship process, document requirements, and evaluation method. Please check your timetable and attend.',
+        'student',
+        @active_cohort_id,
+        'FABU',
+        'UTM Johor Bahru',
+        1,
+        NOW(),
+        DATE_ADD(NOW(), INTERVAL 30 DAY)
+    ),
+    (
+        @creator_id,
+        'Supervisor Notice: Student Evaluation Window',
+        'The student evaluation window is now open. Please complete the assessment marks and comments before the closing date.',
+        'supervisor',
+        @active_cohort_id,
+        NULL,
+        NULL,
+        1,
+        NOW(),
+        DATE_ADD(NOW(), INTERVAL 21 DAY)
+    ),
+    (
+        @creator_id,
+        'Document Verification Update',
+        'Committee will review submitted documents (acceptance form, acknowledgement, and supporting evidence). Please ensure your uploads are clear and complete.',
+        'all',
+        @active_cohort_id,
+        NULL,
+        NULL,
+        1,
+        NOW(),
         NULL
     );

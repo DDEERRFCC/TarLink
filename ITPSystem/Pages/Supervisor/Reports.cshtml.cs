@@ -24,7 +24,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!IsSupervisor(out _))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             LoadItems();
@@ -33,29 +33,40 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnPostApprove(long reportId, string? remarks)
         {
-            return UpdateReport(reportId, 1, remarks, "approved");
+            return UpdateReport(reportId, 2, remarks, "approved");
         }
 
         public IActionResult OnPostReject(long reportId, string? remarks)
         {
-            return UpdateReport(reportId, 2, remarks, "rejected");
+            return UpdateReport(reportId, 3, remarks, "rejected");
         }
 
         public string GetStatusLabel(byte? status)
         {
             return status switch
             {
-                1 => "Approved",
-                2 => "Rejected",
+                1 => "Submitted",
+                2 => "Approved",
+                3 => "Rejected",
                 _ => "Pending"
             };
+        }
+
+        public string GetReportTitle(ProgressReport report)
+        {
+            if (string.Equals(report.reportType, "final", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Final Report";
+            }
+
+            return report.reportNo.HasValue ? $"Progress Report {report.reportNo.Value}" : "Progress Report";
         }
 
         private IActionResult UpdateReport(long reportId, byte status, string? remarks, string action)
         {
             if (!IsSupervisor(out var supervisorId))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             var report = _db.ProgressReports.FirstOrDefault(r => r.report_id == reportId);
@@ -67,12 +78,12 @@ namespace ITPSystem.Pages.Supervisor
 
             report.status = status;
             report.remark = remarks;
-            report.lastUpdate = DateTime.UtcNow;
+            report.updated_at = DateTime.UtcNow;
             _db.SaveChanges();
 
-            if (report.applicantId.HasValue)
+            if (report.applicantId > 0)
             {
-                var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == (int)report.applicantId.Value);
+                var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == report.applicantId);
                 if (studentUser != null)
                 {
                     _db.Notifications.Add(new Notification
@@ -98,15 +109,15 @@ namespace ITPSystem.Pages.Supervisor
                 .Where(s => s.ucSupervisorEmail == userEmail || s.comSupervisorEmail == userEmail)
                 .ToDictionary(s => s.application_id);
 
-            var studentAppIds = students.Keys.Select(id => (long)id).ToList();
+            var studentAppIds = students.Keys.ToList();
 
             Items = _db.ProgressReports.AsNoTracking()
-                .Where(r => r.applicantId.HasValue && studentAppIds.Contains(r.applicantId.Value))
+                .Where(r => studentAppIds.Contains(r.applicantId))
                 .OrderBy(r => r.dueDate)
                 .ToList()
                 .Select(r =>
                 {
-                    students.TryGetValue((int)(r.applicantId ?? -1), out var student);
+                    students.TryGetValue(r.applicantId, out var student);
                     return new ReportViewItem
                     {
                         Report = r,
@@ -133,4 +144,5 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
+
 

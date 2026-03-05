@@ -5,6 +5,10 @@
     ViewData["Title"] = "Student Dashboard";
     var studentName = HttpContext.Session.GetString("UserName") ?? "Student";
     var studentId = HttpContext.Session.GetString("StudentID") ?? "Not linked";
+    var companyOptionsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.CompanyOptions.Select(c => new { c.CompanyId, c.Name, c.Addresses }));
+    var selectedCompanyName = Model.CompanyOptions
+        .FirstOrDefault(c => c.CompanyId == Model.Input.CompanyId)?.Name ?? "";
 }
 
 <style>
@@ -146,6 +150,22 @@
         font-size: .83rem;
     }
 
+    .itp-deadlines-scroll {
+        margin-top: .35rem;
+        max-height: 260px;
+        overflow-y: auto;
+        padding-right: .35rem;
+    }
+
+    .itp-deadlines-scroll::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .itp-deadlines-scroll::-webkit-scrollbar-thumb {
+        background: #c6d9ea;
+        border-radius: 999px;
+    }
+
     .itp-profile-btn {
         display: inline-block;
         margin-top: .9rem;
@@ -164,8 +184,43 @@
         color: #111827;
     }
 
+    .itp-meta-grid {
+        display: grid;
+        gap: .48rem;
+    }
+
+    .itp-meta-row {
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        gap: .5rem;
+        align-items: start;
+        font-size: .9rem;
+    }
+
+    .itp-meta-label {
+        color: #64748b;
+        font-weight: 700;
+    }
+
+    .itp-meta-value {
+        color: #0f172a;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
     .itp-docs {
         grid-column: 1 / -1;
+    }
+
+    .itp-required-list {
+        margin: .75rem 0 0;
+        padding-left: 1.2rem;
+        color: #1f2937;
+    }
+
+    .itp-required-list li {
+        margin-bottom: .35rem;
+        font-weight: 600;
     }
 
     .itp-doc-list {
@@ -173,6 +228,12 @@
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         gap: .8rem;
         margin-top: .75rem;
+    }
+
+    .itp-doc-separator {
+        margin: 1rem 0 .5rem;
+        border: 0;
+        border-top: 1px solid #d6e2ef;
     }
 
     .itp-doc-item {
@@ -252,6 +313,57 @@
         box-shadow: 0 0 0 3px rgba(56, 189, 248, .15);
     }
 
+    .itp-company-picker {
+        position: relative;
+        width: 100%;
+    }
+
+    .itp-company-picker .itp-input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .itp-company-list {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: #fff;
+        border: 1px solid #cbd9e8;
+        border-radius: 10px;
+        box-shadow: 0 10px 24px rgba(26, 40, 60, 0.12);
+        max-height: 210px;
+        overflow-y: auto;
+        z-index: 10;
+        display: none;
+    }
+
+    .itp-company-list.show {
+        display: block;
+    }
+
+    .itp-company-item {
+        padding: .5rem .65rem;
+        cursor: pointer;
+        font-size: .9rem;
+        color: #0f172a;
+        border-bottom: 1px solid #eef3f9;
+    }
+
+    .itp-company-item:last-child {
+        border-bottom: 0;
+    }
+
+    .itp-company-item:hover {
+        background: #f2f8fd;
+    }
+
+    .itp-company-empty {
+        padding: .5rem .65rem;
+        font-size: .86rem;
+        color: #64748b;
+    }
+
     .itp-note {
         margin-top: .75rem;
         padding: .65rem .75rem;
@@ -265,6 +377,52 @@
     .itp-note a {
         color: #b45309;
         font-weight: 700;
+    }
+
+    .itp-announce-list {
+        display: grid;
+        gap: .55rem;
+    }
+
+    .itp-announce-item {
+        border: 1px solid #d7e2ee;
+        border-radius: 10px;
+        background: #fbfdff;
+    }
+
+    .itp-announce-title {
+        padding: .62rem .75rem;
+        cursor: pointer;
+        font-weight: 700;
+        color: #1f2937;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem;
+    }
+
+    .itp-announce-title::-webkit-details-marker {
+        display: none;
+    }
+
+    .itp-announce-message {
+        padding: 0 .75rem .7rem;
+        color: #475569;
+        white-space: pre-wrap;
+        max-height: 180px;
+        overflow-y: auto;
+    }
+
+    .itp-announce-date {
+        font-size: .78rem;
+        color: #0f3f54;
+        font-weight: 700;
+        white-space: nowrap;
+        background: #e6f4fb;
+        border: 1px solid #b9deef;
+        border-radius: 8px;
+        padding: .16rem .45rem;
     }
 
     .itp-badge-ok, .itp-badge-missing {
@@ -325,6 +483,70 @@
 
         <div class="itp-grid">
 
+            <section class="itp-card">
+                <h3 class="itp-title">Internship Status</h3>
+                <p class="itp-muted">Application approved and currently in progress.</p>
+                <div class="itp-progress-wrap">
+                    <div class="itp-progress-bar"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <small class="itp-muted">Week 6 of 14</small>
+                    <small style="font-weight:700;color:#0e7490;">42% Complete</small>
+                </div>
+
+                <div class="itp-actions">
+                    @if (string.Equals(Model.Status?.Trim(), "Approved", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <a class="itp-action" asp-page="/Student/MyProgressReport">My Progress Report</a>
+                    }
+                </div>
+            </section>
+
+            <section class="itp-card">
+                <h3 class="itp-title">Upcoming Deadlines</h3>
+                @if (Model.ReportDeadlines.Count == 0)
+                {
+                    <p class="itp-muted mb-0">No report due dates configured for your cohort yet.</p>
+                }
+                else
+                {
+                    <div class="itp-deadlines-scroll">
+                        @foreach (var deadline in Model.ReportDeadlines)
+                        {
+                            <div class="itp-deadline">
+                                <div>
+                                    <div style="font-weight:600;color:#1f2937;">@deadline.Title</div>
+                                    <small class="itp-muted">@deadline.Note</small>
+                                </div>
+                                <span class="itp-date">@deadline.Date.ToString("MMM dd")</span>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+
+            <section class="itp-card">
+                <h3 class="itp-title">Internship Info</h3>
+                <div class="itp-meta-grid">
+                    <div class="itp-meta-row">
+                        <span class="itp-meta-label">Cohort</span>
+                        <span class="itp-meta-value">@Model.Cohort</span>
+                    </div>
+                    <div class="itp-meta-row">
+                        <span class="itp-meta-label">Intern Period</span>
+                        <span class="itp-meta-value">@Model.InternPeriod</span>
+                    </div>
+                    <div class="itp-meta-row">
+                        <span class="itp-meta-label">Status</span>
+                        <span class="itp-meta-value">@Model.Status</span>
+                    </div>
+                    <div class="itp-meta-row">
+                        <span class="itp-meta-label">Remark</span>
+                        <span class="itp-meta-value">@Model.Remark</span>
+                    </div>
+                </div>
+            </section>
+
             <section class="itp-card itp-docs">
                 <h3 class="itp-title">My Documents</h3>
                 <p class="itp-muted">Document sample PDFs for viewing or downloading.</p>
@@ -344,127 +566,252 @@
 
                             <h4 class="itp-doc-title">@doc.Title</h4>
                             <div class="itp-doc-actions">
-                                <a class="itp-doc-btn" href="@doc.WebPath" target="_blank" rel="noopener">View</a>
-                                <a class="itp-doc-btn" href="@doc.WebPath" download>Download</a>
+                                @if (doc.CanView)
+                                {
+                                    <a class="itp-doc-btn" href="@doc.ViewPath" target="_blank" rel="noopener">View</a>
+                                }
+                                <a class="itp-doc-btn" href="@doc.DownloadPath">Download</a>
                             </div>
                         </article>
                     }
                 </div>
-            </section>
+                
+                @if (Model.ApprovedStatusDocuments.Count > 0)
+                {
+                    <hr class="itp-doc-separator" />
+                    <p class="itp-muted">The following documents are required to pass to your company supervisor during your first day of your internship.</p>
+                    <div class="itp-doc-list">
+                        @foreach (var doc in Model.ApprovedStatusDocuments)
+                        {
+                            <article class="itp-doc-item">
+                                @if (doc.Exists)
+                                {
+                                    <span class="itp-badge-ok">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="itp-badge-missing">Missing File</span>
+                                }
 
-
-            <section class="itp-card">
-                <h3 class="itp-title">Internship Status</h3>
-                <p class="itp-muted">Application approved and currently in progress.</p>
-                <div class="itp-progress-wrap">
-                    <div class="itp-progress-bar"></div>
-                </div>
-                <div class="d-flex justify-content-between mt-2">
-                    <small class="itp-muted">Week 6 of 14</small>
-                    <small style="font-weight:700;color:#0e7490;">42% Complete</small>
-                </div>
-
-                <div class="itp-actions">
-                    <a class="itp-action" href="#">Submit Progress Report</a>
-                    <a class="itp-action" href="#">Update Company Details</a>
-                    <a class="itp-action" href="#">View Appointment Letter</a>
-                    <a class="itp-action" href="#">Contact Supervisor</a>
-                </div>
-            </section>
-
-            <section class="itp-card">
-                <h3 class="itp-title">Upcoming Deadlines</h3>
-                <div class="itp-deadline">
-                    <div>
-                        <div style="font-weight:600;color:#1f2937;">Monthly Report #2</div>
-                        <small class="itp-muted">Upload PDF and reflection notes</small>
+                                <h4 class="itp-doc-title">@doc.Title</h4>
+                                <div class="itp-doc-actions">
+                                    @if (doc.CanView)
+                                    {
+                                        <a class="itp-doc-btn" href="@doc.ViewPath" target="_blank" rel="noopener">View</a>
+                                    }
+                                    <a class="itp-doc-btn" href="@doc.DownloadPath">Download</a>
+                                </div>
+                            </article>
+                        }
                     </div>
-                    <span class="itp-date">Mar 10</span>
-                </div>
-                <div class="itp-deadline">
-                    <div>
-                        <div style="font-weight:600;color:#1f2937;">Supervisor Evaluation</div>
-                        <small class="itp-muted">Ensure supervisor receives form link</small>
-                    </div>
-                    <span class="itp-date">Mar 18</span>
-                </div>
-                <div class="itp-deadline">
-                    <div>
-                        <div style="font-weight:600;color:#1f2937;">Final Report Draft</div>
-                        <small class="itp-muted">Submit for committee review</small>
-                    </div>
-                    <span class="itp-date">Apr 02</span>
-                </div>
+                }
             </section>
 
             <section class="itp-card">
                 <h3 class="itp-title">Company Detail</h3>
-                <p class="itp-muted mb-3">For student to fill.</p>
+                <p class="itp-muted mb-3">Select a company first, then choose one of its available addresses.</p>
 
-                <div class="itp-form-grid">
-                    <div class="itp-field itp-field-full">
-                        <label class="itp-label">Company Name</label>
-                        <input class="itp-input" type="text" />
-                        <small class="itp-help">(I wish to apply to a company of my own choice.)</small>
+                <form method="post" asp-page-handler="SaveCompany" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                    <div class="itp-form-grid">
+                        <div class="itp-field itp-field-full">
+                            <label class="itp-label" asp-for="Input.CompanyId">Company</label>
+                            <div class="itp-company-picker">
+                                <input class="itp-input" id="companyNameInput" value="@selectedCompanyName" placeholder="Type or select company name" autocomplete="off" />
+                                <div id="companyListBox" class="itp-company-list"></div>
+                            </div>
+                            <input type="hidden" asp-for="Input.CompanyId" id="companyIdInput" />
+                            <small class="itp-help">Type or choose from suggested company names.</small>
+                        </div>
+
+                        <div class="itp-field itp-field-full">
+                            <label class="itp-label" asp-for="Input.Address">Address</label>
+                            <select class="itp-input"
+                                    asp-for="Input.Address"
+                                    id="addressSelect"
+                                    data-selected="@Model.Input.Address">
+                                <option value="">-- Select Address --</option>
+                            </select>
+                            <small class="itp-help">Address options depend on the selected company.</small>
+                            <div class="mt-2">
+                                <a asp-page="/Student/OwnCompanyRequest">I wish to apply to a company of my own choice.</a>
+                            </div>
+                        </div>
+
+                        <div class="itp-field">
+                            <label class="itp-label" asp-for="Input.MonthlyAllowance">Monthly Allowance</label>
+                            <input class="itp-input" asp-for="Input.MonthlyAllowance" type="number" min="0" step="0.01" />
+                        </div>
+
+                        <div class="itp-field">
+                            <label class="itp-label" asp-for="Input.CompanySupervisorName">Com. Supervisor Name</label>
+                            <input class="itp-input" asp-for="Input.CompanySupervisorName" />
+                        </div>
+
+                        <div class="itp-field itp-field-full">
+                            <label class="itp-label" asp-for="Input.CompanySupervisorEmail">Com. Supervisor Email</label>
+                            <input class="itp-input" asp-for="Input.CompanySupervisorEmail" type="email" />
+                        </div>
+
+                        <div class="itp-field">
+                            <label class="itp-label" asp-for="Input.FormAcceptanceFile">Com. Acceptance Form</label>
+                            <input class="itp-input" asp-for="Input.FormAcceptanceFile" type="file" />
+                            <small class="itp-help">Current: @Model.CurrentFormAcceptanceFile</small>
+                        </div>
+
+                        <div class="itp-field">
+                            <label class="itp-label" asp-for="Input.FormAcknowledgementFile">Parent Ack. Form</label>
+                            <input class="itp-input" asp-for="Input.FormAcknowledgementFile" type="file" />
+                            <small class="itp-help">Current: @Model.CurrentFormAcknowledgementFile</small>
+                        </div>
+
+                        <div class="itp-field">
+                            <label class="itp-label" asp-for="Input.LetterOfIndemnityFile">Letter of Indemnity</label>
+                            <input class="itp-input" asp-for="Input.LetterOfIndemnityFile" type="file" />
+                            <small class="itp-help">Current: @Model.CurrentLetterIdentityFile</small>
+                        </div>
+
+                        <div class="itp-field">
+                            <label class="itp-label" asp-for="Input.HiredEvidenceFile">Hired evidence (if any)</label>
+                            <input class="itp-input" asp-for="Input.HiredEvidenceFile" type="file" />
+                            <small class="itp-help">Current: @Model.CurrentOtherEvidenceFile</small>
+                        </div>
                     </div>
 
-                    <div class="itp-field itp-field-full">
-                        <label class="itp-label">Address</label>
-                        <input class="itp-input" type="text" />
+                    <div class="itp-note">
+                        Note: Please make sure your document is NOT more than 10MB.
+                        <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" rel="noopener">click here</a>
+                        to do the compression if required.
                     </div>
 
-                    <div class="itp-field">
-                        <label class="itp-label">Monthly Allowance</label>
-                        <input class="itp-input" type="number" min="0" value="0" />
-                    </div>
-
-                    <div class="itp-field">
-                        <label class="itp-label">Com. Supervisor Name</label>
-                        <input class="itp-input" type="text" />
-                    </div>
-
-                    <div class="itp-field itp-field-full">
-                        <label class="itp-label">Com. Supervisor Email</label>
-                        <input class="itp-input" type="email" />
-                    </div>
-
-                    <div class="itp-field">
-                        <label class="itp-label">Com. Acceptance Form</label>
-                        <input class="itp-input" type="file" />
-                    </div>
-
-                    <div class="itp-field">
-                        <label class="itp-label">Parent Ack. Form</label>
-                        <input class="itp-input" type="file" />
-                    </div>
-
-                    <div class="itp-field">
-                        <label class="itp-label">Letter of Indemnity</label>
-                        <input class="itp-input" type="file" />
-                    </div>
-
-                    <div class="itp-field">
-                        <label class="itp-label">Hired evidence (if any)</label>
-                        <input class="itp-input" type="file" />
-                    </div>
-                </div>
-
-                <div class="itp-note">
-                    Note: Please make sure your document is NOT more than 10MB.
-                    <a href="https://www.ilovepdf.com/compress_pdf" target="_blank" rel="noopener">click here</a>
-                    to do the compression if required.
-                </div>
+                    <button type="submit" class="itp-profile-btn mt-2">Save Company Details</button>
+                </form>
             </section>
 
             <section class="itp-card">
                 <h3 class="itp-title">Announcements</h3>
                 <p class="itp-muted mb-2">Important updates from ITP committee:</p>
-                <ul class="mb-0" style="padding-left:1.1rem;color:#334155;">
-                    <li>All students must submit weekly attendance by Friday 6:00 PM.</li>
-                    <li>Final presentation schedule will be released in April.</li>
-                    <li>Check your email for revised report template guidelines.</li>
-                </ul>
+                @if (Model.Announcements.Count == 0)
+                {
+                    <p class="mb-0" style="color:#64748b;">No announcements at the moment.</p>
+                }
+                else
+                {
+                    <div class="itp-announce-list">
+                        @foreach (var item in Model.Announcements)
+                        {
+                            <details class="itp-announce-item">
+                                <summary class="itp-announce-title">
+                                    <span>@item.title</span>
+                                    <span class="itp-announce-date">@((item.publish_at ?? item.created_at).ToString("yyyy-MM-dd"))</span>
+                                </summary>
+                                <div class="itp-announce-message">@item.message</div>
+                            </details>
+                        }
+                    </div>
+                }
             </section>
         </div>
     </div>
 </div>
+
+<script>
+    (() => {
+        const companyOptions = @Html.Raw(companyOptionsJson);
+        const companyNameInput = document.getElementById("companyNameInput");
+        const companyIdInput = document.getElementById("companyIdInput");
+        const companyListBox = document.getElementById("companyListBox");
+        const addressSelect = document.getElementById("addressSelect");
+
+        if (!companyNameInput || !companyIdInput || !companyListBox || !addressSelect) {
+            return;
+        }
+
+        const selectedAddress = addressSelect.getAttribute("data-selected") || "";
+
+        const findCompanyByName = (name) => {
+            const normalized = (name || "").trim().toLowerCase();
+            if (!normalized) return null;
+            return companyOptions.find(c => (c.name || c.Name || "").trim().toLowerCase() === normalized) || null;
+        };
+
+        const rebuildAddressOptions = (addresses, preferredAddress) => {
+            addressSelect.innerHTML = "";
+
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "-- Select Address --";
+            addressSelect.appendChild(defaultOption);
+
+            for (const address of addresses) {
+                const option = document.createElement("option");
+                option.value = address;
+                option.textContent = address;
+                if (preferredAddress && preferredAddress === address) {
+                    option.selected = true;
+                }
+                addressSelect.appendChild(option);
+            }
+        };
+
+        const syncCompanySelection = (preferredAddress) => {
+            const matched = findCompanyByName(companyNameInput.value);
+            if (!matched) {
+                companyIdInput.value = "";
+                rebuildAddressOptions([], "");
+                return;
+            }
+
+            companyIdInput.value = matched.companyId ?? matched.CompanyId;
+            rebuildAddressOptions(matched.addresses ?? matched.Addresses ?? [], preferredAddress || "");
+        };
+
+        const renderCompanyList = () => {
+            const query = (companyNameInput.value || "").trim().toLowerCase();
+            const filtered = companyOptions.filter(c => {
+                const name = (c.name || c.Name || "").toLowerCase();
+                return query.length === 0 || name.includes(query);
+            });
+
+            companyListBox.innerHTML = "";
+            if (filtered.length === 0) {
+                const empty = document.createElement("div");
+                empty.className = "itp-company-empty";
+                empty.textContent = "No company found";
+                companyListBox.appendChild(empty);
+                return;
+            }
+
+            for (const c of filtered.slice(0, 80)) {
+                const name = c.name || c.Name || "";
+                const item = document.createElement("div");
+                item.className = "itp-company-item";
+                item.textContent = name;
+                item.addEventListener("click", () => {
+                    companyNameInput.value = name;
+                    syncCompanySelection("");
+                    companyListBox.classList.remove("show");
+                });
+                companyListBox.appendChild(item);
+            }
+        };
+
+        syncCompanySelection(selectedAddress);
+        companyNameInput.addEventListener("focus", () => {
+            renderCompanyList();
+            companyListBox.classList.add("show");
+        });
+        companyNameInput.addEventListener("input", () => {
+            syncCompanySelection("");
+            renderCompanyList();
+            companyListBox.classList.add("show");
+        });
+        companyNameInput.addEventListener("change", () => syncCompanySelection(""));
+        document.addEventListener("click", (event) => {
+            if (!companyListBox.contains(event.target) && event.target !== companyNameInput) {
+                companyListBox.classList.remove("show");
+            }
+        });
+    })();
+</script>

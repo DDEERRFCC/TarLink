@@ -21,7 +21,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!TryGetUserId(out var userId))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             LoadItems(userId);
@@ -32,7 +32,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!TryGetUserId(out var userId))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             var unread = _db.Notifications.Where(n => n.to_user_id == userId && !n.is_read).ToList();
@@ -61,4 +61,5 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
+
 

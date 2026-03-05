@@ -1,0 +1,310 @@
+@page
+@model StudentMyProgressReportModel
+@{
+    ViewData["Title"] = "My Progress Report";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+        --mpr-bg-1: #eef4fb;
+        --mpr-bg-2: #dfeaf6;
+        --mpr-text: #0f172a;
+        --mpr-muted: #516175;
+        --mpr-border: #cfdeee;
+        --mpr-card: #ffffff;
+        --mpr-primary: #0f766e;
+        --mpr-primary-dark: #115e59;
+        --mpr-accent: #f59e0b;
+    }
+
+    .mpr-page {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 8% 8%, #d7f0ff 0%, transparent 26%),
+            radial-gradient(circle at 90% 14%, #ffecc7 0%, transparent 24%),
+            linear-gradient(160deg, var(--mpr-bg-1), var(--mpr-bg-2));
+        padding: 1.5rem 0 2rem;
+    }
+
+    .mpr-shell {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .mpr-hero {
+        background: linear-gradient(125deg, #0f172a, #134e4a 70%, #0ea5a1);
+        color: #fff;
+        border-radius: 18px;
+        padding: 1.2rem 1.25rem;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
+    }
+
+    .mpr-pill {
+        display: inline-block;
+        background: rgba(255, 255, 255, .18);
+        border: 1px solid rgba(255, 255, 255, .28);
+        border-radius: 999px;
+        padding: .22rem .62rem;
+        font-size: .78rem;
+        font-weight: 700;
+        margin-bottom: .35rem;
+    }
+
+    .mpr-back-btn {
+        text-decoration: none;
+        background: #f8fafc;
+        color: #0f172a;
+        border: 1px solid #dbe4ef;
+        border-radius: 10px;
+        padding: .45rem .72rem;
+        font-weight: 700;
+    }
+
+    .mpr-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .mpr-card {
+        background: var(--mpr-card);
+        border: 1px solid var(--mpr-border);
+        border-radius: 14px;
+        box-shadow: 0 10px 22px rgba(21, 32, 54, 0.08);
+    }
+
+    .mpr-card-head {
+        padding: .95rem 1rem .3rem;
+    }
+
+    .mpr-card-title {
+        margin: 0;
+        color: var(--mpr-text);
+        font-size: 1.02rem;
+        font-weight: 700;
+    }
+
+    .mpr-card-sub {
+        margin: .2rem 0 0;
+        color: var(--mpr-muted);
+        font-size: .9rem;
+    }
+
+    .mpr-card-body {
+        padding: .8rem 1rem 1rem;
+    }
+
+    .mpr-label {
+        font-size: .86rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: .25rem;
+    }
+
+    .mpr-input {
+        border: 1px solid #c9d9e8;
+        border-radius: 10px;
+        padding: .55rem .65rem;
+        font-size: .92rem;
+    }
+
+    .mpr-input:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, .15);
+    }
+
+    .mpr-submit-btn {
+        border: 0;
+        border-radius: 10px;
+        background: linear-gradient(90deg, var(--mpr-primary), #0ea5a1);
+        color: #fff;
+        font-weight: 700;
+        padding: .5rem .9rem;
+    }
+
+    .mpr-table-wrap {
+        max-height: 360px;
+        overflow: auto;
+        border: 1px solid #d6e3ef;
+        border-radius: 12px;
+    }
+
+    .mpr-table {
+        margin-bottom: 0;
+        min-width: 760px;
+    }
+
+    .mpr-table thead th {
+        position: sticky;
+        top: 0;
+        background: #edf6ff;
+        color: #0f3f54;
+        font-weight: 700;
+        border-bottom: 1px solid #d2e3f3;
+    }
+
+    .mpr-status {
+        display: inline-block;
+        border-radius: 999px;
+        padding: .15rem .52rem;
+        font-size: .78rem;
+        font-weight: 700;
+    }
+
+    .mpr-status-pending {
+        background: #e2e8f0;
+        color: #334155;
+    }
+
+    .mpr-status-submitted {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .mpr-status-approved {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .mpr-status-rejected {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    @@media (max-width: 900px) {
+        .mpr-hero {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<div class="mpr-page">
+    <div class="mpr-shell">
+        <section class="mpr-hero">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                <div>
+                    <div class="mpr-pill">Student Portal</div>
+                    <h2 class="mb-1">My Progress Report</h2>
+                    <p class="mb-0" style="opacity:.9;">Submit Progress Report 1-6 and Final Report with due dates.</p>
+                </div>
+                <a asp-page="/Student/Dashboard" class="mpr-back-btn">Back to Dashboard</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mt-3 mb-0">@Model.StatusMessage</div>
+        }
+
+        <div class="mpr-grid">
+            <section class="mpr-card">
+                <div class="mpr-card-head">
+                    <h3 class="mpr-card-title">Submit Report</h3>
+                    <p class="mpr-card-sub">Choose a report slot and submit your summary.</p>
+                </div>
+                <div class="mpr-card-body">
+                    <form method="post" asp-page-handler="Submit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.ReportKey" class="mpr-label">Report</label>
+                            <select asp-for="Input.ReportKey" class="form-select mpr-input">
+                                <option value="">-- Select Report --</option>
+                                @foreach (var item in Model.ReportTypes)
+                                {
+                                    var dueText = item.DueDate?.ToString("yyyy-MM-dd") ?? "TBA";
+                                    <option value="@item.Key">@item.Label (Due: @dueText)</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.ReportKey" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Content" class="mpr-label">Content / Summary</label>
+                            <textarea asp-for="Input.Content" class="form-control mpr-input" rows="8" placeholder="Write your progress report content here..."></textarea>
+                            <span asp-validation-for="Input.Content" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.ReportFile" class="mpr-label">Attach File (optional)</label>
+                            <input asp-for="Input.ReportFile" type="file" class="form-control mpr-input" />
+                            <div class="form-text">Allowed: .pdf, .doc, .docx (max 10MB)</div>
+                            <span asp-validation-for="Input.ReportFile" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="mpr-submit-btn">Submit Report</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="mpr-card">
+                <div class="mpr-card-head">
+                    <h3 class="mpr-card-title">Submission History</h3>
+                    <p class="mpr-card-sub">Track status and feedback for each submitted report.</p>
+                </div>
+                <div class="mpr-card-body">
+                    @if (Model.Reports.Count == 0)
+                    {
+                        <p class="text-muted mb-0">No reports submitted yet.</p>
+                    }
+                    else
+                    {
+                        <div class="mpr-table-wrap">
+                            <table class="table table-sm align-middle mpr-table">
+                                <thead>
+                                    <tr>
+                                        <th>Report</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th>Last Update</th>
+                                        <th>File</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var report in Model.Reports)
+                                    {
+                                        var statusText = Model.GetStatusLabel(report.status);
+                                        var statusClass = statusText switch
+                                        {
+                                            "Submitted" => "mpr-status mpr-status-submitted",
+                                            "Approved" => "mpr-status mpr-status-approved",
+                                            "Rejected" => "mpr-status mpr-status-rejected",
+                                            _ => "mpr-status mpr-status-pending"
+                                        };
+                                        <tr>
+                                            <td>@Model.GetReportTitle(report.reportType, report.reportNo)</td>
+                                            <td>@report.dueDate.ToString("yyyy-MM-dd")</td>
+                                            <td><span class="@statusClass">@statusText</span></td>
+                                            <td>@report.updated_at.ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td>
+                                                @if (!string.IsNullOrWhiteSpace(report.file_path))
+                                                {
+                                                    <a href="@report.file_path" target="_blank" rel="noopener">View File</a>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>@report.remark</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

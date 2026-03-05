@@ -1,0 +1,43 @@
+@using Microsoft.AspNetCore.Http
+@{
+    var title = ViewData["CommitteePageTitle"] as string ?? "Committee Dashboard";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    .committee-page {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+    }
+
+    .committee-hero {
+        background: linear-gradient(125deg, #0f172a, #1d4ed8 68%, #0ea5e9);
+        color: #fff;
+        border-radius: 18px;
+        padding: 1.1rem 1.25rem;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
+        margin-bottom: 1rem;
+    }
+
+    .committee-pill {
+        display: inline-block;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .18);
+        border: 1px solid rgba(255, 255, 255, .28);
+        padding: .2rem .62rem;
+        font-size: .76rem;
+        font-weight: 700;
+        margin-bottom: .3rem;
+    }
+
+    .committee-sub {
+        margin: .25rem 0 0;
+        opacity: .92;
+    }
+</style>
+
+<section class="committee-hero">
+    <div class="committee-pill">ITP Committee Portal</div>
+    <h2 class="mb-0">@title</h2>
+    <p class="committee-sub">Welcome, @Context.Session.GetString("UserName")!</p>
+</section>

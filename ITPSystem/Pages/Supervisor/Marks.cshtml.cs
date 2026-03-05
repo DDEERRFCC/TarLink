@@ -25,7 +25,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!IsSupervisor(out _, out var userEmail))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             LoadData(userEmail);
@@ -36,7 +36,7 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!IsSupervisor(out var supervisorId, out var userEmail))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             _db.AssessmentMarks.Add(new AssessmentMark
@@ -108,4 +108,5 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
+
 

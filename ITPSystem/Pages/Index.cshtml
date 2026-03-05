@@ -88,8 +88,7 @@
         <div class="portal-card">
             <h3>🎓 Student</h3>
             <p>Submit reports, view progress, and manage your internship.</p>
-            <form method="get" asp-page="/Login/Login">
-                <input type="hidden" name="role" value="Student" />
+            <form method="get" asp-page="/Login/StudentLogin">
                 <button class="portal-btn student" type="submit">Student Login</button>
             </form>
         </div>
@@ -98,8 +97,7 @@
         <div class="portal-card">
             <h3>🧑‍🏫 Supervisor</h3>
             <p>Monitor students, review submissions, and give feedback.</p>
-            <form method="get" asp-page="/Login/Login">
-                <input type="hidden" name="role" value="Supervisor" />
+            <form method="get" asp-page="/Login/SupervisorLogin">
                 <button class="portal-btn supervisor" type="submit">Supervisor Login</button>
             </form>
         </div>
@@ -108,8 +106,7 @@
         <div class="portal-card">
             <h3>🏛 Committee</h3>
             <p>Approve records, manage assessments, and generate reports.</p>
-            <form method="get" asp-page="/Login/Login">
-                <input type="hidden" name="role" value="Committee" />
+            <form method="get" asp-page="/Login/CommitteeLogin">
                 <button class="portal-btn committee" type="submit">Committee Login</button>
             </form>
         </div>

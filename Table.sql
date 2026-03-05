@@ -94,6 +94,7 @@ CREATE TABLE cohort (
     report3DueDate DATE,
     report4DueDate DATE,
     report5DueDate DATE,
+    report6DueDate DATE,
     finalReportDueDate DATE,
     examStartDate DATE,
     examEndDate DATE,
@@ -152,6 +153,7 @@ CREATE TABLE studentapplication (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    number_ic VARCHAR(20) NOT NULL UNIQUE,
     studentID VARCHAR(45) NOT NULL UNIQUE,
     studentName VARCHAR(255) NOT NULL,
     gender ENUM('M', 'F', 'O') DEFAULT 'O',
@@ -223,15 +225,21 @@ CREATE TABLE studentaccess (
 -- ==============================
 CREATE TABLE progressreport (
     report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    timeStamp DATETIME,
-    lastUpdate DATETIME,
-    applicantId BIGINT,
-    cohortId INT,
-    month VARCHAR(50),
-    dueDate DATE,
-    status TINYINT,
-    remark LONGTEXT,
-    CONSTRAINT fk_progressreport_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id)
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    applicantId INT NOT NULL,
+    cohortId INT NOT NULL,
+    reportType ENUM('progress', 'final') NOT NULL DEFAULT 'progress',
+    reportNo TINYINT NULL,
+    -- 1..6 for progress, NULL for final
+    dueDate DATE NOT NULL,
+    status TINYINT NOT NULL DEFAULT 0,
+    -- 0=pending,1=submitted,2=approved,3=rejected
+    remark TEXT NULL,
+    file_path VARCHAR(500) NULL,
+    UNIQUE KEY uq_report (applicantId, cohortId, reportType, reportNo),
+    CONSTRAINT fk_progressreport_applicant FOREIGN KEY (applicantId) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_progressreport_cohort FOREIGN KEY (cohortId) REFERENCES cohort(cohort_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 -- ==============================
 -- PULLBACK TABLE
@@ -350,4 +358,26 @@ CREATE TABLE documentreview (
     INDEX idx_documentreview_reviewed_by (reviewed_by),
     CONSTRAINT fk_documentreview_application FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_documentreview_user FOREIGN KEY (reviewed_by) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE announcement (
+    announcement_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    created_by_user_id INT NOT NULL,
+    -- who posted (committee / admin)
+    title VARCHAR(255) NOT NULL,
+    message LONGTEXT NOT NULL,
+    -- targeting (use NULL = no filter / all)
+    target_role ENUM('all', 'student', 'supervisor', 'committee') NOT NULL DEFAULT 'all',
+    cohort_id INT NULL,
+    faculty VARCHAR(45) NULL,
+    campus VARCHAR(45) NULL,
+    -- publishing controls
+    is_published TINYINT(1) NOT NULL DEFAULT 1,
+    publish_at TIMESTAMP NULL,
+    expire_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_announcement_created_at (created_at),
+    INDEX idx_announcement_target (target_role, cohort_id, faculty, campus),
+    CONSTRAINT fk_announcement_created_by FOREIGN KEY (created_by_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_announcement_cohort FOREIGN KEY (cohort_id) REFERENCES cohort(cohort_id) ON DELETE
+    SET NULL ON UPDATE CASCADE
 );

@@ -9,32 +9,44 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\company-acceptance-letter.pdf",
-      "PackagePath": "staticwebassets\\documents\\templates\\company-acceptance-letter.pdf"
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\AppointmentConfirmationLetter.pdf",
+      "PackagePath": "staticwebassets\\documents\\templates\\AppointmentConfirmationLetter.pdf"
     },
     {
-      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\company-supervisor-evaluation-form.pdf",
-      "PackagePath": "staticwebassets\\documents\\templates\\company-supervisor-evaluation-form.pdf"
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\CompanySupervisorEvaluationForm.pdf",
+      "PackagePath": "staticwebassets\\documents\\templates\\CompanySupervisorEvaluationForm.pdf"
     },
     {
-      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\final-report-template.pdf",
-      "PackagePath": "staticwebassets\\documents\\templates\\final-report-template.pdf"
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\CompanySupervisorEvaluationForm.xlsx",
+      "PackagePath": "staticwebassets\\documents\\templates\\CompanySupervisorEvaluationForm.xlsx"
     },
     {
-      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\indemnity-letter.pdf",
-      "PackagePath": "staticwebassets\\documents\\templates\\indemnity-letter.pdf"
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\DownloadCompanyAcceptanceLetter.pdf",
+      "PackagePath": "staticwebassets\\documents\\templates\\DownloadCompanyAcceptanceLetter.pdf"
     },
     {
-      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\parent-acknowledgement-form.pdf",
-      "PackagePath": "staticwebassets\\documents\\templates\\parent-acknowledgement-form.pdf"
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\DownloadIndemnityLetter.pdf",
+      "PackagePath": "staticwebassets\\documents\\templates\\DownloadIndemnityLetter.pdf"
     },
     {
-      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\progress-report-template.pdf",
-      "PackagePath": "staticwebassets\\documents\\templates\\progress-report-template.pdf"
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\DownloadParentAcknowledgementForm.pdf",
+      "PackagePath": "staticwebassets\\documents\\templates\\DownloadParentAcknowledgementForm.pdf"
     },
     {
-      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\student-support-letter.pdf",
-      "PackagePath": "staticwebassets\\documents\\templates\\student-support-letter.pdf"
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FinalReportTemplate.docx",
+      "PackagePath": "staticwebassets\\documents\\templates\\FinalReportTemplate.docx"
+    },
+    {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\ProgressReportTemplate.docx",
+      "PackagePath": "staticwebassets\\documents\\templates\\ProgressReportTemplate.docx"
+    },
+    {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\StudentSupportLetter.pdf",
+      "PackagePath": "staticwebassets\\documents\\templates\\StudentSupportLetter.pdf"
+    },
+    {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\WarningLetter.pdf",
+      "PackagePath": "staticwebassets\\documents\\templates\\WarningLetter.pdf"
     },
     {
       "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\favicon.ico",

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ITPSystem.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="page-transition-body">
     <header>
         <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -41,7 +41,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main id="page-content" role="main" class="pb-3 page-transition-content">
             @RenderBody()
         </main>
     </div>

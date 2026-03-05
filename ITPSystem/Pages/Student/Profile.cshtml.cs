@@ -64,13 +64,13 @@ public class StudentProfileModel : PageModel
         var role = HttpContext.Session.GetString("UserRole");
         if (!string.Equals(role, "student", StringComparison.OrdinalIgnoreCase))
         {
-            return RedirectToPage("/Login/Login");
+            return RedirectToPage("/Login/StudentLogin");
         }
 
         var userId = GetUserIdFromSession();
         if (userId == null)
         {
-            return RedirectToPage("/Login/Login");
+            return RedirectToPage("/Login/StudentLogin");
         }
 
         var user = _db.SysUsers.FirstOrDefault(u => u.user_id == userId.Value);
@@ -110,13 +110,13 @@ public class StudentProfileModel : PageModel
         var role = HttpContext.Session.GetString("UserRole");
         if (!string.Equals(role, "student", StringComparison.OrdinalIgnoreCase))
         {
-            return RedirectToPage("/Login/Login");
+            return RedirectToPage("/Login/StudentLogin");
         }
 
         var userId = GetUserIdFromSession();
         if (userId == null)
         {
-            return RedirectToPage("/Login/Login");
+            return RedirectToPage("/Login/StudentLogin");
         }
 
         var user = _db.SysUsers.FirstOrDefault(u => u.user_id == userId.Value);
@@ -166,6 +166,12 @@ public class StudentProfileModel : PageModel
         }
     }
 
+    public IActionResult OnPostLogout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToPage("/Login/StudentLogin");
+    }
+
     private int? GetUserIdFromSession()
     {
         var userIdString = HttpContext.Session.GetString("UserID");
@@ -177,3 +183,4 @@ public class StudentProfileModel : PageModel
         return null;
     }
 }
+

@@ -1,0 +1,23 @@
+@page
+@model CommitteeImportStudentsModel
+@{
+    ViewData["CommitteePageTitle"] = "Import Student";
+}
+
+<div class="committee-page">
+<partial name="_CommitteeHeader" />
+<partial name="_CommitteeNav" />
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
+<form method="post" enctype="multipart/form-data" class="card card-body" style="max-width:680px;">
+    <div class="mb-2">
+        <label class="form-label">Student CSV File</label>
+        <input type="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Import</button>
+</form>
+</div>
