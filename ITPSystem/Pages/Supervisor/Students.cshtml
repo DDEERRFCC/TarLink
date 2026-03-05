@@ -1,6 +1,14 @@
 @page
 @model ITPSystem.Pages.Supervisor.StudentsModel
 <h2>Student & Internship Tracking</h2>
+<div class="mb-3">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Message))
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
 
 <table class="table table-bordered table-sm">
     <thead>
@@ -11,6 +19,8 @@
             <th>Allowance</th>
             <th>Internship Period</th>
             <th>Supervisor</th>
+            <th>Application Status</th>
+            <th>Supervisor Remark</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -25,8 +35,33 @@
                 <td>@Model.GetCohortRange(s.cohortId)</td>
                 <td>@(s.comSupervisor ?? "-")<br /><small>@(s.ucSupervisor ?? "-")</small></td>
                 <td>
+                    @if (string.Equals(s.applyStatus, "approved", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        <span class="badge bg-success">Approved</span>
+                    }
+                    else if (string.Equals(s.applyStatus, "rejected", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        <span class="badge bg-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    }
+                </td>
+                <td>@(string.IsNullOrWhiteSpace(s.remark) ? "-" : s.remark)</td>
+                <td>
                     <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Documents">Documents</a>
                     <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Reports">Reports</a>
+
+                    @if (string.Equals(s.applyStatus, "pending", System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        <form method="post" class="mt-2">
+                            <input type="hidden" name="applicationId" value="@s.application_id" />
+                            <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Decision remark (optional)" />
+                            <button type="submit" asp-page-handler="Approve" class="btn btn-success btn-sm me-1">Approve</button>
+                            <button type="submit" asp-page-handler="Reject" class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }

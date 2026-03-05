@@ -4,24 +4,28 @@
 <p>Welcome, @Model.UserName!</p>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="card"><div class="card-body"><strong>@Model.PendingReports</strong><br />Pending Reports</div></div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="card"><div class="card-body"><strong>@Model.PendingDocuments</strong><br />Pending Documents</div></div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
+        <div class="card"><div class="card-body"><strong>@Model.PendingApplications</strong><br />Pending Applications</div></div>
+    </div>
+    <div class="col-md-2">
         <div class="card"><div class="card-body"><strong>@Model.ActiveInternships</strong><br />Active Internships</div></div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="card"><div class="card-body"><strong>@Model.UnreadNotifications</strong><br />Unread Notifications</div></div>
     </div>
 </div>
 
 <div class="d-flex flex-wrap gap-2 mb-4">
+    <a class="btn btn-outline-secondary" asp-page="/Supervisor/Profile">My Profile</a>
+    <a class="btn btn-primary" asp-page="/Supervisor/Students">Student Applications</a>
     <a class="btn btn-primary" asp-page="/Supervisor/Reports">Progress Reports</a>
     <a class="btn btn-primary" asp-page="/Supervisor/Documents">Documents</a>
-    <a class="btn btn-primary" asp-page="/Supervisor/Students">Student Tracking</a>
     <a class="btn btn-primary" asp-page="/Supervisor/Marks">Assessment Marks</a>
     <a class="btn btn-outline-secondary" asp-page="/Supervisor/Notifications">Notifications</a>
 </div>

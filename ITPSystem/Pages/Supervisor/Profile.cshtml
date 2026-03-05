@@ -1,0 +1,167 @@
+@page
+@model ITPSystem.Pages.Supervisor.ProfileModel
+@{
+    ViewData["Title"] = "Supervisor Profile";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-1">Supervisor Profile</h2>
+            <div class="text-muted">Complete account and supervision overview</div>
+        </div>
+        <a asp-page="/Supervisor/Dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </div>
+
+    @if (Model.Supervisor == null)
+    {
+        <div class="alert alert-danger">Profile data could not be loaded.</div>
+    }
+    else
+    {
+        <div class="row g-3 mb-3">
+            <div class="col-md-3">
+                <div class="card"><div class="card-body"><strong>@Model.AssignedStudents</strong><br />Assigned Students</div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card"><div class="card-body"><strong>@Model.PendingReports</strong><br />Pending Reports</div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card"><div class="card-body"><strong>@Model.DocumentReviewsPending</strong><br />Pending Doc Reviews</div></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card"><div class="card-body"><strong>@Model.UnreadNotifications</strong><br />Unread Notifications</div></div>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header"><strong>Account Details</strong></div>
+                    <div class="card-body">
+                        <table class="table table-sm mb-0">
+                            <tr><th style="width: 40%;">Username</th><td>@Model.Supervisor.username</td></tr>
+                            <tr><th>Email</th><td>@Model.Supervisor.email</td></tr>
+                            <tr><th>IC Number</th><td>@(string.IsNullOrWhiteSpace(Model.Supervisor.ic_number) ? "-" : Model.Supervisor.ic_number)</td></tr>
+                            <tr><th>Role</th><td>@Model.Supervisor.role</td></tr>
+                            <tr><th>Account Active</th><td>@(Model.Supervisor.is_active ? "Yes" : "No")</td></tr>
+                            <tr><th>Account Locked</th><td>@(Model.Supervisor.is_locked ? "Yes" : "No")</td></tr>
+                            <tr><th>Login Attempts</th><td>@Model.Supervisor.login_attempts</td></tr>
+                            <tr><th>Last Login</th><td>@(Model.Supervisor.last_login_at?.ToString("dd MMM yyyy, hh:mm tt") ?? "-")</td></tr>
+                            <tr><th>Password Changed</th><td>@(Model.Supervisor.password_changed_at?.ToString("dd MMM yyyy, hh:mm tt") ?? "-")</td></tr>
+                            <tr><th>Email Verified</th><td>@(Model.Supervisor.email_verified_at?.ToString("dd MMM yyyy, hh:mm tt") ?? "-")</td></tr>
+                            <tr><th>Created At</th><td>@Model.Supervisor.created_at.ToString("dd MMM yyyy, hh:mm tt")</td></tr>
+                            <tr><th>Updated At</th><td>@Model.Supervisor.updated_at.ToString("dd MMM yyyy, hh:mm tt")</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card mb-3">
+                    <div class="card-header"><strong>Application Summary</strong></div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-4"><div class="h4 mb-0">@Model.PendingApplications</div><small>Pending</small></div>
+                            <div class="col-4"><div class="h4 mb-0">@Model.ApprovedApplications</div><small>Approved</small></div>
+                            <div class="col-4"><div class="h4 mb-0">@Model.RejectedApplications</div><small>Rejected</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header"><strong>Progress Report Summary</strong></div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-4"><div class="h4 mb-0">@Model.PendingReports</div><small>Pending</small></div>
+                            <div class="col-4"><div class="h4 mb-0">@Model.ApprovedReports</div><small>Approved</small></div>
+                            <div class="col-4"><div class="h4 mb-0">@Model.RejectedReports</div><small>Rejected</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><strong>Document Review Summary</strong></div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-4"><div class="h4 mb-0">@Model.DocumentReviewsPending</div><small>Pending</small></div>
+                            <div class="col-4"><div class="h4 mb-0">@Model.DocumentReviewsApproved</div><small>Approved</small></div>
+                            <div class="col-4"><div class="h4 mb-0">@Model.DocumentReviewsRejected</div><small>Rejected</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-1">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header"><strong>Assigned Students</strong></div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Student ID</th>
+                                        <th>Email</th>
+                                        <th>Company</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.AssignedStudentList.Count == 0)
+                                    {
+                                        <tr><td colspan="5" class="text-center py-3">No assigned students.</td></tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var s in Model.AssignedStudentList)
+                                        {
+                                            <tr>
+                                                <td>@s.studentName</td>
+                                                <td>@s.studentID</td>
+                                                <td>@s.studentEmail</td>
+                                                <td>@(string.IsNullOrWhiteSpace(s.comName) ? "-" : s.comName)</td>
+                                                <td>@(string.IsNullOrWhiteSpace(s.applyStatus) ? "-" : s.applyStatus)</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <strong>Recent Notifications</strong>
+                        <span class="badge bg-secondary">@Model.TotalNotifications total</span>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.RecentNotifications.Count == 0)
+                        {
+                            <div class="text-muted">No notifications yet.</div>
+                        }
+                        else
+                        {
+                            @foreach (var n in Model.RecentNotifications)
+                            {
+                                <div class="border-bottom pb-2 mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>@n.title</strong>
+                                        <small class="text-muted">@n.created_at.ToLocalTime().ToString("dd MMM")</small>
+                                    </div>
+                                    <div class="small text-muted">@n.type</div>
+                                    <div class="small">@(!string.IsNullOrWhiteSpace(n.message) ? n.message : "-")</div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
