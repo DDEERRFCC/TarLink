@@ -18,6 +18,7 @@ namespace ITPSystem.Pages.Supervisor
         public string UserName { get; set; } = string.Empty;
         public int PendingReports { get; set; }
         public int PendingDocuments { get; set; }
+        public int PendingApplications { get; set; }
         public int ActiveInternships { get; set; }
         public int UnreadNotifications { get; set; }
         public List<StudentApplication> Students { get; set; } = new();
@@ -30,7 +31,7 @@ namespace ITPSystem.Pages.Supervisor
 
             if (string.IsNullOrWhiteSpace(userEmail) || userRole != "supervisor")
             {
-                return RedirectToPage("/Login/SupervisorLogin");
+                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
             }
 
             UserName = HttpContext.Session.GetString("UserName") ?? userEmail;
@@ -43,6 +44,7 @@ namespace ITPSystem.Pages.Supervisor
 
             PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 1);
             PendingDocuments = _db.DocumentReviews.Count(r => r.status == "pending");
+            PendingApplications = Students.Count(s => s.applyStatus == "pending");
             ActiveInternships = Students.Count(s => s.applyStatus == "approved");
 
             if (int.TryParse(userIdRaw, out var userId))
@@ -54,5 +56,4 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
-
 
