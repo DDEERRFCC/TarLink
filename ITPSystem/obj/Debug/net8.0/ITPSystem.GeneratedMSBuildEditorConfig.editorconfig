@@ -1,5 +1,7 @@
 is_global = true
 build_property.TargetFramework = net8.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
 build_property.TargetPlatformMinVersion = 
 build_property.UsingMicrosoftNETSdkWeb = true
 build_property.ProjectTypeGuids = 
@@ -9,183 +11,185 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ITPSystem
 build_property.RootNamespace = ITPSystem
-build_property.ProjectDir = C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\
+build_property.ProjectDir = C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem
+build_property.MSBuildProjectDirectory = C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/AddCompany.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/AddCompany.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEFkZENvbXBhbnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/BlacklistCompanies.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/BlacklistCompanies.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEJsYWNrbGlzdENvbXBhbmllcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/CommitteeMembers.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/CommitteeMembers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXENvbW1pdHRlZU1lbWJlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/Companies.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/Companies.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXENvbXBhbmllcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/CompanyDetails.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/CompanyDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXENvbXBhbnlEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/CompanyRequests.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/CompanyRequests.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXENvbXBhbnlSZXF1ZXN0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/Configuration.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/Configuration.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXENvbmZpZ3VyYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/Dashboard.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/ImportCompanies.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/ImportCompanies.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEltcG9ydENvbXBhbmllcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/ImportStudents.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/ImportStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEltcG9ydFN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/ProgressEvaluation.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/ProgressEvaluation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFByb2dyZXNzRXZhbHVhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/StudentDetails.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/StudentDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFN0dWRlbnREZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/StudentResumes.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/StudentResumes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFN0dWRlbnRSZXN1bWVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/Students.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/Students.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/SummaryReports.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/SummaryReports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFN1bW1hcnlSZXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/UniSupervisors.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/UniSupervisors.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFVuaVN1cGVydmlzb3JzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/UnregisteredStudents.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/UnregisteredStudents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFVucmVnaXN0ZXJlZFN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/_CommitteeHeader.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/_CommitteeHeader.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXF9Db21taXR0ZWVIZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/_CommitteeNav.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/_CommitteeNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXF9Db21taXR0ZWVOYXYuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Error.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Index.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/CommitteeLogin.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/CommitteeLogin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cQ29tbWl0dGVlTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/StudentLogin.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/StudentLogin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cU3R1ZGVudExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/StudentSignup.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/StudentSignup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cU3R1ZGVudFNpZ251cC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/SupervisorLogin.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Login/SupervisorLogin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cU3VwZXJ2aXNvckxvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Privacy.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Student/Dashboard.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Student/Documents.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/Documents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxEb2N1bWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Student/MyProgressReport.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/MyProgressReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxNeVByb2dyZXNzUmVwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Student/OwnCompanyRequest.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/OwnCompanyRequest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxPd25Db21wYW55UmVxdWVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Student/Profile.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Student/UploadResume.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/UploadResume.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxVcGxvYWRSZXN1bWUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Supervisor/Dashboard.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Supervisor/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJ2aXNvclxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Supervisor/Documents.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Supervisor/Documents.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJ2aXNvclxEb2N1bWVudHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Supervisor/Marks.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Supervisor/Marks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJ2aXNvclxNYXJrcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Supervisor/Notifications.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Supervisor/Notifications.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJ2aXNvclxOb3RpZmljYXRpb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Supervisor/Profile.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Supervisor/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJ2aXNvclxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Supervisor/Reports.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Supervisor/Reports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJ2aXNvclxSZXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Supervisor/Students.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Supervisor/Students.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwZXJ2aXNvclxTdHVkZW50cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/_ViewImports.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/_ViewStart.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Shared/_Layout.cshtml]
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-57k7t1lw1p
