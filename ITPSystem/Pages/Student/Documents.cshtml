@@ -1,0 +1,168 @@
+@page
+@model StudentDocumentsModel
+@{
+    ViewData["Title"] = "My Documents";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    .docs-page {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 10% 10%, #d7f0ff 0%, transparent 28%),
+            radial-gradient(circle at 85% 18%, #ffe8bf 0%, transparent 23%),
+            linear-gradient(160deg, #f4f7fb, #e5edf7);
+        padding: 2rem 0 2.5rem;
+    }
+
+    .docs-shell {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .docs-card {
+        background: #fff;
+        border: 1px solid #d7e2ee;
+        border-radius: 16px;
+        padding: 1rem;
+        box-shadow: 0 10px 24px rgba(26, 40, 60, 0.08);
+    }
+
+    .docs-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: .8rem;
+        margin-top: .75rem;
+    }
+
+    .docs-item {
+        border: 1px solid #d6e2ef;
+        border-radius: 12px;
+        padding: .75rem;
+        background: #fbfdff;
+    }
+
+    .docs-title {
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0 0 .45rem;
+        font-size: .95rem;
+    }
+
+    .docs-actions {
+        display: flex;
+        gap: .45rem;
+        flex-wrap: wrap;
+    }
+
+    .docs-btn {
+        text-decoration: none;
+        font-size: .84rem;
+        font-weight: 600;
+        border-radius: 9px;
+        padding: .35rem .6rem;
+        border: 1px solid #c6d9ea;
+        color: #0f3f54;
+        background: #f2f8fd;
+    }
+
+    .docs-btn:hover {
+        background: #e3f1fb;
+    }
+
+    .docs-badge-ok, .docs-badge-missing {
+        display: inline-block;
+        font-size: .75rem;
+        padding: .16rem .45rem;
+        border-radius: 999px;
+        margin-bottom: .45rem;
+    }
+
+    .docs-badge-ok {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .docs-badge-missing {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .docs-separator {
+        margin: 1rem 0 .5rem;
+        border: 0;
+        border-top: 1px solid #d6e2ef;
+    }
+</style>
+
+<div class="docs-page">
+    <div class="docs-shell">
+        <section class="docs-card">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                    <h3 class="mb-1">My Documents</h3>
+                    <p class="text-muted mb-0">Document sample PDFs for viewing or downloading.</p>
+                </div>
+                <a asp-page="/Student/Dashboard" class="docs-btn">Back to Dashboard</a>
+            </div>
+
+            <div class="docs-list">
+                @foreach (var doc in Model.Documents)
+                {
+                    <article class="docs-item">
+                        @if (doc.Exists)
+                        {
+                            <span class="docs-badge-ok">Available</span>
+                        }
+                        else
+                        {
+                            <span class="docs-badge-missing">Missing File</span>
+                        }
+
+                        <h4 class="docs-title">@doc.Title</h4>
+                        <div class="docs-actions">
+                            @if (doc.CanView)
+                            {
+                                <a class="docs-btn" href="@doc.ViewPath" target="_blank" rel="noopener">View</a>
+                            }
+                            <a class="docs-btn" href="@doc.DownloadPath">Download</a>
+                        </div>
+                    </article>
+                }
+            </div>
+
+            @if (Model.ApprovedStatusDocuments.Count > 0)
+            {
+                <hr class="docs-separator" />
+                <p class="text-muted mb-0">The following documents are required to pass to your company supervisor during your first day of your internship.</p>
+                <div class="docs-list">
+                    @foreach (var doc in Model.ApprovedStatusDocuments)
+                    {
+                        <article class="docs-item">
+                            @if (doc.Exists)
+                            {
+                                <span class="docs-badge-ok">Available</span>
+                            }
+                            else
+                            {
+                                <span class="docs-badge-missing">Missing File</span>
+                            }
+
+                            <h4 class="docs-title">@doc.Title</h4>
+                            <div class="docs-actions">
+                                @if (doc.CanView)
+                                {
+                                    <a class="docs-btn" href="@doc.ViewPath" target="_blank" rel="noopener">View</a>
+                                }
+                                <a class="docs-btn" href="@doc.DownloadPath">Download</a>
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+        </section>
+    </div>
+</div>

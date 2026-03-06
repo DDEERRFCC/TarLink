@@ -33,6 +33,10 @@ public class StudentDashboardModel : PageModel
     public string InternPeriod { get; private set; } = "-";
     public string Status { get; private set; } = "-";
     public string Remark { get; private set; } = "-";
+    public string InternshipStatusText { get; private set; } = "Internship timeline is not available.";
+    public int InternshipProgressPercent { get; private set; }
+    public int InternshipCurrentWeek { get; private set; }
+    public int InternshipTotalWeeks { get; private set; }
     private string ExistingCompanyName { get; set; } = string.Empty;
     public string CurrentFormAcceptanceFile { get; private set; } = "-";
     public string CurrentFormAcknowledgementFile { get; private set; } = "-";
@@ -284,6 +288,7 @@ public class StudentDashboardModel : PageModel
 
         Status = string.IsNullOrWhiteSpace(student.applyStatus) ? "-" : student.applyStatus;
         Remark = string.IsNullOrWhiteSpace(student.remark) ? "-" : student.remark;
+        CalculateInternshipProgress(student.Cohort, Status);
 
         CurrentFormAcceptanceFile = string.IsNullOrWhiteSpace(student.formAcceptance) ? "-" : student.formAcceptance;
         CurrentFormAcknowledgementFile = string.IsNullOrWhiteSpace(student.formAcknowledgement) ? "-" : student.formAcknowledgement;
@@ -299,6 +304,62 @@ public class StudentDashboardModel : PageModel
             Input.CompanySupervisorName = student.comSupervisor;
             Input.CompanySupervisorEmail = student.comSupervisorEmail;
         }
+    }
+
+    private void CalculateInternshipProgress(Cohort? cohort, string? applyStatus)
+    {
+        InternshipProgressPercent = 0;
+        InternshipCurrentWeek = 0;
+        InternshipTotalWeeks = 0;
+
+        var normalizedStatus = (applyStatus ?? string.Empty).Trim().ToLowerInvariant();
+        if (cohort?.startDate == null || cohort.endDate == null)
+        {
+            InternshipStatusText = normalizedStatus == "approved"
+                ? "Application approved. Internship timeline is not configured yet."
+                : $"Application status: {(string.IsNullOrWhiteSpace(applyStatus) ? "-" : applyStatus)}.";
+            return;
+        }
+
+        var start = cohort.startDate.Value.Date;
+        var end = cohort.endDate.Value.Date;
+        if (end < start)
+        {
+            InternshipStatusText = "Internship timeline is invalid. Please contact the committee.";
+            return;
+        }
+
+        var totalDays = (end - start).Days + 1;
+        InternshipTotalWeeks = Math.Max(1, (int)Math.Ceiling(totalDays / 7.0));
+
+        var today = DateTime.Today;
+        if (today < start)
+        {
+            InternshipCurrentWeek = 0;
+            InternshipProgressPercent = 0;
+        }
+        else if (today > end)
+        {
+            InternshipCurrentWeek = InternshipTotalWeeks;
+            InternshipProgressPercent = 100;
+        }
+        else
+        {
+            var elapsedDays = (today - start).Days + 1;
+            InternshipCurrentWeek = Math.Clamp((int)Math.Ceiling(elapsedDays / 7.0), 1, InternshipTotalWeeks);
+            InternshipProgressPercent = Math.Clamp((int)Math.Round((elapsedDays * 100.0) / totalDays), 0, 100);
+        }
+
+        InternshipStatusText = normalizedStatus switch
+        {
+            "approved" when today < start => "Application approved. Internship has not started yet.",
+            "approved" when today > end => "Application approved. Internship period completed.",
+            "approved" => "Application approved and currently in progress.",
+            "pending" => "Application is pending approval.",
+            "rejected" => "Application was rejected.",
+            "withdrawn" => "Application was withdrawn.",
+            _ => $"Application status: {(string.IsNullOrWhiteSpace(applyStatus) ? "-" : applyStatus)}."
+        };
     }
 
     private void BuildReportDeadlines(Cohort? cohort)

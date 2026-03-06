@@ -1,0 +1,245 @@
+@page
+@model CommitteeSummaryReportsModel
+@{
+    ViewData["Title"] = "Summary Reports";
+    ViewData["CommitteePageTitle"] = "Summary Reports";
+}
+
+<style>
+    .summary-option {
+        border: 1px solid #d6e4f0;
+        border-radius: 12px;
+        background: #fff;
+        padding: .8rem .9rem;
+    }
+
+    .summary-option-title {
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .summary-option-desc {
+        color: #5b6b7b;
+        margin-bottom: 0;
+        font-size: .92rem;
+    }
+
+    .summary-report-card {
+        border: 1px solid #d6e4f0;
+        border-radius: 12px;
+        background: #fff;
+    }
+
+    .summary-report-head {
+        border-bottom: 1px solid #e6eef6;
+        padding: .8rem 1rem;
+    }
+
+    .summary-report-body {
+        padding: .8rem 1rem;
+    }
+</style>
+
+<div class="committee-page">
+    <partial name="_CommitteeHeader" />
+    <partial name="_CommitteeNav" />
+
+    @if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="alert alert-info">@Model.Message</div>
+    }
+
+    <form method="post" asp-page-handler="Generate" class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="mb-2">Generate Summary Reports</h5>
+            <p class="text-muted mb-3">Select one or more report types, then generate to view each report below.</p>
+
+            <div class="row g-2 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Cohort</label>
+                    <select asp-for="SelectedCohortId" class="form-select form-select-sm">
+                        <option value="">All Cohorts</option>
+                        @foreach (var c in Model.CohortOptions)
+                        {
+                            <option value="@c.CohortId">@c.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Level</label>
+                    <select asp-for="SelectedLevel" class="form-select form-select-sm">
+                        <option value="">All Levels</option>
+                        <option value="1">Diploma</option>
+                        <option value="2">Degree</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                @foreach (var report in Model.AvailableReports)
+                {
+                    <div class="col-md-6">
+                        <label class="summary-option d-flex gap-2 align-items-start">
+                            <input type="checkbox"
+                                   name="SelectedReportKeys"
+                                   value="@report.Key"
+                                   class="form-check-input mt-1"
+                                   checked="@(Model.SelectedReportKeys.Contains(report.Key))" />
+                            <span>
+                                <span class="summary-option-title d-block">@report.Title</span>
+                                <span class="summary-option-desc d-block">@report.Description</span>
+                            </span>
+                        </label>
+                    </div>
+                }
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Generate Selected Reports</button>
+        </div>
+    </form>
+
+    @if (Model.GeneratedReports.Count > 0)
+    {
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="mb-2">Generated Reports</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Report</th>
+                                <th>Generated At</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.GeneratedReports)
+                            {
+                                <tr>
+                                    <td>@item.Title</td>
+                                    <td>@item.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                    <td class="text-end">
+                                        <a class="btn btn-outline-primary btn-sm" href="#report-@item.Key">View</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @foreach (var item in Model.GeneratedReports)
+        {
+            <div class="summary-report-card mb-3" id="report-@item.Key">
+                <div class="summary-report-head d-flex justify-content-between align-items-center">
+                    <strong>@item.Title</strong>
+                    <small class="text-muted">@item.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</small>
+                </div>
+                <div class="summary-report-body">
+                    <div class="table-responsive">
+                        @if (item.Key == "students")
+                        {
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Programme</th>
+                                        <th>No. of Student</th>
+                                        <th>Success</th>
+                                        <th>Rejected</th>
+                                        <th>Submitted</th>
+                                        <th>Pending</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (item.ProgrammeRows.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">No data found for selected cohort/level.</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var row in item.ProgrammeRows)
+                                        {
+                                            <tr>
+                                                <td>@row.Programme</td>
+                                                <td>@row.NoOfStudent</td>
+                                                <td>@row.Success</td>
+                                                <td>@row.Rejected</td>
+                                                <td>@row.Submitted</td>
+                                                <td>@row.Pending</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else if (item.Key == "companies")
+                        {
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Company</th>
+                                        <th>Allowance</th>
+                                        <th>Application Count</th>
+                                        @foreach (var programme in item.CompanyProgrammes)
+                                        {
+                                            <th>@programme</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (item.CompanyRows.Count == 0)
+                                    {
+                                        <tr>
+                                            <td colspan="@(4 + item.CompanyProgrammes.Count)" class="text-center text-muted">No company data found.</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var row in item.CompanyRows)
+                                        {
+                                            <tr>
+                                                <td>@row.No</td>
+                                                <td>@row.Company</td>
+                                                <td>@(row.Allowance.HasValue ? row.Allowance.Value.ToString("0.00") : "-")</td>
+                                                <td>@row.ApplicationCount</td>
+                                                @foreach (var programme in item.CompanyProgrammes)
+                                                {
+                                                    var count = row.ProgrammeCounts.FirstOrDefault(x => x.Programme == programme)?.Count ?? 0;
+                                                    <td>@count</td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var row in item.Rows)
+                                    {
+                                        <tr>
+                                            <td>@row.Label</td>
+                                            <td>@row.Value</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
