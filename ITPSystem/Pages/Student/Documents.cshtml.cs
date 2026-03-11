@@ -1,4 +1,5 @@
 using ITPSystem.Data;
+using ITPSystem.Helpers;
 using ITPSystem.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class StudentDocumentsModel : PageModel
 {
+    private const string DynamicCompanyAcceptanceFile = CompanyAcceptanceLetterDocumentBuilder.GeneratedFileName;
     private readonly IWebHostEnvironment _env;
     private readonly ApplicationDbContext _db;
 
@@ -53,7 +55,7 @@ public class StudentDocumentsModel : PageModel
 
         var allowedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            "DownloadCompanyAcceptanceLetter.pdf",
+            DynamicCompanyAcceptanceFile,
             "DownloadIndemnityLetter.pdf",
             "DownloadParentAcknowledgementForm.pdf",
             "CompanySupervisorEvaluationForm.xlsx",
@@ -69,6 +71,18 @@ public class StudentDocumentsModel : PageModel
         if (string.IsNullOrWhiteSpace(safeFileName) || !allowedFiles.Contains(safeFileName))
         {
             return NotFound();
+        }
+
+        if (string.Equals(safeFileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase))
+        {
+            var student = GetCurrentStudentApplication(includeCohort: true);
+            var fileBytes = CompanyAcceptanceLetterDocumentBuilder.BuildPdf(student);
+            if (download)
+            {
+                return File(fileBytes, "application/pdf", DynamicCompanyAcceptanceFile);
+            }
+
+            return File(fileBytes, "application/pdf");
         }
 
         var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
@@ -106,7 +120,7 @@ public class StudentDocumentsModel : PageModel
         var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
         var requiredDocs = new (string Title, string FileName, bool CanView)[]
         {
-            ("Company Acceptance Letter", "DownloadCompanyAcceptanceLetter.pdf", true),
+            ("Company Acceptance Letter", DynamicCompanyAcceptanceFile, true),
             ("Indemnity Letter", "DownloadIndemnityLetter.pdf", true),
             ("Parent Acknowledgement Form", "DownloadParentAcknowledgementForm.pdf", true),
             ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.xlsx", false),
@@ -121,7 +135,7 @@ public class StudentDocumentsModel : PageModel
                 Title = d.Title,
                 ViewPath = Url.Page("/Student/Documents", "FormDocument", new { file = d.FileName, download = false }) ?? "#",
                 DownloadPath = Url.Page("/Student/Documents", "FormDocument", new { file = d.FileName, download = true }) ?? "#",
-                Exists = System.IO.File.Exists(Path.Combine(formDir, d.FileName)),
+                Exists = IsDynamicDocument(d.FileName) || System.IO.File.Exists(Path.Combine(formDir, d.FileName)),
                 CanView = d.CanView
             })
             .ToList();
@@ -151,6 +165,11 @@ public class StudentDocumentsModel : PageModel
 
     private StudentApplication? GetCurrentStudentApplication()
     {
+        return GetCurrentStudentApplication(includeCohort: false);
+    }
+
+    private StudentApplication? GetCurrentStudentApplication(bool includeCohort)
+    {
         var userIdText = HttpContext.Session.GetString("UserID");
         if (!int.TryParse(userIdText, out var userId))
         {
@@ -163,7 +182,18 @@ public class StudentDocumentsModel : PageModel
             return null;
         }
 
-        return _db.StudentApplications.AsNoTracking()
+        var query = _db.StudentApplications.AsNoTracking();
+        if (includeCohort)
+        {
+            query = query.Include(s => s.Cohort);
+        }
+
+        return query
             .FirstOrDefault(s => s.application_id == user.application_id.Value);
+    }
+
+    private static bool IsDynamicDocument(string fileName)
+    {
+        return string.Equals(fileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase);
     }
 }

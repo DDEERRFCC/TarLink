@@ -83,6 +83,7 @@ CREATE TABLE blacklistcompany (
 -- ==============================
 -- COHORT TABLE
 -- ==============================
+-- level  1=Diploma, 2=Degree, 3=Postgraduate
 CREATE TABLE cohort (
     cohort_id INT AUTO_INCREMENT PRIMARY KEY,
     description VARCHAR(100),
@@ -121,23 +122,19 @@ CREATE TABLE cohort (
 -- ==============================
 CREATE TABLE companyrequest (
     request_id INT AUTO_INCREMENT PRIMARY KEY,
-    requested_by INT NULL,  -- who submitted (optional)
-
+    requested_by INT NULL,
+    -- who submitted (optional)
     company_name VARCHAR(250) NOT NULL,
     address1 VARCHAR(500) NOT NULL,
-
     contact_name VARCHAR(150) NULL,
     contact_email VARCHAR(255) NULL,
     contact_phone VARCHAR(30) NULL,
-
-    status ENUM('pending','approved','rejected','cancelled') NOT NULL DEFAULT 'pending',
+    status ENUM('pending', 'approved', 'rejected', 'cancelled') NOT NULL DEFAULT 'pending',
     decision_remark TEXT NULL,
     reviewed_by INT NULL,
     reviewed_at DATETIME NULL,
-
     requested_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
     INDEX idx_status (status),
     INDEX idx_company_name (company_name)
 );
@@ -153,7 +150,8 @@ CREATE TABLE appointmentlettertemplate (
 -- ==============================
 -- STUDENT APPLICATION TABLE
 -- ==============================
--- Example of improved structure
+-- studentEmail = xxxxx-xx26@student.tarc.edu.my
+-- number_ic = xxxxxx-xx-xxxx
 CREATE TABLE studentapplication (
     application_id INT AUTO_INCREMENT PRIMARY KEY,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

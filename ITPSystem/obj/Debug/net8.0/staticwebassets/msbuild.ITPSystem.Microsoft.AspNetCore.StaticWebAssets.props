@@ -1216,5 +1216,21 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\formAcceptance_20260305172400975_4ca62668f1a34e81acbccefecc994124.docx))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\SummaryReports\report_20260307014847722_bb71061078434a66ba4289422f8e9e0f.docx))">
+      <SourceType>Package</SourceType>
+      <SourceId>ITPSystem</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/ITPSystem</BasePath>
+      <RelativePath>uploads/SummaryReports/report_20260307014847722_bb71061078434a66ba4289422f8e9e0f.docx</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\SummaryReports\report_20260307014847722_bb71061078434a66ba4289422f8e9e0f.docx))</OriginalItemSpec>
+    </StaticWebAsset>
   </ItemGroup>
 </Project>
