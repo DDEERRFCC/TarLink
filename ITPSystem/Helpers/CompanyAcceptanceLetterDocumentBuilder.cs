@@ -67,46 +67,46 @@ public static class CompanyAcceptanceLetterDocumentBuilder
             new("With reference to the above, we wish to inform you that:", LineStyle.Normal),
             new("", LineStyle.Normal),
             new($"1. We are able to accept {studentName},", LineStyle.Bold),
-            new($"    NRIC {nric}, Student ID {studentId} for practical training in our organisation from {startDate} to {endDate}.", LineStyle.Normal),
+            new($"    NRIC {nric} , Student ID {studentId} for practical training in our organisation from {startDate} to {endDate}.", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("2. The student will report to ________________________________ of _________________________", LineStyle.Normal),
-            new("    (company supervisor name)                                    (department name)", LineStyle.Normal),
+            new("2. The student will report to ________________________________ of __________________________", LineStyle.Normal),
+            new("                                           (company supervisor name)        (department name)", LineStyle.Normal),
+            new("", LineStyle.Normal),
             new("3. Nature of work(s) (Please tick (v) whichever apply):", LineStyle.Normal),
+            new("   [   ] Computer Science & Mathematics based: (Computer Science/Management Mathematics, etc)", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("[   ] Computer Science & Mathematics based: (Computer Science/Management Mathematics, etc)", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
+            new("   [   ] ICT based: (Programming/Networking/ Technical/System Support/ Internet Security/", LineStyle.Normal),
+            new("         Technology, etc)", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("[   ] ICT based: (Programming/Networking/ Technical/System Support/ Internet Security/Games", LineStyle.Normal),
-            new("      Technology, etc)", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
+            new("       [Please indicate the programming languages/databases used, if relevant]", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("[Please indicate the programming languages/databases used, if relevant]", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
+            new("   [   ] Other related tasks (not applicable for sales and marketing)", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
+            new("   \t_______________________________________________________________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("[   ] Other related tasks (not applicable for sales and marketing)", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
-            new("\t_______________________________________________________________________________", LineStyle.Normal),
+            new($"4. Allowance per month\t\t             : {allowance}", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new($"4. Allowance per month\t\t: {allowance}", LineStyle.Normal),
+            new("5. Working Days (eg. Monday-Friday)     : _______________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("5. Working Days (eg. Monday-Friday): _______________________________", LineStyle.Normal),
+            new("6. Working Hours (eg.9am - 5pm)\t       : _______________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("6. Working Hours (eg.9am - 5pm)\t: _______________________________", LineStyle.Normal),
+            new("7. Travelling required?\t\t             : [  ] No    [  ] Yes, Location: __________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("7. Travelling required?\t\t: [  ] No    [  ] Yes, Location: __________________________", LineStyle.Normal),
+            new("8. Travelling allowance (if any)\t      : _______________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("8. Travelling allowance (if any)\t: _______________________________", LineStyle.Normal),
+            new("9. Accommodation provided?\t\t          : [  ] No    [  ] Yes, Address: ___________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("9. Accommodation provided?\t\t: [  ] No    [  ] Yes, Address: ___________________________", LineStyle.Normal),
-            new("", LineStyle.Normal),
-            new("10. Location of training\t\t: ________________________________________________", LineStyle.Normal),
+            new("10. Location of training\t\t            : ________________________________________________", LineStyle.Normal),
             new("      _______________________________________________________________________________", LineStyle.Normal),
             new(" (if different from the company address)", LineStyle.Normal),
             new("", LineStyle.Normal),
-            new("11. Other job requirements / conditions: _______________________________________________", LineStyle.Normal),
+            new("11. Other job requirements / conditions : _______________________________________________", LineStyle.Normal),
             new("      _______________________________________________________________________________", LineStyle.Normal),
             new("", LineStyle.Normal),
             new("We fully understand that we are not allowed to request, use or borrow any form of resources", LineStyle.Normal),
@@ -317,22 +317,44 @@ public static class CompanyAcceptanceLetterDocumentBuilder
 
         if (stampFieldLineIndices.Count > 0)
         {
+            const double lineHeight = 13d;
+            const double boxWidth = 145d;
+            const double minBoxHeight = 85d;
+            const double maxBoxHeight = 120d;
+            const double extraTop = 2d;
+            const double extraBottom = 6d;
+            const double rightOffset = 8d;
+
             var first = stampFieldLineIndices.Min();
             var last = stampFieldLineIndices.Max();
-            var topY = 790 - (first * 13) + 3;
-            var bottomY = 790 - (last * 13) - 3;
-            var height = topY - bottomY;
-            var boxX = PageWidth - RightMargin - 110;
-            var boxWidth = 110d;
+
+            var contentTopY = 790 - (first * lineHeight);
+            var contentBottomY = 790 - (last * lineHeight);
+
+            var topY = contentTopY + extraTop;
+            var naturalBottomY = contentBottomY - extraBottom;
+            var naturalHeight = topY - naturalBottomY;
+            var boxHeight = Math.Max(minBoxHeight, naturalHeight);
+            boxHeight = Math.Min(maxBoxHeight, boxHeight);
+            var bottomY = topY - boxHeight;
+
+            var boxX = PageWidth - RightMargin - boxWidth - rightOffset;
 
             sb.AppendLine("0 0 0 RG");
             sb.AppendLine("0.8 w");
-            sb.AppendLine($"{boxX:0.###} {bottomY:0.###} {boxWidth:0.###} {height:0.###} re S");
+            sb.AppendLine($"{boxX:0.###} {bottomY:0.###} {boxWidth:0.###} {boxHeight:0.###} re S");
+
+            var stampText = "Company Stamp";
+            var stampTextWidth = EstimateTextWidth(stampText, LineStyle.Normal);
+            var textX = boxX + (boxWidth - stampTextWidth) / 2.0;
+            var textY = topY - 14;
 
             sb.AppendLine("BT");
             sb.AppendLine("/F1 11 Tf");
-            sb.AppendLine($"{boxX + 12:0.###} {topY - 14:0.###} Td");
-            sb.AppendLine("(Company Stamp) Tj");
+            sb.AppendLine($"{textX:0.###} {textY:0.###} Td");
+            sb.Append('(')
+              .Append(EscapePdfText(stampText))
+              .AppendLine(") Tj");
             sb.AppendLine("ET");
         }
 
@@ -453,13 +475,19 @@ public static class CompanyAcceptanceLetterDocumentBuilder
 
     private static bool IsStampFieldLine(string text)
     {
-        var value = (text ?? string.Empty).TrimStart();
-        return value.StartsWith("Name", StringComparison.OrdinalIgnoreCase)
-            || value.StartsWith("Designation", StringComparison.OrdinalIgnoreCase)
-            || value.StartsWith("Email", StringComparison.OrdinalIgnoreCase)
-            || value.StartsWith("Tel No.", StringComparison.OrdinalIgnoreCase)
-            || value.StartsWith("Fax No", StringComparison.OrdinalIgnoreCase)
-            || value.StartsWith("Website", StringComparison.OrdinalIgnoreCase);
+        var value = text ?? string.Empty;
+        return value.StartsWith("\tName\t:", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("\tDesignation\t:", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("\tEmail\t:", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("\tTel No.\t :", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("\tFax No\t :", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("\tWebsite\t :", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("        Name", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("        Designation", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("        Email", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("        Tel No.", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("        Fax No", StringComparison.OrdinalIgnoreCase)
+            || value.StartsWith("        Website", StringComparison.OrdinalIgnoreCase);
     }
 
     private static double EstimateTextWidth(string text, LineStyle style)
