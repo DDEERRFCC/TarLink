@@ -68,3 +68,4 @@ It helps manage internship applications, job postings, student profiles, and pro
    git add .
    git commit -m "My changes"
    git push
+   code .
