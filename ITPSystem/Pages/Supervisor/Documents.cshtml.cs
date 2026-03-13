@@ -19,6 +19,10 @@ namespace ITPSystem.Pages.Supervisor
         }
 
         public List<StudentApplication> Students { get; set; } = new();
+        public string? SelectedStudent { get; private set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int? applicationId { get; set; }
 
         [TempData]
         public string? Message { get; set; }
@@ -34,19 +38,14 @@ namespace ITPSystem.Pages.Supervisor
             return Page();
         }
 
-        public IActionResult OnPostApprove(int applicationId, string documentType, string? remarks)
+        public IActionResult OnPostApprove(int applicationId, string? remarks)
         {
-            return SaveReview(applicationId, documentType, "approved", remarks);
+            return SaveReview(applicationId, "approved", remarks);
         }
 
-        public IActionResult OnPostReject(int applicationId, string documentType, string? remarks)
+        public IActionResult OnPostReject(int applicationId, string? remarks)
         {
-            return SaveReview(applicationId, documentType, "rejected", remarks);
-        }
-
-        public IActionResult OnPostDownload(int applicationId, string documentType)
-        {
-            return DownloadDocument(applicationId, documentType, asAttachment: true);
+            return SaveReview(applicationId, "rejected", remarks);
         }
 
         public IActionResult OnGetView(int applicationId, string documentType)
@@ -82,7 +81,7 @@ namespace ITPSystem.Pages.Supervisor
             if (student == null)
             {
                 Message = "Student application not found.";
-                return RedirectToPage();
+                return RedirectToPage(new { applicationId });
             }
 
             var fileName = GetDocumentFileName(student, documentType);
@@ -90,7 +89,7 @@ namespace ITPSystem.Pages.Supervisor
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 Message = "No file found for selected document.";
-                return RedirectToPage();
+                return RedirectToPage(new { applicationId });
             }
 
             var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
@@ -100,7 +99,7 @@ namespace ITPSystem.Pages.Supervisor
             if (!System.IO.File.Exists(fullPath))
             {
                 Message = $"File not found on server: {fileName}";
-                return RedirectToPage();
+                return RedirectToPage(new { applicationId });
             }
 
             var provider = new FileExtensionContentTypeProvider();
@@ -117,29 +116,36 @@ namespace ITPSystem.Pages.Supervisor
             return PhysicalFile(fullPath, contentType);
         }
 
-        private IActionResult SaveReview(int applicationId, string documentType, string status, string? remarks)
+        private IActionResult SaveReview(int applicationId, string status, string? remarks)
         {
             if (!IsSupervisor(out var supervisorId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            var student = _db.StudentApplications.AsNoTracking().FirstOrDefault(s => s.application_id == applicationId);
+            var student = _db.StudentApplications.FirstOrDefault(s => s.application_id == applicationId);
             if (student == null)
             {
                 Message = "Student application not found.";
-                return RedirectToPage();
+                return RedirectToPage(new { applicationId });
             }
 
             _db.DocumentReviews.Add(new DocumentReview
             {
                 application_id = applicationId,
                 reviewed_by = supervisorId,
-                document_type = documentType,
+                document_type = "application",
                 status = status,
                 remarks = remarks,
                 reviewed_at = DateTime.UtcNow
             });
+
+            student.applyStatus = status;
+            if (!string.IsNullOrWhiteSpace(remarks))
+            {
+                student.remark = remarks.Trim();
+            }
+            student.updated_at = DateTime.UtcNow;
             _db.SaveChanges();
 
             var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId);
@@ -150,23 +156,35 @@ namespace ITPSystem.Pages.Supervisor
                     from_user_id = supervisorId,
                     to_user_id = studentUser.user_id,
                     type = "document_review",
-                    title = $"Your {documentType} was {status}",
-                    message = string.IsNullOrWhiteSpace(remarks) ? "Please check your document status." : remarks
+                    title = $"Your document application was {status}",
+                    message = string.IsNullOrWhiteSpace(remarks) ? "Please check your document application status." : remarks
                 });
                 _db.SaveChanges();
             }
 
-            Message = $"Document {status} successfully.";
-            return RedirectToPage();
+            Message = $"Application {status} successfully.";
+            return RedirectToPage(new { applicationId });
         }
 
         private void LoadStudents()
         {
             var userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
-            Students = _db.StudentApplications.AsNoTracking()
+            var userName = HttpContext.Session.GetString("UserName") ?? string.Empty;
+
+            var query = _db.StudentApplications.AsNoTracking()
                 .Where(s => s.ucSupervisorEmail == userEmail || s.comSupervisorEmail == userEmail)
-                .OrderBy(s => s.studentName)
-                .ToList();
+                .OrderBy(s => s.studentName);
+
+            if (applicationId.HasValue)
+            {
+                query = query.Where(s => s.application_id == applicationId.Value).OrderBy(s => s.studentName);
+            }
+
+            Students = query.ToList();
+            if (Students.Count == 1)
+            {
+                SelectedStudent = $"{Students[0].studentName} ({Students[0].studentID})";
+            }
         }
 
         private bool IsSupervisor(out int userId)

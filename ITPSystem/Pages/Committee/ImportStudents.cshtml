@@ -13,11 +13,46 @@
     <div class="alert alert-info">@Model.Message</div>
 }
 
-<form method="post" enctype="multipart/form-data" class="card card-body" style="max-width:680px;">
+<div class="alert alert-secondary" style="max-width: 880px;">
+    <strong>Required columns:</strong>
+    <code>number_ic</code> (or <code>uc_number</code>), <code>studentID</code>, <code>studentName</code>, <code>studentEmail</code>,
+    <code>cohortId</code>, <code>level</code>, <code>programme</code>, <code>groupNo</code><br />
+    <strong>Optional columns:</strong>
+    <code>applyStatus</code>, <code>ucSupervisor</code>, <code>ucSupervisorEmail</code>, <code>ucSupervisorContact</code><br />
+    Personal-information fields are intentionally excluded. Account password is auto-set to each row's <code>number_ic</code>.
+</div>
+
+<form method="post" asp-page-handler="Import" enctype="multipart/form-data" class="card card-body" style="max-width:680px;">
     <div class="mb-2">
-        <label class="form-label">Student CSV File</label>
-        <input type="file" class="form-control" />
+        <label asp-for="UploadFile" class="form-label">Student Sheet File (.xlsx or .csv)</label>
+        <input asp-for="UploadFile" type="file" class="form-control" accept=".xlsx,.csv" />
     </div>
     <button type="submit" class="btn btn-primary">Import</button>
 </form>
+
+@if (Model.Errors.Any())
+{
+    <div class="card mt-3" style="max-width: 980px;">
+        <div class="card-header">Import Errors (@Model.Errors.Count)</div>
+        <div class="table-responsive">
+            <table class="table table-sm mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 120px;">Row</th>
+                        <th>Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var err in Model.Errors)
+                    {
+                        <tr>
+                            <td>@err.RowNo</td>
+                            <td>@err.Error</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
 </div>

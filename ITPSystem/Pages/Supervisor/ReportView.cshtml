@@ -1,0 +1,39 @@
+@page
+@model ITPSystem.Pages.Supervisor.ReportViewModel
+<h2>Report Content</h2>
+
+<div class="mb-3 d-flex gap-2">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/ReportResults" asp-route-applicationId="@Model.applicationId">Back to Results</a>
+    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/ReportResults">View Results</a>
+</div>
+
+@if (Model.Report == null)
+{
+    <div class="alert alert-warning">Report not found.</div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h5>@Model.GetReportTitle()</h5>
+            <p class="mb-1"><strong>Student:</strong> @(Model.Student?.studentName ?? "Unknown") (@(Model.Student?.studentID ?? "-"))</p>
+            <p class="mb-1"><strong>Due Date:</strong> @Model.Report.dueDate.ToString("yyyy-MM-dd")</p>
+            <p class="mb-1"><strong>Updated:</strong> @Model.Report.updated_at.ToString("yyyy-MM-dd HH:mm")</p>
+            <p class="mb-2">
+                <strong>Current Status:</strong>
+                <span class="badge @Model.GetStatusBadgeClass(Model.Report.status)">@Model.GetStatusLabel(Model.Report.status)</span>
+            </p>
+
+            <h6>Report Content</h6>
+            <div class="border rounded p-3 mb-3" style="white-space: pre-wrap;">@(string.IsNullOrWhiteSpace(Model.Report.remark) ? "-" : Model.Report.remark)</div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Report.file_path))
+            {
+                <p class="mb-0">
+                    <strong>Attachment:</strong>
+                    <a href="@Model.Report.file_path" target="_blank" rel="noopener">Open Uploaded File</a>
+                </p>
+            }
+        </div>
+    </div>
+}

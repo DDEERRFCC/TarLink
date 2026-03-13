@@ -8,25 +8,197 @@
 <partial name="_CommitteeHeader" />
 <partial name="_CommitteeNav" />
 
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-info">@Model.StatusMessage</div>
+}
+
+@if (!Model.ShowEditForm)
+{
+    <div class="card mb-3">
+        <div class="card-header">Create New University Supervisor</div>
+        <div class="card-body">
+            <form method="post" asp-page-handler="Create" class="row g-3">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="col-md-3">
+                    <label asp-for="CreateInput.staffId" class="form-label">Staff ID</label>
+                    <input asp-for="CreateInput.staffId" class="form-control" placeholder="US001" />
+                    <span asp-validation-for="CreateInput.staffId" class="text-danger"></span>
+                </div>
+                <div class="col-md-5">
+                    <label asp-for="CreateInput.name" class="form-label">Name</label>
+                    <input asp-for="CreateInput.name" class="form-control" />
+                    <span asp-validation-for="CreateInput.name" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="CreateInput.email" class="form-label">Email</label>
+                    <input asp-for="CreateInput.email" class="form-control" />
+                    <span asp-validation-for="CreateInput.email" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="CreateInput.password" class="form-label">Password</label>
+                    <input asp-for="CreateInput.password" class="form-control" />
+                    <span asp-validation-for="CreateInput.password" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="CreateInput.faculty" class="form-label">Faculty</label>
+                    <select asp-for="CreateInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
+                        <option value="">-- Select Faculty --</option>
+                    </select>
+                    <span asp-validation-for="CreateInput.faculty" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="CreateInput.campus" class="form-label">Campus</label>
+                    <select asp-for="CreateInput.campus" asp-items="Model.CampusOptions" class="form-select">
+                        <option value="">-- Select Campus --</option>
+                    </select>
+                    <span asp-validation-for="CreateInput.campus" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="CreateInput.remark" class="form-label">Remark</label>
+                    <input asp-for="CreateInput.remark" class="form-control" />
+                    <span asp-validation-for="CreateInput.remark" class="text-danger"></span>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                    <div class="form-check mt-4">
+                        <input asp-for="CreateInput.isActive" class="form-check-input" />
+                        <label asp-for="CreateInput.isActive" class="form-check-label">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                    <div class="form-check mt-4">
+                        <input asp-for="CreateInput.isCommittee" class="form-check-input" />
+                        <label asp-for="CreateInput.isCommittee" class="form-check-label">Committee</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Create Supervisor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@if (Model.ShowEditForm)
+{
+    <div class="card mb-3 border-warning">
+        <div class="card-header bg-warning-subtle">Edit Supervisor - @Model.EditInput.staffId</div>
+        <div class="card-body">
+            <form method="post" asp-page-handler="Update" class="row g-3">
+                <input asp-for="EditInput.staffId" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Staff ID</label>
+                    <input value="@Model.EditInput.staffId" class="form-control" disabled />
+                </div>
+                <div class="col-md-5">
+                    <label asp-for="EditInput.name" class="form-label">Name</label>
+                    <input asp-for="EditInput.name" class="form-control" />
+                    <span asp-validation-for="EditInput.name" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="EditInput.email" class="form-label">Email</label>
+                    <input asp-for="EditInput.email" class="form-control" />
+                    <span asp-validation-for="EditInput.email" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="EditInput.password" class="form-label">Password</label>
+                    <input asp-for="EditInput.password" class="form-control" />
+                    <span asp-validation-for="EditInput.password" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="EditInput.faculty" class="form-label">Faculty</label>
+                    <select asp-for="EditInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
+                        <option value="">-- Select Faculty --</option>
+                    </select>
+                    <span asp-validation-for="EditInput.faculty" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="EditInput.campus" class="form-label">Campus</label>
+                    <select asp-for="EditInput.campus" asp-items="Model.CampusOptions" class="form-select">
+                        <option value="">-- Select Campus --</option>
+                    </select>
+                    <span asp-validation-for="EditInput.campus" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="EditInput.remark" class="form-label">Remark</label>
+                    <input asp-for="EditInput.remark" class="form-control" />
+                    <span asp-validation-for="EditInput.remark" class="text-danger"></span>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                    <div class="form-check mt-4">
+                        <input asp-for="EditInput.isActive" class="form-check-input" />
+                        <label asp-for="EditInput.isActive" class="form-check-label">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-center">
+                    <div class="form-check mt-4">
+                        <input asp-for="EditInput.isCommittee" class="form-check-input" />
+                        <label asp-for="EditInput.isCommittee" class="form-check-label">Committee</label>
+                    </div>
+                </div>
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-warning">Update</button>
+                    <a asp-page="/Committee/UniSupervisors" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
 <div class="table-responsive">
     <table class="table table-sm table-bordered align-middle">
         <thead>
             <tr>
+                <th>Staff ID</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Faculty</th>
+                <th>Campus</th>
+                <th>Remark</th>
+                <th>Active</th>
+                <th>Committee</th>
+                <th>Created At</th>
                 <th>Assigned Students</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
+            @if (!Model.Supervisors.Any())
+            {
+                <tr>
+                    <td colspan="11" class="text-center text-muted">No university supervisors found.</td>
+                </tr>
+            }
             @foreach (var s in Model.Supervisors)
             {
                 <tr>
-                    <td>@s.Name</td>
-                    <td>@s.Email</td>
+                    <td>@s.staffId</td>
+                    <td>@s.name</td>
+                    <td>@(s.email ?? "-")</td>
+                    <td>@(s.faculty ?? "-")</td>
+                    <td>@(s.campus ?? "-")</td>
+                    <td>@(s.remark ?? "-")</td>
+                    <td>@(s.isActive ? "Yes" : "No")</td>
+                    <td>@(s.isCommittee ? "Yes" : "No")</td>
+                    <td>@s.created_at.ToString("dd MMM yyyy HH:mm")</td>
                     <td>@s.StudentCount</td>
+                    <td class="d-flex gap-2">
+                        <a asp-page="/Committee/UniSupervisors" asp-route-editId="@s.staffId" class="btn btn-sm btn-outline-warning">Edit</a>
+                        <form method="post" asp-page-handler="Delete" class="d-inline">
+                            <input type="hidden" name="staffId" value="@s.staffId" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete supervisor @s.staffId?');">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

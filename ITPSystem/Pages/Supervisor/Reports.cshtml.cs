@@ -16,6 +16,10 @@ namespace ITPSystem.Pages.Supervisor
         }
 
         public List<ReportViewItem> Items { get; set; } = new();
+        public string? SelectedStudent { get; private set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int? applicationId { get; set; }
 
         [TempData]
         public string? Message { get; set; }
@@ -27,18 +31,17 @@ namespace ITPSystem.Pages.Supervisor
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            LoadItems();
-            return Page();
+            return RedirectToPage("/Supervisor/ReportResults", new { applicationId });
         }
 
-        public IActionResult OnPostApprove(long reportId, string? remarks)
+        public IActionResult OnPostApprove(long reportId, string? remarks, int? applicationId)
         {
-            return UpdateReport(reportId, 2, remarks, "approved");
+            return RedirectToPage("/Supervisor/ReportResults", new { applicationId });
         }
 
-        public IActionResult OnPostReject(long reportId, string? remarks)
+        public IActionResult OnPostReject(long reportId, string? remarks, int? applicationId)
         {
-            return UpdateReport(reportId, 3, remarks, "rejected");
+            return RedirectToPage("/Supervisor/ReportResults", new { applicationId });
         }
 
         public string GetStatusLabel(byte? status)
@@ -62,7 +65,7 @@ namespace ITPSystem.Pages.Supervisor
             return report.reportNo.HasValue ? $"Progress Report {report.reportNo.Value}" : "Progress Report";
         }
 
-        private IActionResult UpdateReport(long reportId, byte status, string? remarks, string action)
+        private IActionResult UpdateReport(long reportId, byte status, string? remarks, string action, int? selectedApplicationId)
         {
             if (!IsSupervisor(out var supervisorId))
             {
@@ -73,11 +76,11 @@ namespace ITPSystem.Pages.Supervisor
             if (report == null)
             {
                 Message = "Report not found.";
-                return RedirectToPage();
+                return RedirectToPage(new { applicationId = selectedApplicationId });
             }
 
             report.status = status;
-            report.remark = remarks;
+            report.remark = string.IsNullOrWhiteSpace(remarks) ? null : remarks.Trim();
             report.updated_at = DateTime.UtcNow;
             _db.SaveChanges();
 
@@ -99,20 +102,29 @@ namespace ITPSystem.Pages.Supervisor
             }
 
             Message = $"Report {action} successfully.";
-            return RedirectToPage();
+            return RedirectToPage(new { applicationId = report.applicantId });
         }
 
         private void LoadItems()
         {
             var userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+            var userName = HttpContext.Session.GetString("UserName") ?? string.Empty;
             var students = _db.StudentApplications.AsNoTracking()
-                .Where(s => s.ucSupervisorEmail == userEmail || s.comSupervisorEmail == userEmail)
+                .Where(s =>
+                    s.ucSupervisorEmail == userEmail ||
+                    s.comSupervisorEmail == userEmail ||
+                    s.ucSupervisor == userName ||
+                    s.comSupervisor == userName)
                 .ToDictionary(s => s.application_id);
 
             var studentAppIds = students.Keys.ToList();
+            if (applicationId.HasValue)
+            {
+                studentAppIds = studentAppIds.Where(id => id == applicationId.Value).ToList();
+            }
 
             Items = _db.ProgressReports.AsNoTracking()
-                .Where(r => studentAppIds.Contains(r.applicantId))
+                .Where(r => studentAppIds.Contains(r.applicantId) && r.status == 1)
                 .OrderBy(r => r.dueDate)
                 .ToList()
                 .Select(r =>
@@ -126,6 +138,11 @@ namespace ITPSystem.Pages.Supervisor
                     };
                 })
                 .ToList();
+
+            if (applicationId.HasValue && students.TryGetValue(applicationId.Value, out var student))
+            {
+                SelectedStudent = $"{student.studentName} ({student.studentID})";
+            }
         }
 
         private bool IsSupervisor(out int userId)

@@ -31,11 +31,12 @@ namespace ITPSystem.Pages.Supervisor
 
             if (string.IsNullOrWhiteSpace(userEmail) || userRole != "supervisor")
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             UserName = HttpContext.Session.GetString("UserName") ?? userEmail;
             Students = _db.StudentApplications.AsNoTracking()
+                .Include(s => s.Cohort)
                 .Where(s => s.ucSupervisorEmail == userEmail || s.comSupervisorEmail == userEmail)
                 .OrderBy(s => s.studentName)
                 .ToList();
