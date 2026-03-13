@@ -15,11 +15,11 @@
 
 <div class="alert alert-secondary" style="max-width: 880px;">
     <strong>Required columns:</strong>
-    <code>number_ic</code> (or <code>uc_number</code>), <code>studentID</code>, <code>studentName</code>, <code>studentEmail</code>,
+    <code>number_ic</code>, <code>studentID</code>, <code>studentName</code>, <code>studentEmail</code>,
     <code>cohortId</code>, <code>level</code>, <code>programme</code>, <code>groupNo</code><br />
     <strong>Optional columns:</strong>
-    <code>applyStatus</code>, <code>ucSupervisor</code>, <code>ucSupervisorEmail</code>, <code>ucSupervisorContact</code><br />
-    Personal-information fields are intentionally excluded. Account password is auto-set to each row's <code>number_ic</code>.
+    <code>password</code>, <code>applyStatus</code>, <code>ucSupervisor</code>, <code>ucSupervisorEmail</code>, <code>ucSupervisorContact</code><br />
+    Personal-information fields are intentionally excluded. If <code>password</code> is empty, password defaults to IC/UC number.
 </div>
 
 <form method="post" asp-page-handler="Import" enctype="multipart/form-data" class="card card-body" style="max-width:680px;">
