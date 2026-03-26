@@ -15,7 +15,8 @@ public class StudentDashboardModel : PageModel
 {
     private const long MaxUploadBytes = 10 * 1024 * 1024;
     private const string DynamicCompanyAcceptanceFile = CompanyAcceptanceLetterDocumentBuilder.GeneratedFileName;
-    private const string DynamicIndemnityFile = IndemnityLetterDocumentBuilder.GeneratedFileName;
+    private const string DynamicIndemnityFile = IndemnityLetterWordTemplateBuilder.GeneratedFileName;
+    private const string IndemnityDisplayTitle = "Indemnity Letter";
     private readonly IWebHostEnvironment _env;
     private readonly ApplicationDbContext _db;
     private readonly IConfiguration _config;
@@ -218,13 +219,14 @@ public class StudentDashboardModel : PageModel
         if (string.Equals(safeFileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase))
         {
             var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
-            var fileBytes = IndemnityLetterDocumentBuilder.BuildPdf(student);
+            var fileBytes = IndemnityLetterWordTemplateBuilder.Build(student, _env.WebRootPath);
+            const string indemnityContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
             if (download)
             {
-                return File(fileBytes, "application/pdf", DynamicIndemnityFile);
+                return File(fileBytes, indemnityContentType, DynamicIndemnityFile);
             }
 
-            return File(fileBytes, "application/pdf");
+            return File(fileBytes, indemnityContentType);
         }
 
         var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
@@ -254,7 +256,7 @@ public class StudentDashboardModel : PageModel
         var requiredDocs = new (string Title, string FileName, bool CanView)[]
         {
             ("Company Acceptance Letter", DynamicCompanyAcceptanceFile, true),
-            ("Indemnity Letter", DynamicIndemnityFile, true),
+            (IndemnityDisplayTitle, DynamicIndemnityFile, true),
             ("Parent Acknowledgement Form", "DownloadParentAcknowledgementForm.pdf", true),
             ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.xlsx", false),
             ("Progress Report Template", "ProgressReportTemplate.docx", false),
@@ -268,7 +270,7 @@ public class StudentDashboardModel : PageModel
                 Title = d.Title,
                 ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = false }) ?? "#",
                 DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = true }) ?? "#",
-                Exists = IsDynamicDocument(d.FileName) || System.IO.File.Exists(Path.Combine(formDir, d.FileName)),
+                Exists = IsDynamicDocument(d.FileName) || StaticDocumentExists(d.FileName),
                 CanView = d.CanView
             })
             .ToList();
@@ -630,6 +632,12 @@ public class StudentDashboardModel : PageModel
     {
         return string.Equals(fileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase)
             || string.Equals(fileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool StaticDocumentExists(string fileName)
+    {
+        var directory = Path.Combine(_env.WebRootPath, "documents", "templates");
+        return System.IO.File.Exists(Path.Combine(directory, fileName));
     }
 }
 

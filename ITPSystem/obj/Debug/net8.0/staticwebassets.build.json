@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "oQHLIrh60Q3PaZp29NwjMMAA84udj5MEa3E1czbJ8kU=",
+  "Hash": "UIb/uSXzcwh7aVB1+G1eCKf2fRR/UGHvRVkbf5VG2MQ=",
   "Source": "ITPSystem",
   "BasePath": "_content/ITPSystem",
   "Mode": "Default",
@@ -72,6 +72,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\FOCS_StudF01 Indemnity Letter (09.11.2022).docx",
+      "SourceId": "ITPSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\",
+      "BasePath": "_content/ITPSystem",
+      "RelativePath": "documents/FOCS_StudF01 Indemnity Letter (09.11.2022).docx",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\documents\\FOCS_StudF01 Indemnity Letter (09.11.2022).docx"
     },
     {
       "Identity": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\AppointmentConfirmationLetter.pdf",
