@@ -14,7 +14,7 @@ using System.Net.Mail;
 public class StudentDashboardModel : PageModel
 {
     private const long MaxUploadBytes = 10 * 1024 * 1024;
-    private const string DynamicCompanyAcceptanceFile = CompanyAcceptanceLetterDocumentBuilder.GeneratedFileName;
+    private const string DynamicCompanyAcceptanceFile = CompanyAcceptanceLetterWordTemplateBuilder.GeneratedFileName;
     private const string DynamicIndemnityFile = IndemnityLetterWordTemplateBuilder.GeneratedFileName;
     private const string IndemnityDisplayTitle = "Indemnity Letter";
     private readonly IWebHostEnvironment _env;
@@ -205,28 +205,30 @@ public class StudentDashboardModel : PageModel
             return NotFound();
         }
 
-        if (string.Equals(safeFileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase))
-        {
-            var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
-            var fileBytes = CompanyAcceptanceLetterDocumentBuilder.BuildPdf(student);
-            if (download)
-            {
-                return File(fileBytes, "application/pdf", DynamicCompanyAcceptanceFile);
-            }
-
-            return File(fileBytes, "application/pdf");
-        }
         if (string.Equals(safeFileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase))
         {
             var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
             var fileBytes = IndemnityLetterWordTemplateBuilder.Build(student, _env.WebRootPath);
-            const string indemnityContentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            const string indemnityContentType = "application/pdf";
             if (download)
             {
                 return File(fileBytes, indemnityContentType, DynamicIndemnityFile);
             }
 
             return File(fileBytes, indemnityContentType);
+        }
+
+        if (string.Equals(safeFileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase))
+        {
+            var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
+            var fileBytes = CompanyAcceptanceLetterWordTemplateBuilder.Build(student, _env.WebRootPath);
+            const string companyAcceptanceContentType = "application/pdf";
+            if (download)
+            {
+                return File(fileBytes, companyAcceptanceContentType, DynamicCompanyAcceptanceFile);
+            }
+
+            return File(fileBytes, companyAcceptanceContentType);
         }
 
         var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
@@ -255,8 +257,8 @@ public class StudentDashboardModel : PageModel
         var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
         var requiredDocs = new (string Title, string FileName, bool CanView)[]
         {
-            ("Company Acceptance Letter", DynamicCompanyAcceptanceFile, true),
             (IndemnityDisplayTitle, DynamicIndemnityFile, true),
+            ("Company Acceptance Letter", DynamicCompanyAcceptanceFile, true),
             ("Parent Acknowledgement Form", "DownloadParentAcknowledgementForm.pdf", true),
             ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.xlsx", false),
             ("Progress Report Template", "ProgressReportTemplate.docx", false),
@@ -630,8 +632,8 @@ public class StudentDashboardModel : PageModel
 
     private static bool IsDynamicDocument(string fileName)
     {
-        return string.Equals(fileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase)
-            || string.Equals(fileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase);
+        return string.Equals(fileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase)
+            || string.Equals(fileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool StaticDocumentExists(string fileName)

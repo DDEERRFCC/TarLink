@@ -1,26 +1,20 @@
+using System.Globalization;
 using System.IO.Compression;
 using System.Reflection;
-using System.Globalization;
-using System.Text;
 using System.Runtime.Versioning;
+using System.Text;
 using ITPSystem.Models;
 
 namespace ITPSystem.Helpers;
 
-public static class IndemnityLetterWordTemplateBuilder
+public static class CompanyAcceptanceLetterWordTemplateBuilder
 {
-    private const string TemplateFileName = "FOCS_StudF01 Indemnity Letter (09.11.2022).docx";
+    private const string TemplateFileName = "FOCS_EmpF02 Company Acceptance Letter (09.11.2022).docx";
     private const string DocumentXmlPath = "word/document.xml";
-    private const string CourseTitlePlaceholder = "&lt;course code and title&gt;";
-    private const string LetterDatePlaceholder = "Date: _______________";
-    private const string CompanyPlaceholder = "________________________________________________________________";
-    private const string StartDatePlaceholderPart1 = "from _______________________";
-    private const string StartDatePlaceholderPart2 = "_______";
-    private const string StartDatePlaceholderPart3 = "__";
-    private const string EndDatePlaceholder = "to ______________________________.";
-    private const string DateHintParagraphAnchor = "(start date)";
+    private const string StartDatePlaceholder = "{Start Date}";
+    private const string EndDatePlaceholder = "{End Date}";
 
-    public const string GeneratedFileName = "GeneratedIndemnityLetter.pdf";
+    public const string GeneratedFileName = "GeneratedCompanyAcceptanceLetter.pdf";
 
     public static byte[] Build(StudentApplication? student, string webRootPath)
     {
@@ -32,10 +26,10 @@ public static class IndemnityLetterWordTemplateBuilder
         var templatePath = Path.Combine(webRootPath, "documents", "templates", TemplateFileName);
         if (!File.Exists(templatePath))
         {
-            throw new FileNotFoundException("Indemnity letter template was not found.", templatePath);
+            throw new FileNotFoundException("Company acceptance letter template was not found.", templatePath);
         }
 
-        var tempDirectory = Path.Combine(Path.GetTempPath(), "ITPSystem", "IndemnityLetter");
+        var tempDirectory = Path.Combine(Path.GetTempPath(), "ITPSystem", "CompanyAcceptanceLetter");
         Directory.CreateDirectory(tempDirectory);
 
         var tempDocxPath = Path.Combine(tempDirectory, $"{Guid.NewGuid():N}.docx");
@@ -61,7 +55,7 @@ public static class IndemnityLetterWordTemplateBuilder
         using var archive = new ZipArchive(fileStream, ZipArchiveMode.Update, leaveOpen: false);
 
         var documentEntry = archive.GetEntry(DocumentXmlPath)
-            ?? throw new InvalidOperationException("The indemnity letter template is missing word/document.xml.");
+            ?? throw new InvalidOperationException("The company acceptance letter template is missing word/document.xml.");
 
         string xml;
         using (var entryStream = documentEntry.Open())
@@ -70,24 +64,34 @@ public static class IndemnityLetterWordTemplateBuilder
             xml = reader.ReadToEnd();
         }
 
-        var courseTitle = EscapeXml(GetCourseCodeAndTitle(student));
-        var companyName = GetCompanyName(student?.comName);
-        var startDate = FormatInternshipDate(student?.Cohort?.startDate);
-        var endDate = FormatInternshipDate(student?.Cohort?.endDate);
-        var letterDate = EscapeXml(DateTime.Today.ToString("dd/MM/yyyy"));
+        var startDate = EscapeXml(FormatInternshipDate(student?.Cohort?.startDate));
+        var endDate = EscapeXml(FormatInternshipDate(student?.Cohort?.endDate));
 
-        xml = xml.Replace(CourseTitlePlaceholder, courseTitle, StringComparison.Ordinal);
-        xml = xml.Replace(LetterDatePlaceholder, $"Date: {letterDate}", StringComparison.Ordinal);
-        xml = xml.Replace(CompanyPlaceholder, EscapeXml(companyName), StringComparison.Ordinal);
-        xml = ReplaceStartDate(xml, startDate);
-        xml = xml.Replace(EndDatePlaceholder, $"to {EscapeXml(endDate)}.", StringComparison.Ordinal);
-        xml = RemoveParagraphContaining(xml, DateHintParagraphAnchor);
+        xml = xml.Replace(StartDatePlaceholder, startDate, StringComparison.Ordinal);
+        xml = xml.Replace(EndDatePlaceholder, endDate, StringComparison.Ordinal);
 
         documentEntry.Delete();
         var updatedEntry = archive.CreateEntry(DocumentXmlPath, CompressionLevel.Optimal);
         using var updatedStream = updatedEntry.Open();
         using var writer = new StreamWriter(updatedStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         writer.Write(xml);
+    }
+
+    private static string FormatInternshipDate(DateTime? date)
+    {
+        return date.HasValue
+            ? date.Value.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)
+            : "______________";
+    }
+
+    private static string EscapeXml(string value)
+    {
+        return value
+            .Replace("&", "&amp;", StringComparison.Ordinal)
+            .Replace("<", "&lt;", StringComparison.Ordinal)
+            .Replace(">", "&gt;", StringComparison.Ordinal)
+            .Replace("\"", "&quot;", StringComparison.Ordinal)
+            .Replace("'", "&apos;", StringComparison.Ordinal);
     }
 
     [SupportedOSPlatform("windows")]
@@ -148,7 +152,7 @@ public static class IndemnityLetterWordTemplateBuilder
         if (threadException != null)
         {
             throw new InvalidOperationException(
-                "Failed to convert the indemnity letter to PDF. Make sure Microsoft Word is installed on this machine.",
+                "Failed to convert the company acceptance letter to PDF. Make sure Microsoft Word is installed on this machine.",
                 threadException);
         }
 
@@ -156,34 +160,6 @@ public static class IndemnityLetterWordTemplateBuilder
         {
             throw new InvalidOperationException("Word did not produce the PDF file.");
         }
-    }
-
-    private static string GetCourseCodeAndTitle(StudentApplication? student)
-    {
-        var programme = (student?.programme ?? string.Empty).Trim().ToUpperInvariant();
-        var level = student?.level;
-
-        return (programme, level) switch
-        {
-            ("RSD", 1) => "RSD Diploma in Software Engineering",
-            ("RIT", 1) => "RIT Diploma in Information Technology",
-            ("RSD", 2) => "RSD Bachelor of Software Engineering (Honours)",
-            ("RIT", 2) => "RIT Bachelor of Information Technology (Honours)",
-            ("RSD", _) => "RSD Software Engineering",
-            ("RIT", _) => "RIT Information Technology",
-            _ when !string.IsNullOrWhiteSpace(programme) => programme,
-            _ => "the relevant course"
-        };
-    }
-
-    private static string EscapeXml(string value)
-    {
-        return value
-            .Replace("&", "&amp;", StringComparison.Ordinal)
-            .Replace("<", "&lt;", StringComparison.Ordinal)
-            .Replace(">", "&gt;", StringComparison.Ordinal)
-            .Replace("\"", "&quot;", StringComparison.Ordinal)
-            .Replace("'", "&apos;", StringComparison.Ordinal);
     }
 
     private static void TryDeleteFile(string path)
@@ -198,87 +174,6 @@ public static class IndemnityLetterWordTemplateBuilder
         catch
         {
         }
-    }
-
-    private static string FitToPlaceholder(string? value, int length)
-    {
-        var trimmed = (value ?? string.Empty).Trim();
-        if (string.IsNullOrWhiteSpace(trimmed))
-        {
-            return new string('_', length);
-        }
-
-        return trimmed.Length > length
-            ? trimmed[..length]
-            : trimmed.PadRight(length, '_');
-    }
-
-    private static string GetCompanyName(string? value)
-    {
-        var trimmed = (value ?? string.Empty).Trim();
-        if (string.IsNullOrWhiteSpace(trimmed))
-        {
-            return string.Empty;
-        }
-
-        return trimmed.Length > 32
-            ? trimmed[..32]
-            : trimmed;
-    }
-
-    private static string FormatInternshipDate(DateTime? date)
-    {
-        return date.HasValue
-            ? date.Value.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)
-            : new string('_', 15);
-    }
-
-    private static string ReplaceStartDate(string xml, string startDate)
-    {
-        var fullPlaceholder = string.Concat(
-            StartDatePlaceholderPart1,
-            "</w:t></w:r><w:r><w:rPr><w:sz w:val=\"22\"/><w:szCs w:val=\"22\"/></w:rPr><w:t>",
-            StartDatePlaceholderPart2,
-            "</w:t></w:r><w:r w:rsidRPr=\"008918D4\"><w:rPr><w:sz w:val=\"22\"/><w:szCs w:val=\"22\"/></w:rPr><w:t>",
-            StartDatePlaceholderPart3);
-        var replacement = EscapeXml($"from {startDate}");
-
-        if (xml.Contains(fullPlaceholder, StringComparison.Ordinal))
-        {
-            return xml.Replace(fullPlaceholder, replacement, StringComparison.Ordinal);
-        }
-
-        return xml
-            .Replace(StartDatePlaceholderPart1, replacement, StringComparison.Ordinal)
-            .Replace(StartDatePlaceholderPart2, string.Empty, StringComparison.Ordinal)
-            .Replace(StartDatePlaceholderPart3, string.Empty, StringComparison.Ordinal);
-    }
-
-    private static string RemoveParagraphContaining(string xml, string anchor)
-    {
-        var anchorIndex = xml.IndexOf(anchor, StringComparison.Ordinal);
-        if (anchorIndex < 0)
-        {
-            return xml;
-        }
-
-        var paragraphStart = xml.LastIndexOf("<w:p ", anchorIndex, StringComparison.Ordinal);
-        if (paragraphStart < 0)
-        {
-            return xml;
-        }
-
-        var paragraphEnd = xml.IndexOf("</w:p>", anchorIndex, StringComparison.Ordinal);
-        if (paragraphEnd < 0)
-        {
-            return xml;
-        }
-
-        paragraphEnd += "</w:p>".Length;
-
-        return string.Concat(
-            xml.AsSpan(0, paragraphStart),
-            xml.AsSpan(paragraphEnd));
     }
 
     private static object GetProperty(object instance, string propertyName)
