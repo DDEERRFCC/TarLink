@@ -931,11 +931,13 @@
 @Html.AntiForgeryToken()
 
 @section FloatingUi {
-    <button type="button" id="messageFab" class="itp-message-fab" aria-label="Open AI assistant" aria-expanded="false" aria-controls="messagePanel">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 6.5C4 5.12 5.12 4 6.5 4h11C18.88 4 20 5.12 20 6.5v7c0 1.38-1.12 2.5-2.5 2.5H10l-4.2 3.15c-.66.5-1.6.03-1.6-.79V16.5A2.5 2.5 0 0 1 4 14.1V6.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-        </svg>
-    </button>
+<button type="button" id="messageFab" class="itp-message-fab" aria-label="Open AI assistant" aria-expanded="false" aria-controls="messagePanel">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2.6l1.35 3.46 3.71 1.35-3.71 1.35L12 12.22l-1.35-3.46-3.71-1.35 3.71-1.35L12 2.6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M18.2 11.2l.84 2.16 2.16.84-2.16.84-.84 2.16-.84-2.16-2.16-.84 2.16-.84.84-2.16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M8 13.2l1.22 3.14 3.14 1.22-3.14 1.22L8 22l-1.22-3.22-3.14-1.22 3.14-1.22L8 13.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+</button>
 
     <section id="messagePanel" class="itp-message-panel" aria-hidden="true">
         <div class="itp-message-head">
