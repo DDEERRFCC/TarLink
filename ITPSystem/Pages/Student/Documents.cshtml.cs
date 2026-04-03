@@ -11,6 +11,11 @@ public class StudentDocumentsModel : PageModel
 {
     private const string DynamicCompanyAcceptanceFile = CompanyAcceptanceLetterWordTemplateBuilder.GeneratedFileName;
     private const string DynamicIndemnityFile = IndemnityLetterWordTemplateBuilder.GeneratedFileName;
+    private const string DynamicParentAcknowledgementFile = ParentAcknowledgementFormWordTemplateBuilder.GeneratedFileName;
+    private const string DynamicStudentSupportLetterFile = StudentSupportLetterWordTemplateBuilder.GeneratedFileName;
+    private const string CompanySupervisorEvaluationTemplateFile = "FOCS_EmpF03.xlsx";
+    private const string ProgressReportTemplateFile = "FOCS_studF03 Progress Report Template.docx";
+    private const string FinalReportTemplateFile = "FOCS_studF04 Final Report Template.docx";
     private const string IndemnityDisplayTitle = "Indemnity Letter";
     private readonly IWebHostEnvironment _env;
     private readonly ApplicationDbContext _db;
@@ -59,11 +64,11 @@ public class StudentDocumentsModel : PageModel
         {
             DynamicCompanyAcceptanceFile,
             DynamicIndemnityFile,
-            "DownloadParentAcknowledgementForm.pdf",
-            "CompanySupervisorEvaluationForm.xlsx",
-            "ProgressReportTemplate.docx",
-            "FinalReportTemplate.docx",
-            "StudentSupportLetter.pdf",
+            DynamicParentAcknowledgementFile,
+            DynamicStudentSupportLetterFile,
+            CompanySupervisorEvaluationTemplateFile,
+            ProgressReportTemplateFile,
+            FinalReportTemplateFile,
             "AppointmentConfirmationLetter.pdf",
             "CompanySupervisorEvaluationForm.pdf",
             "WarningLetter.pdf"
@@ -99,6 +104,32 @@ public class StudentDocumentsModel : PageModel
             }
 
             return File(fileBytes, companyAcceptanceContentType);
+        }
+
+        if (string.Equals(safeFileName, DynamicParentAcknowledgementFile, StringComparison.OrdinalIgnoreCase))
+        {
+            var student = GetCurrentStudentApplication(includeCohort: true);
+            var fileBytes = ParentAcknowledgementFormWordTemplateBuilder.Build(student, _env.WebRootPath);
+            const string parentAcknowledgementContentType = "application/pdf";
+            if (download)
+            {
+                return File(fileBytes, parentAcknowledgementContentType, DynamicParentAcknowledgementFile);
+            }
+
+            return File(fileBytes, parentAcknowledgementContentType);
+        }
+
+        if (string.Equals(safeFileName, DynamicStudentSupportLetterFile, StringComparison.OrdinalIgnoreCase))
+        {
+            var student = GetCurrentStudentApplication(includeCohort: false);
+            var fileBytes = StudentSupportLetterWordTemplateBuilder.Build(student, _env.WebRootPath);
+            const string studentSupportLetterContentType = "application/pdf";
+            if (download)
+            {
+                return File(fileBytes, studentSupportLetterContentType, DynamicStudentSupportLetterFile);
+            }
+
+            return File(fileBytes, studentSupportLetterContentType);
         }
 
         var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
@@ -138,11 +169,11 @@ public class StudentDocumentsModel : PageModel
         {
             ("Company Acceptance Letter", DynamicCompanyAcceptanceFile, true),
             (IndemnityDisplayTitle, DynamicIndemnityFile, true),
-            ("Parent Acknowledgement Form", "DownloadParentAcknowledgementForm.pdf", true),
-            ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.xlsx", false),
-            ("Progress Report Template", "ProgressReportTemplate.docx", false),
-            ("Final Report Template", "FinalReportTemplate.docx", false),
-            ("Student Support Letter", "StudentSupportLetter.pdf", true)
+            ("Parent Acknowledgement Form", DynamicParentAcknowledgementFile, true),
+            ("Company Supervisor Evaluation Form", CompanySupervisorEvaluationTemplateFile, false),
+            ("Progress Report Template", ProgressReportTemplateFile, false),
+            ("Final Report Template", FinalReportTemplateFile, false),
+            ("Student Support Letter", DynamicStudentSupportLetterFile, true)
         };
 
         Documents = requiredDocs
@@ -211,7 +242,9 @@ public class StudentDocumentsModel : PageModel
     private static bool IsDynamicDocument(string fileName)
     {
         return string.Equals(fileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase)
-            || string.Equals(fileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase);
+            || string.Equals(fileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase)
+            || string.Equals(fileName, DynamicParentAcknowledgementFile, StringComparison.OrdinalIgnoreCase)
+            || string.Equals(fileName, DynamicStudentSupportLetterFile, StringComparison.OrdinalIgnoreCase);
     }
 
     private bool StaticDocumentExists(string fileName)

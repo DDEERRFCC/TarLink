@@ -9,8 +9,20 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS Student support Letter - Bachelor (18.9.2024).docx",
+      "PackagePath": "staticwebassets\\documents\\templates\\FOCS Student support Letter - Bachelor (18.9.2024).docx"
+    },
+    {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS Student support Letter - diploma (18.9.2024).docx",
+      "PackagePath": "staticwebassets\\documents\\templates\\FOCS Student support Letter - diploma (18.9.2024).docx"
+    },
+    {
       "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS_EmpF02 Company Acceptance Letter (09.11.2022).docx",
       "PackagePath": "staticwebassets\\documents\\templates\\FOCS_EmpF02 Company Acceptance Letter (09.11.2022).docx"
+    },
+    {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS_EmpF03.xlsx",
+      "PackagePath": "staticwebassets\\documents\\templates\\FOCS_EmpF03.xlsx"
     },
     {
       "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS_StudF01 Indemnity Letter (09.11.2022).docx",
@@ -19,6 +31,14 @@
     {
       "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS_StudF02 Parent Acknowledgement Form (09.11.2022).docx",
       "PackagePath": "staticwebassets\\documents\\templates\\FOCS_StudF02 Parent Acknowledgement Form (09.11.2022).docx"
+    },
+    {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS_studF03 Progress Report Template.docx",
+      "PackagePath": "staticwebassets\\documents\\templates\\FOCS_studF03 Progress Report Template.docx"
+    },
+    {
+      "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\documents\\templates\\FOCS_studF04 Final Report Template.docx",
+      "PackagePath": "staticwebassets\\documents\\templates\\FOCS_studF04 Final Report Template.docx"
     },
     {
       "Id": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\favicon.ico",
