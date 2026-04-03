@@ -16,6 +16,9 @@ public class StudentDocumentsModel : PageModel
     private const string CompanySupervisorEvaluationTemplateFile = "FOCS_EmpF03.xlsx";
     private const string ProgressReportTemplateFile = "FOCS_studF03 Progress Report Template.docx";
     private const string FinalReportTemplateFile = "FOCS_studF04 Final Report Template.docx";
+    private const string AppointmentConfirmationLetterFile = "DownloadAppointmentLetter.docx";
+    private const string ApprovedCompanySupervisorEvaluationFile = "FOCS_EmpF03.xlsx";
+    private const string WarningLetterFile = "WarningLetter.docx";
     private const string IndemnityDisplayTitle = "Indemnity Letter";
     private readonly IWebHostEnvironment _env;
     private readonly ApplicationDbContext _db;
@@ -69,9 +72,9 @@ public class StudentDocumentsModel : PageModel
             CompanySupervisorEvaluationTemplateFile,
             ProgressReportTemplateFile,
             FinalReportTemplateFile,
-            "AppointmentConfirmationLetter.pdf",
-            "CompanySupervisorEvaluationForm.pdf",
-            "WarningLetter.pdf"
+            AppointmentConfirmationLetterFile,
+            ApprovedCompanySupervisorEvaluationFile,
+            WarningLetterFile
         };
 
         var safeFileName = Path.GetFileName(file ?? string.Empty);
@@ -192,9 +195,9 @@ public class StudentDocumentsModel : PageModel
         {
             var approvedDocs = new (string Title, string FileName, bool CanView)[]
             {
-                ("Appointment Confirmation Letter", "AppointmentConfirmationLetter.pdf", true),
-                ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.pdf", true),
-                ("Warning Letter", "WarningLetter.pdf", true)
+                ("Appointment Confirmation Letter", AppointmentConfirmationLetterFile, true),
+                ("Company Supervisor Evaluation Form", ApprovedCompanySupervisorEvaluationFile, true),
+                ("Warning Letter", WarningLetterFile, true)
             };
 
             ApprovedStatusDocuments = approvedDocs

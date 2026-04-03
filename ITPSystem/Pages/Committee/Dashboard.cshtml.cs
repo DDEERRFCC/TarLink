@@ -29,7 +29,7 @@ public class CommitteeDashboardModel : CommitteePageModelBase
         PendingStudents = _db.StudentApplications.Count(s => s.applyStatus == "pending");
         ApprovedStudents = _db.StudentApplications.Count(s => s.applyStatus == "approved");
         TotalCompanies = _db.Companies.Count();
-        SubmittedReports = _db.ProgressReports.Count(r => r.status == 1);
+        SubmittedReports = _db.ProgressReports.Count(r => r.status == 1 || r.status == 4);
         PendingReports = _db.ProgressReports.Count(r => r.status == 0);
 
         return Page();

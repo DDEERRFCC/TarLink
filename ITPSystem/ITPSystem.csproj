@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>itpsystem-1f84c247-b19e-4ac2-910a-37b6b49bd6a4</UserSecretsId>
     <DefaultItemExcludes>$(DefaultItemExcludes);bin_temp/**;bin_temp*/**;obj_temp/**;obj_temp*/**;.codex_build_out*/**</DefaultItemExcludes>
   </PropertyGroup>
 

@@ -93,11 +93,10 @@ namespace ITPSystem.Pages.Supervisor
                 return RedirectToPage();
             }
 
-            var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
             var safeFileName = Path.GetFileName(fileName);
-            var fullPath = Path.Combine(uploadsPath, safeFileName);
+            var fullPath = ResolveUploadFullPath(fileName);
 
-            if (!System.IO.File.Exists(fullPath))
+            if (string.IsNullOrWhiteSpace(fullPath) || !System.IO.File.Exists(fullPath))
             {
                 Message = $"File not found on server: {fileName}";
                 return RedirectToPage();
@@ -115,6 +114,26 @@ namespace ITPSystem.Pages.Supervisor
             }
 
             return PhysicalFile(fullPath, contentType);
+        }
+
+        private string? ResolveUploadFullPath(string? storedPath)
+        {
+            if (string.IsNullOrWhiteSpace(storedPath))
+            {
+                return null;
+            }
+
+            var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
+            var normalizedPath = storedPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+            var combinedPath = Path.GetFullPath(Path.Combine(uploadsRoot, normalizedPath));
+            var uploadsRootFullPath = Path.GetFullPath(uploadsRoot);
+
+            if (!combinedPath.StartsWith(uploadsRootFullPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            return combinedPath;
         }
 
         private IActionResult SaveReview(int applicationId, string documentType, string status, string? remarks)

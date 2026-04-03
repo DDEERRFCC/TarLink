@@ -1,4 +1,5 @@
 using ITPSystem.Data;
+using ITPSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddSession();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddHttpClient<OllamaStudentAssistantService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(90);
+});
 
 var app = builder.Build();
 

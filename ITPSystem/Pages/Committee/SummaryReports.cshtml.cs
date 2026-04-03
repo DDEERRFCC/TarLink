@@ -115,7 +115,7 @@ public class CommitteeSummaryReportsModel : CommitteePageModelBase
             .Select(g => new
             {
                 ApplicantId = g.Key,
-                HasSubmitted = g.Any(x => x.status == 1),
+                HasSubmitted = g.Any(x => x.status == 1 || x.status == 4),
                 HasPending = g.Any(x => x.status == 0)
             })
             .ToDictionary(x => x.ApplicantId);
@@ -158,6 +158,7 @@ public class CommitteeSummaryReportsModel : CommitteePageModelBase
         var total = _db.ProgressReports.Count();
         var pending = _db.ProgressReports.Count(x => x.status == 0);
         var submitted = _db.ProgressReports.Count(x => x.status == 1);
+        var submittedLate = _db.ProgressReports.Count(x => x.status == 4);
         var approved = _db.ProgressReports.Count(x => x.status == 2);
         var rejected = _db.ProgressReports.Count(x => x.status == 3);
         var progressType = _db.ProgressReports.Count(x => x.reportType == "progress");
@@ -173,6 +174,7 @@ public class CommitteeSummaryReportsModel : CommitteePageModelBase
                 new() { Label = "Total Reports", Value = total.ToString() },
                 new() { Label = "Pending", Value = pending.ToString() },
                 new() { Label = "Submitted", Value = submitted.ToString() },
+                new() { Label = "Submitted Late", Value = submittedLate.ToString() },
                 new() { Label = "Approved", Value = approved.ToString() },
                 new() { Label = "Rejected", Value = rejected.ToString() },
                 new() { Label = "Progress Type", Value = progressType.ToString() },

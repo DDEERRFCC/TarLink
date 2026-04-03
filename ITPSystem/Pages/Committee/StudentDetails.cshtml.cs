@@ -17,6 +17,7 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
     public List<Cohort> Cohorts { get; private set; } = new();
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
+    public bool IsCreateMode { get; private set; }
 
     [BindProperty]
     public StudentDetailInput Input { get; set; } = new();
@@ -101,22 +102,30 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         public bool isAgreed { get; set; }
     }
 
-    public IActionResult OnGet(int applicationId)
+    public IActionResult OnGet(int? applicationId)
     {
         if (!IsCommittee())
         {
             return RedirectToPage("/Login/CommitteeLogin");
         }
 
+        LoadCohorts();
+
+        if (!applicationId.HasValue || applicationId.Value <= 0)
+        {
+            IsCreateMode = true;
+            InitializeNewStudentInput();
+            return Page();
+        }
+
         var student = _db.StudentApplications.AsNoTracking()
-            .FirstOrDefault(s => s.application_id == applicationId);
+            .FirstOrDefault(s => s.application_id == applicationId.Value);
         if (student == null)
         {
             TempData["StatusMessage"] = "Student record was not found.";
             return RedirectToPage("/Committee/Students");
         }
 
-        LoadCohorts();
         MapStudentToInput(student);
         return Page();
     }
@@ -134,29 +143,44 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             return Page();
         }
 
-        var student = _db.StudentApplications.FirstOrDefault(s => s.application_id == Input.application_id);
-        if (student == null)
-        {
-            TempData["StatusMessage"] = "Student record was not found.";
-            return RedirectToPage("/Committee/Students");
-        }
+        var isCreateMode = Input.application_id <= 0;
 
-        if (_db.StudentApplications.Any(s => s.application_id != Input.application_id && s.number_ic == Input.number_ic.Trim()))
+        if (_db.StudentApplications.Any(s => (isCreateMode || s.application_id != Input.application_id) && s.number_ic == Input.number_ic.Trim()))
         {
             ModelState.AddModelError(nameof(Input.number_ic), "IC number already exists.");
         }
-        if (_db.StudentApplications.Any(s => s.application_id != Input.application_id && s.studentID == Input.studentID.Trim()))
+        if (_db.StudentApplications.Any(s => (isCreateMode || s.application_id != Input.application_id) && s.studentID == Input.studentID.Trim()))
         {
             ModelState.AddModelError(nameof(Input.studentID), "Student ID already exists.");
         }
-        if (_db.StudentApplications.Any(s => s.application_id != Input.application_id && s.studentEmail == Input.studentEmail.Trim()))
+        if (_db.StudentApplications.Any(s => (isCreateMode || s.application_id != Input.application_id) && s.studentEmail == Input.studentEmail.Trim()))
         {
             ModelState.AddModelError(nameof(Input.studentEmail), "Student email already exists.");
         }
 
         if (!ModelState.IsValid)
         {
+            IsCreateMode = isCreateMode;
             return Page();
+        }
+
+        StudentApplication student;
+        if (isCreateMode)
+        {
+            student = new StudentApplication
+            {
+                created_at = DateTime.Now
+            };
+            _db.StudentApplications.Add(student);
+        }
+        else
+        {
+            student = _db.StudentApplications.FirstOrDefault(s => s.application_id == Input.application_id)!;
+            if (student == null)
+            {
+                TempData["StatusMessage"] = "Student record was not found.";
+                return RedirectToPage("/Committee/Students");
+            }
         }
 
         student.number_ic = Input.number_ic.Trim();
@@ -201,7 +225,9 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         student.updated_at = DateTime.Now;
 
         _db.SaveChanges();
-        StatusMessage = "Student details updated successfully.";
+        StatusMessage = isCreateMode
+            ? "Student created successfully."
+            : "Student details updated successfully.";
         return RedirectToPage(new { applicationId = student.application_id });
     }
 
@@ -240,14 +266,15 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             return NotFound();
         }
 
-        var fileName = Path.GetFileName(GetDocumentFileName(student, field));
+        var storedPath = GetDocumentFileName(student, field);
+        var fileName = Path.GetFileName(storedPath);
         if (string.IsNullOrWhiteSpace(fileName))
         {
             return NotFound();
         }
 
-        var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", fileName);
-        if (!System.IO.File.Exists(fullPath))
+        var fullPath = ResolveUploadFullPath(storedPath);
+        if (string.IsNullOrWhiteSpace(fullPath) || !System.IO.File.Exists(fullPath))
         {
             return NotFound();
         }
@@ -263,6 +290,26 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             : PhysicalFile(fullPath, contentType);
     }
 
+    private string? ResolveUploadFullPath(string? storedPath)
+    {
+        if (string.IsNullOrWhiteSpace(storedPath))
+        {
+            return null;
+        }
+
+        var uploadsRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+        var normalizedPath = storedPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+        var combinedPath = Path.GetFullPath(Path.Combine(uploadsRoot, normalizedPath));
+        var uploadsRootFullPath = Path.GetFullPath(uploadsRoot);
+
+        if (!combinedPath.StartsWith(uploadsRootFullPath, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return combinedPath;
+    }
+
     private void LoadCohorts()
     {
         Cohorts = _db.Cohorts.AsNoTracking()
@@ -273,6 +320,7 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
 
     private void MapStudentToInput(StudentApplication student)
     {
+        IsCreateMode = false;
         CreatedAt = student.created_at;
         UpdatedAt = student.updated_at;
 
@@ -318,6 +366,23 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             doVerifier = student.doVerifier,
             doVerifierEmail = student.doVerifierEmail,
             isAgreed = student.isAgreed
+        };
+    }
+
+    private void InitializeNewStudentInput()
+    {
+        CreatedAt = DateTime.Now;
+        UpdatedAt = DateTime.Now;
+        Input = new StudentDetailInput
+        {
+            application_id = 0,
+            gender = "O",
+            applyStatus = "pending",
+            ownTransport = false,
+            isAgreed = false,
+            level = 1,
+            cohortId = Cohorts.FirstOrDefault()?.cohort_id ?? 0,
+            programme = string.Empty
         };
     }
 

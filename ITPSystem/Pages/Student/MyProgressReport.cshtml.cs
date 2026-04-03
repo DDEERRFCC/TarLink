@@ -9,6 +9,10 @@ using System.ComponentModel.DataAnnotations;
 public class StudentMyProgressReportModel : PageModel
 {
     private const long MaxUploadBytes = 10 * 1024 * 1024;
+    private const byte SubmittedStatus = 1;
+    private const byte ApprovedStatus = 2;
+    private const byte RejectedStatus = 3;
+    private const byte SubmittedLateStatus = 4;
     private readonly ApplicationDbContext _db;
     private readonly IWebHostEnvironment _env;
 
@@ -31,10 +35,6 @@ public class StudentMyProgressReportModel : PageModel
     {
         [Required(ErrorMessage = "Please select a report.")]
         public string ReportKey { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "Please enter your report content.")]
-        [StringLength(4000, ErrorMessage = "Report content is too long (max 4000 characters).")]
-        public string Content { get; set; } = string.Empty;
 
         public IFormFile? ReportFile { get; set; }
     }
@@ -78,10 +78,10 @@ public class StudentMyProgressReportModel : PageModel
             return Page();
         }
 
-        var content = Input.Content.Trim();
         var savedFilePath = SaveReportFile(Input.ReportFile);
 
         var dueDate = GetDueDate(reportType, reportNo, student.Cohort) ?? DateTime.UtcNow.Date;
+        var submissionStatus = IsLateSubmission(dueDate) ? SubmittedLateStatus : SubmittedStatus;
         var existing = _db.ProgressReports
             .FirstOrDefault(r =>
                 r.applicantId == student.application_id &&
@@ -100,8 +100,8 @@ public class StudentMyProgressReportModel : PageModel
                 reportType = reportType,
                 reportNo = reportNo,
                 dueDate = dueDate,
-                status = 1,
-                remark = content,
+                status = submissionStatus,
+                remark = null,
                 file_path = savedFilePath
             });
         }
@@ -109,8 +109,7 @@ public class StudentMyProgressReportModel : PageModel
         {
             existing.updated_at = DateTime.UtcNow;
             existing.dueDate = dueDate;
-            existing.status = 1;
-            existing.remark = content;
+            existing.status = submissionStatus;
             if (!string.IsNullOrWhiteSpace(savedFilePath))
             {
                 existing.file_path = savedFilePath;
@@ -126,11 +125,24 @@ public class StudentMyProgressReportModel : PageModel
     {
         return status switch
         {
-            1 => "Submitted",
-            2 => "Approved",
-            3 => "Rejected",
+            SubmittedStatus => "Submitted",
+            ApprovedStatus => "Approved",
+            RejectedStatus => "Rejected",
+            SubmittedLateStatus => "Submitted Late",
             _ => "Pending"
         };
+    }
+
+    public string GetDisplayStatus(ProgressReport? report, DateTime? dueDate)
+    {
+        if (report != null)
+        {
+            return GetStatusLabel(report.status);
+        }
+
+        return dueDate.HasValue && DateTime.Today > dueDate.Value.Date
+            ? "Missing"
+            : "Pending";
     }
 
     private void LoadReports(int applicationId)
@@ -151,6 +163,18 @@ public class StudentMyProgressReportModel : PageModel
         }
 
         return no.HasValue ? $"Progress Report {no.Value}" : "Progress Report";
+    }
+
+    public ProgressReport? GetReportForKey(string key)
+    {
+        if (!TryParseReportKey(key, out var reportType, out var reportNo))
+        {
+            return null;
+        }
+
+        return Reports.FirstOrDefault(r =>
+            string.Equals(r.reportType, reportType, StringComparison.OrdinalIgnoreCase) &&
+            r.reportNo == reportNo);
     }
 
     private bool TryParseReportKey(string key, out string reportType, out byte? reportNo)
@@ -253,10 +277,16 @@ public class StudentMyProgressReportModel : PageModel
         };
     }
 
+    private static bool IsLateSubmission(DateTime dueDate)
+    {
+        return DateTime.Today > dueDate.Date;
+    }
+
     private void ValidateReportFile(IFormFile? file)
     {
         if (file == null)
         {
+            ModelState.AddModelError(nameof(Input.ReportFile), "Please upload a report file.");
             return;
         }
 
@@ -287,16 +317,94 @@ public class StudentMyProgressReportModel : PageModel
             return null;
         }
 
-        var uploadPath = Path.Combine(_env.WebRootPath, "uploads", "reports");
-        Directory.CreateDirectory(uploadPath);
+        var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
+        if (student == null)
+        {
+            return null;
+        }
 
-        var ext = Path.GetExtension(file.FileName);
-        var fileName = $"report_{DateTime.UtcNow:yyyyMMddHHmmssfff}_{Guid.NewGuid():N}{ext}";
+        var uploadPath = EnsureStudentReportFolder(student);
+
+        var fileName = BuildSafeUploadFileName(file.FileName, "report");
         var fullPath = Path.Combine(uploadPath, fileName);
 
         using var stream = new FileStream(fullPath, FileMode.Create);
         file.CopyTo(stream);
 
-        return $"/uploads/reports/{fileName}";
+        var relativeFolder = Path.GetRelativePath(Path.Combine(_env.WebRootPath, "uploads"), uploadPath)
+            .Replace('\\', '/');
+        return $"/uploads/{relativeFolder}/{fileName}";
+    }
+
+    private string EnsureStudentReportFolder(StudentApplication student)
+    {
+        var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
+        Directory.CreateDirectory(uploadsRoot);
+
+        var cohortFolderName = BuildSafeFolderName(student.Cohort?.description, $"Cohort_{student.cohortId}");
+        var cohortFolderPath = Path.Combine(uploadsRoot, "Cohorts", cohortFolderName);
+        Directory.CreateDirectory(cohortFolderPath);
+
+        var studentFolderName = BuildSafeFolderName(student.studentName, $"Student_{student.application_id}");
+        var studentFolderPath = Path.Combine(cohortFolderPath, studentFolderName);
+        Directory.CreateDirectory(studentFolderPath);
+
+        var reportFolderPath = Path.Combine(studentFolderPath, "Report");
+        Directory.CreateDirectory(reportFolderPath);
+
+        return reportFolderPath;
+    }
+
+    private static string BuildSafeFolderName(string? rawValue, string fallback)
+    {
+        var baseValue = string.IsNullOrWhiteSpace(rawValue) ? fallback : rawValue.Trim();
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var sanitized = new string(baseValue
+            .Select(ch => invalidChars.Contains(ch) ? '_' : ch)
+            .ToArray());
+
+        sanitized = string.Join("_", sanitized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+        return string.IsNullOrWhiteSpace(sanitized) ? fallback : sanitized;
+    }
+
+    private static string BuildSafeUploadFileName(string? originalFileName, string fallbackPrefix)
+    {
+        var rawFileName = Path.GetFileName(originalFileName ?? string.Empty);
+        if (string.IsNullOrWhiteSpace(rawFileName))
+        {
+            return fallbackPrefix;
+        }
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var sanitized = new string(rawFileName
+            .Select(ch => invalidChars.Contains(ch) ? '_' : ch)
+            .ToArray())
+            .Trim();
+
+        return string.IsNullOrWhiteSpace(sanitized) ? fallbackPrefix : sanitized;
+    }
+
+    private StudentApplication? GetCurrentStudentApplication(bool asNoTracking, bool includeCohort)
+    {
+        var userIdRaw = HttpContext.Session.GetString("UserID");
+        if (!int.TryParse(userIdRaw, out var userId))
+        {
+            return null;
+        }
+
+        var userQuery = asNoTracking ? _db.SysUsers.AsNoTracking() : _db.SysUsers;
+        var user = userQuery.FirstOrDefault(u => u.user_id == userId);
+        if (user?.application_id == null)
+        {
+            return null;
+        }
+
+        IQueryable<StudentApplication> studentQuery = asNoTracking ? _db.StudentApplications.AsNoTracking() : _db.StudentApplications;
+        if (includeCohort)
+        {
+            studentQuery = studentQuery.Include(s => s.Cohort);
+        }
+
+        return studentQuery.FirstOrDefault(s => s.application_id == user.application_id.Value);
     }
 }

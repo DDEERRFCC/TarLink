@@ -66,7 +66,7 @@ namespace ITPSystem.Pages.Supervisor
 
             if (applicationIds.Count > 0)
             {
-                PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 1);
+                PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && (r.status == 1 || r.status == 4));
                 ApprovedReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 2);
                 RejectedReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 3);
 

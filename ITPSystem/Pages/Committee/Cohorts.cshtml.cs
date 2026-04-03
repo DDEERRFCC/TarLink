@@ -1,0 +1,337 @@
+using ITPSystem.Data;
+using ITPSystem.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+
+public class CommitteeCohortsModel : CommitteePageModelBase
+{
+    private readonly ApplicationDbContext _db;
+    private readonly IWebHostEnvironment _env;
+
+    public CommitteeCohortsModel(ApplicationDbContext db, IWebHostEnvironment env)
+    {
+        _db = db;
+        _env = env;
+    }
+
+    public List<Cohort> Cohorts { get; private set; } = new();
+
+    [BindProperty]
+    public CohortInputModel Input { get; set; } = new();
+
+    [TempData]
+    public string? StatusMessage { get; set; }
+
+    [TempData]
+    public string? ErrorMessage { get; set; }
+
+    public class CohortInputModel
+    {
+        public int? CohortId { get; set; }
+
+        [StringLength(100)]
+        public string? Description { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? StartDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? EndDate { get; set; }
+
+        [Range(1, 2, ErrorMessage = "Level must be Diploma or Degree.")]
+        public byte? Level { get; set; }
+
+        public bool IsActive { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? Report1DueDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? Report2DueDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? Report3DueDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? Report4DueDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? Report5DueDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? Report6DueDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? FinalReportDueDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? ExamStartDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? ExamEndDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? CompanyEvaluationDate { get; set; }
+
+        [StringLength(45)]
+        public string? ReportMonth1 { get; set; }
+
+        [StringLength(45)]
+        public string? ReportMonth2 { get; set; }
+
+        [StringLength(45)]
+        public string? ReportMonth3 { get; set; }
+
+        [StringLength(45)]
+        public string? ReportMonth4 { get; set; }
+
+        [StringLength(45)]
+        public string? ReportMonth5 { get; set; }
+
+        [StringLength(45)]
+        public string? ReportMonth6 { get; set; }
+
+        [StringLength(45)]
+        public string? Campus { get; set; }
+
+        [StringLength(45)]
+        public string? Faculty { get; set; }
+
+        [StringLength(250)]
+        public string? PersonInCharge { get; set; }
+
+        [StringLength(250)]
+        [EmailAddress(ErrorMessage = "Please enter a valid PIC email.")]
+        public string? PidEmail { get; set; }
+    }
+
+    public IActionResult OnGet(int? editId = null)
+    {
+        if (!IsCommittee())
+        {
+            return RedirectToPage("/Login/CommitteeLogin");
+        }
+
+        LoadCohorts();
+
+        if (editId.HasValue)
+        {
+            var cohort = _db.Cohorts.AsNoTracking().FirstOrDefault(c => c.cohort_id == editId.Value);
+            if (cohort == null)
+            {
+                ErrorMessage = "Selected cohort was not found.";
+                return RedirectToPage();
+            }
+
+            Input = MapToInput(cohort);
+        }
+
+        return Page();
+    }
+
+    public IActionResult OnPostSave()
+    {
+        if (!IsCommittee())
+        {
+            return RedirectToPage("/Login/CommitteeLogin");
+        }
+
+        ValidateCohortDates();
+
+        if (!ModelState.IsValid)
+        {
+            LoadCohorts();
+            return Page();
+        }
+
+        var isEdit = Input.CohortId.HasValue;
+        Cohort cohort;
+
+        if (isEdit)
+        {
+            var cohortId = Input.CohortId.GetValueOrDefault();
+            cohort = _db.Cohorts.FirstOrDefault(c => c.cohort_id == cohortId)!;
+            if (cohort == null)
+            {
+                ErrorMessage = "Selected cohort was not found.";
+                return RedirectToPage();
+            }
+        }
+        else
+        {
+            cohort = new Cohort();
+            _db.Cohorts.Add(cohort);
+        }
+
+        ApplyInput(cohort);
+        _db.SaveChanges();
+
+        if (!isEdit)
+        {
+            EnsureCohortStorageFolders(cohort);
+        }
+
+        StatusMessage = isEdit
+            ? $"Cohort {cohort.cohort_id} updated successfully."
+            : $"Cohort {cohort.cohort_id} created successfully with storage folders ready.";
+
+        return RedirectToPage();
+    }
+
+    public IActionResult OnPostDelete(int id)
+    {
+        if (!IsCommittee())
+        {
+            return RedirectToPage("/Login/CommitteeLogin");
+        }
+
+        var cohort = _db.Cohorts.FirstOrDefault(c => c.cohort_id == id);
+        if (cohort == null)
+        {
+            ErrorMessage = "Selected cohort was not found.";
+            return RedirectToPage();
+        }
+
+        var hasStudents = _db.StudentApplications.AsNoTracking().Any(s => s.cohortId == id);
+        if (hasStudents)
+        {
+            ErrorMessage = $"Cohort {id} cannot be deleted because it is linked to student records.";
+            return RedirectToPage();
+        }
+
+        _db.Cohorts.Remove(cohort);
+        _db.SaveChanges();
+
+        StatusMessage = $"Cohort {id} deleted successfully.";
+        return RedirectToPage();
+    }
+
+    public string GetLevelLabel(byte? level)
+    {
+        return level switch
+        {
+            1 => "Diploma",
+            2 => "Degree",
+            _ => "-"
+        };
+    }
+
+    private void LoadCohorts()
+    {
+        Cohorts = _db.Cohorts.AsNoTracking()
+            .OrderByDescending(c => c.startDate)
+            .ThenByDescending(c => c.cohort_id)
+            .ToList();
+    }
+
+    private void ValidateCohortDates()
+    {
+        if (Input.StartDate.HasValue && Input.EndDate.HasValue && Input.EndDate.Value.Date < Input.StartDate.Value.Date)
+        {
+            ModelState.AddModelError(nameof(Input.EndDate), "End date must be on or after start date.");
+        }
+
+        if (Input.ExamStartDate.HasValue && Input.ExamEndDate.HasValue && Input.ExamEndDate.Value.Date < Input.ExamStartDate.Value.Date)
+        {
+            ModelState.AddModelError(nameof(Input.ExamEndDate), "Exam end date must be on or after exam start date.");
+        }
+    }
+
+    private CohortInputModel MapToInput(Cohort cohort)
+    {
+        return new CohortInputModel
+        {
+            CohortId = cohort.cohort_id,
+            Description = cohort.description,
+            StartDate = cohort.startDate,
+            EndDate = cohort.endDate,
+            Level = cohort.level,
+            IsActive = cohort.isActive,
+            Report1DueDate = cohort.report1DueDate,
+            Report2DueDate = cohort.report2DueDate,
+            Report3DueDate = cohort.report3DueDate,
+            Report4DueDate = cohort.report4DueDate,
+            Report5DueDate = cohort.report5DueDate,
+            Report6DueDate = cohort.report6DueDate,
+            FinalReportDueDate = cohort.finalReportDueDate,
+            ExamStartDate = cohort.examStartDate,
+            ExamEndDate = cohort.examEndDate,
+            CompanyEvaluationDate = cohort.companyEvaluationDate,
+            ReportMonth1 = cohort.reportMonth1,
+            ReportMonth2 = cohort.reportMonth2,
+            ReportMonth3 = cohort.reportMonth3,
+            ReportMonth4 = cohort.reportMonth4,
+            ReportMonth5 = cohort.reportMonth5,
+            ReportMonth6 = cohort.reportMonth6,
+            Campus = cohort.campus,
+            Faculty = cohort.faculty,
+            PersonInCharge = cohort.personInCharge,
+            PidEmail = cohort.pidEmail
+        };
+    }
+
+    private void ApplyInput(Cohort cohort)
+    {
+        cohort.description = Clean(Input.Description);
+        cohort.startDate = Input.StartDate;
+        cohort.endDate = Input.EndDate;
+        cohort.level = Input.Level;
+        cohort.isActive = Input.IsActive;
+        cohort.report1DueDate = Input.Report1DueDate;
+        cohort.report2DueDate = Input.Report2DueDate;
+        cohort.report3DueDate = Input.Report3DueDate;
+        cohort.report4DueDate = Input.Report4DueDate;
+        cohort.report5DueDate = Input.Report5DueDate;
+        cohort.report6DueDate = Input.Report6DueDate;
+        cohort.finalReportDueDate = Input.FinalReportDueDate;
+        cohort.examStartDate = Input.ExamStartDate;
+        cohort.examEndDate = Input.ExamEndDate;
+        cohort.companyEvaluationDate = Input.CompanyEvaluationDate;
+        cohort.reportMonth1 = Clean(Input.ReportMonth1);
+        cohort.reportMonth2 = Clean(Input.ReportMonth2);
+        cohort.reportMonth3 = Clean(Input.ReportMonth3);
+        cohort.reportMonth4 = Clean(Input.ReportMonth4);
+        cohort.reportMonth5 = Clean(Input.ReportMonth5);
+        cohort.reportMonth6 = Clean(Input.ReportMonth6);
+        cohort.campus = Clean(Input.Campus);
+        cohort.faculty = Clean(Input.Faculty);
+        cohort.personInCharge = Clean(Input.PersonInCharge);
+        cohort.pidEmail = Clean(Input.PidEmail);
+    }
+
+    private static string? Clean(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private void EnsureCohortStorageFolders(Cohort cohort)
+    {
+        var folderName = BuildCohortFolderName(cohort);
+        var cohortRoot = Path.Combine(_env.WebRootPath, "uploads", "Cohorts", folderName);
+        Directory.CreateDirectory(cohortRoot);
+        Directory.CreateDirectory(Path.Combine(cohortRoot, "Resumes"));
+        Directory.CreateDirectory(Path.Combine(cohortRoot, "StudentDocuments"));
+        Directory.CreateDirectory(Path.Combine(cohortRoot, "ProgressReports"));
+    }
+
+    private static string BuildCohortFolderName(Cohort cohort)
+    {
+        var rawName = string.IsNullOrWhiteSpace(cohort.description)
+            ? $"Cohort_{cohort.cohort_id}"
+            : cohort.description.Trim();
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var sanitized = new string(rawName
+            .Select(ch => invalidChars.Contains(ch) ? '_' : ch)
+            .ToArray());
+
+        sanitized = string.Join("_", sanitized
+            .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+
+        return string.IsNullOrWhiteSpace(sanitized)
+            ? $"Cohort_{cohort.cohort_id}"
+            : sanitized;
+    }
+}

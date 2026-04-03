@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
+using ITPSystem.Services;
 
 public class StudentDashboardModel : PageModel
 {
@@ -21,23 +22,30 @@ public class StudentDashboardModel : PageModel
     private const string CompanySupervisorEvaluationTemplateFile = "FOCS_EmpF03.xlsx";
     private const string ProgressReportTemplateFile = "FOCS_studF03 Progress Report Template.docx";
     private const string FinalReportTemplateFile = "FOCS_studF04 Final Report Template.docx";
+    private const string AppointmentConfirmationLetterFile = "DownloadAppointmentLetter.docx";
+    private const string ApprovedCompanySupervisorEvaluationFile = "FOCS_EmpF03.xlsx";
+    private const string WarningLetterFile = "WarningLetter.docx";
     private const string IndemnityDisplayTitle = "Indemnity Letter";
     private readonly IWebHostEnvironment _env;
     private readonly ApplicationDbContext _db;
     private readonly IConfiguration _config;
+    private readonly OllamaStudentAssistantService _assistantService;
 
-    public StudentDashboardModel(IWebHostEnvironment env, ApplicationDbContext db, IConfiguration config)
+    public StudentDashboardModel(IWebHostEnvironment env, ApplicationDbContext db, IConfiguration config, OllamaStudentAssistantService assistantService)
     {
         _env = env;
         _db = db;
         _config = config;
+        _assistantService = assistantService;
     }
 
     public List<DocumentItem> Documents { get; private set; } = new();
     public List<DocumentItem> ApprovedStatusDocuments { get; private set; } = new();
     public List<CompanyOptionItem> CompanyOptions { get; private set; } = new();
     public List<Announcement> Announcements { get; private set; } = new();
+    public List<Notification> RecentNotifications { get; private set; } = new();
     public List<DeadlineItem> ReportDeadlines { get; private set; } = new();
+    public int UnreadNotificationCount { get; private set; }
     public string Cohort { get; private set; } = "-";
     public string InternPeriod { get; private set; } = "-";
     public string Status { get; private set; } = "-";
@@ -76,6 +84,7 @@ public class StudentDashboardModel : PageModel
         public string Title { get; set; } = string.Empty;
         public DateTime Date { get; set; }
         public string Note { get; set; } = string.Empty;
+        public bool IsOverdue { get; set; }
     }
 
     public class CompanyDetailInput
@@ -110,6 +119,7 @@ public class StudentDashboardModel : PageModel
         MapExistingCompanySelection();
         LoadDocuments();
         LoadAnnouncements();
+        LoadNotifications();
 
         return Page();
     }
@@ -122,13 +132,14 @@ public class StudentDashboardModel : PageModel
             return RedirectToPage("/Login/StudentLogin");
         }
 
-        var student = GetCurrentStudentApplication(asNoTracking: false, includeCohort: false);
+        var student = GetCurrentStudentApplication(asNoTracking: false, includeCohort: true);
         if (student == null)
         {
             ModelState.AddModelError("", "No linked student application found for this account.");
             LoadCompanyOptions();
             LoadDocuments();
             LoadAnnouncements();
+            LoadNotifications();
             return Page();
         }
 
@@ -160,6 +171,7 @@ public class StudentDashboardModel : PageModel
             LoadStudentDashboardInfo(setInputFromDb: false);
             LoadDocuments();
             LoadAnnouncements();
+            LoadNotifications();
             return Page();
         }
 
@@ -168,10 +180,10 @@ public class StudentDashboardModel : PageModel
         student.allowance = Input.MonthlyAllowance;
         student.comSupervisor = string.IsNullOrWhiteSpace(Input.CompanySupervisorName) ? null : Input.CompanySupervisorName.Trim();
         student.comSupervisorEmail = string.IsNullOrWhiteSpace(Input.CompanySupervisorEmail) ? null : Input.CompanySupervisorEmail.Trim();
-        student.formAcceptance = SaveUploadedFile(Input.FormAcceptanceFile, "formAcceptance", student.formAcceptance);
-        student.formAcknowledgement = SaveUploadedFile(Input.FormAcknowledgementFile, "formAcknowledgement", student.formAcknowledgement);
-        student.letterIdentity = SaveUploadedFile(Input.LetterOfIndemnityFile, "letterIdentity", student.letterIdentity);
-        student.otherEvidence = SaveUploadedFile(Input.HiredEvidenceFile, "otherEvidence", student.otherEvidence);
+        student.formAcceptance = SaveUploadedFile(Input.FormAcceptanceFile, "formAcceptance", student.formAcceptance, student);
+        student.formAcknowledgement = SaveUploadedFile(Input.FormAcknowledgementFile, "formAcknowledgement", student.formAcknowledgement, student);
+        student.letterIdentity = SaveUploadedFile(Input.LetterOfIndemnityFile, "letterIdentity", student.letterIdentity, student);
+        student.otherEvidence = SaveUploadedFile(Input.HiredEvidenceFile, "otherEvidence", student.otherEvidence, student);
         student.updated_at = DateTime.Now;
 
         _db.SaveChanges();
@@ -180,6 +192,27 @@ public class StudentDashboardModel : PageModel
             ? "Company details updated successfully. Notification email sent to supervisor."
             : "Company details updated successfully.";
         return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostAskAssistantAsync([FromForm] string question, CancellationToken cancellationToken)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (!string.Equals(role, "student", StringComparison.OrdinalIgnoreCase))
+        {
+            return new JsonResult(new { success = false, answer = "Please log in as a student first." });
+        }
+
+        var trimmedQuestion = (question ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(trimmedQuestion))
+        {
+            return new JsonResult(new { success = false, answer = "Please type a question first." });
+        }
+
+        var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
+        var context = BuildAssistantContext(student);
+        var answer = await _assistantService.AskAsync(context, trimmedQuestion, cancellationToken);
+
+        return new JsonResult(new { success = true, answer });
     }
 
     public IActionResult OnGetFormDocument(string file, bool download = false)
@@ -199,9 +232,9 @@ public class StudentDashboardModel : PageModel
             CompanySupervisorEvaluationTemplateFile,
             ProgressReportTemplateFile,
             FinalReportTemplateFile,
-            "AppointmentConfirmationLetter.pdf",
-            "CompanySupervisorEvaluationForm.pdf",
-            "WarningLetter.pdf"
+            AppointmentConfirmationLetterFile,
+            ApprovedCompanySupervisorEvaluationFile,
+            WarningLetterFile
         };
 
         var safeFileName = Path.GetFileName(file ?? string.Empty);
@@ -313,9 +346,9 @@ public class StudentDashboardModel : PageModel
         {
             var approvedDocs = new (string Title, string FileName, bool CanView)[]
             {
-                ("Appointment Confirmation Letter", "AppointmentConfirmationLetter.pdf", true),
-                ("Company Supervisor Evaluation Form", "CompanySupervisorEvaluationForm.pdf", true),
-                ("Warning Letter", "WarningLetter.pdf", true)
+                ("Appointment Confirmation Letter", AppointmentConfirmationLetterFile, true),
+                ("Company Supervisor Evaluation Form", ApprovedCompanySupervisorEvaluationFile, true),
+                ("Warning Letter", WarningLetterFile, true)
             };
 
             ApprovedStatusDocuments = approvedDocs
@@ -351,11 +384,11 @@ public class StudentDashboardModel : PageModel
         Remark = string.IsNullOrWhiteSpace(student.remark) ? "-" : student.remark;
         CalculateInternshipProgress(student.Cohort, Status);
 
-        CurrentFormAcceptanceFile = string.IsNullOrWhiteSpace(student.formAcceptance) ? "-" : student.formAcceptance;
-        CurrentFormAcknowledgementFile = string.IsNullOrWhiteSpace(student.formAcknowledgement) ? "-" : student.formAcknowledgement;
-        CurrentLetterIdentityFile = string.IsNullOrWhiteSpace(student.letterIdentity) ? "-" : student.letterIdentity;
-        CurrentOtherEvidenceFile = string.IsNullOrWhiteSpace(student.otherEvidence) ? "-" : student.otherEvidence;
-        BuildReportDeadlines(student.Cohort);
+        CurrentFormAcceptanceFile = BuildCurrentFileDisplay(student.formAcceptance);
+        CurrentFormAcknowledgementFile = BuildCurrentFileDisplay(student.formAcknowledgement);
+        CurrentLetterIdentityFile = BuildCurrentFileDisplay(student.letterIdentity);
+        CurrentOtherEvidenceFile = BuildCurrentFileDisplay(student.otherEvidence);
+        BuildReportDeadlines(student);
 
         if (setInputFromDb)
         {
@@ -423,17 +456,35 @@ public class StudentDashboardModel : PageModel
         };
     }
 
-    private void BuildReportDeadlines(Cohort? cohort)
+    private void BuildReportDeadlines(StudentApplication student)
     {
         ReportDeadlines = new();
+        var cohort = student.Cohort;
         if (cohort == null)
         {
             return;
         }
 
+        var submittedReportKeys = _db.ProgressReports.AsNoTracking()
+            .Where(r => r.applicantId == student.application_id)
+            .Select(r => new { r.reportType, r.reportNo })
+            .ToList()
+            .Select(r => string.Equals(r.reportType, "final", StringComparison.OrdinalIgnoreCase)
+                ? "F"
+                : $"P{r.reportNo}")
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var today = DateTime.Today;
+
         void AddProgressDeadline(int no, DateTime? dueDate, string? monthName)
         {
             if (!dueDate.HasValue)
+            {
+                return;
+            }
+
+            var reportKey = $"P{no}";
+            if (submittedReportKeys.Contains(reportKey))
             {
                 return;
             }
@@ -443,7 +494,8 @@ public class StudentDashboardModel : PageModel
             {
                 Title = $"Progress Report {no}{monthPart}",
                 Date = dueDate.Value,
-                Note = "Submit your report before due date."
+                Note = dueDate.Value.Date < today ? "Overdue. Please submit as soon as possible." : "Submit your report before due date.",
+                IsOverdue = dueDate.Value.Date < today
             });
         }
 
@@ -454,13 +506,14 @@ public class StudentDashboardModel : PageModel
         AddProgressDeadline(5, cohort.report5DueDate, cohort.reportMonth5);
         AddProgressDeadline(6, cohort.report6DueDate, cohort.reportMonth6);
 
-        if (cohort.finalReportDueDate.HasValue)
+        if (cohort.finalReportDueDate.HasValue && !submittedReportKeys.Contains("F"))
         {
             ReportDeadlines.Add(new DeadlineItem
             {
                 Title = "Final Report",
                 Date = cohort.finalReportDueDate.Value,
-                Note = "Submit your final report draft."
+                Note = cohort.finalReportDueDate.Value.Date < today ? "Overdue. Please submit as soon as possible." : "Submit your final report draft.",
+                IsOverdue = cohort.finalReportDueDate.Value.Date < today
             });
         }
 
@@ -513,6 +566,74 @@ public class StudentDashboardModel : PageModel
         }
     }
 
+    private void LoadNotifications()
+    {
+        var userIdText = HttpContext.Session.GetString("UserID");
+        if (!int.TryParse(userIdText, out var userId))
+        {
+            RecentNotifications = new();
+            UnreadNotificationCount = 0;
+            return;
+        }
+
+        RecentNotifications = _db.Notifications.AsNoTracking()
+            .Where(n => n.to_user_id == userId)
+            .OrderByDescending(n => n.created_at)
+            .Take(8)
+            .ToList();
+
+        UnreadNotificationCount = _db.Notifications.Count(n => n.to_user_id == userId && !n.is_read);
+    }
+
+    private StudentAssistantContext BuildAssistantContext(StudentApplication? student)
+    {
+        var context = new StudentAssistantContext
+        {
+            StudentName = student?.studentName ?? (HttpContext.Session.GetString("UserName") ?? "Student"),
+            StudentId = HttpContext.Session.GetString("StudentID") ?? (student?.studentID ?? "-"),
+            Status = string.IsNullOrWhiteSpace(student?.applyStatus) ? "-" : student!.applyStatus!,
+            Cohort = string.IsNullOrWhiteSpace(student?.Cohort?.description) ? (student?.cohortId.ToString() ?? "-") : student!.Cohort!.description!,
+            InternPeriod = student?.Cohort?.startDate != null && student.Cohort.endDate != null
+                ? $"{student.Cohort.startDate:yyyy-MM-dd} to {student.Cohort.endDate:yyyy-MM-dd}"
+                : "-"
+        };
+
+        if (student?.Cohort != null)
+        {
+            var submittedReportKeys = _db.ProgressReports.AsNoTracking()
+                .Where(r => r.applicantId == student.application_id)
+                .Select(r => new { r.reportType, r.reportNo })
+                .ToList()
+                .Select(r => string.Equals(r.reportType, "final", StringComparison.OrdinalIgnoreCase) ? "F" : $"P{r.reportNo}")
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            void AddDeadline(string key, string title, DateTime? dueDate)
+            {
+                if (!dueDate.HasValue || submittedReportKeys.Contains(key))
+                {
+                    return;
+                }
+
+                context.Deadlines.Add(new StudentAssistantDeadlineItem
+                {
+                    Title = title,
+                    DateText = dueDate.Value.ToString("yyyy-MM-dd"),
+                    Note = dueDate.Value.Date < DateTime.Today ? "Overdue" : "Upcoming"
+                });
+            }
+
+            AddDeadline("P1", "Progress Report 1", student.Cohort.report1DueDate);
+            AddDeadline("P2", "Progress Report 2", student.Cohort.report2DueDate);
+            AddDeadline("P3", "Progress Report 3", student.Cohort.report3DueDate);
+            AddDeadline("P4", "Progress Report 4", student.Cohort.report4DueDate);
+            AddDeadline("P5", "Progress Report 5", student.Cohort.report5DueDate);
+            AddDeadline("P6", "Progress Report 6", student.Cohort.report6DueDate);
+            AddDeadline("F", "Final Report", student.Cohort.finalReportDueDate);
+        }
+
+        return context;
+    }
+
     private void ValidateUpload(IFormFile? file, string label)
     {
         if (file == null)
@@ -532,25 +653,135 @@ public class StudentDashboardModel : PageModel
         }
     }
 
-    private string? SaveUploadedFile(IFormFile? file, string prefix, string? existingFileName)
+    private string? SaveUploadedFile(IFormFile? file, string prefix, string? existingFileName, StudentApplication student)
     {
         if (file == null || file.Length <= 0)
         {
             return existingFileName;
         }
 
-        var uploadsPath = Path.Combine(_env.WebRootPath, "uploads");
-        Directory.CreateDirectory(uploadsPath);
+        var studentFolderPath = EnsureStudentCompanyDocumentFolder(student);
 
-        var extension = Path.GetExtension(file.FileName);
-        var safeExt = string.IsNullOrWhiteSpace(extension) ? string.Empty : extension;
-        var savedName = $"{prefix}_{DateTime.UtcNow:yyyyMMddHHmmssfff}_{Guid.NewGuid():N}{safeExt}";
-        var fullPath = Path.Combine(uploadsPath, savedName);
+        var savedName = BuildSafeUploadFileName(file.FileName, prefix);
+        var fullPath = Path.Combine(studentFolderPath, savedName);
+
+        var existingFullPath = ResolveUploadFullPath(existingFileName);
+        if (!string.IsNullOrWhiteSpace(existingFullPath) && System.IO.File.Exists(existingFullPath))
+        {
+            try
+            {
+                System.IO.File.Delete(existingFullPath);
+            }
+            catch
+            {
+                // keep upload success even if cleanup fails
+            }
+        }
 
         using var stream = new FileStream(fullPath, FileMode.Create);
         file.CopyTo(stream);
 
-        return savedName;
+        var relativeFolder = Path.GetRelativePath(Path.Combine(_env.WebRootPath, "uploads"), studentFolderPath)
+            .Replace('\\', '/');
+        return $"{relativeFolder}/{savedName}";
+    }
+
+    private string BuildCurrentFileDisplay(string? fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            return "-";
+        }
+
+        var safeFileName = Path.GetFileName(fileName);
+        var fullPath = ResolveUploadFullPath(fileName);
+        if (string.IsNullOrWhiteSpace(fullPath) || !System.IO.File.Exists(fullPath))
+        {
+            return safeFileName;
+        }
+
+        var fileInfo = new FileInfo(fullPath);
+        return $"{safeFileName} ({FormatFileSize(fileInfo.Length)})";
+    }
+
+    private static string FormatFileSize(long bytes)
+    {
+        if (bytes < 1024)
+        {
+            return $"{bytes} B";
+        }
+
+        if (bytes < 1024 * 1024)
+        {
+            return $"{bytes / 1024d:0.##} KB";
+        }
+
+        return $"{bytes / (1024d * 1024d):0.##} MB";
+    }
+
+    private string EnsureStudentCompanyDocumentFolder(StudentApplication student)
+    {
+        var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
+        Directory.CreateDirectory(uploadsRoot);
+
+        var cohortFolderName = BuildSafeFolderName(student.Cohort?.description, $"Cohort_{student.cohortId}");
+        var cohortFolderPath = Path.Combine(uploadsRoot, "Cohorts", cohortFolderName);
+        Directory.CreateDirectory(cohortFolderPath);
+
+        var studentFolderName = BuildSafeFolderName(student.studentName, $"Student_{student.application_id}");
+        var studentFolderPath = Path.Combine(cohortFolderPath, studentFolderName);
+        Directory.CreateDirectory(studentFolderPath);
+
+        return studentFolderPath;
+    }
+
+    private string? ResolveUploadFullPath(string? storedPath)
+    {
+        if (string.IsNullOrWhiteSpace(storedPath))
+        {
+            return null;
+        }
+
+        var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
+        var normalizedPath = storedPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+        var combinedPath = Path.GetFullPath(Path.Combine(uploadsRoot, normalizedPath));
+        var uploadsRootFullPath = Path.GetFullPath(uploadsRoot);
+
+        if (!combinedPath.StartsWith(uploadsRootFullPath, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return combinedPath;
+    }
+
+    private static string BuildSafeFolderName(string? rawValue, string fallback)
+    {
+        var baseValue = string.IsNullOrWhiteSpace(rawValue) ? fallback : rawValue.Trim();
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var sanitized = new string(baseValue
+            .Select(ch => invalidChars.Contains(ch) ? '_' : ch)
+            .ToArray());
+
+        sanitized = string.Join("_", sanitized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+        return string.IsNullOrWhiteSpace(sanitized) ? fallback : sanitized;
+    }
+
+    private static string BuildSafeUploadFileName(string? originalFileName, string fallbackPrefix)
+    {
+        var rawFileName = Path.GetFileName(originalFileName ?? string.Empty);
+        if (string.IsNullOrWhiteSpace(rawFileName))
+        {
+            return fallbackPrefix;
+        }
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var sanitized = new string(rawFileName
+            .Select(ch => invalidChars.Contains(ch) ? '_' : ch)
+            .ToArray())
+            .Trim();
+
+        return string.IsNullOrWhiteSpace(sanitized) ? fallbackPrefix : sanitized;
     }
 
     private StudentApplication? GetCurrentStudentApplication(bool asNoTracking, bool includeCohort)

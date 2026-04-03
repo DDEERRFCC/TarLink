@@ -1,0 +1,241 @@
+@page
+@model CommitteeCohortsModel
+@{
+    ViewData["CommitteePageTitle"] = "Cohort";
+    var isEditing = Model.Input.CohortId.HasValue;
+}
+
+<div class="committee-page">
+<partial name="_CommitteeHeader" />
+<partial name="_CommitteeNav" />
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
+}
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div>
+                <h5 class="mb-1">Cohort Management</h5>
+                <div class="text-muted small">Create, update, and manage internship cohort settings in one place.</div>
+            </div>
+            @if (isEditing)
+            {
+                <a asp-page="/Committee/Cohorts" class="btn btn-sm btn-outline-secondary">Cancel Edit</a>
+            }
+        </div>
+
+        <form method="post" asp-page-handler="Save">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="Input.CohortId" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.Description" class="form-label">Description</label>
+                    <input asp-for="Input.Description" class="form-control" />
+                    <span asp-validation-for="Input.Description" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.Level" class="form-label">Level</label>
+                    <select asp-for="Input.Level" class="form-select">
+                        <option value="">-- Select Level --</option>
+                        <option value="1">Diploma</option>
+                        <option value="2">Degree</option>
+                    </select>
+                    <span asp-validation-for="Input.Level" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-check form-switch mb-2">
+                        <input asp-for="Input.IsActive" class="form-check-input" />
+                        <label asp-for="Input.IsActive" class="form-check-label">Active Cohort</label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label asp-for="Input.StartDate" class="form-label">Start Date</label>
+                    <input asp-for="Input.StartDate" type="date" class="form-control" />
+                    <span asp-validation-for="Input.StartDate" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.EndDate" class="form-label">End Date</label>
+                    <input asp-for="Input.EndDate" type="date" class="form-control" />
+                    <span asp-validation-for="Input.EndDate" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.ExamStartDate" class="form-label">Exam Start Date</label>
+                    <input asp-for="Input.ExamStartDate" type="date" class="form-control" />
+                    <span asp-validation-for="Input.ExamStartDate" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Input.ExamEndDate" class="form-label">Exam End Date</label>
+                    <input asp-for="Input.ExamEndDate" type="date" class="form-control" />
+                    <span asp-validation-for="Input.ExamEndDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Input.Campus" class="form-label">Campus</label>
+                    <input asp-for="Input.Campus" class="form-control" />
+                    <span asp-validation-for="Input.Campus" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.Faculty" class="form-label">Faculty</label>
+                    <input asp-for="Input.Faculty" class="form-control" />
+                    <span asp-validation-for="Input.Faculty" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.CompanyEvaluationDate" class="form-label">Company Evaluation Date</label>
+                    <input asp-for="Input.CompanyEvaluationDate" type="date" class="form-control" />
+                    <span asp-validation-for="Input.CompanyEvaluationDate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Input.PersonInCharge" class="form-label">Person In Charge</label>
+                    <input asp-for="Input.PersonInCharge" class="form-control" />
+                    <span asp-validation-for="Input.PersonInCharge" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.PidEmail" class="form-label">PIC Email</label>
+                    <input asp-for="Input.PidEmail" type="email" class="form-control" />
+                    <span asp-validation-for="Input.PidEmail" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+            <h6 class="mb-3">Progress Report Schedule</h6>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Input.ReportMonth1" class="form-label">Report 1 Month</label>
+                    <input asp-for="Input.ReportMonth1" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.Report1DueDate" class="form-label">Report 1 Due Date</label>
+                    <input asp-for="Input.Report1DueDate" type="date" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.ReportMonth2" class="form-label">Report 2 Month</label>
+                    <input asp-for="Input.ReportMonth2" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Input.Report2DueDate" class="form-label">Report 2 Due Date</label>
+                    <input asp-for="Input.Report2DueDate" type="date" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.ReportMonth3" class="form-label">Report 3 Month</label>
+                    <input asp-for="Input.ReportMonth3" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.Report3DueDate" class="form-label">Report 3 Due Date</label>
+                    <input asp-for="Input.Report3DueDate" type="date" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Input.ReportMonth4" class="form-label">Report 4 Month</label>
+                    <input asp-for="Input.ReportMonth4" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.Report4DueDate" class="form-label">Report 4 Due Date</label>
+                    <input asp-for="Input.Report4DueDate" type="date" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.ReportMonth5" class="form-label">Report 5 Month</label>
+                    <input asp-for="Input.ReportMonth5" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Input.Report5DueDate" class="form-label">Report 5 Due Date</label>
+                    <input asp-for="Input.Report5DueDate" type="date" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.ReportMonth6" class="form-label">Report 6 Month</label>
+                    <input asp-for="Input.ReportMonth6" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.Report6DueDate" class="form-label">Report 6 Due Date</label>
+                    <input asp-for="Input.Report6DueDate" type="date" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Input.FinalReportDueDate" class="form-label">Final Report Due Date</label>
+                    <input asp-for="Input.FinalReportDueDate" type="date" class="form-control" />
+                </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-success">@(isEditing ? "Update Cohort" : "Create Cohort")</button>
+                <a asp-page="/Committee/Cohorts" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div>
+                <h5 class="mb-1">Cohort List</h5>
+                <div class="text-muted small">Current cohorts available in the system.</div>
+            </div>
+            <div class="small text-muted">Total cohorts: @Model.Cohorts.Count</div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Level</th>
+                        <th>Intern Period</th>
+                        <th>Final Due</th>
+                        <th>Active</th>
+                        <th style="width: 170px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Cohorts)
+                    {
+                        <tr>
+                            <td>@item.cohort_id</td>
+                            <td>@(string.IsNullOrWhiteSpace(item.description) ? "-" : item.description)</td>
+                            <td>@Model.GetLevelLabel(item.level)</td>
+                            <td>@(item.startDate?.ToString("yyyy-MM-dd") ?? "-") to @(item.endDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+                            <td>@item.finalReportDueDate?.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                @if (item.isActive)
+                                {
+                                    <span class="badge text-bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a asp-page="/Committee/Cohorts" asp-route-editId="@item.cohort_id" class="btn btn-sm btn-primary">Edit</a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.cohort_id" onsubmit="return confirm('Delete this cohort?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

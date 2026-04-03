@@ -64,6 +64,7 @@ public class CommitteeProgressEvaluationModel : CommitteePageModelBase
         return status switch
         {
             1 => "Submitted",
+            4 => "Submitted Late",
             2 => "Approved",
             3 => "Rejected",
             _ => "Pending"

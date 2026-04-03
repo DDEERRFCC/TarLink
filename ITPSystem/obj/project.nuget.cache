@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5ucuYgImH8o=",
+  "dgSpecHash": "FpNqr+tb4Fk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\ITPSystem\\ITPSystem.csproj",
+  "projectFilePath": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\ITPSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kimch\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\kimch\\.nuget\\packages\\google.protobuf\\3.32.0\\google.protobuf.3.32.0.nupkg.sha512",

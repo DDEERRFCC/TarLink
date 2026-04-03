@@ -66,7 +66,7 @@
 
     .mpr-grid {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 1rem;
         margin-top: 1rem;
     }
@@ -76,6 +76,32 @@
         border: 1px solid var(--mpr-border);
         border-radius: 14px;
         box-shadow: 0 10px 22px rgba(21, 32, 54, 0.08);
+    }
+
+    .mpr-section-divider {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: .9rem;
+        margin: .15rem 0 -.1rem;
+    }
+
+    .mpr-section-divider::before,
+    .mpr-section-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #bfd3e4, transparent);
+    }
+
+    .mpr-section-title {
+        margin: 0;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: #496579;
+        white-space: nowrap;
     }
 
     .mpr-card-head {
@@ -99,6 +125,36 @@
         padding: .8rem 1rem 1rem;
     }
 
+    .mpr-meta {
+        display: grid;
+        gap: .55rem;
+        margin-bottom: .9rem;
+    }
+
+    .mpr-meta-item {
+        border: 1px solid #d9e5f1;
+        border-radius: 10px;
+        background: #f8fbff;
+        padding: .55rem .7rem;
+    }
+
+    .mpr-meta-label {
+        display: block;
+        font-size: .74rem;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        margin-bottom: .15rem;
+    }
+
+    .mpr-meta-value {
+        color: var(--mpr-text);
+        font-size: .92rem;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
     .mpr-label {
         font-size: .86rem;
         font-weight: 700;
@@ -119,33 +175,13 @@
     }
 
     .mpr-submit-btn {
+        width: 100%;
         border: 0;
         border-radius: 10px;
         background: linear-gradient(90deg, var(--mpr-primary), #0ea5a1);
         color: #fff;
         font-weight: 700;
         padding: .5rem .9rem;
-    }
-
-    .mpr-table-wrap {
-        max-height: 360px;
-        overflow: auto;
-        border: 1px solid #d6e3ef;
-        border-radius: 12px;
-    }
-
-    .mpr-table {
-        margin-bottom: 0;
-        min-width: 760px;
-    }
-
-    .mpr-table thead th {
-        position: sticky;
-        top: 0;
-        background: #edf6ff;
-        color: #0f3f54;
-        font-weight: 700;
-        border-bottom: 1px solid #d2e3f3;
     }
 
     .mpr-status {
@@ -202,105 +238,87 @@
         }
 
         <div class="mpr-grid">
-            <section class="mpr-card">
-                <div class="mpr-card-head">
-                    <h3 class="mpr-card-title">Submit Report</h3>
-                    <p class="mpr-card-sub">Choose a report slot and submit your summary.</p>
-                </div>
-                <div class="mpr-card-body">
-                    <form method="post" asp-page-handler="Submit" enctype="multipart/form-data">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            @foreach (var item in Model.ReportTypes)
+            {
+                if (string.Equals(item.Key, "P1", StringComparison.OrdinalIgnoreCase))
+                {
+                    <div class="mpr-section-divider">
+                        <p class="mpr-section-title">Progress Reports</p>
+                    </div>
+                }
 
-                        <div class="mb-3">
-                            <label asp-for="Input.ReportKey" class="mpr-label">Report</label>
-                            <select asp-for="Input.ReportKey" class="form-select mpr-input">
-                                <option value="">-- Select Report --</option>
-                                @foreach (var item in Model.ReportTypes)
-                                {
-                                    var dueText = item.DueDate?.ToString("yyyy-MM-dd") ?? "TBA";
-                                    <option value="@item.Key">@item.Label (Due: @dueText)</option>
-                                }
-                            </select>
-                            <span asp-validation-for="Input.ReportKey" class="text-danger"></span>
-                        </div>
+                if (string.Equals(item.Key, "F", StringComparison.OrdinalIgnoreCase))
+                {
+                    <div class="mpr-section-divider">
+                        <p class="mpr-section-title">Final Report</p>
+                    </div>
+                }
 
-                        <div class="mb-3">
-                            <label asp-for="Input.Content" class="mpr-label">Content / Summary</label>
-                            <textarea asp-for="Input.Content" class="form-control mpr-input" rows="8" placeholder="Write your progress report content here..."></textarea>
-                            <span asp-validation-for="Input.Content" class="text-danger"></span>
-                        </div>
+                var existingReport = Model.GetReportForKey(item.Key);
+                var statusText = Model.GetDisplayStatus(existingReport, item.DueDate);
+                var statusClass = statusText switch
+                {
+                    "Submitted" => "mpr-status mpr-status-submitted",
+                    "Submitted Late" => "mpr-status mpr-status-rejected",
+                    "Approved" => "mpr-status mpr-status-approved",
+                    "Missing" => "mpr-status mpr-status-rejected",
+                    "Rejected" => "mpr-status mpr-status-rejected",
+                    _ => "mpr-status mpr-status-pending"
+                };
+                var dueText = item.DueDate?.ToString("yyyy-MM-dd") ?? "TBA";
+                var updatedText = existingReport?.updated_at.ToString("yyyy-MM-dd HH:mm") ?? "-";
+                var buttonText = existingReport == null ? "Submit Report" : "Replace Report";
 
-                        <div class="mb-3">
-                            <label asp-for="Input.ReportFile" class="mpr-label">Attach File (optional)</label>
-                            <input asp-for="Input.ReportFile" type="file" class="form-control mpr-input" />
-                            <div class="form-text">Allowed: .pdf, .doc, .docx (max 10MB)</div>
-                            <span asp-validation-for="Input.ReportFile" class="text-danger"></span>
-                        </div>
-
-                        <button type="submit" class="mpr-submit-btn">Submit Report</button>
-                    </form>
-                </div>
-            </section>
-
-            <section class="mpr-card">
-                <div class="mpr-card-head">
-                    <h3 class="mpr-card-title">Submission History</h3>
-                    <p class="mpr-card-sub">Track status and feedback for each submitted report.</p>
-                </div>
-                <div class="mpr-card-body">
-                    @if (Model.Reports.Count == 0)
-                    {
-                        <p class="text-muted mb-0">No reports submitted yet.</p>
-                    }
-                    else
-                    {
-                        <div class="mpr-table-wrap">
-                            <table class="table table-sm align-middle mpr-table">
-                                <thead>
-                                    <tr>
-                                        <th>Report</th>
-                                        <th>Due Date</th>
-                                        <th>Status</th>
-                                        <th>Last Update</th>
-                                        <th>File</th>
-                                        <th>Remarks</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var report in Model.Reports)
+                <section class="mpr-card">
+                    <div class="mpr-card-head">
+                        <h3 class="mpr-card-title">@item.Label</h3>
+                        <p class="mpr-card-sub">Upload this report in its own submission box.</p>
+                    </div>
+                    <div class="mpr-card-body">
+                        <div class="mpr-meta">
+                            <div class="mpr-meta-item">
+                                <span class="mpr-meta-label">Due Date</span>
+                                <span class="mpr-meta-value">@dueText</span>
+                            </div>
+                            <div class="mpr-meta-item">
+                                <span class="mpr-meta-label">Status</span>
+                                <span class="@statusClass">@statusText</span>
+                            </div>
+                            <div class="mpr-meta-item">
+                                <span class="mpr-meta-label">Last Update</span>
+                                <span class="mpr-meta-value">@updatedText</span>
+                            </div>
+                            <div class="mpr-meta-item">
+                                <span class="mpr-meta-label">Current File</span>
+                                <span class="mpr-meta-value">
+                                    @if (!string.IsNullOrWhiteSpace(existingReport?.file_path))
                                     {
-                                        var statusText = Model.GetStatusLabel(report.status);
-                                        var statusClass = statusText switch
-                                        {
-                                            "Submitted" => "mpr-status mpr-status-submitted",
-                                            "Approved" => "mpr-status mpr-status-approved",
-                                            "Rejected" => "mpr-status mpr-status-rejected",
-                                            _ => "mpr-status mpr-status-pending"
-                                        };
-                                        <tr>
-                                            <td>@Model.GetReportTitle(report.reportType, report.reportNo)</td>
-                                            <td>@report.dueDate.ToString("yyyy-MM-dd")</td>
-                                            <td><span class="@statusClass">@statusText</span></td>
-                                            <td>@report.updated_at.ToString("yyyy-MM-dd HH:mm")</td>
-                                            <td>
-                                                @if (!string.IsNullOrWhiteSpace(report.file_path))
-                                                {
-                                                    <a href="@report.file_path" target="_blank" rel="noopener">View File</a>
-                                                }
-                                                else
-                                                {
-                                                    <span class="text-muted">-</span>
-                                                }
-                                            </td>
-                                            <td>@report.remark</td>
-                                        </tr>
+                                        <a href="@existingReport.file_path" target="_blank" rel="noopener">View File</a>
                                     }
-                                </tbody>
-                            </table>
+                                    else
+                                    {
+                                        <span class="text-muted">No file uploaded</span>
+                                    }
+                                </span>
+                            </div>
                         </div>
-                    }
-                </div>
-            </section>
+
+                        <form method="post" asp-page-handler="Submit" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                            <input type="hidden" asp-for="Input.ReportKey" value="@item.Key" />
+
+                            <div class="mb-3">
+                                <label asp-for="Input.ReportFile" class="mpr-label">Attach File</label>
+                                <input asp-for="Input.ReportFile" type="file" class="form-control mpr-input" />
+                                <div class="form-text">Allowed: .pdf, .doc, .docx (max 10MB)</div>
+                                <span asp-validation-for="Input.ReportFile" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="mpr-submit-btn">@buttonText</button>
+                        </form>
+                    </div>
+                </section>
+            }
         </div>
     </div>
 </div>
