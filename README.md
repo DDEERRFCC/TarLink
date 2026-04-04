@@ -68,3 +68,23 @@ It helps manage internship applications, job postings, student profiles, and pro
    git add .
    git commit -m "My changes"
    git push
+
+### 🔧 Installation & Setup Ollama
+1. Install the Ollama:
+   ```bash
+   https://ollama.com/
+   
+2. Start Ollama server
+   ```bash
+   ollama serve
+
+3. Download & run your model
+   ```bash
+   ollama run llama3.2:3b
+
+3. Test if Ollama is working
+   ```bash
+   "Ollama": {
+    "BaseUrl": "http://localhost:11434",
+    "Model": "llama3.2:3b"
+  },
