@@ -22,10 +22,7 @@ namespace ITPSystem.Data
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<StudentCv> StudentCvs { get; set; }
         public DbSet<CompanyRequest> CompanyRequests { get; set; }
-
-
-
-
+        public DbSet<UcSupervisor> UcSupervisors { get; set; }
     }
 
 }

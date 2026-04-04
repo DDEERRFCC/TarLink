@@ -2,6 +2,10 @@
 @model ITPSystem.Pages.Supervisor.NotificationsModel
 <h2>My Notifications</h2>
 
+<div class="mb-3">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
+</div>
+
 <form method="post" asp-page-handler="MarkAllRead" class="mb-3">
     <button class="btn btn-outline-secondary btn-sm" type="submit">Mark All As Read</button>
 </form>

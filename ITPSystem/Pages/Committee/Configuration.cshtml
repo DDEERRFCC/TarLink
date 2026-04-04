@@ -8,27 +8,159 @@
 <partial name="_CommitteeHeader" />
 <partial name="_CommitteeNav" />
 
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="alert alert-info">@Model.StatusMessage</div>
+}
+
+@if (!Model.ShowEditForm)
+{
+    <div class="card mb-3">
+        <div class="card-header">Create Cohort</div>
+        <div class="card-body">
+            <form method="post" asp-page-handler="Create" class="row g-2">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-4">
+                    <label asp-for="CreateInput.description" class="form-label">Description</label>
+                    <input asp-for="CreateInput.description" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="CreateInput.startDate" class="form-label">Start Date</label>
+                    <input asp-for="CreateInput.startDate" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="CreateInput.endDate" class="form-label">End Date</label>
+                    <input asp-for="CreateInput.endDate" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-1">
+                    <label asp-for="CreateInput.level" class="form-label">Level</label>
+                    <input asp-for="CreateInput.level" type="number" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CreateInput.finalReportDueDate" class="form-label">Final Report Due</label>
+                    <input asp-for="CreateInput.finalReportDueDate" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CreateInput.campus" class="form-label">Campus</label>
+                    <input asp-for="CreateInput.campus" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CreateInput.faculty" class="form-label">Faculty</label>
+                    <input asp-for="CreateInput.faculty" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CreateInput.personInCharge" class="form-label">Person In Charge</label>
+                    <input asp-for="CreateInput.personInCharge" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CreateInput.pidEmail" class="form-label">PIC Email</label>
+                    <input asp-for="CreateInput.pidEmail" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <div class="form-check">
+                        <input asp-for="CreateInput.isActive" class="form-check-input" />
+                        <label asp-for="CreateInput.isActive" class="form-check-label">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-primary btn-sm w-100" type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card mb-3 border-warning">
+        <div class="card-header bg-warning-subtle">Edit Cohort - @Model.EditInput.cohort_id</div>
+        <div class="card-body">
+            <form method="post" asp-page-handler="Update" class="row g-2">
+                <input asp-for="EditInput.cohort_id" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-4">
+                    <label asp-for="EditInput.description" class="form-label">Description</label>
+                    <input asp-for="EditInput.description" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="EditInput.startDate" class="form-label">Start Date</label>
+                    <input asp-for="EditInput.startDate" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="EditInput.endDate" class="form-label">End Date</label>
+                    <input asp-for="EditInput.endDate" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-1">
+                    <label asp-for="EditInput.level" class="form-label">Level</label>
+                    <input asp-for="EditInput.level" type="number" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EditInput.finalReportDueDate" class="form-label">Final Report Due</label>
+                    <input asp-for="EditInput.finalReportDueDate" type="date" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EditInput.campus" class="form-label">Campus</label>
+                    <input asp-for="EditInput.campus" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EditInput.faculty" class="form-label">Faculty</label>
+                    <input asp-for="EditInput.faculty" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EditInput.personInCharge" class="form-label">Person In Charge</label>
+                    <input asp-for="EditInput.personInCharge" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="EditInput.pidEmail" class="form-label">PIC Email</label>
+                    <input asp-for="EditInput.pidEmail" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <div class="form-check">
+                        <input asp-for="EditInput.isActive" class="form-check-input" />
+                        <label asp-for="EditInput.isActive" class="form-check-label">Active</label>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end gap-2">
+                    <button class="btn btn-warning btn-sm" type="submit">Update</button>
+                    <a class="btn btn-outline-secondary btn-sm" asp-page="/Committee/Configuration">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
 <h5>Cohort</h5>
 <div class="table-responsive mb-3">
     <table class="table table-sm table-bordered align-middle">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Description</th>
                 <th>Start</th>
                 <th>End</th>
+                <th>Level</th>
                 <th>Active</th>
                 <th>Final Due Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var c in Model.Cohorts)
             {
                 <tr>
+                    <td>@c.cohort_id</td>
                     <td>@c.description</td>
                     <td>@c.startDate?.ToString("yyyy-MM-dd")</td>
                     <td>@c.endDate?.ToString("yyyy-MM-dd")</td>
-                    <td>@c.isActive</td>
+                    <td>@c.level</td>
+                    <td>@(c.isActive ? "Yes" : "No")</td>
                     <td>@c.finalReportDueDate?.ToString("yyyy-MM-dd")</td>
+                    <td class="d-flex gap-1">
+                        <a asp-page="/Committee/Configuration" asp-route-editId="@c.cohort_id" class="btn btn-sm btn-outline-warning">Edit</a>
+                        <form method="post" asp-page-handler="Delete" class="d-inline">
+                            <input type="hidden" name="cohortId" value="@c.cohort_id" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete cohort @c.cohort_id?');">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -36,7 +168,40 @@
 </div>
 
 <h5>Student Access</h5>
-<div class="alert alert-warning mb-0">
-    Placeholder: `studentaccess` is in database design, but no model/page logic is mapped yet in `ApplicationDbContext`.
+<div class="table-responsive">
+    <table class="table table-sm table-bordered align-middle">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Access</th>
+                <th>Cohort Involved</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.StudentAccesses.Any())
+            {
+                <tr><td colspan="5" class="text-center text-muted">No student access records.</td></tr>
+            }
+            else
+            {
+                @foreach (var s in Model.StudentAccesses)
+                {
+                    <tr>
+                        <td>@s.UserId</td>
+                        <td>@s.StudentId</td>
+                        <td>@s.StudentName</td>
+                        <td>@s.AccessStatus</td>
+                        <td>@s.Cohort</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

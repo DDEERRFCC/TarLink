@@ -24,9 +24,10 @@
 <div class="d-flex flex-wrap gap-2 mb-4">
     <a class="btn btn-outline-secondary" asp-page="/Supervisor/Profile">My Profile</a>
     <a class="btn btn-primary" asp-page="/Supervisor/Students">Student Applications</a>
-    <a class="btn btn-primary" asp-page="/Supervisor/Reports">Progress Reports</a>
+    <a class="btn btn-primary" asp-page="/Supervisor/ReportResults">Report Results</a>
     <a class="btn btn-primary" asp-page="/Supervisor/Documents">Documents</a>
     <a class="btn btn-primary" asp-page="/Supervisor/Marks">Assessment Marks</a>
+    <a class="btn btn-primary" asp-page="/Supervisor/SummaryReport">Summary Report</a>
     <a class="btn btn-outline-secondary" asp-page="/Supervisor/Notifications">Notifications</a>
 </div>
 
@@ -49,7 +50,7 @@
                 <td>@s.studentName</td>
                 <td>@s.studentID</td>
                 <td>@(string.IsNullOrWhiteSpace(s.comName) ? "-" : s.comName)</td>
-                <td>@s.cohortId</td>
+                <td>@(string.IsNullOrWhiteSpace(s.Cohort?.description) ? s.cohortId.ToString() : s.Cohort.description)</td>
                 <td>@s.applyStatus</td>
                 <td>@(s.allowance?.ToString("0.00") ?? "-")</td>
             </tr>

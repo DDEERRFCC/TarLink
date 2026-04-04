@@ -1,6 +1,14 @@
 @page
 @model ITPSystem.Pages.Supervisor.DocumentsModel
 <h2>Document Review</h2>
+@if (!string.IsNullOrWhiteSpace(Model.SelectedStudent))
+{
+    <p class="text-muted">Showing documents for: <strong>@Model.SelectedStudent</strong></p>
+}
+<div class="mb-3">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Back to Dashboard</a>
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Students">Back to Student Tracking</a>
+</div>
 
 @if (!string.IsNullOrWhiteSpace(Model.Message))
 {
@@ -72,27 +80,11 @@
                     }
                 </td>
                 <td>
-                    <form method="post" class="mb-1">
-                        <input type="hidden" name="applicationId" value="@s.application_id" />
-                        <select name="documentType" class="form-select form-select-sm mb-1">
-                            <option value="formAcceptance">Acceptance</option>
-                            <option value="formAcknowledgement">Acknowledgement</option>
-                            <option value="letterIdentity">Letter</option>
-                            <option value="otherEvidence">Other</option>
-                        </select>
-                        <button class="btn btn-outline-primary btn-sm w-100" asp-page-handler="Download" type="submit">Download</button>
-                    </form>
                     <form method="post" class="d-flex gap-1">
                         <input type="hidden" name="applicationId" value="@s.application_id" />
-                        <select name="documentType" class="form-select form-select-sm">
-                            <option value="formAcceptance">Acceptance</option>
-                            <option value="formAcknowledgement">Acknowledgement</option>
-                            <option value="letterIdentity">Letter</option>
-                            <option value="otherEvidence">Other</option>
-                        </select>
-                        <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Remarks" />
-                        <button class="btn btn-success btn-sm" asp-page-handler="Approve" type="submit">Approve</button>
-                        <button class="btn btn-danger btn-sm" asp-page-handler="Reject" type="submit">Reject</button>
+                        <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Application review remark" />
+                        <button class="btn btn-success btn-sm" asp-page-handler="Approve" type="submit">Approve Application</button>
+                        <button class="btn btn-danger btn-sm" asp-page-handler="Reject" type="submit">Reject Application</button>
                     </form>
                 </td>
             </tr>

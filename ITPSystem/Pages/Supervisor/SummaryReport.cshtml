@@ -1,0 +1,107 @@
+@page
+@model ITPSystem.Pages.Supervisor.SummaryReportModel
+<h2>Summary Report</h2>
+<p class="text-muted">Overview by cohort and academic level. Report generated date/time: <strong>@Model.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</strong></p>
+
+<div class="mb-3">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Back to Dashboard</a>
+</div>
+
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-md-5">
+        <label class="form-label">Cohort</label>
+        <select class="form-select form-select-sm" asp-for="cohortId" asp-items="Model.CohortOptions">
+            <option value="">All Cohorts</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Academic Level</label>
+        <select class="form-select form-select-sm" asp-for="level">
+            <option value="">All Levels</option>
+            <option value="0">0 - Unknown</option>
+            <option value="1">1 - Diploma</option>
+            <option value="2">2 - Degree</option>
+            <option value="3">3 - Master</option>
+            <option value="4">4 - PhD</option>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <button type="submit" class="btn btn-primary btn-sm w-100">Go</button>
+    </div>
+    <div class="col-md-1">
+        <a class="btn btn-outline-success btn-sm w-100"
+           asp-page-handler="ExportCsv"
+           asp-route-cohortId="@Model.cohortId"
+           asp-route-level="@Model.level">CSV</a>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-outline-success btn-sm w-100"
+           asp-page-handler="ExportExcel"
+           asp-route-cohortId="@Model.cohortId"
+           asp-route-level="@Model.level">Excel</a>
+    </div>
+</form>
+
+<h5>Student Breakdown by Programme</h5>
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>Programme</th>
+            <th>No of Student</th>
+            <th>Success</th>
+            <th>Failed</th>
+            <th>Pending</th>
+            <th>Rejected</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.ProgrammeSummary)
+        {
+            <tr>
+                <td>@row.Programme</td>
+                <td>@row.NoOfStudent</td>
+                <td>@row.Success</td>
+                <td>@row.Failed</td>
+                <td>@row.Pending</td>
+                <td>@row.Rejected</td>
+            </tr>
+        }
+        <tr class="table-secondary fw-bold">
+            <td>Total</td>
+            <td>@Model.Totals.TotalStudents</td>
+            <td>@Model.Totals.TotalSuccess</td>
+            <td>@Model.Totals.TotalFailed</td>
+            <td>@Model.Totals.TotalPending</td>
+            <td>@Model.Totals.TotalRejected</td>
+        </tr>
+    </tbody>
+</table>
+
+<h5>Student Breakdown by Company</h5>
+<table class="table table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>Company Name</th>
+            <th>Average Allowance</th>
+            <th>Applicant Count</th>
+            <th>Programme</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model.CompanySummary)
+        {
+            <tr>
+                <td>@row.CompanyName</td>
+                <td>@row.AverageAllowance.ToString("0.00")</td>
+                <td>@row.ApplicantCount</td>
+                <td>@(string.IsNullOrWhiteSpace(row.Programmes) ? "-" : row.Programmes)</td>
+            </tr>
+        }
+        <tr class="table-secondary fw-bold">
+            <td>Total</td>
+            <td>-</td>
+            <td>@Model.Totals.TotalApplicantsByCompany</td>
+            <td>-</td>
+        </tr>
+    </tbody>
+</table>

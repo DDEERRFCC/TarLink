@@ -1,64 +1,151 @@
 @page
 @model ITPSystem.Pages.Supervisor.MarksModel
 <h2>Assessment Mark Sheet</h2>
+<div class="mb-3">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
+    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Marks" asp-page-handler="ExportExcel">Export XLSX</a>
+</div>
 
 @if (!string.IsNullOrWhiteSpace(Model.Message))
 {
     <div class="alert alert-success">@Model.Message</div>
 }
 
-<form method="post" class="row g-2 align-items-end mb-4">
-    <div class="col-md-3">
-        <label class="form-label">Student</label>
-        <select name="applicationId" class="form-select" required>
-            <option value="">Select student</option>
-            @foreach (var s in Model.Students)
-            {
-                <option value="@s.application_id">@s.studentName (@s.studentID)</option>
-            }
-        </select>
+<form method="post" class="mb-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+    <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label">Student</label>
+            <select class="form-select" asp-for="Input.ApplicationId" required>
+                <option value="">Select student</option>
+                @foreach (var s in Model.Students)
+                {
+                    <option value="@s.application_id">@s.studentName (@s.studentID)</option>
+                }
+            </select>
+            <span asp-validation-for="Input.ApplicationId" class="text-danger"></span>
+        </div>
     </div>
-    <div class="col-md-3">
-        <label class="form-label">Rubric Item</label>
-        <input class="form-control" name="rubricItem" required />
+
+    @{
+        var currentSection = string.Empty;
+    }
+
+    @for (var i = 0; i < Model.RubricDefinitions.Count; i++)
+    {
+        var def = Model.RubricDefinitions[i];
+        var maxValue = def.MaxScore.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        if (!string.Equals(def.Section, currentSection, StringComparison.Ordinal))
+        {
+            currentSection = def.Section;
+            <h5 class="mt-4">@currentSection</h5>
+        }
+        <div class="row g-2 align-items-end border rounded p-2 mb-2">
+            <div class="col-md-5">
+                <label class="form-label">Criteria</label>
+                <div class="form-control-plaintext">@def.Item</div>
+                <input type="hidden" name="Input.RubricScores[@i].RubricItem" value="@def.Item" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Rating Scale</label>
+                <div class="border rounded bg-light p-2 small">
+                    @def.RatingScale
+                </div>
+            </div>
+            <div class="col-md-1">
+                <label class="form-label">Max</label>
+                <div class="form-control-plaintext">@def.MaxScore</div>
+                <input type="hidden" name="Input.RubricScores[@i].MaxScore" value="@maxValue" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Score</label>
+                <input class="form-control" name="Input.RubricScores[@i].Score" type="number" step="0.01" min="0" max="@maxValue" required />
+            </div>
+        </div>
+    }
+
+    <div class="mt-3">
+        <label class="form-label">Overall Comments</label>
+        <textarea class="form-control" asp-for="Input.OverallRemarks" rows="3" required></textarea>
+        <span asp-validation-for="Input.OverallRemarks" class="text-danger"></span>
     </div>
-    <div class="col-md-2">
-        <label class="form-label">Score</label>
-        <input class="form-control" name="score" type="number" step="0.01" required />
-    </div>
-    <div class="col-md-2">
-        <label class="form-label">Max Score</label>
-        <input class="form-control" name="maxScore" type="number" step="0.01" required />
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-primary w-100" type="submit">Save Mark</button>
-    </div>
-    <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <input class="form-control" name="remarks" />
+
+    <div class="mt-3">
+        <button class="btn btn-primary" type="submit">Save Assessment</button>
     </div>
 </form>
 
+<h5>Student Marks</h5>
 <table class="table table-bordered table-sm">
     <thead>
         <tr>
             <th>Student</th>
-            <th>Rubric</th>
-            <th>Score</th>
-            <th>Remarks</th>
-            <th>Date</th>
+            <th>Student ID</th>
+            <th>Total Mark</th>
+            <th>Final Report</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.MarkItems)
+        @foreach (var item in Model.Summaries)
         {
             <tr>
                 <td>@item.StudentName</td>
-                <td>@item.Mark.rubric_item</td>
-                <td>@item.Mark.score / @item.Mark.max_score</td>
-                <td>@item.Mark.remarks</td>
-                <td>@item.Mark.created_at.ToString("yyyy-MM-dd")</td>
+                <td>@item.StudentId</td>
+                <td>@item.TotalScore / @item.TotalMax</td>
+                <td>
+                    @if (item.FinalReportId.HasValue)
+                    {
+                        <a asp-page="/Supervisor/ReportView"
+                           asp-route-reportId="@item.FinalReportId.Value"
+                           asp-route-applicationId="@item.ApplicationId">View Final Report</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">-</span>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-outline-primary btn-sm"
+                       asp-page="/Supervisor/Marks"
+                       asp-route-applicationId="@item.ApplicationId">View Details</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+@if (Model.applicationId.HasValue)
+{
+    <h5 class="mt-4">Mark Details</h5>
+    @if (!Model.DetailItems.Any())
+    {
+        <div class="alert alert-info">No marks found for the selected student.</div>
+    }
+    else
+    {
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Rubric</th>
+                    <th>Score</th>
+                    <th>Max</th>
+                    <th>Remarks</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model.DetailItems)
+                {
+                    <tr>
+                        <td>@detail.Mark.rubric_item</td>
+                        <td>@detail.Mark.score</td>
+                        <td>@detail.Mark.max_score</td>
+                        <td>@detail.Mark.remarks</td>
+                        <td>@detail.Mark.created_at.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

@@ -1,115 +1,524 @@
-﻿@page
+@page
 @model IndexModel
 @{
     ViewData["Title"] = "ITP System";
 }
 
 <style>
+    :root {
+        --landing-ink: #132238;
+        --landing-muted: #5d6b7c;
+        --landing-surface: rgba(255, 255, 255, 0.82);
+        --landing-line: rgba(19, 34, 56, 0.1);
+        --landing-student: #0f7b6c;
+        --landing-supervisor: #c96a16;
+        --landing-committee: #8f2d56;
+        --landing-accent: #ffd166;
+    }
+
     body {
-        background-color: #f5f7fb;
+        background:
+            radial-gradient(circle at top left, rgba(255, 209, 102, 0.35), transparent 28%),
+            radial-gradient(circle at top right, rgba(15, 123, 108, 0.2), transparent 24%),
+            linear-gradient(180deg, #f4efe5 0%, #edf4f7 55%, #f7fbfc 100%);
     }
 
-    .portal-container {
-        max-width: 1000px;
-        margin: 60px auto;
-        text-align: center;
+    .landing-shell {
+        position: relative;
+        overflow: hidden;
+        padding: 1.5rem 0 3.5rem;
+        color: var(--landing-ink);
+        font-family: "Trebuchet MS", "Gill Sans", sans-serif;
     }
 
-    .portal-title {
-        font-size: 36px;
+    .landing-shell::before,
+    .landing-shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(10px);
+        opacity: 0.8;
+        z-index: 0;
+    }
+
+    .landing-shell::before {
+        width: 240px;
+        height: 240px;
+        top: 2rem;
+        right: -4rem;
+        background: rgba(15, 123, 108, 0.12);
+    }
+
+    .landing-shell::after {
+        width: 180px;
+        height: 180px;
+        left: -3rem;
+        bottom: 4rem;
+        background: rgba(201, 106, 22, 0.12);
+    }
+
+    .landing-grid,
+    .portal-grid {
+        position: relative;
+        z-index: 1;
+    }
+
+    .landing-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 1.5rem;
+        align-items: stretch;
+        margin-bottom: 1.75rem;
+    }
+
+    .hero-panel,
+    .info-panel,
+    .portal-card {
+        border: 1px solid var(--landing-line);
+        background: var(--landing-surface);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 18px 40px rgba(19, 34, 56, 0.08);
+    }
+
+    .hero-panel {
+        border-radius: 32px;
+        padding: 2.5rem;
+        min-height: 100%;
+        animation: rise-in 0.7s ease-out;
+    }
+
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(19, 34, 56, 0.06);
+        color: var(--landing-muted);
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        margin-bottom: 1.2rem;
+    }
+
+    .hero-title {
+        max-width: 11ch;
+        margin-bottom: 1rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.5rem, 5vw, 4.6rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+    }
+
+    .hero-copy {
+        max-width: 56ch;
+        margin-bottom: 1.5rem;
+        color: var(--landing-muted);
+        font-size: 1.02rem;
+        line-height: 1.75;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .hero-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 185px;
+        padding: 0.95rem 1.25rem;
+        border-radius: 16px;
+        text-decoration: none;
         font-weight: 700;
-        margin-bottom: 10px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
 
-    .portal-subtitle {
-        color: #666;
-        margin-bottom: 50px;
+    .hero-link.primary {
+        background: var(--landing-ink);
+        color: #fff9f0;
+        box-shadow: 0 14px 26px rgba(19, 34, 56, 0.18);
+    }
+
+    .hero-link.secondary {
+        border: 1px solid var(--landing-line);
+        color: var(--landing-ink);
+        background: rgba(255, 255, 255, 0.55);
+    }
+
+    .hero-link:hover {
+        transform: translateY(-2px);
+    }
+
+    .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9rem;
+    }
+
+    .metric-card {
+        padding: 1rem;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.64);
+        border: 1px solid rgba(19, 34, 56, 0.08);
+    }
+
+    .metric-value {
+        display: block;
+        margin-bottom: 0.2rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .metric-label {
+        color: var(--landing-muted);
+        font-size: 0.92rem;
+    }
+
+    .info-panel {
+        border-radius: 28px;
+        padding: 1.8rem;
+        animation: rise-in 0.9s ease-out;
+    }
+
+    .info-panel h2 {
+        margin-bottom: 1rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.55rem;
+    }
+
+    .info-panel p {
+        margin-bottom: 1.25rem;
+        color: var(--landing-muted);
+        line-height: 1.7;
+    }
+
+    .highlight-stack {
+        display: grid;
+        gap: 0.9rem;
+    }
+
+    .highlight-card {
+        padding: 1rem 1.1rem;
+        border-radius: 18px;
+        background: rgba(255, 248, 235, 0.8);
+        border: 1px solid rgba(201, 106, 22, 0.15);
+    }
+
+    .highlight-card strong {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-size: 0.95rem;
+    }
+
+    .highlight-card span {
+        color: var(--landing-muted);
+        font-size: 0.92rem;
+        line-height: 1.55;
+    }
+
+    .section-heading {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 1rem;
+    }
+
+    .portal-grid + .landing-grid {
+        margin-top: 1.5rem;
+    }
+
+    .section-heading h2 {
+        margin-bottom: 0.35rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.8rem, 3vw, 2.4rem);
+    }
+
+    .section-heading p {
+        margin: 0;
+        color: var(--landing-muted);
+        line-height: 1.7;
     }
 
     .portal-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
     }
 
     .portal-card {
-        background: white;
-        border-radius: 12px;
-        padding: 30px 20px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        transition: transform 0.2s ease;
+        border-radius: 26px;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        animation: rise-in 0.8s ease-out;
     }
 
-    .portal-card:hover {
-        transform: translateY(-5px);
+    .portal-card:nth-child(2) {
+        animation-delay: 0.08s;
+    }
+
+    .portal-card:nth-child(3) {
+        animation-delay: 0.16s;
+    }
+
+    .portal-card::before {
+        content: "";
+        position: absolute;
+        inset: auto -30px -30px auto;
+        width: 120px;
+        height: 120px;
+        border-radius: 24px;
+        transform: rotate(18deg);
+        opacity: 0.15;
+    }
+
+    .portal-card.student::before {
+        background: var(--landing-student);
+    }
+
+    .portal-card.supervisor::before {
+        background: var(--landing-supervisor);
+    }
+
+    .portal-card.committee::before {
+        background: var(--landing-committee);
+    }
+
+    .portal-badge {
+        display: inline-flex;
+        margin-bottom: 1rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .student .portal-badge {
+        background: rgba(15, 123, 108, 0.12);
+        color: var(--landing-student);
+    }
+
+    .supervisor .portal-badge {
+        background: rgba(201, 106, 22, 0.12);
+        color: var(--landing-supervisor);
+    }
+
+    .committee .portal-badge {
+        background: rgba(143, 45, 86, 0.12);
+        color: var(--landing-committee);
     }
 
     .portal-card h3 {
-        margin-bottom: 15px;
+        margin-bottom: 0.75rem;
+        font-size: 1.45rem;
+        font-weight: 700;
     }
 
     .portal-card p {
-        color: #555;
-        margin-bottom: 25px;
+        min-height: 4.8rem;
+        margin-bottom: 1rem;
+        color: var(--landing-muted);
+        line-height: 1.7;
+    }
+
+    .portal-list {
+        margin: 0 0 1.25rem;
+        padding-left: 1.15rem;
+        color: var(--landing-ink);
+    }
+
+    .portal-list li {
+        margin-bottom: 0.45rem;
     }
 
     .portal-btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 6px;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
         width: 100%;
+        border: none;
+        border-radius: 16px;
+        padding: 0.95rem 1rem;
+        color: #fff;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .student {
-        background-color: #007bff;
+    .portal-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 24px rgba(19, 34, 56, 0.15);
     }
 
-    .supervisor {
-        background-color: #28a745;
+    .portal-card.student .portal-btn {
+        background: linear-gradient(135deg, #0f7b6c, #159683);
     }
 
-    .committee {
-        background-color: #6f42c1;
+    .portal-card.supervisor .portal-btn {
+        background: linear-gradient(135deg, #c96a16, #de8740);
+    }
+
+    .portal-card.committee .portal-btn {
+        background: linear-gradient(135deg, #8f2d56, #b34873);
+    }
+
+    @@keyframes rise-in {
+        from {
+            opacity: 0;
+            transform: translateY(22px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .landing-grid,
+        .portal-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-panel,
+        .info-panel,
+        .portal-card {
+            padding: 1.5rem;
+        }
+
+        .hero-title {
+            max-width: none;
+        }
+
+        .portal-grid + .landing-grid {
+            margin-top: 1.25rem;
+        }
+    }
+
+    @@media (max-width: 575.98px) {
+        .landing-shell {
+            padding-top: 0.5rem;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+        }
+
+        .hero-link {
+            width: 100%;
+        }
+
+        .hero-metrics {
+            grid-template-columns: 1fr;
+        }
+
+        .portal-card p {
+            min-height: 0;
+        }
     }
 </style>
 
-<div class="portal-container">
-    <div class="portal-title">ITP Management System</div>
-    <div class="portal-subtitle">
-        Select your portal to continue
+<section class="landing-shell">
+    <div class="section-heading">
+        <h2>Choose your workspace</h2>
+        <p>Select the portal that matches your role and continue into the tools prepared for your responsibilities.</p>
     </div>
 
     <div class="portal-grid">
-
-        <!-- Student Portal -->
-        <div class="portal-card">
-            <h3>🎓 Student</h3>
-            <p>Submit reports, view progress, and manage your internship.</p>
+        <section class="portal-card student">
+            <span class="portal-badge">Student</span>
+            <h3>Manage your internship journey</h3>
+            <p>Submit required materials, monitor your application progress, and stay updated on internship milestones.</p>
+            <ul class="portal-list">
+                <li>View application details</li>
+                <li>Submit reports and forms</li>
+                <li>Track internship progress</li>
+            </ul>
             <form method="get" asp-page="/Login/StudentLogin">
-                <button class="portal-btn student" type="submit">Student Login</button>
+                <button class="portal-btn" type="submit">Student Login</button>
             </form>
-        </div>
+        </section>
 
-        <!-- Supervisor Portal -->
-        <div class="portal-card">
-            <h3>🧑‍🏫 Supervisor</h3>
-            <p>Monitor students, review submissions, and give feedback.</p>
+        <section class="portal-card supervisor">
+            <span class="portal-badge">Supervisor</span>
+            <h3>Guide and review students</h3>
+            <p>Monitor performance, review submissions, and keep student supervision consistent throughout the training period.</p>
+            <ul class="portal-list">
+                <li>Monitor assigned students</li>
+                <li>Review results and feedback</li>
+                <li>Generate summary reports</li>
+            </ul>
             <form method="get" asp-page="/Login/SupervisorLogin">
-                <button class="portal-btn supervisor" type="submit">Supervisor Login</button>
+                <button class="portal-btn" type="submit">Supervisor Login</button>
             </form>
-        </div>
+        </section>
 
-        <!-- Committee Portal -->
-        <div class="portal-card">
-            <h3>🏛 Committee</h3>
-            <p>Approve records, manage assessments, and generate reports.</p>
+        <section class="portal-card committee">
+            <span class="portal-badge">Committee</span>
+            <h3>Coordinate the programme</h3>
+            <p>Oversee records, manage supervisors, and keep the internship programme aligned with faculty requirements.</p>
+            <ul class="portal-list">
+                <li>Approve and organize records</li>
+                <li>Manage student imports</li>
+                <li>Support reporting and oversight</li>
+            </ul>
             <form method="get" asp-page="/Login/CommitteeLogin">
-                <button class="portal-btn committee" type="submit">Committee Login</button>
+                <button class="portal-btn" type="submit">Committee Login</button>
             </form>
+        </section>
+    </div>
+
+    <div class="landing-grid">
+        <div class="hero-panel">
+            <div class="eyebrow">Industrial Training Programme</div>
+            <h1 class="hero-title">One place to run the full internship workflow.</h1>
+            <p class="hero-copy">
+                The ITP Management System brings student submissions, supervisor monitoring, and committee coordination
+                into a single academic workspace so every step stays visible, organized, and easier to manage.
+            </p>
+
+            <div class="hero-actions">
+                <a class="hero-link primary" asp-page="/Login/StudentLogin">Enter Student Portal</a>
+                <a class="hero-link secondary" asp-page="/Login/SupervisorLogin">Supervisor Access</a>
+            </div>
+
+            <div class="hero-metrics">
+                <div class="metric-card">
+                    <span class="metric-value">3</span>
+                    <span class="metric-label">Focused portals</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">1</span>
+                    <span class="metric-label">Shared workflow hub</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">24/7</span>
+                    <span class="metric-label">Access anywhere</span>
+                </div>
+            </div>
         </div>
 
+        <aside class="info-panel">
+            <h2>Built for smoother coordination</h2>
+            <p>
+                From application records to reports and approvals, the system is designed to reduce manual follow-up
+                and keep each role focused on the work that matters most.
+            </p>
+
+            <div class="highlight-stack">
+                <div class="highlight-card">
+                    <strong>Clear academic oversight</strong>
+                    <span>Track progress, manage evaluations, and keep supervisor communication in one structured flow.</span>
+                </div>
+                <div class="highlight-card">
+                    <strong>Faster reporting</strong>
+                    <span>Export summaries, review student outcomes, and move from raw data to decisions with less friction.</span>
+                </div>
+                <div class="highlight-card">
+                    <strong>Role-based access</strong>
+                    <span>Students, supervisors, and committee members each get an entry point tailored to their tasks.</span>
+                </div>
+            </div>
+        </aside>
     </div>
-</div>
+</section>

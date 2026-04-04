@@ -1,10 +1,24 @@
 @page
 @model ITPSystem.Pages.Supervisor.ReportsModel
-<h2>Progress Report Review</h2>
+<h2>Progress Report Approval</h2>
+<p class="text-muted">Approve or reject submitted student reports.</p>
+@if (!string.IsNullOrWhiteSpace(Model.SelectedStudent))
+{
+    <p class="text-muted">Showing reports for: <strong>@Model.SelectedStudent</strong></p>
+}
+<div class="mb-3 d-flex gap-2">
+    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Back to Dashboard</a>
+    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/ReportResults">View Results</a>
+</div>
 
 @if (!string.IsNullOrWhiteSpace(Model.Message))
 {
     <div class="alert alert-success">@Model.Message</div>
+}
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">No submitted reports pending approval.</div>
 }
 
 <table class="table table-bordered table-sm">
@@ -14,7 +28,7 @@
             <th>Report</th>
             <th>Due Date</th>
             <th>Status</th>
-            <th>Remark</th>
+            <th>Content Preview</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -23,13 +37,18 @@
         {
             <tr>
                 <td>@item.StudentName (@item.StudentId)</td>
-                <td>@Model.GetReportTitle(item.Report)</td>
+                <td>
+                    <a asp-page="/Supervisor/ReportView" asp-route-reportId="@item.Report.report_id" asp-route-applicationId="@item.Report.applicantId">
+                        @Model.GetReportTitle(item.Report)
+                    </a>
+                </td>
                 <td>@item.Report.dueDate.ToString("yyyy-MM-dd")</td>
                 <td>@Model.GetStatusLabel(item.Report.status)</td>
-                <td>@item.Report.remark</td>
+                <td>@(string.IsNullOrWhiteSpace(item.Report.remark) ? "-" : item.Report.remark)</td>
                 <td>
                     <form method="post" class="d-flex gap-1">
                         <input type="hidden" name="reportId" value="@item.Report.report_id" />
+                        <input type="hidden" name="applicationId" value="@item.Report.applicantId" />
                         <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Remarks" />
                         <button class="btn btn-success btn-sm" type="submit" asp-page-handler="Approve">Approve</button>
                         <button class="btn btn-danger btn-sm" type="submit" asp-page-handler="Reject">Reject</button>

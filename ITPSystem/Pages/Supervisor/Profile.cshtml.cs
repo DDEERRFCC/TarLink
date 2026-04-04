@@ -41,13 +41,13 @@ namespace ITPSystem.Pages.Supervisor
         {
             if (!TryGetSupervisorContext(out var userId, out var userEmail))
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             Supervisor = _db.SysUsers.AsNoTracking().FirstOrDefault(u => u.user_id == userId);
             if (Supervisor == null)
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             DisplayName = string.IsNullOrWhiteSpace(Supervisor.username) ? Supervisor.email : Supervisor.username;
@@ -66,7 +66,7 @@ namespace ITPSystem.Pages.Supervisor
 
             if (applicationIds.Count > 0)
             {
-                PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && (r.status == 1 || r.status == 4));
+                PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 1);
                 ApprovedReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 2);
                 RejectedReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 3);
 

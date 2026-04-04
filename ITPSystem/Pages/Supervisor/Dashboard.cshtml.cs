@@ -31,18 +31,19 @@ namespace ITPSystem.Pages.Supervisor
 
             if (string.IsNullOrWhiteSpace(userEmail) || userRole != "supervisor")
             {
-                return RedirectToPage("/Login/Login", new { role = "Supervisor" });
+                return RedirectToPage("/Login/SupervisorLogin");
             }
 
             UserName = HttpContext.Session.GetString("UserName") ?? userEmail;
             Students = _db.StudentApplications.AsNoTracking()
+                .Include(s => s.Cohort)
                 .Where(s => s.ucSupervisorEmail == userEmail || s.comSupervisorEmail == userEmail)
                 .OrderBy(s => s.studentName)
                 .ToList();
 
             var applicationIds = Students.Select(s => s.application_id).ToList();
 
-            PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && (r.status == 1 || r.status == 4));
+            PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 1);
             PendingDocuments = _db.DocumentReviews.Count(r => r.status == "pending");
             PendingApplications = Students.Count(s => s.applyStatus == "pending");
             ActiveInternships = Students.Count(s => s.applyStatus == "approved");

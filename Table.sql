@@ -320,9 +320,29 @@ CREATE TABLE ucsupervisor (
     remark VARCHAR(150),
     isActive TINYINT(1) DEFAULT 1,
     isCommittee TINYINT(1) DEFAULT 0,
-    faculty VARCHAR(45),
-    campus VARCHAR(45),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    faculty VARCHAR(100),
+    campus VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_faculty CHECK (
+        faculty IN (
+            'Faculty of Computing and Information Technology',
+            'Faculty of Engineering and Technology',
+            'Faculty of Business and Finance',
+            'Faculty of Accountancy, Finance and Business',
+            'Faculty of Social Science and Humanities',
+            'Faculty of Built Environment'
+        )
+    ),
+    CONSTRAINT chk_campus CHECK (
+        campus IN (
+            'Kuala Lumpur Main Campus',
+            'Penang Branch Campus',
+            'Perak Branch Campus',
+            'Johor Branch Campus',
+            'Sabah Branch Campus',
+            'Sarawak Branch Campus'
+        )
+    )
 );
 -- ==============================
 -- ASSESSMENT MARK TABLE
@@ -334,10 +354,50 @@ CREATE TABLE assessmentmark (
     rubric_item VARCHAR(120) NOT NULL,
     score DECIMAL(5, 2) NOT NULL,
     max_score DECIMAL(5, 2) NOT NULL,
-    remarks TEXT NULL,
+    remarks TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_assessmentmark_application (application_id),
     INDEX idx_assessmentmark_supervisor (supervisor_user_id),
+    CONSTRAINT chk_assessmentmark_rubric CHECK (
+        rubric_item IN (
+            'Submission of progress reports (CLO6)',
+            'Content of progress reports (CLO1)',
+            'Submission of final report (CLO6)',
+            'Written presentation of final report (CLO4)',
+            'Awareness of business and entrepreneurial opportunities (CLO5)',
+            'Overall content of final report (CLO4)'
+        )
+    ),
+    CONSTRAINT chk_assessmentmark_max_score CHECK (
+        (
+            rubric_item = 'Submission of progress reports (CLO6)'
+            AND max_score = 4
+        )
+        OR (
+            rubric_item = 'Content of progress reports (CLO1)'
+            AND max_score = 6
+        )
+        OR (
+            rubric_item = 'Submission of final report (CLO6)'
+            AND max_score = 4
+        )
+        OR (
+            rubric_item = 'Written presentation of final report (CLO4)'
+            AND max_score = 6
+        )
+        OR (
+            rubric_item = 'Awareness of business and entrepreneurial opportunities (CLO5)'
+            AND max_score = 10
+        )
+        OR (
+            rubric_item = 'Overall content of final report (CLO4)'
+            AND max_score = 10
+        )
+    ),
+    CONSTRAINT chk_assessmentmark_score_range CHECK (
+        score >= 0
+        AND score <= max_score
+    ),
     CONSTRAINT fk_assessmentmark_application FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_assessmentmark_supervisor FOREIGN KEY (supervisor_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
