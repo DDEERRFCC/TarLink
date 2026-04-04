@@ -15,24 +15,29 @@
     @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
     :root {
-        --itp-bg-1: #f4f7fb;
-        --itp-bg-2: #e5edf7;
-        --itp-text: #1f2937;
-        --itp-muted: #5a677b;
-        --itp-primary: #0e7490;
-        --itp-primary-dark: #155e75;
-        --itp-accent: #f59e0b;
-        --itp-card: #ffffff;
-        --itp-border: #d7e2ee;
+        --itp-bg-1: #f5efe4;
+        --itp-bg-2: #edf4f4;
+        --itp-bg-3: #f9fbfc;
+        --itp-text: #182536;
+        --itp-muted: #617082;
+        --itp-primary: #0f7b6c;
+        --itp-primary-dark: #0d5f63;
+        --itp-accent: #d97706;
+        --itp-accent-soft: #fff1d9;
+        --itp-card: rgba(255, 255, 255, 0.86);
+        --itp-border: rgba(24, 37, 54, 0.09);
+        --itp-hero-start: #132238;
+        --itp-hero-mid: #0f7b6c;
+        --itp-hero-end: #d97706;
     }
 
     .student-portal {
         font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
         min-height: calc(100vh - 80px);
         background:
-            radial-gradient(circle at 10% 10%, #d7f0ff 0%, transparent 28%),
-            radial-gradient(circle at 85% 18%, #ffe8bf 0%, transparent 23%),
-            linear-gradient(160deg, var(--itp-bg-1), var(--itp-bg-2));
+            radial-gradient(circle at 8% 8%, rgba(217, 119, 6, 0.18) 0%, transparent 25%),
+            radial-gradient(circle at 88% 14%, rgba(15, 123, 108, 0.16) 0%, transparent 23%),
+            linear-gradient(160deg, var(--itp-bg-1), var(--itp-bg-2) 52%, var(--itp-bg-3));
         padding: 2rem 0 2.5rem;
     }
 
@@ -43,34 +48,118 @@
     }
 
     .itp-hero {
-        background: linear-gradient(125deg, #0f172a, #134e4a 70%, #0e7490);
-        color: #fff;
-        border-radius: 20px;
-        padding: 1.5rem;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(130deg, var(--itp-hero-start), var(--itp-hero-mid) 58%, var(--itp-hero-end));
+        color: #fffdf7;
+        border-radius: 28px;
+        padding: 1.9rem;
+        box-shadow: 0 22px 48px rgba(19, 34, 56, 0.18);
         animation: fade-up .5s ease-out;
+    }
+
+    .itp-hero::before,
+    .itp-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        opacity: .24;
+        pointer-events: none;
+    }
+
+    .itp-hero::before {
+        width: 240px;
+        height: 240px;
+        top: -80px;
+        right: -60px;
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+    .itp-hero::after {
+        width: 180px;
+        height: 180px;
+        left: -50px;
+        bottom: -80px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .itp-hero-layout {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+        gap: 1.2rem;
+        align-items: start;
+    }
+
+    .itp-hero-title {
+        margin: .8rem 0 .45rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+        line-height: 1.02;
+        letter-spacing: -.03em;
+    }
+
+    .itp-hero-copy {
+        max-width: 56ch;
+        margin-bottom: 1.1rem;
+        color: rgba(255, 253, 247, 0.88);
+        line-height: 1.8;
     }
 
     .itp-grid {
         display: grid;
         grid-template-columns: 1.2fr 1fr;
-        gap: 1rem;
-        margin-top: 1rem;
+        gap: 1.15rem;
+        margin-top: 1.15rem;
     }
 
     .itp-card {
+        position: relative;
+        overflow: hidden;
         background: var(--itp-card);
         border: 1px solid var(--itp-border);
-        border-radius: 16px;
-        padding: 1rem;
-        box-shadow: 0 10px 24px rgba(26, 40, 60, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 22px;
+        padding: 1.1rem;
+        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
         animation: fade-up .55s ease-out;
+    }
+
+    .itp-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, rgba(15, 123, 108, 0.95), rgba(217, 119, 6, 0.7));
+        opacity: .9;
+    }
+
+    .itp-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: .6rem;
+    }
+
+    .itp-card-kicker {
+        display: inline-flex;
+        margin-bottom: .35rem;
+        padding: .28rem .62rem;
+        border-radius: 999px;
+        background: rgba(15, 123, 108, .08);
+        color: var(--itp-primary-dark);
+        font-size: .74rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
     }
 
     .itp-title {
         color: var(--itp-text);
-        margin: 0 0 .35rem;
-        font-size: 1.02rem;
+        margin: 0 0 .1rem;
+        font-size: 1.08rem;
         font-weight: 700;
     }
 
@@ -82,43 +171,65 @@
 
     .itp-pill {
         display: inline-block;
-        padding: .35rem .7rem;
+        padding: .42rem .78rem;
         border-radius: 999px;
-        background: rgba(14, 116, 144, .15);
-        color: var(--itp-primary-dark);
+        background: rgba(255, 255, 255, .14);
+        color: #fff7ec;
         font-weight: 600;
         font-size: .83rem;
+        letter-spacing: .06em;
+        text-transform: uppercase;
     }
 
     .itp-progress-wrap {
         margin-top: .65rem;
-        background: #dfe9f4;
+        background: #dbe6e2;
         border-radius: 99px;
-        height: 12px;
+        height: 14px;
         overflow: hidden;
     }
 
     .itp-progress-bar {
         height: 100%;
-        width: 42%;
-        background: linear-gradient(90deg, #0e7490, #14b8a6);
+        background: linear-gradient(90deg, var(--itp-primary), #19a38f, #ef9f28);
         border-radius: 99px;
+    }
+
+    .itp-summary-stack {
+        display: grid;
+        gap: .8rem;
+        justify-items: end;
+    }
+
+    .itp-summary-chip {
+        padding: .9rem 1rem;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .14);
+        min-width: 180px;
+        max-width: 220px;
+    }
+
+    .itp-summary-chip strong {
+        display: block;
+        margin-bottom: .2rem;
+        font-size: .95rem;
     }
 
     .itp-actions {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: .65rem;
-        margin-top: .6rem;
+        gap: .75rem;
+        margin-top: .75rem;
     }
 
     .itp-action {
         text-decoration: none;
-        background: #f6fbff;
-        border: 1px solid #cde6f4;
-        color: #0f3f54;
-        border-radius: 12px;
-        padding: .65rem .8rem;
+        background: linear-gradient(180deg, #f9fcfb, #eef7f5);
+        border: 1px solid #d6e6e1;
+        color: #13414a;
+        border-radius: 14px;
+        padding: .8rem .9rem;
         font-weight: 600;
         transition: all .2s ease;
     }
@@ -133,7 +244,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: .6rem 0;
+        gap: 1rem;
+        padding: .72rem 0;
         border-bottom: 1px dashed #d6e2ef;
     }
 
@@ -179,12 +291,13 @@
         display: inline-block;
         margin-top: .9rem;
         text-decoration: none;
-        background: #f59e0b;
+        background: linear-gradient(135deg, #e89d24, #f3b34f);
         color: #1f2937;
         font-weight: 700;
-        padding: .5rem .85rem;
-        border-radius: 10px;
+        padding: .65rem .95rem;
+        border-radius: 12px;
         transition: all .2s ease;
+        box-shadow: 0 12px 22px rgba(217, 119, 6, .2);
     }
 
     .itp-profile-btn:hover {
@@ -250,6 +363,10 @@
     }
 
     .itp-docs {
+        grid-column: 1 / -1;
+    }
+
+    .itp-wide {
         grid-column: 1 / -1;
     }
 
@@ -448,6 +565,29 @@
         box-shadow: 0 18px 36px rgba(14, 116, 144, 0.34);
     }
 
+    .itp-bell-fab {
+        position: fixed;
+        right: 1.4rem;
+        bottom: 6.1rem;
+        width: 58px;
+        height: 58px;
+        border: 0;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #d97706, #f2b34d);
+        color: #fff;
+        box-shadow: 0 16px 34px rgba(217, 119, 6, 0.28);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1080;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .itp-bell-fab:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 36px rgba(217, 119, 6, 0.34);
+    }
+
     .itp-message-badge {
         position: absolute;
         top: -3px;
@@ -464,6 +604,50 @@
         align-items: center;
         justify-content: center;
         border: 2px solid #fff;
+    }
+
+    .itp-bell-panel {
+        position: fixed;
+        right: 1.4rem;
+        bottom: 10.4rem;
+        width: min(390px, calc(100vw - 2rem));
+        max-height: min(540px, calc(100vh - 12rem));
+        background: #fff;
+        border: 1px solid #d7e2ee;
+        border-radius: 18px;
+        box-shadow: 0 24px 54px rgba(15, 23, 42, 0.18);
+        overflow: hidden;
+        z-index: 1081;
+        display: none;
+        flex-direction: column;
+    }
+
+    .itp-bell-panel.show {
+        display: flex;
+        animation: fade-up .22s ease-out;
+    }
+
+    .itp-bell-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .8rem;
+        padding: .95rem 1rem;
+        background: linear-gradient(135deg, #fff6e7, #fffaf2);
+        border-bottom: 1px solid #ecdcc3;
+    }
+
+    .itp-bell-close {
+        border: 0;
+        background: transparent;
+        color: #7c5a1f;
+        font-size: 1.3rem;
+        line-height: 1;
+    }
+
+    .itp-bell-body {
+        padding: .85rem;
+        overflow-y: auto;
     }
 
     .itp-message-panel {
@@ -681,6 +865,7 @@
     }
 
     @@media (max-width: 900px) {
+        .itp-hero-layout,
         .itp-grid {
             grid-template-columns: 1fr;
         }
@@ -692,19 +877,44 @@
         .itp-meta-grid {
             grid-template-columns: 1fr;
         }
+
+        .itp-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .itp-summary-stack {
+            justify-items: start;
+        }
     }
 
     @@media (max-width: 640px) {
+        .itp-bell-fab,
         .itp-message-fab {
             right: 1rem;
+        }
+
+        .itp-message-fab {
             bottom: 1rem;
         }
 
+        .itp-bell-fab {
+            bottom: 5.7rem;
+        }
+
+        .itp-bell-panel,
         .itp-message-panel {
             right: 1rem;
-            bottom: 5.4rem;
             width: calc(100vw - 2rem);
+        }
+
+        .itp-message-panel {
+            bottom: 5.4rem;
             height: min(70vh, calc(100vh - 6.6rem));
+        }
+
+        .itp-bell-panel {
+            bottom: 10.1rem;
+            max-height: min(52vh, calc(100vh - 11.5rem));
         }
     }
 </style>
@@ -712,18 +922,22 @@
 <div class="student-portal">
     <div class="itp-shell">
         <div class="itp-hero">
-            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+            <div class="itp-hero-layout">
                 <div>
                     <div class="itp-pill">ITP Student Portal</div>
-                    <h2 class="mt-2 mb-1">Welcome back, @studentName</h2>
-                    <p class="mb-0" style="opacity:.92;">Track your internship progress, deadlines, and submission tasks in one place.</p>
-                    <a asp-page="/Student/Profile" class="itp-profile-btn">My Profile</a>
+                    <h2 class="itp-hero-title">Welcome back, @studentName</h2>
+                    <p class="itp-hero-copy">Track your internship progress, keep up with deadlines, manage company details, and stay on top of the documents you need for Industrial Training.</p>
+                    <a asp-page="/Student/Profile" class="itp-profile-btn">Open My Profile</a>
                 </div>
-                <div class="text-end">
-                    <div style="font-size:.85rem;opacity:.85;">Student ID</div>
-                    <div style="font-weight:700;font-size:1.15rem;">@studentId</div>
+
+                <div class="itp-summary-stack">
+                    <div class="itp-summary-chip">
+                        <strong>Student ID</strong>
+                        <span>@studentId</span>
+                    </div>
                 </div>
             </div>
+
         </div>
 
 @if (TempData["SuccessMessage"] is string successMessage && !string.IsNullOrWhiteSpace(successMessage))
@@ -734,7 +948,12 @@
         <div class="itp-grid">
 
             <section class="itp-card">
-                <h3 class="itp-title">Internship Status</h3>
+                <div class="itp-card-head">
+                    <div>
+                        <div class="itp-card-kicker">Status</div>
+                        <h3 class="itp-title">Internship Status</h3>
+                    </div>
+                </div>
                 <p class="itp-muted">@Model.InternshipStatusText</p>
                 <div class="itp-progress-wrap">
                     <div class="itp-progress-bar" style="width:@Model.InternshipProgressPercent%;"></div>
@@ -754,7 +973,12 @@
             </section>
 
             <section class="itp-card">
-                <h3 class="itp-title">Upcoming Deadlines</h3>
+                <div class="itp-card-head">
+                    <div>
+                        <div class="itp-card-kicker">Schedule</div>
+                        <h3 class="itp-title">Upcoming Deadlines</h3>
+                    </div>
+                </div>
                 @if (Model.ReportDeadlines.Count == 0)
                 {
                     <p class="itp-muted mb-0">No report due dates configured for your cohort yet.</p>
@@ -777,7 +1001,12 @@
             </section>
 
             <section class="itp-card itp-docs">
-                <h3 class="itp-title">Internship Info</h3>
+                <div class="itp-card-head">
+                    <div>
+                        <div class="itp-card-kicker">Overview</div>
+                        <h3 class="itp-title">Internship Info</h3>
+                    </div>
+                </div>
                 <div class="itp-meta-grid">
                     <div class="itp-meta-row">
                         <span class="itp-meta-label">Cohort</span>
@@ -810,13 +1039,77 @@
             </section>
 
             <section class="itp-card itp-docs">
-                <h3 class="itp-title">My Documents</h3>
-                <p class="itp-muted">Open your documents page to view and download all required files.</p>
-                <a class="itp-profile-btn mt-2" asp-page="/Student/Documents">Go to My Documents</a>
+                <div class="itp-card-head">
+                    <div>
+                        <div class="itp-card-kicker">Resources</div>
+                        <h3 class="itp-title">My Documents</h3>
+                    </div>
+                </div>
+                <p class="itp-muted">View and download all required ITP documents directly from your dashboard.</p>
+
+                <div class="itp-doc-list">
+                    @foreach (var doc in Model.Documents)
+                    {
+                        <article class="itp-doc-item">
+                            @if (doc.Exists)
+                            {
+                                <span class="itp-badge-ok">Available</span>
+                            }
+                            else
+                            {
+                                <span class="itp-badge-missing">Missing File</span>
+                            }
+
+                            <h4 class="itp-doc-title">@doc.Title</h4>
+                            <div class="itp-doc-actions">
+                                @if (doc.CanView)
+                                {
+                                    <a class="itp-doc-btn" href="@doc.ViewPath" target="_blank" rel="noopener">View</a>
+                                }
+                                <a class="itp-doc-btn" href="@doc.DownloadPath">Download</a>
+                            </div>
+                        </article>
+                    }
+                </div>
+
+                @if (Model.ApprovedStatusDocuments.Count > 0)
+                {
+                    <hr class="itp-doc-separator" />
+                    <p class="itp-muted mb-0">The following documents are required to pass to your company supervisor during your first day of your internship.</p>
+                    <div class="itp-doc-list">
+                        @foreach (var doc in Model.ApprovedStatusDocuments)
+                        {
+                            <article class="itp-doc-item">
+                                @if (doc.Exists)
+                                {
+                                    <span class="itp-badge-ok">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="itp-badge-missing">Missing File</span>
+                                }
+
+                                <h4 class="itp-doc-title">@doc.Title</h4>
+                                <div class="itp-doc-actions">
+                                    @if (doc.CanView)
+                                    {
+                                        <a class="itp-doc-btn" href="@doc.ViewPath" target="_blank" rel="noopener">View</a>
+                                    }
+                                    <a class="itp-doc-btn" href="@doc.DownloadPath">Download</a>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
             </section>
 
-            <section class="itp-card">
-                <h3 class="itp-title">Company Detail</h3>
+            <section class="itp-card itp-wide">
+                <div class="itp-card-head">
+                    <div>
+                        <div class="itp-card-kicker">Submission</div>
+                        <h3 class="itp-title">Company Detail</h3>
+                    </div>
+                </div>
                 <p class="itp-muted mb-3">Select a company first, then choose one of its available addresses.</p>
 
                 <form method="post" asp-page-handler="SaveCompany" enctype="multipart/form-data">
@@ -901,29 +1194,6 @@
                 </form>
             </section>
 
-            <section class="itp-card">
-                <h3 class="itp-title">Announcements</h3>
-                <p class="itp-muted mb-2">Important updates from ITP committee:</p>
-                @if (Model.Announcements.Count == 0)
-                {
-                    <p class="mb-0" style="color:#64748b;">No announcements at the moment.</p>
-                }
-                else
-                {
-                    <div class="itp-announce-list">
-                        @foreach (var item in Model.Announcements)
-                        {
-                            <details class="itp-announce-item">
-                                <summary class="itp-announce-title">
-                                    <span>@item.title</span>
-                                    <span class="itp-announce-date">@((item.publish_at ?? item.created_at).ToString("yyyy-MM-dd"))</span>
-                                </summary>
-                                <div class="itp-announce-message">@item.message</div>
-                            </details>
-                        }
-                    </div>
-                }
-            </section>
         </div>
     </div>
 </div>
@@ -931,169 +1201,90 @@
 @Html.AntiForgeryToken()
 
 @section FloatingUi {
-<button type="button" id="messageFab" class="itp-message-fab" aria-label="Open AI assistant" aria-expanded="false" aria-controls="messagePanel">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 2.6l1.35 3.46 3.71 1.35-3.71 1.35L12 12.22l-1.35-3.46-3.71-1.35 3.71-1.35L12 2.6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-        <path d="M18.2 11.2l.84 2.16 2.16.84-2.16.84-.84 2.16-.84-2.16-2.16-.84 2.16-.84.84-2.16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-        <path d="M8 13.2l1.22 3.14 3.14 1.22-3.14 1.22L8 22l-1.22-3.22-3.14-1.22 3.14-1.22L8 13.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+<button type="button" id="announcementBell" class="itp-bell-fab" aria-label="Open announcements" aria-expanded="false" aria-controls="announcementPanel">
+    @if (Model.Announcements.Count > 0)
+    {
+        <span class="itp-message-badge">@Model.Announcements.Count</span>
+    }
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 4.5a4 4 0 0 0-4 4v2.1c0 .7-.2 1.38-.58 1.97L6 14.5h12l-1.42-1.93A3.5 3.5 0 0 1 16 10.6V8.5a4 4 0 0 0-4-4Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 17.5a2.2 2.2 0 0 0 4 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
     </svg>
 </button>
 
-    <section id="messagePanel" class="itp-message-panel" aria-hidden="true">
-        <div class="itp-message-head">
-            <div>
-                <h3 class="itp-message-title">AI Assistant</h3>
-                <p class="itp-muted mb-0">Ask how to submit reports, upload documents, or use this portal.</p>
+<section id="announcementPanel" class="itp-bell-panel" aria-hidden="true">
+    <div class="itp-bell-head">
+        <div>
+            <h3 class="itp-message-title">Announcements</h3>
+            <p class="itp-muted mb-0">Important updates from the ITP committee.</p>
+        </div>
+        <button type="button" id="announcementPanelClose" class="itp-bell-close" aria-label="Close announcements">&times;</button>
+    </div>
+    <div class="itp-bell-body">
+        @if (Model.Announcements.Count == 0)
+        {
+            <p class="mb-0" style="color:#64748b;">No announcements at the moment.</p>
+        }
+        else
+        {
+            <div class="itp-announce-list">
+                @foreach (var item in Model.Announcements)
+                {
+                    <details class="itp-announce-item">
+                        <summary class="itp-announce-title">
+                            <span>@item.title</span>
+                            <span class="itp-announce-date">@((item.publish_at ?? item.created_at).ToString("yyyy-MM-dd"))</span>
+                        </summary>
+                        <div class="itp-announce-message">@item.message</div>
+                    </details>
+                }
             </div>
-            <button type="button" id="messagePanelClose" class="itp-message-close" aria-label="Close AI assistant">&times;</button>
-        </div>
-        <div id="assistantMessages" class="itp-message-list">
-            <div class="itp-chat-bubble itp-chat-assistant">Ask me things like where to upload your resume, how to submit progress reports, or what your next step should be.</div>
-        </div>
-        <div class="itp-chat-suggestions">
-            <button type="button" class="itp-chat-suggestion" data-suggestion="How do I submit my progress report?">Submit report</button>
-            <button type="button" class="itp-chat-suggestion" data-suggestion="Where do I upload my company documents?">Upload documents</button>
-            <button type="button" class="itp-chat-suggestion" data-suggestion="What should I do after my application is approved?">After approval</button>
-        </div>
-        <form id="assistantForm" class="itp-chat-compose">
-            <textarea id="assistantQuestion" class="itp-chat-input" placeholder="Ask a question about this portal..."></textarea>
-            <div class="itp-chat-footer">
-                <span class="itp-chat-hint">AI answers depend on your local `Ollama` configuration.</span>
-                <button type="submit" id="assistantSend" class="itp-chat-send">Ask</button>
-            </div>
-        </form>
-    </section>
+        }
+    </div>
+</section>
+
 }
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const antiforgeryTokenInput = document.querySelector("input[name='__RequestVerificationToken']");
-        const messageFab = document.getElementById("messageFab");
-        const messagePanel = document.getElementById("messagePanel");
-        const messagePanelClose = document.getElementById("messagePanelClose");
-        const assistantMessages = document.getElementById("assistantMessages");
-        const assistantForm = document.getElementById("assistantForm");
-        const assistantQuestion = document.getElementById("assistantQuestion");
-        const assistantSend = document.getElementById("assistantSend");
+        const announcementBell = document.getElementById("announcementBell");
+        const announcementPanel = document.getElementById("announcementPanel");
+        const announcementPanelClose = document.getElementById("announcementPanelClose");
         const companyOptions = @Html.Raw(companyOptionsJson);
         const companyNameInput = document.getElementById("companyNameInput");
         const companyIdInput = document.getElementById("companyIdInput");
         const companyListBox = document.getElementById("companyListBox");
         const addressSelect = document.getElementById("addressSelect");
 
-        const scrollAssistantToLatest = () => {
-            if (!assistantMessages) {
+        const setAnnouncementPanelState = (isOpen) => {
+            if (!announcementBell || !announcementPanel) {
                 return;
             }
 
-            assistantMessages.scrollTop = assistantMessages.scrollHeight;
+            announcementPanel.classList.toggle("show", isOpen);
+            announcementBell.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            announcementPanel.setAttribute("aria-hidden", isOpen ? "false" : "true");
         };
 
-        const setMessagePanelState = (isOpen) => {
-            if (!messageFab || !messagePanel) {
-                return;
-            }
-
-            messagePanel.classList.toggle("show", isOpen);
-            messageFab.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            messagePanel.setAttribute("aria-hidden", isOpen ? "false" : "true");
-
-            if (isOpen) {
-                scrollAssistantToLatest();
-            }
-        };
-
-        if (messageFab && messagePanel) {
-            messageFab.addEventListener("click", () => {
-                setMessagePanelState(!messagePanel.classList.contains("show"));
+        if (announcementBell && announcementPanel) {
+            announcementBell.addEventListener("click", () => {
+                setAnnouncementPanelState(!announcementPanel.classList.contains("show"));
             });
 
-            messagePanelClose?.addEventListener("click", () => setMessagePanelState(false));
+            announcementPanelClose?.addEventListener("click", () => setAnnouncementPanelState(false));
 
             document.addEventListener("click", (event) => {
-                if (!messagePanel.classList.contains("show")) {
+                if (!announcementPanel.classList.contains("show")) {
                     return;
                 }
 
                 const target = event.target;
-                if (!messagePanel.contains(target) && target !== messageFab && !messageFab.contains(target)) {
-                    setMessagePanelState(false);
+                if (!announcementPanel.contains(target) && target !== announcementBell && !announcementBell.contains(target)) {
+                    setAnnouncementPanelState(false);
                 }
             });
         }
-
-        const appendChatBubble = (text, kind) => {
-            if (!assistantMessages) {
-                return;
-            }
-
-            const item = document.createElement("div");
-            item.className = `itp-chat-bubble ${kind === "user" ? "itp-chat-user" : "itp-chat-assistant"}`;
-            item.textContent = text;
-            assistantMessages.appendChild(item);
-            scrollAssistantToLatest();
-        };
-
-        const askAssistant = async (question) => {
-            if (!question || !assistantSend || !assistantQuestion) {
-                return;
-            }
-
-            appendChatBubble(question, "user");
-            appendChatBubble("Thinking...", "assistant");
-            const loadingBubble = assistantMessages?.lastElementChild;
-
-            assistantSend.disabled = true;
-            assistantQuestion.disabled = true;
-
-            try {
-                const formData = new FormData();
-                formData.append("question", question);
-                if (antiforgeryTokenInput) {
-                    formData.append("__RequestVerificationToken", antiforgeryTokenInput.value);
-                }
-
-                const response = await fetch("@Url.Page("/Student/Dashboard", "AskAssistant")", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const result = await response.json();
-                if (loadingBubble) {
-                    loadingBubble.remove();
-                }
-
-                appendChatBubble(result?.answer || "No response from assistant.", "assistant");
-            } catch {
-                if (loadingBubble) {
-                    loadingBubble.remove();
-                }
-
-                appendChatBubble("AI assistant could not answer right now.", "assistant");
-            } finally {
-                assistantSend.disabled = false;
-                assistantQuestion.disabled = false;
-                assistantQuestion.focus();
-            }
-        };
-
-        assistantForm?.addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const question = (assistantQuestion?.value || "").trim();
-            if (!question) {
-                return;
-            }
-
-            assistantQuestion.value = "";
-            await askAssistant(question);
-        });
-
-        document.querySelectorAll("[data-suggestion]").forEach((button) => {
-            button.addEventListener("click", async () => {
-                const question = button.getAttribute("data-suggestion") || "";
-                await askAssistant(question);
-            });
-        });
 
         if (!companyNameInput || !companyIdInput || !companyListBox || !addressSelect) {
             return;

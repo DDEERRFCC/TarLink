@@ -70,6 +70,7 @@ public class OllamaStudentAssistantService
         var deadlines = context.Deadlines.Count == 0
             ? "No upcoming deadlines."
             : string.Join("; ", context.Deadlines.Select(d => $"{d.Title}: {d.DateText} ({d.Note})"));
+        var roleScope = BuildRoleScope(context.UserRole);
         var knowledgeSection = relevantKnowledge.Count == 0
             ? "No matching local knowledge snippets were found."
             : string.Join(
@@ -77,18 +78,22 @@ public class OllamaStudentAssistantService
                 relevantKnowledge.Select(k => $"- {k.Title}: {k.Content}"));
 
         return
-            "You are an AI assistant inside an Internship Training Programme student portal. " +
-            "Answer only questions related to using this portal, student submission steps, documents, progress reports, deadlines, internship status, company details, and committee/supervisor workflow. " +
+            "You are an AI assistant inside an Internship Training Programme management system used by students, supervisors, committee members, and guests on login pages. " +
+            "Answer only questions related to using this system and the current user's allowed workflow. " +
             "Be practical, concise, and give step-by-step directions using page names when helpful. " +
             "Use the provided local knowledge snippets as your primary source whenever they are relevant. " +
+            "If the user asks outside their allowed scope, say that this assistant for their role only supports that role's portal tasks. " +
             "If the local knowledge does not contain the answer, say that clearly and suggest contacting the committee. " +
+            $"Role scope: {roleScope}. " +
+            $"Current user role: {context.UserRole}. " +
             $"Student name: {context.StudentName}. " +
             $"Student ID: {context.StudentId}. " +
             $"Application status: {context.Status}. " +
             $"Cohort: {context.Cohort}. " +
             $"Intern period: {context.InternPeriod}. " +
+            $"Current page: {context.CurrentPage}. " +
             $"Upcoming deadlines: {deadlines}. " +
-            "Relevant pages include Dashboard, My Documents, Upload Resume / CV, My Progress Report, My Profile, Own Company Request, and Company Detail on the dashboard. " +
+            "Relevant pages include Index, login pages, Forgot Password, Student Dashboard, My Documents, Upload Resume / CV, My Progress Report, My Profile, Own Company Request, supervisor pages, and committee pages. " +
             Environment.NewLine + Environment.NewLine +
             "Local knowledge snippets:" +
             Environment.NewLine +
@@ -96,6 +101,21 @@ public class OllamaStudentAssistantService
             Environment.NewLine + Environment.NewLine +
             $"Student question: {question}" + Environment.NewLine +
             "Assistant answer:";
+    }
+
+    private static string BuildRoleScope(string? userRole)
+    {
+        return (userRole ?? string.Empty).Trim().ToLowerInvariant() switch
+        {
+            "student" =>
+                "Answer only student-related questions such as student login, forgot password, dashboard usage, profile, documents, company details, progress reports, deadlines, and student submission workflow. Do not answer supervisor-only or committee-only workflow questions.",
+            "supervisor" =>
+                "Answer only supervisor-related questions such as supervisor login, assigned students, reports, marks, summary reports, and supervisor workflow. Do not answer committee-only administration or student-only submission details beyond basic navigation.",
+            "committee" =>
+                "Answer only committee-related questions such as committee login, company management, student management, imports, cohorts, evaluations, summary reports, and committee workflow.",
+            _ =>
+                "Answer only general public questions such as login pages, forgot password, navigation, and high-level portal usage. Do not provide role-specific internal workflow steps unless the user is in that role."
+        };
     }
 
     private IReadOnlyList<KnowledgeChunk> GetRelevantKnowledge(string question)
@@ -240,11 +260,13 @@ public class OllamaStudentAssistantService
 
 public class StudentAssistantContext
 {
+    public string UserRole { get; set; } = "guest";
     public string StudentName { get; set; } = "-";
     public string StudentId { get; set; } = "-";
     public string Status { get; set; } = "-";
     public string Cohort { get; set; } = "-";
     public string InternPeriod { get; set; } = "-";
+    public string CurrentPage { get; set; } = "-";
     public List<StudentAssistantDeadlineItem> Deadlines { get; set; } = new();
 }
 

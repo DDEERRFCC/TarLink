@@ -7,88 +7,329 @@
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+    :root {
+        --profile-bg-1: #f5efe4;
+        --profile-bg-2: #edf4f4;
+        --profile-bg-3: #fafcfd;
+        --profile-text: #182536;
+        --profile-muted: #647285;
+        --profile-card: rgba(255, 255, 255, 0.88);
+        --profile-border: rgba(24, 37, 54, 0.08);
+        --profile-primary: #0f7b6c;
+        --profile-primary-dark: #0d5f63;
+        --profile-accent: #d97706;
+    }
+
     .profile-wrap {
         font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
-        background: linear-gradient(170deg, #f2f7fc, #e7eff8);
+        background:
+            radial-gradient(circle at 10% 8%, rgba(217, 119, 6, 0.16), transparent 24%),
+            radial-gradient(circle at 88% 16%, rgba(15, 123, 108, 0.16), transparent 24%),
+            linear-gradient(165deg, var(--profile-bg-1), var(--profile-bg-2) 55%, var(--profile-bg-3));
         min-height: calc(100vh - 80px);
-        padding: 1.6rem 0 2.4rem;
+        padding: 1.8rem 0 2.6rem;
     }
 
     .profile-shell {
-        max-width: 1050px;
+        max-width: 1180px;
         margin: 0 auto;
         padding: 0 1rem;
     }
 
-    .profile-header {
-        background: linear-gradient(120deg, #0f172a, #155e75);
-        color: #fff;
-        border-radius: 16px;
-        padding: 1.2rem 1.3rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16);
+    .profile-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 28px;
+        padding: 1.7rem;
+        color: #fffaf1;
+        background: linear-gradient(130deg, #132238, #0f7b6c 58%, #d97706);
+        box-shadow: 0 22px 48px rgba(19, 34, 56, 0.18);
+        margin-bottom: 1.2rem;
     }
 
-    .profile-grid {
+    .profile-hero::before,
+    .profile-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        pointer-events: none;
+        opacity: .22;
+    }
+
+    .profile-hero::before {
+        width: 220px;
+        height: 220px;
+        top: -85px;
+        right: -55px;
+        background: rgba(255, 255, 255, 0.16);
+    }
+
+    .profile-hero::after {
+        width: 170px;
+        height: 170px;
+        left: -40px;
+        bottom: -70px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .profile-hero-layout {
+        position: relative;
+        z-index: 1;
         display: grid;
-        grid-template-columns: 1.45fr 1fr;
+        grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
         gap: 1rem;
+        align-items: start;
+    }
+
+    .profile-chip {
+        display: inline-flex;
+        padding: .42rem .8rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .14);
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .profile-hero h1 {
+        margin: .8rem 0 .45rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        line-height: 1;
+        letter-spacing: -.03em;
+    }
+
+    .profile-hero p {
+        max-width: 58ch;
+        margin: 0;
+        color: rgba(255, 250, 241, 0.88);
+        line-height: 1.8;
+    }
+
+    .profile-hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        justify-content: flex-end;
+    }
+
+    .profile-back-btn,
+    .profile-logout-btn {
+        border: 0;
+        border-radius: 14px;
+        padding: .78rem 1rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .profile-back-btn {
+        background: rgba(255, 255, 255, .15);
+        color: #fffaf1;
+    }
+
+    .profile-logout-btn {
+        background: rgba(127, 29, 29, .88);
+        color: #fff;
+    }
+
+    .profile-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(300px, .9fr);
+        gap: 1.1rem;
     }
 
     .profile-card {
-        background: #fff;
-        border: 1px solid #d7e2ee;
-        border-radius: 14px;
-        padding: 1rem;
-        box-shadow: 0 10px 24px rgba(20, 40, 70, 0.08);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--profile-border);
+        border-radius: 24px;
+        background: var(--profile-card);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 14px 30px rgba(20, 40, 70, 0.08);
+        padding: 1.2rem;
+    }
+
+    .profile-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--profile-primary), rgba(217, 119, 6, .8));
+    }
+
+    .profile-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: .7rem;
+    }
+
+    .profile-card-kicker {
+        display: inline-flex;
+        margin-bottom: .35rem;
+        padding: .28rem .62rem;
+        border-radius: 999px;
+        background: rgba(15, 123, 108, .08);
+        color: var(--profile-primary-dark);
+        font-size: .74rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
     }
 
     .section-title {
-        margin: 0 0 .7rem;
-        color: #1f2937;
-        font-size: 1.03rem;
+        margin: 0 0 .15rem;
+        color: var(--profile-text);
+        font-size: 1.08rem;
         font-weight: 700;
     }
 
-    .info-row {
-        border-bottom: 1px dashed #dbe6f1;
-        padding: .55rem 0;
+    .section-copy {
+        color: var(--profile-muted);
+        margin: 0;
+        line-height: 1.7;
     }
 
-    .info-row:last-child {
-        border-bottom: 0;
+    .profile-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .85rem;
+        margin-top: .9rem;
+    }
+
+    .profile-field {
+        display: flex;
+        flex-direction: column;
+        gap: .35rem;
+    }
+
+    .profile-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .profile-label {
+        font-size: .86rem;
+        color: #334155;
+        font-weight: 700;
+    }
+
+    .profile-input,
+    .profile-textarea,
+    .profile-select {
+        border: 1px solid #cfdcdf;
+        border-radius: 14px;
+        padding: .8rem .9rem;
+        background: #fff;
+        color: #0f172a;
+        box-shadow: none;
+    }
+
+    .profile-input:focus,
+    .profile-textarea:focus,
+    .profile-select:focus {
+        outline: none;
+        border-color: var(--profile-primary);
+        box-shadow: 0 0 0 0.2rem rgba(15, 123, 108, 0.14);
+    }
+
+    .profile-textarea {
+        min-height: 108px;
+        resize: vertical;
+    }
+
+    .profile-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .profile-save-btn,
+    .profile-reset-btn {
+        border-radius: 14px;
+        padding: .82rem 1rem;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .profile-save-btn {
+        border: 0;
+        color: #fff;
+        background: linear-gradient(135deg, var(--profile-primary), #19a38f);
+        box-shadow: 0 14px 24px rgba(15, 123, 108, .18);
+    }
+
+    .profile-reset-btn {
+        border: 1px solid #d7e2ee;
+        background: #f8fbff;
+        color: #1f2937;
+    }
+
+    .profile-side-stack {
+        display: grid;
+        gap: 1.1rem;
+    }
+
+    .info-list {
+        display: grid;
+        gap: .7rem;
+    }
+
+    .info-item {
+        padding: .85rem .95rem;
+        border-radius: 18px;
+        border: 1px solid #dbe6ef;
+        background: #fbfdff;
     }
 
     .info-label {
-        font-size: .85rem;
+        font-size: .8rem;
         color: #6b7280;
-        margin-bottom: .1rem;
+        margin-bottom: .18rem;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        font-weight: 700;
     }
 
     .info-value {
         color: #1f2937;
         font-weight: 600;
+        overflow-wrap: anywhere;
     }
 
-    @@media (max-width: 920px) {
-        .profile-grid {
+    @@media (max-width: 960px) {
+        .profile-hero-layout,
+        .profile-layout,
+        .profile-form-grid {
             grid-template-columns: 1fr;
+        }
+
+        .profile-hero-actions {
+            justify-content: flex-start;
         }
     }
 </style>
 
 <div class="profile-wrap">
     <div class="profile-shell">
-        <div class="profile-header d-flex justify-content-between align-items-start gap-3 flex-wrap">
-            <div>
-                <div style="opacity:.85;font-size:.9rem;">ITP System</div>
-                <h2 class="mb-1">Student Profile</h2>
-                <p class="mb-0" style="opacity:.9;">Manage your own details and review your assigned supervisor details.</p>
+        <section class="profile-hero">
+            <div class="profile-hero-layout">
+                <div>
+                    <div class="profile-chip">Student Profile</div>
+                    <h1>Manage your personal details.</h1>
+                    <p>Update your student contact information, review your academic snapshot, and check your assigned university supervisor details in one place.</p>
+                </div>
+
+                <div class="profile-hero-actions">
+                    <a asp-page="/Student/Dashboard" class="profile-back-btn">Back to Dashboard</a>
+                    <form method="post" asp-page-handler="Logout" class="d-inline">
+                        <button type="submit" class="profile-logout-btn">Logout</button>
+                    </form>
+                </div>
             </div>
-            <div>
-                <a asp-page="/Student/Dashboard" class="btn btn-light btn-sm">Back to Dashboard</a>
-            </div>
-        </div>
+        </section>
 
         @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
         {
@@ -112,117 +353,153 @@
 
         @if (Model.Student == null)
         {
-            <div class="profile-card">
-                <h3 class="section-title">Profile Not Available</h3>
-                <p class="mb-0">Your student profile is not linked yet. Please contact admin or committee.</p>
-            </div>
+            <section class="profile-card">
+                <div class="profile-card-head">
+                    <div>
+                        <div class="profile-card-kicker">Unavailable</div>
+                        <h3 class="section-title">Profile Not Available</h3>
+                    </div>
+                </div>
+                <p class="section-copy mb-0">Your student profile is not linked yet. Please contact admin or committee.</p>
+            </section>
         }
         else
         {
-            <div class="profile-grid">
-                <div class="profile-card">
-                    <h3 class="section-title">My Details (Editable)</h3>
+            <div class="profile-layout">
+                <section class="profile-card">
+                    <div class="profile-card-head">
+                        <div>
+                            <div class="profile-card-kicker">Editable</div>
+                            <h3 class="section-title">My Details</h3>
+                            <p class="section-copy">Keep your contact and skill information updated for your internship records.</p>
+                        </div>
+                    </div>
+
                     <form method="post">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label asp-for="Input.studentName" class="form-label">Full Name</label>
-                                <input asp-for="Input.studentName" class="form-control" />
+                        <div class="profile-form-grid">
+                            <div class="profile-field">
+                                <label asp-for="Input.studentName" class="profile-label">Full Name</label>
+                                <input asp-for="Input.studentName" class="form-control profile-input" />
                                 <span asp-validation-for="Input.studentName" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Input.studentEmail" class="form-label">Student Email</label>
-                                <input asp-for="Input.studentEmail" class="form-control" />
+
+                            <div class="profile-field">
+                                <label asp-for="Input.studentEmail" class="profile-label">Student Email</label>
+                                <input asp-for="Input.studentEmail" class="form-control profile-input" />
                                 <span asp-validation-for="Input.studentEmail" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Input.personalEmail" class="form-label">Personal Email</label>
-                                <input asp-for="Input.personalEmail" class="form-control" />
+
+                            <div class="profile-field">
+                                <label asp-for="Input.personalEmail" class="profile-label">Personal Email</label>
+                                <input asp-for="Input.personalEmail" class="form-control profile-input" />
                                 <span asp-validation-for="Input.personalEmail" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Input.permanentContact" class="form-label">Mobile Number</label>
-                                <input asp-for="Input.permanentContact" class="form-control" />
+
+                            <div class="profile-field">
+                                <label asp-for="Input.permanentContact" class="profile-label">Mobile Number</label>
+                                <input asp-for="Input.permanentContact" class="form-control profile-input" />
                                 <span asp-validation-for="Input.permanentContact" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Input.tempAddress" class="form-label">Term Address</label>
-                                <textarea asp-for="Input.tempAddress" class="form-control"></textarea>
+
+                            <div class="profile-field">
+                                <label asp-for="Input.tempAddress" class="profile-label">Term Address</label>
+                                <textarea asp-for="Input.tempAddress" class="form-control profile-textarea"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Input.permanentAddress" class="form-label">Permanent Address</label>
-                                <textarea asp-for="Input.permanentAddress" class="form-control"></textarea>
+
+                            <div class="profile-field">
+                                <label asp-for="Input.permanentAddress" class="profile-label">Permanent Address</label>
+                                <textarea asp-for="Input.permanentAddress" class="form-control profile-textarea"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Input.ownTransport" class="form-label">Own Transport</label>
-                                <select asp-for="Input.ownTransport" class="form-select">
+
+                            <div class="profile-field">
+                                <label asp-for="Input.ownTransport" class="profile-label">Own Transport</label>
+                                <select asp-for="Input.ownTransport" class="form-select profile-select">
                                     <option value="true">Yes</option>
                                     <option value="false">No</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label asp-for="Input.healthRemark" class="form-label">Health Remark</label>
-                                <textarea asp-for="Input.healthRemark" class="form-control"></textarea>
+
+                            <div class="profile-field">
+                                <label asp-for="Input.healthRemark" class="profile-label">Health Remark</label>
+                                <textarea asp-for="Input.healthRemark" class="form-control profile-textarea"></textarea>
                             </div>
-                            <div class="col-md-4">
-                                <label asp-for="Input.programmingKnowledge" class="form-label">Programming</label>
-                                <input asp-for="Input.programmingKnowledge" class="form-control" />
+
+                            <div class="profile-field">
+                                <label asp-for="Input.programmingKnowledge" class="profile-label">Programming</label>
+                                <input asp-for="Input.programmingKnowledge" class="form-control profile-input" />
                             </div>
-                            <div class="col-md-4">
-                                <label asp-for="Input.databaseKnowledge" class="form-label">Database</label>
-                                <input asp-for="Input.databaseKnowledge" class="form-control" />
+
+                            <div class="profile-field">
+                                <label asp-for="Input.databaseKnowledge" class="profile-label">Database</label>
+                                <input asp-for="Input.databaseKnowledge" class="form-control profile-input" />
                             </div>
-                            <div class="col-md-4">
-                                <label asp-for="Input.networkingKnowledge" class="form-label">Networking</label>
-                                <input asp-for="Input.networkingKnowledge" class="form-control" />
+
+                            <div class="profile-field profile-field-full">
+                                <label asp-for="Input.networkingKnowledge" class="profile-label">Networking</label>
+                                <input asp-for="Input.networkingKnowledge" class="form-control profile-input" />
                             </div>
                         </div>
 
-                        <div class="mt-3 d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                            <a asp-page="/Student/Profile" class="btn btn-outline-secondary">Reset</a>
+                        <div class="profile-actions">
+                            <button type="submit" class="profile-save-btn">Save Changes</button>
+                            <a asp-page="/Student/Profile" class="profile-reset-btn">Reset</a>
                         </div>
                     </form>
+                </section>
+
+                <div class="profile-side-stack">
+                    <section class="profile-card">
+                        <div class="profile-card-head">
+                            <div>
+                                <div class="profile-card-kicker">Supervisor</div>
+                                <h3 class="section-title">Supervisor Details</h3>
+                            </div>
+                        </div>
+
+                        <div class="info-list">
+                            <div class="info-item">
+                                <div class="info-label">Supervisor Name</div>
+                                <div class="info-value">@Model.Student.ucSupervisor</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Supervisor Email</div>
+                                <div class="info-value">@Model.Student.ucSupervisorEmail</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Supervisor Contact</div>
+                                <div class="info-value">@Model.Student.ucSupervisorContact</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="profile-card">
+                        <div class="profile-card-head">
+                            <div>
+                                <div class="profile-card-kicker">Academic</div>
+                                <h3 class="section-title">Academic Snapshot</h3>
+                            </div>
+                        </div>
+
+                        <div class="info-list">
+                            <div class="info-item">
+                                <div class="info-label">Student ID</div>
+                                <div class="info-value">@Model.Student.studentID</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Programme</div>
+                                <div class="info-value">@Model.Student.programme</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Group</div>
+                                <div class="info-value">@Model.Student.groupNo</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">CGPA</div>
+                                <div class="info-value">@Model.Student.CGPA</div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-
-                <div class="profile-card">
-                    <h3 class="section-title">Supervisor Details</h3>
-                    <div class="info-row">
-                        <div class="info-label">Supervisor Name</div>
-                        <div class="info-value">@Model.Student.ucSupervisor</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Supervisor Email</div>
-                        <div class="info-value">@Model.Student.ucSupervisorEmail</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Supervisor Contact</div>
-                        <div class="info-value">@Model.Student.ucSupervisorContact</div>
-                    </div>
-
-                    <h3 class="section-title mt-4">Academic Snapshot</h3>
-                    <div class="info-row">
-                        <div class="info-label">Student ID</div>
-                        <div class="info-value">@Model.Student.studentID</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Programme</div>
-                        <div class="info-value">@Model.Student.programme</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Group</div>
-                        <div class="info-value">@Model.Student.groupNo</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">CGPA</div>
-                        <div class="info-value">@Model.Student.CGPA</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-3 text-center">
-                <form method="post" asp-page-handler="Logout" class="d-inline">
-                    <button type="submit" class="btn btn-danger">Logout</button>
-                </form>
             </div>
         }
     </div>

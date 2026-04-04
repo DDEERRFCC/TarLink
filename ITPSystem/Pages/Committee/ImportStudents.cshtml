@@ -6,7 +6,11 @@
 
 <div class="committee-page">
 <partial name="_CommitteeHeader" />
-<partial name="_CommitteeNav" />
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Import Student</h5>
+    <a asp-page="/Committee/Students" class="btn btn-sm btn-outline-secondary">Back to Student List</a>
+</div>
 
 @if (!string.IsNullOrWhiteSpace(Model.Message))
 {

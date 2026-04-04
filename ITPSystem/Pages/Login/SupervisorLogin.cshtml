@@ -5,75 +5,219 @@
 }
 
 <style>
-    .login-wrap {
+    .role-login-shell {
         min-height: calc(100vh - 80px);
-        background:
-            radial-gradient(circle at 12% 8%, rgba(16, 185, 129, .18), transparent 28%),
-            radial-gradient(circle at 85% 15%, rgba(20, 184, 166, .12), transparent 25%),
-            linear-gradient(160deg, #f2fbf8, #e8f4ef);
         padding: 2rem 0 2.5rem;
+        background:
+            radial-gradient(circle at top left, rgba(201, 106, 22, 0.18), transparent 28%),
+            radial-gradient(circle at 85% 12%, rgba(15, 123, 108, 0.18), transparent 24%),
+            linear-gradient(160deg, #faf5ec 0%, #f8fbfc 52%, #eef5f3 100%);
     }
 
-    .login-card {
-        border: 1px solid #d7e9e0;
-        border-radius: 16px;
-        box-shadow: 0 16px 36px rgba(15, 23, 42, .12);
+    .role-login-card {
         overflow: hidden;
+        border: 1px solid rgba(19, 34, 56, 0.1);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 24px 50px rgba(19, 34, 56, 0.12);
     }
 
-    .login-head {
-        background: linear-gradient(120deg, #166534, #0f766e);
-        color: #fff;
-        padding: 1rem 1.1rem;
+    .role-login-panel {
+        padding: 2rem;
     }
 
-    .back-arrow {
-        color: #fff;
+    .role-login-brand {
+        height: 100%;
+        color: #fffaf1;
+        background:
+            radial-gradient(circle at top right, rgba(255, 209, 102, 0.2), transparent 30%),
+            linear-gradient(150deg, #c96a16 0%, #8d4b13 100%);
+    }
+
+    .role-login-chip {
+        display: inline-flex;
+        margin-bottom: 1rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .role-login-brand h1 {
+        margin-bottom: 0.9rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.03;
+    }
+
+    .role-login-brand p {
+        max-width: 34ch;
+        margin-bottom: 1.4rem;
+        line-height: 1.75;
+        color: rgba(255, 250, 241, 0.9);
+    }
+
+    .role-login-points {
+        display: grid;
+        gap: 0.8rem;
+        margin-bottom: 1.4rem;
+    }
+
+    .role-login-point {
+        padding: 0.9rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .role-login-point strong {
+        display: block;
+        margin-bottom: 0.2rem;
+    }
+
+    .role-login-back {
+        color: #fffaf1;
         text-decoration: none;
         font-weight: 700;
-        font-size: .92rem;
     }
 
-    .back-arrow:hover {
-        color: #dcfce7;
+    .role-login-back:hover {
+        color: #ffe4a8;
+    }
+
+    .role-login-form h2 {
+        margin-bottom: 0.35rem;
+        color: #132238;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 2rem;
+    }
+
+    .role-login-form p {
+        color: #5d6b7c;
+        line-height: 1.7;
+    }
+
+    .role-form-label {
+        margin-bottom: 0.45rem;
+        font-weight: 700;
+        color: #25415f;
+    }
+
+    .role-form-control {
+        border: 1px solid #e1d4c5;
+        border-radius: 16px;
+        padding: 0.9rem 1rem;
+        box-shadow: none;
+    }
+
+    .role-form-control:focus {
+        border-color: #c96a16;
+        box-shadow: 0 0 0 0.2rem rgba(201, 106, 22, 0.15);
+    }
+
+    .role-login-links {
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+        margin: 1rem 0 1.25rem;
+        font-size: 0.95rem;
+    }
+
+    .role-login-links a {
+        color: #9b5411;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .role-login-links a:hover {
+        text-decoration: underline;
+    }
+
+    .role-login-btn {
+        width: 100%;
+        border: none;
+        border-radius: 16px;
+        padding: 0.95rem 1rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(135deg, #c96a16, #de8740);
+        box-shadow: 0 16px 26px rgba(201, 106, 22, 0.2);
+    }
+
+    @@media (max-width: 991.98px) {
+        .role-login-panel {
+            padding: 1.5rem;
+        }
     }
 </style>
 
-<div class="login-wrap">
-    <div class="container" style="max-width: 430px;">
-        <div class="login-card bg-white">
-            <div class="login-head d-flex justify-content-between align-items-center">
-                <div>
-                    <div style="font-size:.8rem;opacity:.88;">ITP Portal</div>
-                    <h4 class="mb-0">Supervisor Login</h4>
+<section class="role-login-shell">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="role-login-card">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="role-login-panel role-login-brand">
+                                <div class="role-login-chip">Supervisor Portal</div>
+                                <h1>Review student progress with clarity.</h1>
+                                <p>
+                                    Access the supervisor workspace to monitor assigned students, review reports,
+                                    and support internship performance more effectively.
+                                </p>
+
+                                <div class="role-login-points">
+                                    <div class="role-login-point">
+                                        <strong>Student supervision</strong>
+                                        <span>Check assigned students, follow their progress, and stay updated on submissions.</span>
+                                    </div>
+                                    <div class="role-login-point">
+                                        <strong>Report evaluation</strong>
+                                        <span>Review progress reports, provide decisions, and support internship outcomes.</span>
+                                    </div>
+                                </div>
+
+                                <a class="role-login-back" asp-page="/Index">Back to Home</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="role-login-panel role-login-form">
+                                <h2>Supervisor Login</h2>
+                                <p>Sign in with your supervisor email or username to continue.</p>
+
+                                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                                {
+                                    <div class="alert alert-danger">@Model.ErrorMessage</div>
+                                }
+
+                                <form method="post">
+                                    <div class="mb-3">
+                                        <label class="role-form-label">Email or Username</label>
+                                        <input type="text" asp-for="Email" class="form-control role-form-control"
+                                               placeholder="e.g. supervisor1@tarc.edu.my" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="role-form-label">Password</label>
+                                        <input type="password" asp-for="Password" class="form-control role-form-control"
+                                               placeholder="Enter your password" required />
+                                    </div>
+
+                                    <div class="role-login-links">
+                                        <a asp-page="/Login/ForgotPassword">Forgot Password?</a>
+                                    </div>
+
+                                    <button type="submit" class="role-login-btn">Enter Supervisor Portal</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a class="back-arrow" asp-page="/Index">← Back</a>
-            </div>
-
-            <div class="card-body p-4">
-                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-                {
-                    <div class="alert alert-danger">@Model.ErrorMessage</div>
-                }
-
-                <form method="post">
-                    <div class="mb-3">
-                        <label class="form-label">Email or Username</label>
-                        <input type="text" asp-for="Email" class="form-control" required />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" asp-for="Password" class="form-control" required />
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <a asp-page="/Login/ForgotPassword">Forgot Password?</a>
-                    </div>
-
-                    <button type="submit" class="btn btn-success w-100">Login</button>
-                </form>
             </div>
         </div>
     </div>
-</div>
+</section>

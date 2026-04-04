@@ -6,82 +6,287 @@
 }
 
 <style>
+    .committee-dash-layout {
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+        gap: 1.1rem;
+        align-items: start;
+    }
+
+    .committee-dash-side {
+        position: sticky;
+        top: 1rem;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .committee-main-card,
+    .committee-stat,
+    .committee-highlight {
+        border: 1px solid #d8e5f1;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .committee-main-card {
+        padding: 1rem;
+    }
+
+    .committee-main-stack {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .committee-banner {
+        position: relative;
+        overflow: hidden;
+        padding: 1.3rem;
+        color: #fff;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #0ea5a1);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .committee-banner::before {
+        content: "";
+        position: absolute;
+        right: -40px;
+        top: -55px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .committee-banner h3 {
+        position: relative;
+        margin: .4rem 0 .3rem;
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .committee-banner p {
+        position: relative;
+        margin: 0;
+        max-width: 64ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.8;
+    }
+
+    .committee-banner-pill {
+        position: relative;
+        display: inline-flex;
+        padding: .32rem .7rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .14);
+        border: 1px solid rgba(255, 255, 255, .2);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .committee-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
     .committee-stat {
-        border: 1px solid #d7e4f1;
-        border-radius: 14px;
-        padding: .9rem .95rem;
-        background: #fff;
-        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
         height: 100%;
     }
 
+    .committee-stat::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #0ea5a1);
+    }
+
     .committee-stat-label {
-        color: #567;
-        font-size: .86rem;
-        font-weight: 600;
+        color: #607284;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
     }
 
     .committee-stat-value {
         color: #0f172a;
-        font-size: 1.45rem;
+        font-size: 1.7rem;
         font-weight: 700;
         line-height: 1.1;
-        margin-top: .25rem;
+        margin-top: .35rem;
+    }
+
+    .committee-stat-note {
+        margin-top: .35rem;
+        color: #718396;
+        font-size: .88rem;
+    }
+
+    .committee-main-card-title {
+        margin: 0 0 .25rem;
+        color: #142436;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .committee-main-card-copy {
+        margin: 0;
+        color: #607284;
+        line-height: 1.7;
+    }
+
+    .committee-highlight-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: .9rem;
+    }
+
+    .committee-highlight {
+        padding: 1rem;
+    }
+
+    .committee-highlight strong {
+        display: block;
+        margin-bottom: .3rem;
+        color: #132238;
+        font-size: .98rem;
+    }
+
+    .committee-highlight span {
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .committee-cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .committee-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        border-radius: 14px;
+        padding: .82rem 1rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(90deg, #0f766e, #0ea5a1);
+        box-shadow: 0 14px 24px rgba(15, 118, 110, 0.18);
+    }
+
+    @@media (max-width: 991.98px) {
+        .committee-dash-layout,
+        .committee-stat-grid,
+        .committee-highlight-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .committee-dash-side {
+            position: static;
+        }
     }
 </style>
 
 <div class="committee-page">
     <partial name="_CommitteeHeader" />
 
-    <partial name="_CommitteeNav" />
+    <div class="committee-dash-layout">
+        <aside class="committee-dash-side">
+            <partial name="_CommitteeNav" />
+        </aside>
 
-    <div class="row g-3 mb-3">
-        <div class="col-md-4">
-            <div class="committee-stat">
-                <div class="committee-stat-label">Total Students</div>
-                <div class="committee-stat-value">@Model.TotalStudents</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="committee-stat">
-                <div class="committee-stat-label">Pending Students</div>
-                <div class="committee-stat-value">@Model.PendingStudents</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="committee-stat">
-                <div class="committee-stat-label">Approved Students</div>
-                <div class="committee-stat-value">@Model.ApprovedStudents</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="committee-stat">
-                <div class="committee-stat-label">Companies</div>
-                <div class="committee-stat-value">@Model.TotalCompanies</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="committee-stat">
-                <div class="committee-stat-label">Submitted Reports</div>
-                <div class="committee-stat-value">@Model.SubmittedReports</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="committee-stat">
-                <div class="committee-stat-label">Pending Reports</div>
-                <div class="committee-stat-value">@Model.PendingReports</div>
-            </div>
+        <div class="committee-main-stack">
+            <section class="committee-banner">
+                <div class="committee-banner-pill">Committee Control Center</div>
+                <h3>Monitor the programme with clearer oversight.</h3>
+                <p>Track student volume, company activity, and report submission progress from one committee dashboard, then move directly into the modules you need next.</p>
+            </section>
+
+            <section class="committee-main-card">
+                <h3 class="committee-main-card-title">Programme Snapshot</h3>
+                <p class="committee-main-card-copy">A quick overview of student, company, and report activity across the internship programme.</p>
+
+                <div class="committee-stat-grid mt-3">
+                    <div class="committee-stat">
+                        <div class="committee-stat-label">Total Students</div>
+                        <div class="committee-stat-value">@Model.TotalStudents</div>
+                        <div class="committee-stat-note">All registered internship students in the system.</div>
+                    </div>
+                    <div class="committee-stat">
+                        <div class="committee-stat-label">Pending Students</div>
+                        <div class="committee-stat-value">@Model.PendingStudents</div>
+                        <div class="committee-stat-note">Applications still waiting for review or action.</div>
+                    </div>
+                    <div class="committee-stat">
+                        <div class="committee-stat-label">Approved Students</div>
+                        <div class="committee-stat-value">@Model.ApprovedStudents</div>
+                        <div class="committee-stat-note">Students already approved for internship progress.</div>
+                    </div>
+                    <div class="committee-stat">
+                        <div class="committee-stat-label">Companies</div>
+                        <div class="committee-stat-value">@Model.TotalCompanies</div>
+                        <div class="committee-stat-note">Available companies currently recorded in the portal.</div>
+                    </div>
+                    <div class="committee-stat">
+                        <div class="committee-stat-label">Submitted Reports</div>
+                        <div class="committee-stat-value">@Model.SubmittedReports</div>
+                        <div class="committee-stat-note">Progress or final reports already submitted by students.</div>
+                    </div>
+                    <div class="committee-stat">
+                        <div class="committee-stat-label">Pending Reports</div>
+                        <div class="committee-stat-value">@Model.PendingReports</div>
+                        <div class="committee-stat-note">Reports still waiting in pending status.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="committee-main-card">
+                <h3 class="committee-main-card-title">Committee Focus Areas</h3>
+                <p class="committee-main-card-copy">Keep the main responsibilities of the committee visible while navigating the rest of the portal.</p>
+
+                <div class="committee-highlight-grid">
+                    <article class="committee-highlight">
+                        <strong>Student administration</strong>
+                        <span>Manage student records, resume review, unregistered entries, and bulk import activity in one workflow.</span>
+                    </article>
+                    <article class="committee-highlight">
+                        <strong>Company oversight</strong>
+                        <span>Review company requests, maintain approved company data, and control blacklisted organizations.</span>
+                    </article>
+                    <article class="committee-highlight">
+                        <strong>Academic coordination</strong>
+                        <span>Handle cohort setup, university supervisors, and internship evaluation progress across the programme.</span>
+                    </article>
+                    <article class="committee-highlight">
+                        <strong>Reporting and monitoring</strong>
+                        <span>Generate summary reports and keep visibility on submissions, approvals, and programme-level activity.</span>
+                    </article>
+                </div>
+            </section>
+
+            <section class="committee-main-card">
+                <div class="committee-cta-row">
+                    <div>
+                        <h3 class="committee-main-card-title">Summary Reports</h3>
+                        <p class="committee-main-card-copy">Generate different summary reports and review the latest programme output from one dedicated page.</p>
+                    </div>
+                    <a class="committee-cta-btn" asp-page="/Committee/SummaryReports">Open Summary Reports</a>
+                </div>
+            </section>
         </div>
     </div>
-
-    <div class="card border-0 shadow-sm">
-        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-2">
-            <div>
-                <h6 class="mb-1">Summary Reports</h6>
-                <p class="text-muted mb-0">Generate different summary reports and view each generated report.</p>
-            </div>
-            <a class="btn btn-primary" asp-page="/Committee/SummaryReports">Open Summary Reports</a>
-        </div>
-    </div>
-
 </div>

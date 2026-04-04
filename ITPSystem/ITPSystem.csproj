@@ -20,4 +20,16 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Update="Pages\**\*.cshtml">
+      <TargetPath>Pages\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+    </AdditionalFiles>
+    <AdditionalFiles Update="Pages\_ViewImports.cshtml">
+      <TargetPath>Pages\_ViewImports.cshtml</TargetPath>
+    </AdditionalFiles>
+    <AdditionalFiles Update="Pages\_ViewStart.cshtml">
+      <TargetPath>Pages\_ViewStart.cshtml</TargetPath>
+    </AdditionalFiles>
+  </ItemGroup>
+
 </Project>

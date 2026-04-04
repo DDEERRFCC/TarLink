@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITPSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ddc3a1829c5a18ec5ffa6ef109303017f4f54f5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7716bd1e863f099e97a72b52b37c67338edaee56")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITPSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITPSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

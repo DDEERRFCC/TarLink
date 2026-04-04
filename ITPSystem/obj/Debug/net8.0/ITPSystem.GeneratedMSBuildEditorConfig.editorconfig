@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/AssistantApi.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzaXN0YW50QXBpLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/AddCompany.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEFkZENvbXBhbnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -90,6 +94,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXFVucmVnaXN0ZXJlZFN0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/_CommitteeBackButton.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXF9Db21taXR0ZWVCYWNrQnV0dG9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Committee/_CommitteeHeader.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXF9Db21taXR0ZWVIZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -108,6 +116,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/CommitteeLogin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cQ29tbWl0dGVlTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cRm9yZ290UGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW5cUmVzZXRQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/itpsystem/Pages/Login/StudentLogin.cshtml]

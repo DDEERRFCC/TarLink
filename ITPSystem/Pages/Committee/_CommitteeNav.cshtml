@@ -10,9 +10,10 @@
     .committee-nav-wrap {
         margin: 0 0 1rem;
         border: 1px solid #d8e5f1;
-        border-radius: 12px;
-        background: #f8fbff;
-        padding: .6rem;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #f8fbff, #fdfefe);
+        padding: .9rem;
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
 
     .committee-nav-title {
@@ -20,25 +21,46 @@
         font-weight: 700;
         color: #44576d;
         text-transform: uppercase;
-        letter-spacing: .04em;
-        margin: 0 0 .45rem;
+        letter-spacing: .08em;
+        margin: 0 0 .7rem;
+    }
+
+    .committee-nav-sections {
+        display: grid;
+        gap: .9rem;
+    }
+
+    .committee-nav-section {
+        border: 1px solid #e1ebf4;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, .85);
+        padding: .7rem;
+    }
+
+    .committee-nav-section-title {
+        margin: 0 0 .55rem;
+        color: #607284;
+        font-size: .78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .08em;
     }
 
     .committee-nav-list {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
         gap: .45rem;
     }
 
     .committee-nav-link {
+        display: block;
         text-decoration: none;
-        font-size: .98rem;
+        font-size: .95rem;
         font-weight: 700;
         color: #0f3f54;
-        border: 1px solid #cfe1ef;
+        border: 1px solid #d6e5f1;
         background: #fff;
-        border-radius: 999px;
-        padding: .45rem .82rem;
+        border-radius: 12px;
+        padding: .62rem .8rem;
         transition: all .15s ease;
     }
 
@@ -46,6 +68,7 @@
         border-color: #9fcae4;
         background: #eef7ff;
         color: #0b2f40;
+        transform: translateX(2px);
     }
 
     .committee-nav-link.active {
@@ -57,20 +80,49 @@
 
 <div class="committee-nav-wrap">
     <p class="committee-nav-title mb-0">Committee Modules</p>
-    <div class="committee-nav-list mt-2">
-        <a class="@NavClass("/Committee/Dashboard")" asp-page="/Committee/Dashboard">Dashboard</a>
-        <a class="@NavClass("/Committee/Students")" asp-page="/Committee/Students">Student List</a>
-        <a class="@NavClass("/Committee/StudentResumes")" asp-page="/Committee/StudentResumes">Student Resume/CV</a>
-        <a class="@NavClass("/Committee/ProgressEvaluation")" asp-page="/Committee/ProgressEvaluation">Progress & Evaluation</a>
-        <a class="@NavClass("/Committee/SummaryReports")" asp-page="/Committee/SummaryReports">Summary Reports</a>
-        <a class="@NavClass("/Committee/CompanyRequests")" asp-page="/Committee/CompanyRequests">Company Request</a>
-        <a class="@NavClass("/Committee/Companies")" asp-page="/Committee/Companies">Company</a>
-        <a class="@NavClass("/Committee/Cohorts")" asp-page="/Committee/Cohorts">Cohort</a>
-        <a class="@NavClass("/Committee/UniSupervisors")" asp-page="/Committee/UniSupervisors">Uni Supervisor</a>
-        <a class="@NavClass("/Committee/CommitteeMembers")" asp-page="/Committee/CommitteeMembers">Committee Member</a>
-        <a class="@NavClass("/Committee/ImportStudents")" asp-page="/Committee/ImportStudents">Import Student</a>
-        <a class="@NavClass("/Committee/BlacklistCompanies")" asp-page="/Committee/BlacklistCompanies">Blacklist Company</a>
-        <a class="@NavClass("/Committee/UnregisteredStudents")" asp-page="/Committee/UnregisteredStudents">Unregistered Student</a>
-        <a class="@NavClass("/Committee/Configuration")" asp-page="/Committee/Configuration">Configuration</a>
+    <div class="committee-nav-sections mt-3">
+        <section class="committee-nav-section">
+            <p class="committee-nav-section-title">Overview</p>
+            <div class="committee-nav-list">
+                <a class="@NavClass("/Committee/Dashboard")" asp-page="/Committee/Dashboard">Dashboard</a>
+                <a class="@NavClass("/Committee/SummaryReports")" asp-page="/Committee/SummaryReports">Summary Reports</a>
+            </div>
+        </section>
+
+        <section class="committee-nav-section">
+            <p class="committee-nav-section-title">Student Management</p>
+            <div class="committee-nav-list">
+                <a class="@NavClass("/Committee/Students")" asp-page="/Committee/Students">Student List</a>
+                <a class="@NavClass("/Committee/StudentResumes")" asp-page="/Committee/StudentResumes">Student Resume/CV</a>
+                <a class="@NavClass("/Committee/ImportStudents")" asp-page="/Committee/ImportStudents">Import Student</a>
+                <a class="@NavClass("/Committee/UnregisteredStudents")" asp-page="/Committee/UnregisteredStudents">Unregistered Student</a>
+            </div>
+        </section>
+
+        <section class="committee-nav-section">
+            <p class="committee-nav-section-title">Academic & Evaluation</p>
+            <div class="committee-nav-list">
+                <a class="@NavClass("/Committee/Cohorts")" asp-page="/Committee/Cohorts">Cohort</a>
+                <a class="@NavClass("/Committee/ProgressEvaluation")" asp-page="/Committee/ProgressEvaluation">Progress & Evaluation</a>
+            </div>
+        </section>
+
+        <section class="committee-nav-section">
+            <p class="committee-nav-section-title">Company Management</p>
+            <div class="committee-nav-list">
+                <a class="@NavClass("/Committee/Companies")" asp-page="/Committee/Companies">Company</a>
+                <a class="@NavClass("/Committee/CompanyRequests")" asp-page="/Committee/CompanyRequests">Company Request</a>
+                <a class="@NavClass("/Committee/BlacklistCompanies")" asp-page="/Committee/BlacklistCompanies">Blacklist Company</a>
+            </div>
+        </section>
+
+        <section class="committee-nav-section">
+            <p class="committee-nav-section-title">People & Roles</p>
+            <div class="committee-nav-list">
+                <a class="@NavClass("/Committee/Configuration")" asp-page="/Committee/Configuration">Student Access</a>
+                <a class="@NavClass("/Committee/UniSupervisors")" asp-page="/Committee/UniSupervisors">Uni Supervisor</a>
+                <a class="@NavClass("/Committee/CommitteeMembers")" asp-page="/Committee/CommitteeMembers">Committee Member</a>
+            </div>
+        </section>
     </div>
 </div>
