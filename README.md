@@ -82,9 +82,8 @@ It helps manage internship applications, job postings, student profiles, and pro
    ```bash
    ollama run llama3.2:3b
 
-3. Test if Ollama is working
+3. Test if Ollama is working putting it in appsettings.json
    ```bash
    "Ollama": {
     "BaseUrl": "http://localhost:11434",
     "Model": "llama3.2:3b"
-  },
