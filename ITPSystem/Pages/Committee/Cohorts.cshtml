@@ -3,237 +3,651 @@
 @{
     ViewData["CommitteePageTitle"] = "Cohort";
     var isEditing = Model.Input.CohortId.HasValue;
+    var activeCount = Model.Cohorts.Count(c => c.isActive);
 }
+
+<style>
+    .cohort-page {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .cohort-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.3rem;
+        color: #fff;
+        background: linear-gradient(135deg, #10203a, #1d4ed8 58%, #14b8a6);
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+    }
+
+    .cohort-banner::before {
+        content: "";
+        position: absolute;
+        right: -60px;
+        top: -75px;
+        width: 220px;
+        height: 220px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .cohort-banner-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: end;
+        gap: 1rem;
+    }
+
+    .cohort-kicker {
+        display: inline-flex;
+        padding: 0.3rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .cohort-title {
+        margin: 0.45rem 0 0.3rem;
+        font-size: clamp(1.65rem, 3vw, 2.25rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .cohort-copy {
+        margin: 0;
+        max-width: 62ch;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.7;
+    }
+
+    .cohort-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .cohort-banner-btn,
+    .cohort-banner-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .cohort-banner-btn {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .cohort-banner-btn-secondary {
+        color: #0f172a;
+        background: #f8fafc;
+        box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+    }
+
+    .cohort-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9rem;
+    }
+
+    .cohort-stat,
+    .cohort-form-card,
+    .cohort-list-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .cohort-stat {
+        padding: 1rem;
+    }
+
+    .cohort-stat-label {
+        color: #607284;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .cohort-stat-value {
+        margin-top: 0.4rem;
+        color: #0f172a;
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .cohort-stat-note {
+        margin-top: 0.35rem;
+        color: #718396;
+        font-size: 0.88rem;
+    }
+
+    .cohort-form-card {
+        padding: 1rem;
+    }
+
+    .cohort-card-head,
+    .cohort-list-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .cohort-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .cohort-section-copy {
+        margin: 0.35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: 0.92rem;
+    }
+
+    .cohort-cancel-btn,
+    .cohort-reset-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0.7rem 0.95rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid #c8d7e5;
+        color: #35516a;
+        background: #fff;
+    }
+
+    .cohort-workspace-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .cohort-workspace-toggle::-webkit-details-marker {
+        display: none;
+    }
+
+    .cohort-workspace-toggle::after {
+        content: "Open";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 72px;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #075985;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    details[open] .cohort-workspace-toggle::after {
+        content: "Close";
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .cohort-workspace-content {
+        margin-top: 1rem;
+    }
+
+    .cohort-field-group {
+        border: 1px solid #e5eef7;
+        border-radius: 18px;
+        padding: 1rem;
+        background: #fbfdff;
+        margin-bottom: 1rem;
+    }
+
+    .cohort-field-group-title {
+        margin: 0 0 0.85rem;
+        color: #1f3a54;
+        font-size: 0.95rem;
+        font-weight: 700;
+    }
+
+    .cohort-form-card .form-label {
+        color: #36506a;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .cohort-form-card .form-control,
+    .cohort-form-card .form-select {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .cohort-form-card .form-control:focus,
+    .cohort-form-card .form-select:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.14);
+    }
+
+    .cohort-switch-box {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        min-height: 44px;
+        padding-top: 1.9rem;
+    }
+
+    .cohort-action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+
+    .cohort-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0.85rem 1rem;
+        border: none;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 700;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .cohort-list-card {
+        overflow: hidden;
+    }
+
+    .cohort-list-head {
+        padding: 1rem 1rem 0.8rem;
+        border-bottom: 1px solid #e5eef7;
+        margin-bottom: 0;
+    }
+
+    .cohort-list-wrap {
+        padding: 0.6rem 0.8rem 0.8rem;
+    }
+
+    .cohort-table {
+        margin-bottom: 0;
+    }
+
+    .cohort-table thead th {
+        background: #eff6ff;
+        color: #25415e;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .cohort-table td,
+    .cohort-table th {
+        padding: 0.8rem 0.75rem;
+        vertical-align: middle;
+    }
+
+    .cohort-badge-active,
+    .cohort-badge-inactive {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.26rem 0.7rem;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .cohort-badge-active {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .cohort-badge-inactive {
+        background: #e5e7eb;
+        color: #4b5563;
+    }
+
+    .cohort-list-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .cohort-edit-btn,
+    .cohort-delete-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0.55rem 0.8rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .cohort-edit-btn {
+        color: #fff;
+        background: linear-gradient(90deg, #1d4ed8, #0ea5e9);
+    }
+
+    .cohort-delete-btn {
+        color: #b91c1c;
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+    }
+
+    @@media (max-width: 991.98px) {
+        .cohort-stat-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="alert alert-success mb-3">@Model.StatusMessage</div>
+    }
 
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
-}
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
+    }
 
-@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-{
-    <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
-}
-
-<div class="card mb-4 shadow-sm">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-            <div>
-                <h5 class="mb-1">Cohort Management</h5>
-                <div class="text-muted small">Create, update, and manage internship cohort settings in one place.</div>
+    <div class="cohort-page">
+        <section class="cohort-banner">
+            <div class="cohort-banner-content">
+                <div>
+                    <div class="cohort-kicker">Cohort</div>
+                    <h3 class="cohort-title">Organize internship timelines, deadlines, and active intake settings in one place.</h3>
+                    <p class="cohort-copy">Create a new cohort, adjust its academic timeline, and keep report schedules aligned with the internship period without jumping between separate committee screens.</p>
+                </div>
+                <div class="cohort-banner-actions">
+                    <a asp-page="/Committee/Dashboard" class="cohort-banner-btn">Back to Dashboard</a>
+                    <a asp-page="/Committee/Students" class="cohort-banner-btn-secondary">Open Student List</a>
+                </div>
             </div>
-            @if (isEditing)
-            {
-                <a asp-page="/Committee/Cohorts" class="btn btn-sm btn-outline-secondary">Cancel Edit</a>
-            }
-        </div>
+        </section>
 
-        <form method="post" asp-page-handler="Save">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-            <input type="hidden" asp-for="Input.CohortId" />
+        <section class="cohort-stat-grid">
+            <article class="cohort-stat">
+                <div class="cohort-stat-label">Total Cohorts</div>
+                <div class="cohort-stat-value">@Model.Cohorts.Count</div>
+                <div class="cohort-stat-note">All cohorts currently configured in the system.</div>
+            </article>
+            <article class="cohort-stat">
+                <div class="cohort-stat-label">Active Cohorts</div>
+                <div class="cohort-stat-value">@activeCount</div>
+                <div class="cohort-stat-note">Cohorts marked as active for current operations.</div>
+            </article>
+            <article class="cohort-stat">
+                <div class="cohort-stat-label">Editing Mode</div>
+                <div class="cohort-stat-value">@(isEditing ? "Yes" : "No")</div>
+                <div class="cohort-stat-note">@(isEditing ? "You are updating an existing cohort now." : "The form is ready to create a new cohort.")</div>
+            </article>
+        </section>
 
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label asp-for="Input.Description" class="form-label">Description</label>
-                    <input asp-for="Input.Description" class="form-control" />
-                    <span asp-validation-for="Input.Description" class="text-danger small"></span>
+        <section class="cohort-form-card">
+            <details @(isEditing ? "open" : null)>
+                <summary class="cohort-workspace-toggle">
+                    <div>
+                        <h3 class="cohort-section-title">Cohort Workspace</h3>
+                        <p class="cohort-section-copy">Open to create a cohort or edit the academic timeline and report schedule.</p>
+                    </div>
+                </summary>
+
+                <div class="cohort-workspace-content">
+                    <div class="cohort-card-head">
+                        <div></div>
+                        @if (isEditing)
+                        {
+                            <a asp-page="/Committee/Cohorts" class="cohort-cancel-btn">Cancel Edit</a>
+                        }
+                    </div>
+
+                    <form method="post" asp-page-handler="Save">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <input type="hidden" asp-for="Input.CohortId" />
+
+                        <div class="cohort-field-group">
+                            <h4 class="cohort-field-group-title">Basic Information</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Input.Description" class="form-label">Description</label>
+                                    <input asp-for="Input.Description" class="form-control" />
+                                    <span asp-validation-for="Input.Description" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label asp-for="Input.Level" class="form-label">Level</label>
+                                    <select asp-for="Input.Level" class="form-select">
+                                        <option value="">-- Select --</option>
+                                        <option value="1">Diploma</option>
+                                        <option value="2">Degree</option>
+                                    </select>
+                                    <span asp-validation-for="Input.Level" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3 cohort-switch-box">
+                                    <div class="form-check form-switch mb-0">
+                                        <input asp-for="Input.IsActive" class="form-check-input" />
+                                        <label asp-for="Input.IsActive" class="form-check-label">Active Cohort</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Campus" class="form-label">Campus</label>
+                                    <input asp-for="Input.Campus" class="form-control" />
+                                    <span asp-validation-for="Input.Campus" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Faculty" class="form-label">Faculty</label>
+                                    <input asp-for="Input.Faculty" class="form-control" />
+                                    <span asp-validation-for="Input.Faculty" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.CompanyEvaluationDate" class="form-label">Company Evaluation Date</label>
+                                    <input asp-for="Input.CompanyEvaluationDate" type="date" class="form-control" />
+                                    <span asp-validation-for="Input.CompanyEvaluationDate" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Input.PersonInCharge" class="form-label">Person In Charge</label>
+                                    <input asp-for="Input.PersonInCharge" class="form-control" />
+                                    <span asp-validation-for="Input.PersonInCharge" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Input.PidEmail" class="form-label">PIC Email</label>
+                                    <input asp-for="Input.PidEmail" type="email" class="form-control" />
+                                    <span asp-validation-for="Input.PidEmail" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cohort-field-group">
+                            <h4 class="cohort-field-group-title">Timeline</h4>
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label asp-for="Input.StartDate" class="form-label">Start Date</label>
+                                    <input asp-for="Input.StartDate" type="date" class="form-control" />
+                                    <span asp-validation-for="Input.StartDate" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label asp-for="Input.EndDate" class="form-label">End Date</label>
+                                    <input asp-for="Input.EndDate" type="date" class="form-control" />
+                                    <span asp-validation-for="Input.EndDate" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label asp-for="Input.ExamStartDate" class="form-label">Exam Start Date</label>
+                                    <input asp-for="Input.ExamStartDate" type="date" class="form-control" />
+                                    <span asp-validation-for="Input.ExamStartDate" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <label asp-for="Input.ExamEndDate" class="form-label">Exam End Date</label>
+                                    <input asp-for="Input.ExamEndDate" type="date" class="form-control" />
+                                    <span asp-validation-for="Input.ExamEndDate" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cohort-field-group">
+                            <h4 class="cohort-field-group-title">Progress Report Schedule</h4>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label asp-for="Input.ReportMonth1" class="form-label">Report 1 Month</label>
+                                    <input asp-for="Input.ReportMonth1" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Report1DueDate" class="form-label">Report 1 Due Date</label>
+                                    <input asp-for="Input.Report1DueDate" type="date" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.ReportMonth2" class="form-label">Report 2 Month</label>
+                                    <input asp-for="Input.ReportMonth2" class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Report2DueDate" class="form-label">Report 2 Due Date</label>
+                                    <input asp-for="Input.Report2DueDate" type="date" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.ReportMonth3" class="form-label">Report 3 Month</label>
+                                    <input asp-for="Input.ReportMonth3" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Report3DueDate" class="form-label">Report 3 Due Date</label>
+                                    <input asp-for="Input.Report3DueDate" type="date" class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label asp-for="Input.ReportMonth4" class="form-label">Report 4 Month</label>
+                                    <input asp-for="Input.ReportMonth4" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Report4DueDate" class="form-label">Report 4 Due Date</label>
+                                    <input asp-for="Input.Report4DueDate" type="date" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.ReportMonth5" class="form-label">Report 5 Month</label>
+                                    <input asp-for="Input.ReportMonth5" class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Report5DueDate" class="form-label">Report 5 Due Date</label>
+                                    <input asp-for="Input.Report5DueDate" type="date" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.ReportMonth6" class="form-label">Report 6 Month</label>
+                                    <input asp-for="Input.ReportMonth6" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Input.Report6DueDate" class="form-label">Report 6 Due Date</label>
+                                    <input asp-for="Input.Report6DueDate" type="date" class="form-control" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label asp-for="Input.FinalReportDueDate" class="form-label">Final Report Due Date</label>
+                                    <input asp-for="Input.FinalReportDueDate" type="date" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cohort-action-row">
+                            <button type="submit" class="cohort-submit-btn">@(isEditing ? "Update Cohort" : "Create Cohort")</button>
+                            <a asp-page="/Committee/Cohorts" class="cohort-reset-btn">Reset</a>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.Level" class="form-label">Level</label>
-                    <select asp-for="Input.Level" class="form-select">
-                        <option value="">-- Select Level --</option>
-                        <option value="1">Diploma</option>
-                        <option value="2">Degree</option>
-                    </select>
-                    <span asp-validation-for="Input.Level" class="text-danger small"></span>
+            </details>
+        </section>
+
+        <section class="cohort-list-card">
+                <div class="cohort-list-head">
+                    <div>
+                        <h3 class="cohort-section-title">Cohort List</h3>
+                        <p class="cohort-section-copy">Current cohorts available in the system, with quick edit and delete actions.</p>
+                    </div>
+                    <div class="small text-muted">Total cohorts: @Model.Cohorts.Count</div>
                 </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <div class="form-check form-switch mb-2">
-                        <input asp-for="Input.IsActive" class="form-check-input" />
-                        <label asp-for="Input.IsActive" class="form-check-label">Active Cohort</label>
+
+                <div class="cohort-list-wrap">
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle cohort-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Description</th>
+                                    <th>Level</th>
+                                    <th>Intern Period</th>
+                                    <th>Final Due</th>
+                                    <th>Active</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Cohorts)
+                                {
+                                    <tr>
+                                        <td>@item.cohort_id</td>
+                                        <td>@(string.IsNullOrWhiteSpace(item.description) ? "-" : item.description)</td>
+                                        <td>@Model.GetLevelLabel(item.level)</td>
+                                        <td>@(item.startDate?.ToString("yyyy-MM-dd") ?? "-") to @(item.endDate?.ToString("yyyy-MM-dd") ?? "-")</td>
+                                        <td>@item.finalReportDueDate?.ToString("yyyy-MM-dd")</td>
+                                        <td>
+                                            @if (item.isActive)
+                                            {
+                                                <span class="cohort-badge-active">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="cohort-badge-inactive">Inactive</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="cohort-list-actions">
+                                                <a asp-page="/Committee/Cohorts" asp-route-editId="@item.cohort_id" class="cohort-edit-btn">Edit</a>
+                                                <form method="post" asp-page-handler="Delete" asp-route-id="@item.cohort_id" onsubmit="return confirm('Delete this cohort?');">
+                                                    <button type="submit" class="cohort-delete-btn">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <label asp-for="Input.StartDate" class="form-label">Start Date</label>
-                    <input asp-for="Input.StartDate" type="date" class="form-control" />
-                    <span asp-validation-for="Input.StartDate" class="text-danger small"></span>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.EndDate" class="form-label">End Date</label>
-                    <input asp-for="Input.EndDate" type="date" class="form-control" />
-                    <span asp-validation-for="Input.EndDate" class="text-danger small"></span>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.ExamStartDate" class="form-label">Exam Start Date</label>
-                    <input asp-for="Input.ExamStartDate" type="date" class="form-control" />
-                    <span asp-validation-for="Input.ExamStartDate" class="text-danger small"></span>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.ExamEndDate" class="form-label">Exam End Date</label>
-                    <input asp-for="Input.ExamEndDate" type="date" class="form-control" />
-                    <span asp-validation-for="Input.ExamEndDate" class="text-danger small"></span>
-                </div>
-
-                <div class="col-md-4">
-                    <label asp-for="Input.Campus" class="form-label">Campus</label>
-                    <input asp-for="Input.Campus" class="form-control" />
-                    <span asp-validation-for="Input.Campus" class="text-danger small"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.Faculty" class="form-label">Faculty</label>
-                    <input asp-for="Input.Faculty" class="form-control" />
-                    <span asp-validation-for="Input.Faculty" class="text-danger small"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.CompanyEvaluationDate" class="form-label">Company Evaluation Date</label>
-                    <input asp-for="Input.CompanyEvaluationDate" type="date" class="form-control" />
-                    <span asp-validation-for="Input.CompanyEvaluationDate" class="text-danger small"></span>
-                </div>
-
-                <div class="col-md-6">
-                    <label asp-for="Input.PersonInCharge" class="form-label">Person In Charge</label>
-                    <input asp-for="Input.PersonInCharge" class="form-control" />
-                    <span asp-validation-for="Input.PersonInCharge" class="text-danger small"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Input.PidEmail" class="form-label">PIC Email</label>
-                    <input asp-for="Input.PidEmail" type="email" class="form-control" />
-                    <span asp-validation-for="Input.PidEmail" class="text-danger small"></span>
-                </div>
-            </div>
-
-            <hr class="my-4" />
-            <h6 class="mb-3">Progress Report Schedule</h6>
-
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label asp-for="Input.ReportMonth1" class="form-label">Report 1 Month</label>
-                    <input asp-for="Input.ReportMonth1" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.Report1DueDate" class="form-label">Report 1 Due Date</label>
-                    <input asp-for="Input.Report1DueDate" type="date" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.ReportMonth2" class="form-label">Report 2 Month</label>
-                    <input asp-for="Input.ReportMonth2" class="form-control" />
-                </div>
-
-                <div class="col-md-4">
-                    <label asp-for="Input.Report2DueDate" class="form-label">Report 2 Due Date</label>
-                    <input asp-for="Input.Report2DueDate" type="date" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.ReportMonth3" class="form-label">Report 3 Month</label>
-                    <input asp-for="Input.ReportMonth3" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.Report3DueDate" class="form-label">Report 3 Due Date</label>
-                    <input asp-for="Input.Report3DueDate" type="date" class="form-control" />
-                </div>
-
-                <div class="col-md-4">
-                    <label asp-for="Input.ReportMonth4" class="form-label">Report 4 Month</label>
-                    <input asp-for="Input.ReportMonth4" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.Report4DueDate" class="form-label">Report 4 Due Date</label>
-                    <input asp-for="Input.Report4DueDate" type="date" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.ReportMonth5" class="form-label">Report 5 Month</label>
-                    <input asp-for="Input.ReportMonth5" class="form-control" />
-                </div>
-
-                <div class="col-md-4">
-                    <label asp-for="Input.Report5DueDate" class="form-label">Report 5 Due Date</label>
-                    <input asp-for="Input.Report5DueDate" type="date" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.ReportMonth6" class="form-label">Report 6 Month</label>
-                    <input asp-for="Input.ReportMonth6" class="form-control" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.Report6DueDate" class="form-label">Report 6 Due Date</label>
-                    <input asp-for="Input.Report6DueDate" type="date" class="form-control" />
-                </div>
-
-                <div class="col-md-4">
-                    <label asp-for="Input.FinalReportDueDate" class="form-label">Final Report Due Date</label>
-                    <input asp-for="Input.FinalReportDueDate" type="date" class="form-control" />
-                </div>
-            </div>
-
-            <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn btn-success">@(isEditing ? "Update Cohort" : "Create Cohort")</button>
-                <a asp-page="/Committee/Cohorts" class="btn btn-outline-secondary">Reset</a>
-            </div>
-        </form>
+        </section>
     </div>
-</div>
-
-<div class="card shadow-sm">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-            <div>
-                <h5 class="mb-1">Cohort List</h5>
-                <div class="text-muted small">Current cohorts available in the system.</div>
-            </div>
-            <div class="small text-muted">Total cohorts: @Model.Cohorts.Count</div>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-sm table-bordered align-middle">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Description</th>
-                        <th>Level</th>
-                        <th>Intern Period</th>
-                        <th>Final Due</th>
-                        <th>Active</th>
-                        <th style="width: 170px;">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Cohorts)
-                    {
-                        <tr>
-                            <td>@item.cohort_id</td>
-                            <td>@(string.IsNullOrWhiteSpace(item.description) ? "-" : item.description)</td>
-                            <td>@Model.GetLevelLabel(item.level)</td>
-                            <td>@(item.startDate?.ToString("yyyy-MM-dd") ?? "-") to @(item.endDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                            <td>@item.finalReportDueDate?.ToString("yyyy-MM-dd")</td>
-                            <td>
-                                @if (item.isActive)
-                                {
-                                    <span class="badge text-bg-success">Active</span>
-                                }
-                                else
-                                {
-                                    <span class="badge text-bg-secondary">Inactive</span>
-                                }
-                            </td>
-                            <td>
-                                <div class="d-flex gap-2">
-                                    <a asp-page="/Committee/Cohorts" asp-route-editId="@item.cohort_id" class="btn btn-sm btn-primary">Edit</a>
-                                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.cohort_id" onsubmit="return confirm('Delete this cohort?');">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 </div>
 
 @section Scripts {

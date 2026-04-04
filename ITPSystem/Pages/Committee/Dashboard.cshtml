@@ -2,7 +2,6 @@
 @model CommitteeDashboardModel
 @{
     ViewData["Title"] = "Committee Dashboard";
-    ViewData["CommitteePageTitle"] = "Committee Dashboard";
 }
 
 <style>
@@ -202,8 +201,6 @@
 </style>
 
 <div class="committee-page">
-    <partial name="_CommitteeHeader" />
-
     <div class="committee-dash-layout">
         <aside class="committee-dash-side">
             <partial name="_CommitteeNav" />
@@ -251,30 +248,6 @@
                         <div class="committee-stat-value">@Model.PendingReports</div>
                         <div class="committee-stat-note">Reports still waiting in pending status.</div>
                     </div>
-                </div>
-            </section>
-
-            <section class="committee-main-card">
-                <h3 class="committee-main-card-title">Committee Focus Areas</h3>
-                <p class="committee-main-card-copy">Keep the main responsibilities of the committee visible while navigating the rest of the portal.</p>
-
-                <div class="committee-highlight-grid">
-                    <article class="committee-highlight">
-                        <strong>Student administration</strong>
-                        <span>Manage student records, resume review, unregistered entries, and bulk import activity in one workflow.</span>
-                    </article>
-                    <article class="committee-highlight">
-                        <strong>Company oversight</strong>
-                        <span>Review company requests, maintain approved company data, and control blacklisted organizations.</span>
-                    </article>
-                    <article class="committee-highlight">
-                        <strong>Academic coordination</strong>
-                        <span>Handle cohort setup, university supervisors, and internship evaluation progress across the programme.</span>
-                    </article>
-                    <article class="committee-highlight">
-                        <strong>Reporting and monitoring</strong>
-                        <span>Generate summary reports and keep visibility on submissions, approvals, and programme-level activity.</span>
-                    </article>
                 </div>
             </section>
 

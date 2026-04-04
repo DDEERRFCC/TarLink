@@ -12,7 +12,7 @@ public class CommitteeSummaryReportsModel : CommitteePageModelBase
     }
 
     [BindProperty]
-    public List<string> SelectedReportKeys { get; set; } = new();
+    public string SelectedReportKey { get; set; } = string.Empty;
 
     [BindProperty]
     public int? SelectedCohortId { get; set; }
@@ -52,25 +52,21 @@ public class CommitteeSummaryReportsModel : CommitteePageModelBase
 
         LoadCohortOptions();
         var allowedKeys = AvailableReports.Select(x => x.Key).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var keys = SelectedReportKeys
-            .Where(x => !string.IsNullOrWhiteSpace(x) && allowedKeys.Contains(x))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToList();
-
-        if (keys.Count == 0)
+        if (string.IsNullOrWhiteSpace(SelectedReportKey) || !allowedKeys.Contains(SelectedReportKey))
         {
-            Message = "Select at least one report type to generate.";
+            Message = "Select one report type to generate.";
             return Page();
         }
 
         var generatedAt = DateTime.Now;
-        GeneratedReports = keys
-            .Select(k => BuildReport(k, generatedAt))
-            .Where(r => r != null)
-            .Cast<GeneratedReportView>()
-            .ToList();
+        var generatedReport = BuildReport(SelectedReportKey, generatedAt);
+        GeneratedReports = generatedReport is null
+            ? new List<GeneratedReportView>()
+            : new List<GeneratedReportView> { generatedReport };
 
-        Message = $"{GeneratedReports.Count} summary report(s) generated.";
+        Message = GeneratedReports.Count == 1
+            ? "1 summary report generated."
+            : "No summary report generated.";
         return Page();
     }
 

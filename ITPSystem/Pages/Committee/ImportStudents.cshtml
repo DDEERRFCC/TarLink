@@ -4,59 +4,411 @@
     ViewData["CommitteePageTitle"] = "Import Student";
 }
 
+<style>
+    .import-student-page {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .import-student-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.3rem;
+        color: #fff;
+        background: linear-gradient(135deg, #10203a, #1d4ed8 58%, #14b8a6);
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+    }
+
+    .import-student-banner::before {
+        content: "";
+        position: absolute;
+        right: -60px;
+        top: -75px;
+        width: 220px;
+        height: 220px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .import-student-banner-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: end;
+        gap: 1rem;
+    }
+
+    .import-student-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .import-student-kicker {
+        display: inline-flex;
+        padding: 0.3rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .import-student-title {
+        margin: 0.45rem 0 0.3rem;
+        font-size: clamp(1.65rem, 3vw, 2.25rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .import-student-copy {
+        margin: 0;
+        max-width: 62ch;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.7;
+    }
+
+    .import-student-back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        border-radius: 14px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .import-student-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .import-card,
+    .import-note-card,
+    .import-errors-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .import-card,
+    .import-note-card {
+        padding: 1rem;
+    }
+
+    .import-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .import-section-copy {
+        margin: 0.35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: 0.92rem;
+    }
+
+    .import-upload-box {
+        margin-top: 1rem;
+        border: 1px dashed #9fc5e8;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #f8fbff, #ffffff);
+        padding: 1rem;
+    }
+
+    .import-upload-box label {
+        display: block;
+        margin-bottom: 0.45rem;
+        color: #36506a;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .import-upload-box .form-control {
+        min-height: 48px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .import-upload-box .form-control:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.14);
+    }
+
+    .import-upload-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 1rem;
+        align-items: center;
+    }
+
+    .import-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 140px;
+        min-height: 46px;
+        padding: 0.8rem 1rem;
+        border: none;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 700;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .import-upload-hint {
+        color: #607284;
+        font-size: 0.9rem;
+    }
+
+    .import-tag-grid {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .import-tag-group strong {
+        display: block;
+        margin-bottom: 0.55rem;
+        color: #132238;
+        font-size: 0.92rem;
+    }
+
+    .import-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .import-chip {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.3rem 0.72rem;
+        background: #eef6ff;
+        color: #1e4f8f;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .import-note-list {
+        margin: 1rem 0 0;
+        padding-left: 1.1rem;
+        color: #607284;
+    }
+
+    .import-note-list li {
+        margin-bottom: 0.45rem;
+        line-height: 1.65;
+    }
+
+    .import-summary-bar {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.8rem;
+    }
+
+    .import-summary-item {
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e4edf6;
+        padding: 0.9rem;
+    }
+
+    .import-summary-item span {
+        display: block;
+        color: #607284;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .import-summary-item strong {
+        display: block;
+        margin-top: 0.35rem;
+        color: #132238;
+        font-size: 1.3rem;
+    }
+
+    .import-errors-card {
+        overflow: hidden;
+    }
+
+    .import-errors-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 1rem 0.8rem;
+        border-bottom: 1px solid #e5eef7;
+    }
+
+    .import-errors-table {
+        margin-bottom: 0;
+    }
+
+    .import-errors-table thead th {
+        background: #eff6ff;
+        color: #25415e;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .import-errors-table td,
+    .import-errors-table th {
+        padding: 0.8rem 0.9rem;
+        vertical-align: top;
+    }
+
+    @@media (max-width: 991.98px) {
+        .import-student-grid,
+        .import-summary-bar {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
+    <div class="import-student-page">
+        <section class="import-student-banner">
+            <div class="import-student-banner-content">
+                <div>
+                    <div class="import-student-kicker">Import Student</div>
+                    <h3 class="import-student-title">Bring student records into the system with a cleaner upload workflow.</h3>
+                    <p class="import-student-copy">Upload a `.xlsx` or `.csv` file, validate the required sheet structure, and review any row-level issues before correcting and importing again.</p>
+                </div>
+                <div class="import-student-banner-actions">
+                    <a asp-page="/Committee/Dashboard" class="import-student-back-btn">Back to Dashboard</a>
+                    <a asp-page="/Committee/Students" class="import-student-back-btn">Back to Student List</a>
+                </div>
+            </div>
+        </section>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">Import Student</h5>
-    <a asp-page="/Committee/Students" class="btn btn-sm btn-outline-secondary">Back to Student List</a>
-</div>
+        @if (!string.IsNullOrWhiteSpace(Model.Message))
+        {
+            <div class="alert alert-info mb-0">@Model.Message</div>
+        }
 
-@if (!string.IsNullOrWhiteSpace(Model.Message))
-{
-    <div class="alert alert-info">@Model.Message</div>
-}
+        <section class="import-summary-bar">
+            <div class="import-summary-item">
+                <span>Imported</span>
+                <strong>@Model.ImportedCount</strong>
+            </div>
+            <div class="import-summary-item">
+                <span>Failed</span>
+                <strong>@Model.FailedCount</strong>
+            </div>
+            <div class="import-summary-item">
+                <span>Error Rows</span>
+                <strong>@Model.Errors.Count</strong>
+            </div>
+        </section>
 
-<div class="alert alert-secondary" style="max-width: 880px;">
-    <strong>Required columns:</strong>
-    <code>number_ic</code>, <code>studentID</code>, <code>studentName</code>, <code>studentEmail</code>,
-    <code>cohortId</code>, <code>level</code>, <code>programme</code>, <code>groupNo</code><br />
-    <strong>Optional columns:</strong>
-    <code>password</code>, <code>applyStatus</code>, <code>ucSupervisor</code>, <code>ucSupervisorEmail</code>, <code>ucSupervisorContact</code><br />
-    Personal-information fields are intentionally excluded. If <code>password</code> is empty, password defaults to IC/UC number.
-</div>
+        <section class="import-student-grid">
+            <div class="import-card">
+                <h3 class="import-section-title">Upload Student Sheet</h3>
+                <p class="import-section-copy">Choose a prepared `.xlsx` or `.csv` file and import the student records directly into the committee portal.</p>
 
-<form method="post" asp-page-handler="Import" enctype="multipart/form-data" class="card card-body" style="max-width:680px;">
-    <div class="mb-2">
-        <label asp-for="UploadFile" class="form-label">Student Sheet File (.xlsx or .csv)</label>
-        <input asp-for="UploadFile" type="file" class="form-control" accept=".xlsx,.csv" />
+                <form method="post" asp-page-handler="Import" enctype="multipart/form-data" class="import-upload-box">
+                    <label asp-for="UploadFile">Student Sheet File</label>
+                    <input asp-for="UploadFile" type="file" class="form-control" accept=".xlsx,.csv" />
+
+                    <div class="import-upload-actions">
+                        <button type="submit" class="import-submit-btn">Import Students</button>
+                        <div class="import-upload-hint">Accepted file types: `.xlsx`, `.csv`</div>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="import-note-card">
+                <h3 class="import-section-title">Sheet Requirements</h3>
+                <p class="import-section-copy">Use these headers exactly so the system can read and validate the upload correctly.</p>
+
+                <div class="import-tag-grid">
+                    <div class="import-tag-group">
+                        <strong>Required Columns</strong>
+                        <div class="import-chip-row">
+                            <span class="import-chip">number_ic</span>
+                            <span class="import-chip">studentID</span>
+                            <span class="import-chip">studentName</span>
+                            <span class="import-chip">studentEmail</span>
+                            <span class="import-chip">cohortId</span>
+                            <span class="import-chip">level</span>
+                            <span class="import-chip">programme</span>
+                            <span class="import-chip">groupNo</span>
+                        </div>
+                    </div>
+
+                    <div class="import-tag-group">
+                        <strong>Optional Columns</strong>
+                        <div class="import-chip-row">
+                            <span class="import-chip">password</span>
+                            <span class="import-chip">applyStatus</span>
+                            <span class="import-chip">ucSupervisor</span>
+                            <span class="import-chip">ucSupervisorEmail</span>
+                            <span class="import-chip">ucSupervisorContact</span>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="import-note-list">
+                    <li>Personal-information fields are intentionally excluded from this import page.</li>
+                    <li>If `password` is empty, the password defaults to the IC / UC number.</li>
+                    <li>Fix any error rows shown below, then re-upload the corrected file.</li>
+                </ul>
+            </aside>
+        </section>
+
+        @if (Model.Errors.Any())
+        {
+            <section class="import-errors-card">
+                <div class="import-errors-head">
+                    <div>
+                        <h3 class="import-section-title">Import Errors</h3>
+                        <p class="import-section-copy">Review the failed rows below and correct them in the source sheet before importing again.</p>
+                    </div>
+                    <strong>@Model.Errors.Count issue(s)</strong>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-sm import-errors-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 120px;">Row</th>
+                                <th>Error</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var err in Model.Errors)
+                            {
+                                <tr>
+                                    <td>@err.RowNo</td>
+                                    <td>@err.Error</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        }
     </div>
-    <button type="submit" class="btn btn-primary">Import</button>
-</form>
-
-@if (Model.Errors.Any())
-{
-    <div class="card mt-3" style="max-width: 980px;">
-        <div class="card-header">Import Errors (@Model.Errors.Count)</div>
-        <div class="table-responsive">
-            <table class="table table-sm mb-0">
-                <thead>
-                    <tr>
-                        <th style="width: 120px;">Row</th>
-                        <th>Error</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var err in Model.Errors)
-                    {
-                        <tr>
-                            <td>@err.RowNo</td>
-                            <td>@err.Error</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
 </div>

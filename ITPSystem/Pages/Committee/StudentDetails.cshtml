@@ -30,7 +30,7 @@
     </div>
 }
 
-<form method="post" asp-page-handler="Save">
+<form method="post" asp-page-handler="Save" enctype="multipart/form-data">
     <input type="hidden" asp-for="Input.application_id" />
     <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
@@ -133,7 +133,7 @@
                 <div class="col-md-2"><label asp-for="Input.databaseKnowledge" class="form-label">Database Knowledge</label><input asp-for="Input.databaseKnowledge" class="form-control form-control-sm" /></div>
                 <div class="col-md-2"><label asp-for="Input.networkingKnowledge" class="form-label">Networking Knowledge</label><input asp-for="Input.networkingKnowledge" class="form-control form-control-sm" /></div>
                 <div class="col-md-2"><label asp-for="Input.templateVersion" class="form-label">Template Version</label><input asp-for="Input.templateVersion" type="number" class="form-control form-control-sm" /></div>
-                <div class="col-md-2"><label asp-for="Input.applyStatus" class="form-label">Application Status</label><select asp-for="Input.applyStatus" class="form-select form-select-sm"><option value="pending">pending</option><option value="approved">approved</option><option value="rejected">rejected</option><option value="withdrawn">withdrawn</option></select></div>
+                <div class="col-md-2"><label asp-for="Input.applyStatus" class="form-label">Application Status</label><select asp-for="Input.applyStatus" class="form-select form-select-sm"><option value="none">none</option><option value="pending">pending</option><option value="approved">approved</option><option value="rejected">rejected</option><option value="withdrawn">withdrawn</option></select></div>
                 <div class="col-md-2"><label asp-for="Input.isAgreed" class="form-label">Agreed</label><select asp-for="Input.isAgreed" class="form-select form-select-sm"><option value="true">Yes</option><option value="false">No</option></select></div>
                 <div class="col-md-3"><label asp-for="Input.doVerifier" class="form-label">DO Verifier</label><input asp-for="Input.doVerifier" class="form-control form-control-sm" /></div>
                 <div class="col-md-3"><label asp-for="Input.doVerifierEmail" class="form-label">DO Verifier Email</label><input asp-for="Input.doVerifierEmail" class="form-control form-control-sm" /></div>
@@ -148,10 +148,11 @@
         <div class="card-body">
             <div class="row g-2">
                 <div class="col-md-6">
-                    <label asp-for="Input.formAcceptance" class="form-label">Form Acceptance</label>
-                    <input asp-for="Input.formAcceptance" class="form-control form-control-sm" />
+                    <label for="FormAcceptanceFile" class="form-label">Form Acceptance</label>
+                    <input asp-for="FormAcceptanceFile" type="file" class="form-control form-control-sm" />
                     @if (!string.IsNullOrWhiteSpace(Model.Input.formAcceptance))
                     {
+                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.formAcceptance)</div>
                         <div class="mt-1">
                             <a class="btn btn-sm btn-outline-primary"
                                asp-page-handler="Document"
@@ -168,10 +169,11 @@
                     }
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="Input.formAcknowledgement" class="form-label">Form Acknowledgement</label>
-                    <input asp-for="Input.formAcknowledgement" class="form-control form-control-sm" />
+                    <label for="FormAcknowledgementFile" class="form-label">Form Acknowledgement</label>
+                    <input asp-for="FormAcknowledgementFile" type="file" class="form-control form-control-sm" />
                     @if (!string.IsNullOrWhiteSpace(Model.Input.formAcknowledgement))
                     {
+                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.formAcknowledgement)</div>
                         <div class="mt-1">
                             <a class="btn btn-sm btn-outline-primary"
                                asp-page-handler="Document"
@@ -188,10 +190,11 @@
                     }
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="Input.letterIdentity" class="form-label">Letter Identity</label>
-                    <input asp-for="Input.letterIdentity" class="form-control form-control-sm" />
+                    <label for="LetterIdentityFile" class="form-label">Letter Identity</label>
+                    <input asp-for="LetterIdentityFile" type="file" class="form-control form-control-sm" />
                     @if (!string.IsNullOrWhiteSpace(Model.Input.letterIdentity))
                     {
+                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.letterIdentity)</div>
                         <div class="mt-1">
                             <a class="btn btn-sm btn-outline-primary"
                                asp-page-handler="Document"
@@ -208,10 +211,11 @@
                     }
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="Input.otherEvidence" class="form-label">Other Evidence</label>
-                    <input asp-for="Input.otherEvidence" class="form-control form-control-sm" />
+                    <label for="OtherEvidenceFile" class="form-label">Other Evidence</label>
+                    <input asp-for="OtherEvidenceFile" type="file" class="form-control form-control-sm" />
                     @if (!string.IsNullOrWhiteSpace(Model.Input.otherEvidence))
                     {
+                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.otherEvidence)</div>
                         <div class="mt-1">
                             <a class="btn btn-sm btn-outline-primary"
                                asp-page-handler="Document"

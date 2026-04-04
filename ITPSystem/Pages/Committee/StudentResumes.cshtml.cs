@@ -15,6 +15,12 @@ public class CommitteeStudentResumesModel : CommitteePageModelBase
 
     public List<StudentResumeItem> Students { get; private set; } = new();
 
+    [BindProperty(SupportsGet = true)]
+    public string Search { get; set; } = string.Empty;
+
+    [BindProperty(SupportsGet = true)]
+    public string ResumeFilter { get; set; } = string.Empty;
+
     public class StudentResumeItem
     {
         public StudentApplication Student { get; set; } = null!;
@@ -28,7 +34,19 @@ public class CommitteeStudentResumesModel : CommitteePageModelBase
             return RedirectToPage("/Login/CommitteeLogin");
         }
 
-        var studentList = _db.StudentApplications.AsNoTracking()
+        var query = _db.StudentApplications.AsNoTracking().AsQueryable();
+
+        var keyword = (Search ?? string.Empty).Trim();
+        if (!string.IsNullOrWhiteSpace(keyword))
+        {
+            query = query.Where(s =>
+                (s.studentName ?? string.Empty).Contains(keyword) ||
+                (s.studentID ?? string.Empty).Contains(keyword) ||
+                (s.studentEmail ?? string.Empty).Contains(keyword) ||
+                (s.programme ?? string.Empty).Contains(keyword));
+        }
+
+        var studentList = query
             .OrderBy(s => s.studentName)
             .ToList();
 
@@ -44,6 +62,16 @@ public class CommitteeStudentResumesModel : CommitteePageModelBase
             {
                 Student = s,
                 Cv = latestCvMap.TryGetValue(s.application_id, out var cv) ? cv : null
+            })
+            .Where(x =>
+            {
+                var normalizedFilter = (ResumeFilter ?? string.Empty).Trim().ToLowerInvariant();
+                return normalizedFilter switch
+                {
+                    "uploaded" => x.Cv != null && !string.IsNullOrWhiteSpace(x.Cv.file_path),
+                    "missing" => x.Cv == null || string.IsNullOrWhiteSpace(x.Cv.file_path),
+                    _ => true
+                };
             })
             .ToList();
 

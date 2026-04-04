@@ -2,16 +2,20 @@ using ITPSystem.Data;
 using ITPSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.StaticFiles;
 using System.ComponentModel.DataAnnotations;
 
 public class CommitteeStudentDetailsModel : CommitteePageModelBase
 {
+    private const long MaxUploadBytes = 10 * 1024 * 1024;
     private readonly ApplicationDbContext _db;
+    private readonly IWebHostEnvironment _env;
 
-    public CommitteeStudentDetailsModel(ApplicationDbContext db)
+    public CommitteeStudentDetailsModel(ApplicationDbContext db, IWebHostEnvironment env)
     {
         _db = db;
+        _env = env;
     }
 
     public List<Cohort> Cohorts { get; private set; } = new();
@@ -21,6 +25,18 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
 
     [BindProperty]
     public StudentDetailInput Input { get; set; } = new();
+
+    [BindProperty]
+    public IFormFile? FormAcceptanceFile { get; set; }
+
+    [BindProperty]
+    public IFormFile? FormAcknowledgementFile { get; set; }
+
+    [BindProperty]
+    public IFormFile? LetterIdentityFile { get; set; }
+
+    [BindProperty]
+    public IFormFile? OtherEvidenceFile { get; set; }
 
     [TempData]
     public string? StatusMessage { get; set; }
@@ -90,7 +106,7 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         public byte? templateVersion { get; set; }
 
         [Required]
-        public string applyStatus { get; set; } = "pending";
+        public string applyStatus { get; set; } = "none";
 
         public string? remark { get; set; }
         public string? formAcceptance { get; set; }
@@ -140,6 +156,17 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         LoadCohorts();
         if (!ModelState.IsValid)
         {
+            return Page();
+        }
+
+        ValidateUpload(FormAcceptanceFile, "Form Acceptance");
+        ValidateUpload(FormAcknowledgementFile, "Form Acknowledgement");
+        ValidateUpload(LetterIdentityFile, "Letter Identity");
+        ValidateUpload(OtherEvidenceFile, "Other Evidence");
+
+        if (!ModelState.IsValid)
+        {
+            IsCreateMode = Input.application_id <= 0;
             return Page();
         }
 
@@ -215,10 +242,10 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         student.templateVersion = Input.templateVersion;
         student.applyStatus = NormalizeStatus(Input.applyStatus);
         student.remark = TrimOrNull(Input.remark);
-        student.formAcceptance = TrimOrNull(Input.formAcceptance);
-        student.formAcknowledgement = TrimOrNull(Input.formAcknowledgement);
-        student.letterIdentity = TrimOrNull(Input.letterIdentity);
-        student.otherEvidence = TrimOrNull(Input.otherEvidence);
+        student.formAcceptance = SaveUploadedFile(FormAcceptanceFile, "formAcceptance", student.formAcceptance, student);
+        student.formAcknowledgement = SaveUploadedFile(FormAcknowledgementFile, "formAcknowledgement", student.formAcknowledgement, student);
+        student.letterIdentity = SaveUploadedFile(LetterIdentityFile, "letterIdentity", student.letterIdentity, student);
+        student.otherEvidence = SaveUploadedFile(OtherEvidenceFile, "otherEvidence", student.otherEvidence, student);
         student.doVerifier = TrimOrNull(Input.doVerifier);
         student.doVerifierEmail = TrimOrNull(Input.doVerifierEmail);
         student.isAgreed = Input.isAgreed;
@@ -297,7 +324,7 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             return null;
         }
 
-        var uploadsRoot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+        var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
         var normalizedPath = storedPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
         var combinedPath = Path.GetFullPath(Path.Combine(uploadsRoot, normalizedPath));
         var uploadsRootFullPath = Path.GetFullPath(uploadsRoot);
@@ -377,7 +404,7 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         {
             application_id = 0,
             gender = "O",
-            applyStatus = "pending",
+            applyStatus = "none",
             ownTransport = false,
             isAgreed = false,
             level = 1,
@@ -391,10 +418,12 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         var value = (rawStatus ?? string.Empty).Trim().ToLowerInvariant();
         return value switch
         {
+            "none" => "none",
             "approved" => "approved",
             "rejected" => "rejected",
             "withdrawn" => "withdrawn",
-            _ => "pending"
+            "pending" => "pending",
+            _ => "none"
         };
     }
 
@@ -412,6 +441,101 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
     private static string? TrimOrNull(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private void ValidateUpload(IFormFile? file, string label)
+    {
+        if (file == null)
+        {
+            return;
+        }
+
+        if (file.Length <= 0)
+        {
+            ModelState.AddModelError(string.Empty, $"{label}: uploaded file is empty.");
+            return;
+        }
+
+        if (file.Length > MaxUploadBytes)
+        {
+            ModelState.AddModelError(string.Empty, $"{label}: file must not exceed 10MB.");
+        }
+    }
+
+    private string? SaveUploadedFile(IFormFile? file, string prefix, string? existingFileName, StudentApplication student)
+    {
+        if (file == null || file.Length <= 0)
+        {
+            return existingFileName;
+        }
+
+        var studentFolderPath = EnsureStudentDocumentFolder(student);
+        var savedName = BuildSafeUploadFileName(file.FileName, prefix);
+        var fullPath = Path.Combine(studentFolderPath, savedName);
+
+        var existingFullPath = ResolveUploadFullPath(existingFileName);
+        if (!string.IsNullOrWhiteSpace(existingFullPath) && System.IO.File.Exists(existingFullPath))
+        {
+            try
+            {
+                System.IO.File.Delete(existingFullPath);
+            }
+            catch
+            {
+                // keep upload success even if cleanup fails
+            }
+        }
+
+        using var stream = new FileStream(fullPath, FileMode.Create);
+        file.CopyTo(stream);
+
+        var relativeFolder = Path.GetRelativePath(Path.Combine(_env.WebRootPath, "uploads"), studentFolderPath)
+            .Replace('\\', '/');
+        return $"{relativeFolder}/{savedName}";
+    }
+
+    private string EnsureStudentDocumentFolder(StudentApplication student)
+    {
+        var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
+        Directory.CreateDirectory(uploadsRoot);
+
+        var cohortFolderName = BuildSafeFolderName(Cohorts.FirstOrDefault(c => c.cohort_id == student.cohortId)?.description, $"Cohort_{student.cohortId}");
+        var cohortFolderPath = Path.Combine(uploadsRoot, "Cohorts", cohortFolderName);
+        Directory.CreateDirectory(cohortFolderPath);
+
+        var studentFolderName = BuildSafeFolderName(student.studentName, $"Student_{student.application_id}");
+        var studentFolderPath = Path.Combine(cohortFolderPath, studentFolderName);
+        Directory.CreateDirectory(studentFolderPath);
+
+        return studentFolderPath;
+    }
+
+    private static string BuildSafeFolderName(string? rawValue, string fallback)
+    {
+        var baseValue = string.IsNullOrWhiteSpace(rawValue) ? fallback : rawValue.Trim();
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var sanitized = new string(baseValue
+            .Select(ch => invalidChars.Contains(ch) ? '_' : ch)
+            .ToArray());
+
+        sanitized = string.Join("_", sanitized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+        return string.IsNullOrWhiteSpace(sanitized) ? fallback : sanitized;
+    }
+
+    private static string BuildSafeUploadFileName(string? originalFileName, string fallbackPrefix)
+    {
+        var rawFileName = Path.GetFileName(originalFileName ?? string.Empty);
+        if (string.IsNullOrWhiteSpace(rawFileName))
+        {
+            return fallbackPrefix;
+        }
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var sanitized = new string(rawFileName
+            .Select(ch => invalidChars.Contains(ch) ? '_' : ch)
+            .ToArray());
+
+        return string.IsNullOrWhiteSpace(sanitized) ? fallbackPrefix : sanitized;
     }
 
     private static string? GetDocumentFileName(StudentApplication student, string field)

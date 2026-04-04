@@ -6,240 +6,552 @@
 }
 
 <style>
+    .summary-page {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .summary-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.3rem;
+        color: #fff;
+        background: linear-gradient(135deg, #10203a, #1d4ed8 58%, #14b8a6);
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+    }
+
+    .summary-banner::before {
+        content: "";
+        position: absolute;
+        right: -60px;
+        top: -75px;
+        width: 220px;
+        height: 220px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .summary-banner-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: end;
+        gap: 1rem;
+    }
+
+    .summary-kicker {
+        display: inline-flex;
+        padding: 0.3rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .summary-title {
+        margin: 0.45rem 0 0.3rem;
+        font-size: clamp(1.65rem, 3vw, 2.25rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .summary-copy {
+        margin: 0;
+        max-width: 62ch;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.7;
+    }
+
+    .summary-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .summary-banner-btn,
+    .summary-banner-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .summary-banner-btn {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .summary-banner-btn-secondary {
+        color: #0f172a;
+        background: #f8fafc;
+        box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .summary-panel,
+    .summary-history-card,
+    .summary-report-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .summary-panel {
+        padding: 1rem;
+    }
+
+    .summary-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .summary-section-copy {
+        margin: 0.35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: 0.92rem;
+    }
+
+    .summary-filter-grid {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1rem;
+    }
+
+    .summary-field label {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #36506a;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .summary-field .form-select {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .summary-field .form-select:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.14);
+    }
+
+    .summary-option-grid {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+
     .summary-option {
-        border: 1px solid #d6e4f0;
-        border-radius: 12px;
+        display: flex;
+        gap: 0.8rem;
+        align-items: start;
+        padding: 0.95rem 1rem;
+        border: 1px solid #d8e5f1;
+        border-radius: 18px;
         background: #fff;
-        padding: .8rem .9rem;
+        cursor: pointer;
+        transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    .summary-option:hover {
+        border-color: #8ab7e0;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transform: translateY(-1px);
+    }
+
+    .summary-option input[type="radio"] {
+        margin-top: 0.2rem;
     }
 
     .summary-option-title {
+        display: block;
+        color: #142436;
         font-weight: 700;
-        color: #1f2937;
     }
 
     .summary-option-desc {
-        color: #5b6b7b;
+        display: block;
+        margin-top: 0.2rem;
+        color: #607284;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .summary-generate-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        margin-top: 1rem;
+        padding: 0.85rem 1rem;
+        border: none;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 700;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .summary-history-card {
+        overflow: hidden;
+    }
+
+    .summary-history-head {
+        padding: 1rem 1rem 0.8rem;
+        border-bottom: 1px solid #e5eef7;
+    }
+
+    .summary-history-wrap {
+        padding: 0.6rem 0.8rem 0.9rem;
+    }
+
+    .summary-history-table {
         margin-bottom: 0;
-        font-size: .92rem;
+    }
+
+    .summary-history-table thead th {
+        background: #eff6ff;
+        color: #25415e;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .summary-history-table td,
+    .summary-history-table th {
+        padding: 0.8rem 0.75rem;
+        vertical-align: middle;
+    }
+
+    .summary-view-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.45rem 0.8rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #1d4ed8;
+        background: #eef6ff;
+        border: 1px solid #d6e5f6;
     }
 
     .summary-report-card {
-        border: 1px solid #d6e4f0;
-        border-radius: 12px;
-        background: #fff;
+        overflow: hidden;
     }
 
     .summary-report-head {
-        border-bottom: 1px solid #e6eef6;
-        padding: .8rem 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.75rem;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #e5eef7;
+        background: linear-gradient(180deg, #ffffff, #f8fbff);
+    }
+
+    .summary-report-head strong {
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    .summary-report-head small {
+        color: #607284;
     }
 
     .summary-report-body {
-        padding: .8rem 1rem;
+        padding: 0.85rem 1rem 1rem;
+    }
+
+    .summary-table {
+        margin-bottom: 0;
+    }
+
+    .summary-table thead th {
+        background: #eff6ff;
+        color: #25415e;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .summary-table td,
+    .summary-table th {
+        padding: 0.78rem 0.72rem;
+        vertical-align: middle;
+    }
+
+    .summary-empty {
+        padding: 3rem 1.2rem;
+        text-align: center;
+        color: #607284;
+        border: 1px dashed #d8e5f1;
+        border-radius: 18px;
+        background: #fbfdff;
+    }
+
+    .summary-empty strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #132238;
+    }
+
+    @@media (max-width: 991.98px) {
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
 <div class="committee-page">
-    <partial name="_CommitteeHeader" />
-    <partial name="_CommitteeBackButton" />
-
     @if (!string.IsNullOrWhiteSpace(Model.Message))
     {
-        <div class="alert alert-info">@Model.Message</div>
+        <div class="alert alert-info mb-3">@Model.Message</div>
     }
 
-    <form method="post" asp-page-handler="Generate" class="card border-0 shadow-sm mb-3">
-        <div class="card-body">
-            <h5 class="mb-2">Generate Summary Reports</h5>
-            <p class="text-muted mb-3">Select one or more report types, then generate to view each report below.</p>
-
-            <div class="row g-2 mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">Cohort</label>
-                    <select asp-for="SelectedCohortId" class="form-select form-select-sm">
-                        <option value="">All Cohorts</option>
-                        @foreach (var c in Model.CohortOptions)
-                        {
-                            <option value="@c.CohortId">@c.Name</option>
-                        }
-                    </select>
+    <div class="summary-page">
+        <section class="summary-banner">
+            <div class="summary-banner-content">
+                <div>
+                    <div class="summary-kicker">Summary Reports</div>
+                    <h3 class="summary-title">Generate focused programme reports from one cleaner committee workspace.</h3>
+                    <p class="summary-copy">Pick one report type at a time, adjust the cohort or level filters when needed, and review the latest generated output below without leaving the page.</p>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Level</label>
-                    <select asp-for="SelectedLevel" class="form-select form-select-sm">
-                        <option value="">All Levels</option>
-                        <option value="1">Diploma</option>
-                        <option value="2">Degree</option>
-                    </select>
+                <div class="summary-banner-actions">
+                    <a asp-page="/Committee/Dashboard" class="summary-banner-btn">Back to Dashboard</a>
+                    <a asp-page="/Committee/Students" class="summary-banner-btn-secondary">Open Student List</a>
                 </div>
             </div>
+        </section>
 
-            <div class="row g-2">
-                @foreach (var report in Model.AvailableReports)
-                {
-                    <div class="col-md-6">
-                        <label class="summary-option d-flex gap-2 align-items-start">
-                            <input type="checkbox"
-                                   name="SelectedReportKeys"
+        <section class="summary-grid">
+            <form method="post" asp-page-handler="Generate" class="summary-panel">
+                <h3 class="summary-section-title">Generate Report</h3>
+                <p class="summary-section-copy">Choose the report scope and select one of the available report types below.</p>
+
+                <div class="summary-filter-grid">
+                    <div class="summary-field">
+                        <label asp-for="SelectedCohortId">Cohort</label>
+                        <select asp-for="SelectedCohortId" class="form-select">
+                            <option value="">-- All --</option>
+                            @foreach (var c in Model.CohortOptions)
+                            {
+                                <option value="@c.CohortId">@c.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="summary-field">
+                        <label asp-for="SelectedLevel">Level</label>
+                        <select asp-for="SelectedLevel" class="form-select">
+                            <option value="">-- All --</option>
+                            <option value="1">Diploma</option>
+                            <option value="2">Degree</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="summary-option-grid">
+                    @foreach (var report in Model.AvailableReports)
+                    {
+                        <label class="summary-option">
+                            <input type="radio"
+                                   name="SelectedReportKey"
                                    value="@report.Key"
-                                   class="form-check-input mt-1"
-                                   checked="@(Model.SelectedReportKeys.Contains(report.Key))" />
+                                   class="form-check-input"
+                                   checked="@(string.Equals(Model.SelectedReportKey, report.Key, StringComparison.OrdinalIgnoreCase))" />
                             <span>
-                                <span class="summary-option-title d-block">@report.Title</span>
-                                <span class="summary-option-desc d-block">@report.Description</span>
+                                <span class="summary-option-title">@report.Title</span>
+                                <span class="summary-option-desc">@report.Description</span>
                             </span>
                         </label>
+                    }
+                </div>
+
+                <button type="submit" class="summary-generate-btn">Generate Report</button>
+            </form>
+
+            <div>
+                @if (Model.GeneratedReports.Count > 0)
+                {
+                    <section class="summary-history-card mb-3">
+                        <div class="summary-history-head">
+                            <h3 class="summary-section-title">Generated Reports</h3>
+                            <p class="summary-section-copy">Jump directly to the latest generated report shown below.</p>
+                        </div>
+                        <div class="summary-history-wrap">
+                            <div class="table-responsive">
+                                <table class="table table-sm align-middle summary-history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Report</th>
+                                            <th>Generated At</th>
+                                            <th class="text-end">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.GeneratedReports)
+                                        {
+                                            <tr>
+                                                <td>@item.Title</td>
+                                                <td>@item.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                                <td class="text-end">
+                                                    <a class="summary-view-link" href="#report-@item.Key">View</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    @foreach (var item in Model.GeneratedReports)
+                    {
+                        <section class="summary-report-card mb-3" id="report-@item.Key">
+                            <div class="summary-report-head">
+                                <strong>@item.Title</strong>
+                                <small>@item.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</small>
+                            </div>
+                            <div class="summary-report-body">
+                                <div class="table-responsive">
+                                    @if (item.Key == "students")
+                                    {
+                                        <table class="table table-sm summary-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Programme</th>
+                                                    <th>No. of Student</th>
+                                                    <th>Success</th>
+                                                    <th>Rejected</th>
+                                                    <th>Submitted</th>
+                                                    <th>Pending</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (item.ProgrammeRows.Count == 0)
+                                                {
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-muted">No data found for selected cohort/level.</td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    @foreach (var row in item.ProgrammeRows)
+                                                    {
+                                                        <tr>
+                                                            <td>@row.Programme</td>
+                                                            <td>@row.NoOfStudent</td>
+                                                            <td>@row.Success</td>
+                                                            <td>@row.Rejected</td>
+                                                            <td>@row.Submitted</td>
+                                                            <td>@row.Pending</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else if (item.Key == "companies")
+                                    {
+                                        <table class="table table-sm summary-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Company</th>
+                                                    <th>Allowance</th>
+                                                    <th>Application Count</th>
+                                                    @foreach (var programme in item.CompanyProgrammes)
+                                                    {
+                                                        <th>@programme</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (item.CompanyRows.Count == 0)
+                                                {
+                                                    <tr>
+                                                        <td colspan="@(4 + item.CompanyProgrammes.Count)" class="text-center text-muted">No company data found.</td>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    @foreach (var row in item.CompanyRows)
+                                                    {
+                                                        <tr>
+                                                            <td>@row.No</td>
+                                                            <td>@row.Company</td>
+                                                            <td>@(row.Allowance.HasValue ? row.Allowance.Value.ToString("0.00") : "-")</td>
+                                                            <td>@row.ApplicationCount</td>
+                                                            @foreach (var programme in item.CompanyProgrammes)
+                                                            {
+                                                                var count = row.ProgrammeCounts.FirstOrDefault(x => x.Programme == programme)?.Count ?? 0;
+                                                                <td>@count</td>
+                                                            }
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <table class="table table-sm summary-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Metric</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var row in item.Rows)
+                                                {
+                                                    <tr>
+                                                        <td>@row.Label</td>
+                                                        <td>@row.Value</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </div>
+                        </section>
+                    }
+                }
+                else
+                {
+                    <div class="summary-empty">
+                        <strong>No generated report yet.</strong>
+                        Select one report type on the left and generate it to see the result here.
                     </div>
                 }
             </div>
-
-            <button type="submit" class="btn btn-primary mt-3">Generate Selected Reports</button>
-        </div>
-    </form>
-
-    @if (Model.GeneratedReports.Count > 0)
-    {
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-body">
-                <h5 class="mb-2">Generated Reports</h5>
-                <div class="table-responsive">
-                    <table class="table table-sm align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th>Report</th>
-                                <th>Generated At</th>
-                                <th class="text-end">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.GeneratedReports)
-                            {
-                                <tr>
-                                    <td>@item.Title</td>
-                                    <td>@item.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                                    <td class="text-end">
-                                        <a class="btn btn-outline-primary btn-sm" href="#report-@item.Key">View</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        @foreach (var item in Model.GeneratedReports)
-        {
-            <div class="summary-report-card mb-3" id="report-@item.Key">
-                <div class="summary-report-head d-flex justify-content-between align-items-center">
-                    <strong>@item.Title</strong>
-                    <small class="text-muted">@item.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</small>
-                </div>
-                <div class="summary-report-body">
-                    <div class="table-responsive">
-                        @if (item.Key == "students")
-                        {
-                            <table class="table table-sm mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Programme</th>
-                                        <th>No. of Student</th>
-                                        <th>Success</th>
-                                        <th>Rejected</th>
-                                        <th>Submitted</th>
-                                        <th>Pending</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (item.ProgrammeRows.Count == 0)
-                                    {
-                                        <tr>
-                                            <td colspan="6" class="text-center text-muted">No data found for selected cohort/level.</td>
-                                        </tr>
-                                    }
-                                    else
-                                    {
-                                        @foreach (var row in item.ProgrammeRows)
-                                        {
-                                            <tr>
-                                                <td>@row.Programme</td>
-                                                <td>@row.NoOfStudent</td>
-                                                <td>@row.Success</td>
-                                                <td>@row.Rejected</td>
-                                                <td>@row.Submitted</td>
-                                                <td>@row.Pending</td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                        else if (item.Key == "companies")
-                        {
-                            <table class="table table-sm mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Company</th>
-                                        <th>Allowance</th>
-                                        <th>Application Count</th>
-                                        @foreach (var programme in item.CompanyProgrammes)
-                                        {
-                                            <th>@programme</th>
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (item.CompanyRows.Count == 0)
-                                    {
-                                        <tr>
-                                            <td colspan="@(4 + item.CompanyProgrammes.Count)" class="text-center text-muted">No company data found.</td>
-                                        </tr>
-                                    }
-                                    else
-                                    {
-                                        @foreach (var row in item.CompanyRows)
-                                        {
-                                            <tr>
-                                                <td>@row.No</td>
-                                                <td>@row.Company</td>
-                                                <td>@(row.Allowance.HasValue ? row.Allowance.Value.ToString("0.00") : "-")</td>
-                                                <td>@row.ApplicationCount</td>
-                                                @foreach (var programme in item.CompanyProgrammes)
-                                                {
-                                                    var count = row.ProgrammeCounts.FirstOrDefault(x => x.Programme == programme)?.Count ?? 0;
-                                                    <td>@count</td>
-                                                }
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                        else
-                        {
-                            <table class="table table-sm mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Metric</th>
-                                        <th>Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var row in item.Rows)
-                                    {
-                                        <tr>
-                                            <td>@row.Label</td>
-                                            <td>@row.Value</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
-    }
+        </section>
+    </div>
 </div>

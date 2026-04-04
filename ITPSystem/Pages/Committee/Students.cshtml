@@ -2,117 +2,783 @@
 @model CommitteeStudentsModel
 @{
     ViewData["CommitteePageTitle"] = "Student List";
+
+    var pendingCount = Model.Students.Count(s => string.Equals((s.applyStatus ?? string.Empty).Trim(), "pending", StringComparison.OrdinalIgnoreCase));
+    var approvedCount = Model.Students.Count(s => string.Equals((s.applyStatus ?? string.Empty).Trim(), "approved", StringComparison.OrdinalIgnoreCase));
+    var rejectedCount = Model.Students.Count(s => string.Equals((s.applyStatus ?? string.Empty).Trim(), "rejected", StringComparison.OrdinalIgnoreCase));
+    var withdrawnCount = Model.Students.Count(s => string.Equals((s.applyStatus ?? string.Empty).Trim(), "withdrawn", StringComparison.OrdinalIgnoreCase));
+    var noneCount = Model.Students.Count - pendingCount - approvedCount - rejectedCount - withdrawnCount;
+    var hasActiveFilters = !string.IsNullOrWhiteSpace(Model.Search)
+        || !string.IsNullOrWhiteSpace(Model.StatusFilter)
+        || Model.CohortFilter.HasValue
+        || !string.IsNullOrWhiteSpace(Model.ProgrammeFilter);
 }
+
+<style>
+    .student-list-shell {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .student-list-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #10203a, #1d4ed8 52%, #14b8a6);
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+    }
+
+    .student-list-banner::before,
+    .student-list-banner::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .student-list-banner::before {
+        width: 220px;
+        height: 220px;
+        top: -110px;
+        right: -70px;
+    }
+
+    .student-list-banner::after {
+        width: 140px;
+        height: 140px;
+        bottom: -55px;
+        right: 180px;
+    }
+
+    .student-list-banner-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: end;
+    }
+
+    .student-list-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.3rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .student-list-title {
+        margin: 0.5rem 0 0.35rem;
+        font-size: clamp(1.7rem, 3vw, 2.35rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .student-list-copy {
+        margin: 0;
+        max-width: 62ch;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.7;
+    }
+
+    .student-list-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .student-list-back-btn,
+    .student-list-primary-btn,
+    .student-list-secondary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 140px;
+        padding: 0.82rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .student-list-back-btn {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(6px);
+    }
+
+    .student-list-primary-btn {
+        color: #0f172a;
+        background: #f8fafc;
+        box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+    }
+
+    .student-list-secondary-btn {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .student-list-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0.9rem;
+    }
+
+    .student-list-stat {
+        border: 1px solid #d8e5f1;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #ffffff, #f8fbff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+        padding: 1rem;
+    }
+
+    .student-list-stat-label {
+        color: #607284;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .student-list-stat-value {
+        margin-top: 0.4rem;
+        color: #0f172a;
+        font-size: 1.55rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .student-list-stat-note {
+        margin-top: 0.35rem;
+        color: #718396;
+        font-size: 0.88rem;
+    }
+
+    .student-list-panel,
+    .student-list-table-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .student-list-panel {
+        padding: 1rem;
+    }
+
+    .student-list-panel-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .student-list-panel-toggle::-webkit-details-marker {
+        display: none;
+    }
+
+    .student-list-panel-toggle::after {
+        content: "Open";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 72px;
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #075985;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    details[open] .student-list-panel-toggle::after {
+        content: "Close";
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .student-list-panel-content {
+        margin-top: 1rem;
+    }
+
+    .student-list-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .student-list-section-copy {
+        margin: 0.3rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: 0.92rem;
+    }
+
+    .student-list-filter-grid {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1rem;
+    }
+
+    .student-list-field label {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #36506a;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .student-list-field .form-control,
+    .student-list-field .form-select {
+        border-radius: 14px;
+        border-color: #d1ddea;
+        min-height: 44px;
+        box-shadow: none;
+    }
+
+    .student-list-field .form-control:focus,
+    .student-list-field .form-select:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.14);
+    }
+
+    .student-list-filter-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.7rem;
+        margin-top: 1rem;
+    }
+
+    .student-list-apply-btn,
+    .student-list-reset-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        border-radius: 14px;
+        font-weight: 700;
+    }
+
+    .student-list-apply-btn {
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        border: none;
+        color: #fff;
+    }
+
+    .student-list-reset-btn {
+        border: 1px solid #c8d7e5;
+        color: #35516a;
+        text-decoration: none;
+        background: #fff;
+    }
+
+    .student-list-filter-summary {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e4edf6;
+    }
+
+    .student-filter-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.7rem;
+    }
+
+    .student-filter-chip {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.28rem 0.7rem;
+        background: #eef6ff;
+        color: #1e4f8f;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .student-list-table-head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 1rem 0.8rem;
+    }
+
+    .student-list-table-meta {
+        color: #607284;
+        font-size: 0.92rem;
+    }
+
+    .student-list-table-wrap {
+        padding: 0 0.5rem 0.5rem;
+    }
+
+    .student-list-table {
+        margin-bottom: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .student-list-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #eff6ff;
+        color: #25415e;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        border-bottom: 1px solid #d7e4f1;
+        padding: 0.7rem 0.45rem;
+        white-space: normal;
+        line-height: 1.35;
+    }
+
+    .student-list-table thead th:first-child,
+    .student-list-table tbody td:first-child {
+        width: 26px;
+        max-width: 26px;
+        min-width: 26px;
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
+        text-align: center;
+    }
+
+    .student-list-table tbody td {
+        padding: 0.7rem 0.45rem;
+        border-bottom: 1px solid #edf2f7;
+        vertical-align: middle;
+        color: #132238;
+        font-size: 0.86rem;
+        line-height: 1.45;
+        word-break: break-word;
+    }
+
+    .student-list-table tbody tr:hover {
+        background: #f8fbff;
+    }
+
+    .student-list-index {
+        color: #607284;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .student-list-updated {
+        color: #4b647c;
+        font-size: 0.8rem;
+        line-height: 1.35;
+    }
+
+    .student-list-student-id {
+        font-weight: 700;
+        color: #17365a;
+    }
+
+    .student-list-name strong {
+        display: block;
+        color: #142436;
+        font-size: 0.9rem;
+    }
+
+    .student-list-name span {
+        color: #6b7f92;
+        font-size: 0.78rem;
+    }
+
+    .student-list-programme-tag {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.22rem 0.52rem;
+        background: #e0f2fe;
+        color: #075985;
+        font-size: 0.72rem;
+        font-weight: 700;
+    }
+
+    .student-list-contact strong,
+    .student-list-company strong,
+    .student-list-supervisor strong,
+    .student-list-remark strong {
+        display: block;
+        color: #142436;
+        font-size: 0.86rem;
+        font-weight: 600;
+    }
+
+    .student-list-contact span,
+    .student-list-company span,
+    .student-list-supervisor span,
+    .student-list-remark span,
+    .student-list-muted {
+        color: #6f8295;
+        font-size: 0.76rem;
+        line-height: 1.4;
+    }
+
+    .student-list-remark {
+        max-width: 140px;
+    }
+
+    .student-list-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        padding: 0.45rem 0.72rem;
+        background: linear-gradient(90deg, #1d4ed8, #0ea5e9);
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    .student-list-empty {
+        padding: 3rem 1.2rem;
+        text-align: center;
+        color: #607284;
+    }
+
+    .student-list-empty strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    .student-status-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.2rem 0.56rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .student-status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .student-status-approved {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .student-status-rejected {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .student-status-withdrawn {
+        background: #e5e7eb;
+        color: #4b5563;
+    }
+
+    .student-status-none {
+        background: #e0e7ff;
+        color: #4338ca;
+    }
+
+    .student-status-default {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .student-list-stat-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .student-list-stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .student-list-filter-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .student-list-banner-content,
+        .student-list-table-head {
+            align-items: start;
+        }
+    }
+</style>
 
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+    {
+        <div class="alert alert-success mb-3">@Model.StatusMessage</div>
+    }
 
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
-}
+    <div class="student-list-shell">
+        <section class="student-list-banner">
+            <div class="student-list-banner-content">
+                <div>
+                    <div class="student-list-kicker">Student List</div>
+                    <h3 class="student-list-title">Review, filter, and act on student records faster.</h3>
+                    <p class="student-list-copy">Use this page as the committee workspace for application tracking, programme oversight, and quick access to student details without losing context.</p>
+                </div>
+                <div class="student-list-banner-actions">
+                    <a asp-page="/Committee/Dashboard" class="student-list-back-btn">Back to Dashboard</a>
+                    <a asp-page="/Committee/StudentDetails" class="student-list-primary-btn">Add Student</a>
+                    <a asp-page="/Committee/ImportStudents" class="student-list-secondary-btn">Import Students</a>
+                </div>
+            </div>
+        </section>
 
-<div class="d-flex justify-content-end mb-3">
-    <a asp-page="/Committee/StudentDetails" class="btn btn-sm btn-success">Add Student</a>
-</div>
+        <section class="student-list-stat-grid">
+            <article class="student-list-stat">
+                <div class="student-list-stat-label">Visible Students</div>
+                <div class="student-list-stat-value">@Model.FilteredStudents</div>
+                <div class="student-list-stat-note">Current results after search and filters.</div>
+            </article>
+            <article class="student-list-stat">
+                <div class="student-list-stat-label">Pending</div>
+                <div class="student-list-stat-value">@pendingCount</div>
+                <div class="student-list-stat-note">Students still waiting for committee action.</div>
+            </article>
+            <article class="student-list-stat">
+                <div class="student-list-stat-label">Approved</div>
+                <div class="student-list-stat-value">@approvedCount</div>
+                <div class="student-list-stat-note">Students ready for internship progress.</div>
+            </article>
+            <article class="student-list-stat">
+                <div class="student-list-stat-label">Rejected</div>
+                <div class="student-list-stat-value">@rejectedCount</div>
+                <div class="student-list-stat-note">Applications that were not accepted.</div>
+            </article>
+            <article class="student-list-stat">
+                <div class="student-list-stat-label">None / Other</div>
+                <div class="student-list-stat-value">@(noneCount + withdrawnCount)</div>
+                <div class="student-list-stat-note">Records with no final status or withdrawn state.</div>
+            </article>
+        </section>
 
-<div class="card mb-3">
-    <div class="card-body">
-        <form method="get" class="row g-2 align-items-end">
-            <div class="col-md-4">
-                <label class="form-label">Search</label>
-                <input name="Search" value="@Model.Search" class="form-control form-control-sm" placeholder="Student ID, name, email, programme, company" />
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Status</label>
-                <select name="StatusFilter" class="form-select form-select-sm">
-                    <option value="">All</option>
-                    <option value="pending" selected="@(Model.StatusFilter == "pending")">pending</option>
-                    <option value="approved" selected="@(Model.StatusFilter == "approved")">approved</option>
-                    <option value="rejected" selected="@(Model.StatusFilter == "rejected")">rejected</option>
-                    <option value="withdrawn" selected="@(Model.StatusFilter == "withdrawn")">withdrawn</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Cohort</label>
-                <select name="CohortFilter" class="form-select form-select-sm">
-                    <option value="">All</option>
-                    @foreach (var c in Model.CohortOptions)
-                    {
-                        <option value="@c.Value" selected="@(Model.CohortFilter?.ToString() == c.Value)">@c.Text</option>
-                    }
-                </select>
-            </div>
-            <div class="col-md-2 d-flex gap-2">
-                <button type="submit" class="btn btn-sm btn-primary w-100">Apply</button>
-                <a asp-page="/Committee/Students" class="btn btn-sm btn-outline-secondary w-100">Reset</a>
-            </div>
-        </form>
-        <div class="mt-2 small text-muted">
-            Number of students: @Model.FilteredStudents / @Model.TotalStudents
-        </div>
-    </div>
-</div>
+        <section class="student-list-panel">
+            <details @(hasActiveFilters ? "open" : null)>
+                <summary class="student-list-panel-toggle">
+                    <div>
+                        <h3 class="student-list-section-title">Find Students</h3>
+                        <p class="student-list-section-copy">Tap to open the search and filter tools.</p>
+                    </div>
+                </summary>
 
-<div class="table-responsive">
-    <table class="table table-sm table-bordered align-middle">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Programme</th>
-                <th>Contact</th>
-                <th>Cohort</th>
-                <th>Status</th>
-                <th>Last Update</th>
-                <th>Company</th>
-                <th>UC Supervisor</th>
-                <th style="width: 110px;">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                var no = 1;
-            }
-            @foreach (var s in Model.Students)
-            {
-                <tr>
-                    <td>@no</td>
-                    <td>@s.studentID</td>
-                    <td>@s.studentName</td>
-                    <td>
-                        @{
-                            var genderLabel = (s.gender ?? "O").ToUpperInvariant() switch
-                            {
-                                "M" => "Male",
-                                "F" => "Female",
-                                _ => "Other"
-                            };
+                <div class="student-list-panel-content">
+                    <form method="get" class="student-list-filter-grid">
+                        <div class="student-list-field">
+                            <label for="Search">Search</label>
+                            <input id="Search" name="Search" value="@Model.Search" class="form-control" placeholder="Student ID, name, email, programme, company" />
+                        </div>
+
+                        <div class="student-list-field">
+                            <label for="StatusFilter">Status</label>
+                            <select id="StatusFilter" name="StatusFilter" class="form-select">
+                                <option value="">-- All --</option>
+                                <option value="none" selected="@(Model.StatusFilter == "none")">none</option>
+                                <option value="pending" selected="@(Model.StatusFilter == "pending")">pending</option>
+                                <option value="approved" selected="@(Model.StatusFilter == "approved")">approved</option>
+                                <option value="rejected" selected="@(Model.StatusFilter == "rejected")">rejected</option>
+                                <option value="withdrawn" selected="@(Model.StatusFilter == "withdrawn")">withdrawn</option>
+                            </select>
+                        </div>
+
+                        <div class="student-list-field">
+                            <label for="CohortFilter">Cohort</label>
+                            <select id="CohortFilter" name="CohortFilter" class="form-select">
+                                <option value="">-- All --</option>
+                                @foreach (var c in Model.CohortOptions)
+                                {
+                                    <option value="@c.Value" selected="@(Model.CohortFilter?.ToString() == c.Value)">@c.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="student-list-field">
+                            <label for="ProgrammeFilter">Programme</label>
+                            <select id="ProgrammeFilter" name="ProgrammeFilter" class="form-select">
+                                <option value="">-- All --</option>
+                                @foreach (var programme in Model.ProgrammeOptions)
+                                {
+                                    <option value="@programme.Value" selected="@(Model.ProgrammeFilter == programme.Value)">@programme.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="student-list-filter-actions">
+                            <button type="submit" class="student-list-apply-btn">Apply Filters</button>
+                            <a asp-page="/Committee/Students" class="student-list-reset-btn">Reset</a>
+                        </div>
+                    </form>
+
+                    <div class="student-list-filter-summary">
+                        <div class="student-list-section-title">View Summary</div>
+                        <p class="student-list-section-copy">Showing <strong>@Model.FilteredStudents</strong> of <strong>@Model.TotalStudents</strong> total student records.</p>
+
+                        @if (hasActiveFilters)
+                        {
+                            <div class="student-filter-chip-row">
+                                @if (!string.IsNullOrWhiteSpace(Model.Search))
+                                {
+                                    <span class="student-filter-chip">Search: @Model.Search</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Model.StatusFilter))
+                                {
+                                    <span class="student-filter-chip">Status: @Model.StatusFilter</span>
+                                }
+                                @if (Model.CohortFilter.HasValue)
+                                {
+                                    var selectedCohort = Model.CohortOptions.FirstOrDefault(c => c.Value == Model.CohortFilter.Value.ToString())?.Text ?? Model.CohortFilter.Value.ToString();
+                                    <span class="student-filter-chip">Cohort: @selectedCohort</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Model.ProgrammeFilter))
+                                {
+                                    <span class="student-filter-chip">Programme: @Model.ProgrammeFilter</span>
+                                }
+                            </div>
                         }
-                        @genderLabel
-                    </td>
-                    <td>@(string.IsNullOrWhiteSpace(s.programme) ? "-" : s.programme)</td>
-                    <td>
-                        <div>@s.studentEmail</div>
-                        <div class="text-muted small">@(!string.IsNullOrWhiteSpace(s.permanentContact) ? s.permanentContact : "-")</div>
-                    </td>
-                    <td>@(s.Cohort?.description ?? s.cohortId.ToString())</td>
-                    <td>@s.applyStatus</td>
-                    <td>@s.updated_at.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@(s.comName ?? "-")</td>
-                    <td>@(s.ucSupervisor ?? "-")</td>
-                    <td>
-                        <a class="btn btn-sm btn-primary"
-                           asp-page="/Committee/StudentDetails"
-                           asp-route-applicationId="@s.application_id">Details</a>
-                    </td>
-                </tr>
-                no++;
-            }
-        </tbody>
-    </table>
-</div>
+                        else
+                        {
+                            <div class="student-list-muted mt-2">No filters are active right now.</div>
+                        }
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="student-list-table-card">
+                <div class="student-list-table-head">
+                    <div>
+                        <h3 class="student-list-section-title">Student Directory</h3>
+                        <p class="student-list-section-copy">A cleaner operational view of student records, company placement details, committee remarks, and review status.</p>
+                    </div>
+                    <div class="student-list-table-meta">Updated records are listed alphabetically by student name.</div>
+                </div>
+
+                <div class="student-list-table-wrap">
+                    <div class="table-responsive">
+                        <table class="table student-list-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Updated</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Prog.</th>
+                                    <th>Contact</th>
+                                    <th>Cohort</th>
+                                    <th>Company</th>
+                                    <th>UC Sup.</th>
+                                    <th>Remark</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (!Model.Students.Any())
+                                {
+                                    <tr>
+                                        <td colspan="12" class="student-list-empty">
+                                            <strong>No students matched this view.</strong>
+                                            Adjust the filters or reset the page to bring records back into the table.
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    var no = 1;
+                                    foreach (var s in Model.Students)
+                                    {
+                                        var normalizedStatus = (s.applyStatus ?? string.Empty).Trim().ToLowerInvariant();
+                                        var statusClass = normalizedStatus switch
+                                        {
+                                            "pending" => "student-status-pending",
+                                            "approved" => "student-status-approved",
+                                            "rejected" => "student-status-rejected",
+                                            "withdrawn" => "student-status-withdrawn",
+                                            "none" => "student-status-none",
+                                            _ => "student-status-default"
+                                        };
+
+                                        var genderLabel = (s.gender ?? "O").ToUpperInvariant() switch
+                                        {
+                                            "M" => "Male",
+                                            "F" => "Female",
+                                            _ => "Other"
+                                        };
+
+                                        <tr>
+                                            <td class="student-list-index">@no</td>
+                                            <td class="student-list-updated">
+                                                @s.updated_at.ToString("yy-MM-dd HH:mm")
+                                            </td>
+                                            <td class="student-list-name">
+                                                <strong>@s.studentName</strong>
+                                                <span>@s.studentID</span>
+                                            </td>
+                                            <td>@genderLabel</td>
+                                            <td>
+                                                <span class="student-list-programme-tag">@(string.IsNullOrWhiteSpace(s.programme) ? "-" : s.programme)</span>
+                                            </td>
+                                            <td class="student-list-contact">
+                                                <strong>@(string.IsNullOrWhiteSpace(s.studentEmail) ? "-" : s.studentEmail)</strong>
+                                                <span>@(!string.IsNullOrWhiteSpace(s.permanentContact) ? s.permanentContact : "No contact number")</span>
+                                            </td>
+                                            <td>
+                                                <strong>@(s.Cohort?.description ?? $"Cohort {s.cohortId}")</strong>
+                                            </td>
+                                            <td class="student-list-company">
+                                                <strong>@(string.IsNullOrWhiteSpace(s.comName) ? "-" : s.comName)</strong>
+                                                <span>@(string.IsNullOrWhiteSpace(s.comAddress) ? "-" : s.comAddress)</span>
+                                            </td>
+                                            <td class="student-list-supervisor">
+                                                <strong>@(string.IsNullOrWhiteSpace(s.ucSupervisor) ? "-" : s.ucSupervisor)</strong>
+                                                <span>@(string.IsNullOrWhiteSpace(s.ucSupervisorEmail) ? "-" : s.ucSupervisorEmail)</span>
+                                            </td>
+                                            <td class="student-list-remark">
+                                                <strong>@(string.IsNullOrWhiteSpace(s.remark) ? "-" : s.remark)</strong>
+                                                <span>@(string.IsNullOrWhiteSpace(s.doVerifier) ? "-" : $"Verifier: {s.doVerifier}")</span>
+                                            </td>
+                                            <td>
+                                                <span class="student-status-badge @statusClass">@(string.IsNullOrWhiteSpace(s.applyStatus) ? "Unknown" : s.applyStatus)</span>
+                                            </td>
+                                            <td>
+                                                <a class="student-list-action"
+                                                   asp-page="/Committee/StudentDetails"
+                                                   asp-route-applicationId="@s.application_id">View</a>
+                                            </td>
+                                        </tr>
+                                        no++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        </section>
+    </div>
 </div>

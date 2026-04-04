@@ -15,6 +15,7 @@ public class CommitteeStudentsModel : CommitteePageModelBase
 
     public List<StudentApplication> Students { get; private set; } = new();
     public List<SelectListItem> CohortOptions { get; private set; } = new();
+    public List<SelectListItem> ProgrammeOptions { get; private set; } = new();
     public int TotalStudents { get; private set; }
     public int FilteredStudents { get; private set; }
 
@@ -26,6 +27,9 @@ public class CommitteeStudentsModel : CommitteePageModelBase
 
     [BindProperty(SupportsGet = true)]
     public int? CohortFilter { get; set; }
+
+    [BindProperty(SupportsGet = true)]
+    public string ProgrammeFilter { get; set; } = string.Empty;
     
     [TempData]
     public string? StatusMessage { get; set; }
@@ -65,6 +69,12 @@ public class CommitteeStudentsModel : CommitteePageModelBase
             query = query.Where(s => s.cohortId == CohortFilter.Value);
         }
 
+        var normalizedProgramme = (ProgrammeFilter ?? string.Empty).Trim();
+        if (!string.IsNullOrWhiteSpace(normalizedProgramme))
+        {
+            query = query.Where(s => (s.programme ?? string.Empty) == normalizedProgramme);
+        }
+
         Students = query
             .OrderBy(s => s.studentName)
             .ToList();
@@ -79,6 +89,19 @@ public class CommitteeStudentsModel : CommitteePageModelBase
                 Text = string.IsNullOrWhiteSpace(c.description)
                     ? $"Cohort {c.cohort_id}"
                     : c.description
+            })
+            .ToList();
+
+        ProgrammeOptions = _db.StudentApplications.AsNoTracking()
+            .Select(s => s.programme)
+            .Where(p => !string.IsNullOrWhiteSpace(p))
+            .Select(p => p!)
+            .Distinct()
+            .OrderBy(p => p)
+            .Select(p => new SelectListItem
+            {
+                Value = p,
+                Text = p
             })
             .ToList();
 

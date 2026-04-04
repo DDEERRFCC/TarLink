@@ -2,63 +2,474 @@
 @model CommitteeStudentResumesModel
 @{
     ViewData["CommitteePageTitle"] = "Student Resume / CV";
+
+    var uploadedCount = Model.Students.Count(x => x.Cv != null && !string.IsNullOrWhiteSpace(x.Cv.file_path));
+    var missingCount = Model.Students.Count - uploadedCount;
+    var hasActiveFilters = !string.IsNullOrWhiteSpace(Model.Search) || !string.IsNullOrWhiteSpace(Model.ResumeFilter);
 }
+
+<style>
+    .resume-page {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .resume-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.3rem;
+        color: #fff;
+        background: linear-gradient(135deg, #10203a, #1d4ed8 58%, #14b8a6);
+        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+    }
+
+    .resume-banner::before {
+        content: "";
+        position: absolute;
+        right: -55px;
+        top: -70px;
+        width: 200px;
+        height: 200px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .resume-banner-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: end;
+        gap: 1rem;
+    }
+
+    .resume-kicker {
+        display: inline-flex;
+        padding: 0.3rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .resume-title {
+        margin: 0.45rem 0 0.3rem;
+        font-size: clamp(1.6rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .resume-copy {
+        margin: 0;
+        max-width: 62ch;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.7;
+    }
+
+    .resume-back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        border-radius: 14px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .resume-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.9rem;
+    }
+
+    .resume-stat,
+    .resume-card,
+    .resume-note {
+        border: 1px solid #d8e5f1;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .resume-stat {
+        padding: 1rem;
+    }
+
+    .resume-stat-label {
+        color: #607284;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .resume-stat-value {
+        margin-top: 0.4rem;
+        color: #0f172a;
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .resume-stat-note {
+        margin-top: 0.35rem;
+        color: #718396;
+        font-size: 0.88rem;
+    }
+
+    .resume-note {
+        padding: 0.9rem 1rem;
+        color: #607284;
+        line-height: 1.7;
+    }
+
+    .resume-filter-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+        padding: 1rem;
+    }
+
+    .resume-filter-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) minmax(180px, 0.8fr) auto auto;
+        gap: 0.8rem;
+        align-items: end;
+    }
+
+    .resume-filter-field label {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #36506a;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .resume-filter-field .form-control,
+    .resume-filter-field .form-select {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .resume-filter-field .form-control:focus,
+    .resume-filter-field .form-select:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.14);
+    }
+
+    .resume-filter-btn,
+    .resume-filter-reset {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        min-width: 110px;
+        padding: 0.75rem 0.95rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .resume-filter-btn {
+        border: none;
+        color: #fff;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .resume-filter-reset {
+        color: #35516a;
+        background: #fff;
+        border: 1px solid #c8d7e5;
+    }
+
+    .resume-filter-meta {
+        margin-top: 0.85rem;
+        color: #607284;
+        font-size: 0.9rem;
+    }
+
+    .resume-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .resume-card {
+        padding: 1rem;
+        display: grid;
+        gap: 0.9rem;
+    }
+
+    .resume-card-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .resume-student strong {
+        display: block;
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    .resume-student span {
+        display: block;
+        color: #6f8295;
+        font-size: 0.88rem;
+        line-height: 1.6;
+    }
+
+    .resume-status {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.28rem 0.72rem;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+    }
+
+    .resume-status-ready {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .resume-status-missing {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .resume-file-box {
+        border-radius: 16px;
+        background: #f8fbff;
+        border: 1px solid #e4edf6;
+        padding: 0.85rem 0.9rem;
+    }
+
+    .resume-file-label {
+        color: #607284;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .resume-file-name {
+        margin-top: 0.35rem;
+        color: #132238;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .resume-file-empty {
+        margin-top: 0.35rem;
+        color: #b91c1c;
+        font-weight: 600;
+    }
+
+    .resume-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+
+    .resume-btn,
+    .resume-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        padding: 0.7rem 0.9rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .resume-btn {
+        color: #fff;
+        background: linear-gradient(90deg, #1d4ed8, #0ea5e9);
+    }
+
+    .resume-btn-secondary {
+        color: #28527a;
+        background: #eef6ff;
+        border: 1px solid #d6e5f6;
+    }
+
+    .resume-missing-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        padding: 0.7rem 0.9rem;
+        border-radius: 12px;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-weight: 700;
+    }
+
+    .resume-empty {
+        padding: 2.8rem 1rem;
+        text-align: center;
+        color: #607284;
+        border: 1px solid #d8e5f1;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .resume-empty strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #132238;
+    }
+
+    @@media (max-width: 991.98px) {
+        .resume-stat-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .resume-filter-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+    <div class="resume-page">
+        <section class="resume-banner">
+            <div class="resume-banner-content">
+                <div>
+                    <div class="resume-kicker">Student Resume / CV</div>
+                    <h3 class="resume-title">Review the latest resume from each student in one place.</h3>
+                    <p class="resume-copy">This page pulls the newest uploaded file from `studentcv` for every student record, so the committee can quickly inspect availability before opening or downloading the file.</p>
+                </div>
+                <a asp-page="/Committee/Dashboard" class="resume-back-btn">Back to Dashboard</a>
+            </div>
+        </section>
 
-<p class="text-muted">Showing latest uploaded resume/CV from `studentcv` for each student.</p>
+        <section class="resume-stat-grid">
+            <article class="resume-stat">
+                <div class="resume-stat-label">Total Students</div>
+                <div class="resume-stat-value">@Model.Students.Count</div>
+                <div class="resume-stat-note">All student records currently checked for a latest resume file.</div>
+            </article>
+            <article class="resume-stat">
+                <div class="resume-stat-label">Resume Uploaded</div>
+                <div class="resume-stat-value">@uploadedCount</div>
+                <div class="resume-stat-note">Students with a latest resume/CV file ready to open.</div>
+            </article>
+            <article class="resume-stat">
+                <div class="resume-stat-label">Missing Resume</div>
+                <div class="resume-stat-value">@missingCount</div>
+                <div class="resume-stat-note">Students who have not uploaded a latest resume/CV yet.</div>
+            </article>
+        </section>
 
-@if (Model.Students.Count == 0)
-{
-    <div class="alert alert-secondary mb-0">No student records found.</div>
-}
-else
-{
-    <div class="list-group">
-        @foreach (var s in Model.Students)
+        <section class="resume-filter-card">
+            <form method="get" class="resume-filter-grid">
+                <div class="resume-filter-field">
+                    <label for="Search">Search</label>
+                    <input id="Search" name="Search" value="@Model.Search" class="form-control" placeholder="Student name, ID, email, programme" />
+                </div>
+                <div class="resume-filter-field">
+                    <label for="ResumeFilter">Resume Status</label>
+                    <select id="ResumeFilter" name="ResumeFilter" class="form-select">
+                        <option value="">-- All --</option>
+                        <option value="uploaded" selected="@(Model.ResumeFilter == "uploaded")">Uploaded</option>
+                        <option value="missing" selected="@(Model.ResumeFilter == "missing")">Missing</option>
+                    </select>
+                </div>
+                <button type="submit" class="resume-filter-btn">Apply</button>
+                <a asp-page="/Committee/StudentResumes" class="resume-filter-reset">Reset</a>
+            </form>
+
+            <div class="resume-filter-meta">
+                Showing <strong>@Model.Students.Count</strong> student record(s).
+                @if (hasActiveFilters)
+                {
+                    <span> Filters are active.</span>
+                }
+            </div>
+        </section>
+
+        @if (Model.Students.Count == 0)
         {
-            var hasCv = s.Cv != null && !string.IsNullOrWhiteSpace(s.Cv.file_path);
-            var displayName = hasCv
-                ? (!string.IsNullOrWhiteSpace(s.Cv!.file_name) ? s.Cv.file_name : System.IO.Path.GetFileName(s.Cv.file_path))
-                : null;
-            <div class="list-group-item d-flex justify-content-between align-items-start gap-3">
-                <div>
-                    <div class="fw-semibold">@s.Student.studentName (@s.Student.studentID)</div>
-                    <div class="text-muted small">@s.Student.studentEmail</div>
-                    <div class="small mt-1">
-                        <span class="text-muted">Resume/CV:</span>
-                        @if (hasCv)
-                        {
-                            <span>@displayName</span>
-                        }
-                        else
-                        {
-                            <span class="text-danger">Not uploaded</span>
-                        }
-                    </div>
-                </div>
-                <div>
-                    @if (hasCv)
-                    {
-                        <a class="btn btn-sm btn-outline-primary me-1"
-                           asp-page-handler="ResumeFile"
-                           asp-route-applicationId="@s.Student.application_id"
-                           asp-route-download="false"
-                           target="_blank" rel="noopener">View</a>
-                        <a class="btn btn-sm btn-primary"
-                           asp-page-handler="ResumeFile"
-                           asp-route-applicationId="@s.Student.application_id"
-                           asp-route-download="true">Download</a>
-                    }
-                    else
-                    {
-                        <span class="badge text-bg-secondary">Missing</span>
-                    }
-                </div>
+            <div class="resume-empty">
+                <strong>No student records found.</strong>
+                There are no students available to display on the resume page yet.
             </div>
         }
+        else
+        {
+            <section class="resume-grid">
+                @foreach (var s in Model.Students)
+                {
+                    var hasCv = s.Cv != null && !string.IsNullOrWhiteSpace(s.Cv.file_path);
+                    var displayName = hasCv
+                        ? (!string.IsNullOrWhiteSpace(s.Cv!.file_name) ? s.Cv.file_name : System.IO.Path.GetFileName(s.Cv.file_path))
+                        : null;
+
+                    <article class="resume-card">
+                        <div class="resume-card-top">
+                            <div class="resume-student">
+                                <strong>@s.Student.studentName</strong>
+                                <span>@s.Student.studentID</span>
+                                <span>@s.Student.studentEmail</span>
+                            </div>
+                            <span class="resume-status @(hasCv ? "resume-status-ready" : "resume-status-missing")">
+                                @(hasCv ? "Uploaded" : "Missing")
+                            </span>
+                        </div>
+
+                        <div class="resume-file-box">
+                            <div class="resume-file-label">Latest Resume / CV</div>
+                            @if (hasCv)
+                            {
+                                <div class="resume-file-name">@displayName</div>
+                            }
+                            else
+                            {
+                                <div class="resume-file-empty">No uploaded resume/CV found.</div>
+                            }
+                        </div>
+
+                        <div class="resume-actions">
+                            @if (hasCv)
+                            {
+                                <a class="resume-btn-secondary"
+                                   asp-page-handler="ResumeFile"
+                                   asp-route-applicationId="@s.Student.application_id"
+                                   asp-route-download="false"
+                                   target="_blank" rel="noopener">View</a>
+                                <a class="resume-btn"
+                                   asp-page-handler="ResumeFile"
+                                   asp-route-applicationId="@s.Student.application_id"
+                                   asp-route-download="true">Download</a>
+                            }
+                            else
+                            {
+                                <span class="resume-missing-badge">Not Uploaded</span>
+                            }
+                        </div>
+                    </article>
+                }
+            </section>
+        }
     </div>
-}
 </div>
