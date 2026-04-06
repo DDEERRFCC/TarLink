@@ -2,37 +2,687 @@
 @model CommitteeProgressEvaluationModel
 @{
     ViewData["CommitteePageTitle"] = "Progress Report & Evaluation";
+    var hasActiveFilters = !string.IsNullOrWhiteSpace(Model.Search)
+        || !string.IsNullOrWhiteSpace(Model.StatusFilter)
+        || Model.CohortFilter.HasValue
+        || !string.IsNullOrWhiteSpace(Model.ProgrammeFilter);
 }
 
-<div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+<style>
+    .progress-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
 
-<div class="table-responsive">
-    <table class="table table-sm table-bordered align-middle">
-        <thead>
-            <tr>
-                <th>Student</th>
-                <th>Report</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Evaluation</th>
-                <th>Remark</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Items)
-            {
-                <tr>
-                    <td>@item.StudentName (@item.StudentId)</td>
-                    <td>@item.ReportTitle</td>
-                    <td>@item.DueDate.ToString("yyyy-MM-dd")</td>
-                    <td>@Model.GetStatusText(item.Status)</td>
-                    <td>@item.EvaluationSummary</td>
-                    <td>@item.Remark</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+    .progress-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .progress-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .progress-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .progress-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .progress-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .progress-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .progress-copy {
+        margin: 0;
+        max-width: 70ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .progress-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .progress-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .progress-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .progress-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .progress-banner-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .progress-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: .9rem;
+    }
+
+    .progress-stat,
+    .progress-filter-card,
+    .progress-table-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .progress-stat {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .progress-stat::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .progress-stat-label {
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
+
+    .progress-stat-value {
+        margin-top: .4rem;
+        color: #0f172a;
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .progress-stat-note {
+        margin-top: .35rem;
+        color: #718396;
+        font-size: .88rem;
+    }
+
+    .progress-filter-card {
+        padding: 1rem;
+    }
+
+    .progress-filter-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .progress-filter-toggle::-webkit-details-marker {
+        display: none;
+    }
+
+    .progress-filter-toggle::after {
+        content: "Open";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 72px;
+        padding: .35rem .7rem;
+        border-radius: 999px;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    details[open] .progress-filter-toggle::after {
+        content: "Close";
+        background: #d1fae5;
+        color: #047857;
+    }
+
+    .progress-filter-content {
+        margin-top: 1rem;
+    }
+
+    .progress-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .progress-section-copy {
+        margin: .35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .progress-filter-grid {
+        display: grid;
+        gap: .85rem;
+        margin-top: 1rem;
+    }
+
+    .progress-field label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #36506a;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .progress-field .form-control,
+    .progress-field .form-select {
+        border-radius: 14px;
+        border-color: #d1ddea;
+        min-height: 44px;
+        box-shadow: none;
+    }
+
+    .progress-field .form-control:focus,
+    .progress-field .form-select:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
+    }
+
+    .progress-filter-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .7rem;
+        margin-top: 1rem;
+    }
+
+    .progress-apply-btn,
+    .progress-reset-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        border-radius: 14px;
+        font-weight: 700;
+    }
+
+    .progress-apply-btn {
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        border: none;
+        color: #fff;
+    }
+
+    .progress-reset-btn {
+        border: 1px solid #c8d7e5;
+        color: #35516a;
+        text-decoration: none;
+        background: #fff;
+    }
+
+    .progress-filter-summary {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e4edf6;
+    }
+
+    .progress-filter-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-top: .7rem;
+    }
+
+    .progress-filter-chip {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .28rem .7rem;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .8rem;
+        font-weight: 700;
+    }
+
+    .progress-table-card {
+        overflow: hidden;
+    }
+
+    .progress-table-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+        padding: 1rem 1rem .8rem;
+        border-bottom: 1px solid #e5eef7;
+    }
+
+    .progress-table-wrap {
+        padding: .6rem .8rem .8rem;
+    }
+
+    .progress-table {
+        margin-bottom: 0;
+    }
+
+    .progress-table thead th {
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .progress-table td,
+    .progress-table th {
+        padding: .8rem .75rem;
+        vertical-align: middle;
+    }
+
+    .progress-student strong,
+    .progress-eval strong {
+        display: block;
+        color: #132238;
+        font-size: .9rem;
+    }
+
+    .progress-student span,
+    .progress-eval span,
+    .progress-muted {
+        color: #6f8295;
+        font-size: .8rem;
+        line-height: 1.45;
+    }
+
+    .progress-report-cell {
+        display: grid;
+        gap: .28rem;
+        min-width: 124px;
+    }
+
+    .progress-report-meta {
+        color: #6f8295;
+        font-size: .76rem;
+        line-height: 1.35;
+    }
+
+    .progress-report-empty {
+        color: #94a3b8;
+        font-size: .78rem;
+        font-weight: 700;
+    }
+
+    .progress-status {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .26rem .7rem;
+        font-size: .76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .progress-status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .progress-status-submitted {
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .progress-status-late {
+        background: #ffedd5;
+        color: #c2410c;
+    }
+
+    .progress-status-approved {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .progress-status-rejected {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .progress-empty {
+        padding: 3rem 1.2rem;
+        text-align: center;
+        color: #607284;
+    }
+
+    .progress-empty strong {
+        display: block;
+        margin-bottom: .35rem;
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .progress-stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .progress-stat-grid,
+        .progress-filter-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .progress-banner-top {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .progress-banner-actions {
+            flex-direction: column;
+        }
+
+        .progress-back-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="committee-page">
+    <div class="progress-page">
+        <section class="progress-banner">
+            <div class="progress-banner-top">
+                <div>
+                    <div class="progress-kicker">Progress Report & Evaluation</div>
+                    <h3 class="progress-title">Track report progress and evaluation readiness in one cleaner view.</h3>
+                    <p class="progress-copy">Review report deadlines, submission status, overall evaluation totals, and committee remarks without opening each record one by one.</p>
+                </div>
+                <a href="/Committee/Dashboard" class="progress-back-btn">Back to Dashboard</a>
+            </div>
+            <div class="progress-banner-actions">
+                <a asp-page="/Committee/Students" class="progress-banner-link">Open Student List</a>
+            </div>
+        </section>
+
+        <section class="progress-stat-grid">
+            <article class="progress-stat">
+                <div class="progress-stat-label">Students</div>
+                <div class="progress-stat-value">@Model.Items.Count</div>
+                <div class="progress-stat-note">Students shown in the progress and evaluation directory.</div>
+            </article>
+            <article class="progress-stat">
+                <div class="progress-stat-label">Pending</div>
+                <div class="progress-stat-value">@Model.PendingReports</div>
+                <div class="progress-stat-note">Reports still waiting for submission or action.</div>
+            </article>
+            <article class="progress-stat">
+                <div class="progress-stat-label">Submitted</div>
+                <div class="progress-stat-value">@(Model.SubmittedReports + Model.LateReports)</div>
+                <div class="progress-stat-note">Reports already turned in, including late submissions.</div>
+            </article>
+            <article class="progress-stat">
+                <div class="progress-stat-label">Approved</div>
+                <div class="progress-stat-value">@Model.ApprovedReports</div>
+                <div class="progress-stat-note">Reports approved after committee review.</div>
+            </article>
+            <article class="progress-stat">
+                <div class="progress-stat-label">Rejected</div>
+                <div class="progress-stat-value">@Model.RejectedReports</div>
+                <div class="progress-stat-note">Reports requiring correction or follow-up.</div>
+            </article>
+        </section>
+
+        <section class="progress-filter-card">
+            <details @(hasActiveFilters ? "open" : null)>
+                <summary class="progress-filter-toggle">
+                    <div>
+                        <h3 class="progress-section-title">Find Student Reports</h3>
+                        <p class="progress-section-copy">Open the search and filter tools to narrow the report directory.</p>
+                    </div>
+                </summary>
+
+                <div class="progress-filter-content">
+                    <form method="get" class="progress-filter-grid">
+                        <div class="progress-field">
+                            <label for="Search">Search</label>
+                            <input id="Search" name="Search" value="@Model.Search" class="form-control" placeholder="Student ID, name, email, programme, company" />
+                        </div>
+
+                        <div class="progress-field">
+                            <label for="StatusFilter">Status</label>
+                            <select id="StatusFilter" name="StatusFilter" class="form-select">
+                                <option value="">-- All --</option>
+                                <option value="pending" selected="@(Model.StatusFilter == "pending")">pending</option>
+                                <option value="submitted" selected="@(Model.StatusFilter == "submitted")">submitted</option>
+                                <option value="submittedlate" selected="@(Model.StatusFilter == "submittedlate")">submitted late</option>
+                                <option value="approved" selected="@(Model.StatusFilter == "approved")">approved</option>
+                                <option value="rejected" selected="@(Model.StatusFilter == "rejected")">rejected</option>
+                            </select>
+                        </div>
+
+                        <div class="progress-field">
+                            <label for="CohortFilter">Cohort</label>
+                            <select id="CohortFilter" name="CohortFilter" class="form-select">
+                                <option value="">-- All --</option>
+                                @foreach (var c in Model.CohortOptions)
+                                {
+                                    <option value="@c.Value" selected="@(Model.CohortFilter?.ToString() == c.Value)">@c.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="progress-field">
+                            <label for="ProgrammeFilter">Programme</label>
+                            <select id="ProgrammeFilter" name="ProgrammeFilter" class="form-select">
+                                <option value="">-- All --</option>
+                                @foreach (var programme in Model.ProgrammeOptions)
+                                {
+                                    <option value="@programme.Value" selected="@(Model.ProgrammeFilter == programme.Value)">@programme.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="progress-filter-actions">
+                            <button type="submit" class="progress-apply-btn">Apply Filters</button>
+                            <a asp-page="/Committee/ProgressEvaluation" class="progress-reset-btn">Reset</a>
+                        </div>
+                    </form>
+
+                    <div class="progress-filter-summary">
+                        <div class="progress-section-title">View Summary</div>
+                        <p class="progress-section-copy">Showing <strong>@Model.Items.Count</strong> of <strong>@Model.TotalStudents</strong> student rows.</p>
+
+                        @if (hasActiveFilters)
+                        {
+                            <div class="progress-filter-chip-row">
+                                @if (!string.IsNullOrWhiteSpace(Model.Search))
+                                {
+                                    <span class="progress-filter-chip">Search: @Model.Search</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Model.StatusFilter))
+                                {
+                                    <span class="progress-filter-chip">Status: @Model.StatusFilter</span>
+                                }
+                                @if (Model.CohortFilter.HasValue)
+                                {
+                                    var selectedCohort = Model.CohortOptions.FirstOrDefault(c => c.Value == Model.CohortFilter.Value.ToString())?.Text ?? Model.CohortFilter.Value.ToString();
+                                    <span class="progress-filter-chip">Cohort: @selectedCohort</span>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Model.ProgrammeFilter))
+                                {
+                                    <span class="progress-filter-chip">Programme: @Model.ProgrammeFilter</span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="progress-muted mt-2">No filters are active right now.</div>
+                        }
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="progress-table-card">
+            <div class="progress-table-head">
+                <div>
+                    <h3 class="progress-section-title">Report Directory</h3>
+                </div>
+                <div class="progress-muted">@Model.TotalReports report record(s)</div>
+            </div>
+
+            <div class="progress-table-wrap">
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle progress-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Report 1</th>
+                                <th>Report 2</th>
+                                <th>Report 3</th>
+                                <th>Report 4</th>
+                                <th>Report 5</th>
+                                <th>Report 6</th>
+                                <th>Final Report</th>
+                                <th>Evaluation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Items.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="9" class="progress-empty">
+                                        <strong>No progress reports found.</strong>
+                                        Reports will appear here once students start submitting them.
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td class="progress-student">
+                                            <strong>@item.StudentName</strong>
+                                            <span>@item.StudentId</span>
+                                        </td>
+                                        @foreach (var cell in new[] { item.Report1, item.Report2, item.Report3, item.Report4, item.Report5, item.Report6, item.FinalReport })
+                                        {
+                                            var statusClass = cell.Status switch
+                                            {
+                                                1 => "progress-status-submitted",
+                                                4 => "progress-status-late",
+                                                2 => "progress-status-approved",
+                                                3 => "progress-status-rejected",
+                                                _ => "progress-status-pending"
+                                            };
+
+                                            <td>
+                                                <div class="progress-report-cell">
+                                                    @if (cell.Exists)
+                                                    {
+                                                        <span class="progress-status @statusClass">@cell.StatusText</span>
+                                                        <div class="progress-report-meta">Due: @cell.DueDateText</div>
+                                                        <div class="progress-report-meta">@(string.IsNullOrWhiteSpace(cell.Remark) ? "No remark" : cell.Remark)</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="progress-report-empty">Not created</span>
+                                                    }
+                                                </div>
+                                            </td>
+                                        }
+                                        <td class="progress-eval">
+                                            <strong>@item.EvaluationSummary</strong>
+                                            <span>Score / max score</span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
 </div>

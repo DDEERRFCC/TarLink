@@ -112,8 +112,8 @@ namespace ITPSystem.Models
         public byte? templateVersion { get; set; } = 1;
 
         // ===== Application Status =====
-        [Column(TypeName = "ENUM('pending','approved','rejected','withdrawn')")]
-        public string? applyStatus { get; set; } = "pending";
+        [Column(TypeName = "ENUM('none','pending','approved','rejected','withdrawn')")]
+        public string? applyStatus { get; set; } = "none";
 
         public string? remark { get; set; }
 

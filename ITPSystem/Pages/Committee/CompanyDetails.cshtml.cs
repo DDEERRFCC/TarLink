@@ -20,6 +20,7 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
     public DateTime LastUpdatedAt { get; private set; }
     public bool HasLogo { get; private set; }
     public bool HasSsmCert { get; private set; }
+    public string SelectedAddressLabel { get; private set; } = "Address 1";
 
     [TempData]
     public string? StatusMessage { get; set; }
@@ -29,9 +30,15 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
         [Required]
         public int company_id { get; set; }
 
+        public int? branch_id { get; set; }
+
         [Required]
         [StringLength(250)]
         public string name { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(15)]
+        public string regNo { get; set; } = string.Empty;
 
         [Required]
         [StringLength(255)]
@@ -43,8 +50,41 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
         [StringLength(255)]
         public string? address3 { get; set; }
 
-        [StringLength(15)]
-        public string? regNo { get; set; }
+        [StringLength(100)]
+        public string? address1City { get; set; }
+
+        [StringLength(100)]
+        public string? address1State { get; set; }
+
+        [StringLength(20)]
+        public string? address1Postcode { get; set; }
+
+        [StringLength(100)]
+        public string? address1Country { get; set; }
+
+        [StringLength(100)]
+        public string? address2City { get; set; }
+
+        [StringLength(100)]
+        public string? address2State { get; set; }
+
+        [StringLength(20)]
+        public string? address2Postcode { get; set; }
+
+        [StringLength(100)]
+        public string? address2Country { get; set; }
+
+        [StringLength(100)]
+        public string? address3City { get; set; }
+
+        [StringLength(100)]
+        public string? address3State { get; set; }
+
+        [StringLength(20)]
+        public string? address3Postcode { get; set; }
+
+        [StringLength(100)]
+        public string? address3Country { get; set; }
 
         [StringLength(15)]
         public string? vacancyLevel { get; set; }
@@ -68,49 +108,59 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
         [StringLength(500)]
         public string? remark { get; set; }
 
-        public byte? status { get; set; } = 1;
+        public byte? status { get; set; } = 0;
         public byte? visibility { get; set; } = 1;
 
         public IFormFile? logoFile { get; set; }
         public IFormFile? ssmCertFile { get; set; }
     }
 
-    public IActionResult OnGet(int companyId)
+    public IActionResult OnGet(int companyId, int? branchId)
     {
         if (!IsCommittee())
         {
             return RedirectToPage("/Login/CommitteeLogin");
         }
 
-        var company = _db.Companies.AsNoTracking().FirstOrDefault(c => c.company_id == companyId);
+        var company = _db.Companies
+            .AsNoTracking()
+            .Include(c => c.Branches)
+            .FirstOrDefault(c => c.company_id == companyId);
         if (company == null)
         {
             TempData["StatusMessage"] = "Company record not found.";
             return RedirectToPage("/Committee/Companies");
         }
 
+        var branches = GetOrderedBranches(company);
+        var selectedBranch = GetSelectedBranch(branches, branchId);
+
         Input = new InputModel
         {
             company_id = company.company_id,
+            branch_id = selectedBranch?.branch_id,
             name = company.name,
-            address1 = company.address1 ?? string.Empty,
-            address2 = company.address2,
-            address3 = company.address3,
             regNo = company.regNo,
-            vacancyLevel = company.vacancyLevel,
-            lastVisit = company.lastVisit,
-            lastContact = company.lastContact,
-            totalNoOfStaff = company.totalNoOfStaff,
+            address1 = selectedBranch?.address_line ?? string.Empty,
+            address1City = selectedBranch?.city,
+            address1State = selectedBranch?.state,
+            address1Postcode = selectedBranch?.postcode,
+            address1Country = selectedBranch?.country,
+            vacancyLevel = selectedBranch?.vacancyLevel,
+            lastVisit = selectedBranch?.lastVisit,
+            lastContact = selectedBranch?.lastContact,
+            totalNoOfStaff = selectedBranch?.totalNoOfStaff,
             industryInvolved = company.industryInvolved,
             productsAndServices = company.productsAndServices,
             companyBackground = company.companyBackground,
             website = company.website,
             remark = company.remark,
-            status = company.status ?? 1,
-            visibility = company.visibility ?? 1
+            status = selectedBranch?.status ?? 0,
+            visibility = selectedBranch?.visibility ?? 1
         };
+        SelectedAddressLabel = GetBranchLabel(branches, selectedBranch);
         CreatedAt = company.created_at;
-        LastUpdatedAt = company.lastUpdate;
+        LastUpdatedAt = company.updated_at;
         HasLogo = company.logo != null && company.logo.Length > 0;
         HasSsmCert = company.ssmCert != null && company.ssmCert.Length > 0;
 
@@ -129,7 +179,9 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
             return Page();
         }
 
-        var company = _db.Companies.FirstOrDefault(c => c.company_id == Input.company_id);
+        var company = _db.Companies
+            .Include(c => c.Branches)
+            .FirstOrDefault(c => c.company_id == Input.company_id);
         if (company == null)
         {
             TempData["StatusMessage"] = "Company record not found.";
@@ -137,34 +189,47 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
         }
 
         var name = Input.name.Trim();
-        var address1 = Input.address1.Trim();
+        var regNo = Input.regNo.Trim();
         var duplicate = _db.Companies.Any(c =>
             c.company_id != Input.company_id &&
-            c.name.ToLower() == name.ToLower() &&
-            (c.address1 ?? string.Empty).ToLower() == address1.ToLower());
+            c.regNo.ToLower() == regNo.ToLower());
         if (duplicate)
         {
-            ModelState.AddModelError("", "Another company with same name and address already exists.");
+            ModelState.AddModelError("", "Another company with same registration number already exists.");
             ReloadDisplayState(company);
             return Page();
         }
 
         company.name = name;
-        company.address1 = address1;
-        company.address2 = TrimOrNull(Input.address2);
-        company.address3 = TrimOrNull(Input.address3);
-        company.regNo = TrimOrNull(Input.regNo);
-        company.vacancyLevel = TrimOrNull(Input.vacancyLevel);
-        company.lastVisit = Input.lastVisit;
-        company.lastContact = Input.lastContact;
-        company.totalNoOfStaff = Input.totalNoOfStaff;
+        company.regNo = regNo;
         company.industryInvolved = TrimOrNull(Input.industryInvolved);
         company.productsAndServices = TrimOrNull(Input.productsAndServices);
         company.companyBackground = TrimOrNull(Input.companyBackground);
         company.website = TrimOrNull(Input.website);
         company.remark = TrimOrNull(Input.remark);
-        company.status = Input.status ?? 1;
-        company.visibility = Input.visibility ?? 1;
+        company.updated_at = DateTime.Now;
+        var branches = GetOrderedBranches(company);
+        var selectedBranch = GetSelectedBranch(branches, Input.branch_id);
+        if (selectedBranch == null)
+        {
+            ModelState.AddModelError("", "Selected address branch was not found.");
+            ReloadDisplayState(company);
+            return Page();
+        }
+
+        var addressLine = Input.address1.Trim();
+        selectedBranch.address_line = addressLine;
+        selectedBranch.city = TrimOrNull(Input.address1City);
+        selectedBranch.state = TrimOrNull(Input.address1State);
+        selectedBranch.postcode = TrimOrNull(Input.address1Postcode);
+        selectedBranch.country = TrimOrNull(Input.address1Country);
+        selectedBranch.vacancyLevel = TrimOrNull(Input.vacancyLevel);
+        selectedBranch.totalNoOfStaff = Input.totalNoOfStaff;
+        selectedBranch.lastVisit = Input.lastVisit;
+        selectedBranch.lastContact = Input.lastContact;
+        selectedBranch.status = Input.status ?? 0;
+        selectedBranch.visibility = Input.visibility ?? 1;
+        selectedBranch.updated_at = DateTime.Now;
         if (Input.logoFile != null && Input.logoFile.Length > 0)
         {
             company.logo = ReadBytes(Input.logoFile);
@@ -176,7 +241,7 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
 
         _db.SaveChanges();
         StatusMessage = "Company updated successfully.";
-        return RedirectToPage(new { companyId = company.company_id });
+        return RedirectToPage(new { companyId = company.company_id, branchId = selectedBranch.branch_id });
     }
 
     public IActionResult OnPostDelete(int companyId)
@@ -214,8 +279,38 @@ public class CommitteeCompanyDetailsModel : CommitteePageModelBase
     private void ReloadDisplayState(Company company)
     {
         CreatedAt = company.created_at;
-        LastUpdatedAt = company.lastUpdate;
+        LastUpdatedAt = company.updated_at;
         HasLogo = company.logo != null && company.logo.Length > 0;
         HasSsmCert = company.ssmCert != null && company.ssmCert.Length > 0;
+    }
+
+    private static List<CompanyBranch> GetOrderedBranches(Company company)
+    {
+        return company.Branches
+            .OrderByDescending(a => a.is_hq)
+            .ThenBy(a => a.branch_id)
+            .Where(a => !string.IsNullOrWhiteSpace(a.address_line))
+            .ToList();
+    }
+
+    private static CompanyBranch? GetSelectedBranch(List<CompanyBranch> branches, int? branchId)
+    {
+        if (branchId.HasValue)
+        {
+            return branches.FirstOrDefault(b => b.branch_id == branchId.Value);
+        }
+
+        return branches.FirstOrDefault();
+    }
+
+    private static string GetBranchLabel(List<CompanyBranch> branches, CompanyBranch? selectedBranch)
+    {
+        if (selectedBranch == null)
+        {
+            return "Address";
+        }
+
+        var index = branches.FindIndex(b => b.branch_id == selectedBranch.branch_id);
+        return index >= 0 ? $"Address {index + 1}" : "Address";
     }
 }

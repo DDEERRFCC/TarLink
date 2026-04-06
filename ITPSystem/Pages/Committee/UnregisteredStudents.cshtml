@@ -2,42 +2,429 @@
 @model CommitteeUnregisteredStudentsModel
 @{
     ViewData["CommitteePageTitle"] = "Unregistered Student";
+
+    var totalCount = Model.UnregisteredStudents.Count;
+    var withStudentIdCount = Model.UnregisteredStudents.Count(x => !string.IsNullOrWhiteSpace(x.StudentId) && x.StudentId != "-");
+    var withoutCohortCount = Model.UnregisteredStudents.Count(x => string.IsNullOrWhiteSpace(x.Cohort) || x.Cohort == "-");
 }
 
-<div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+<style>
+    .unregistered-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
 
-<div class="table-responsive">
-    <table class="table table-sm table-bordered align-middle">
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Cohort</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.UnregisteredStudents.Count == 0)
-            {
-                <tr><td colspan="5" class="text-center text-muted">No unregistered (inactive) students.</td></tr>
-            }
-            else
-            {
-                @foreach (var s in Model.UnregisteredStudents)
-                {
-                    <tr>
-                        <td>@s.UserId</td>
-                        <td>@s.StudentId</td>
-                        <td>@s.Name</td>
-                        <td>@s.Email</td>
-                        <td>@s.Cohort</td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-</div>
+    .unregistered-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .unregistered-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .unregistered-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .unregistered-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .unregistered-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .unregistered-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .unregistered-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .unregistered-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .unregistered-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .unregistered-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .unregistered-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .unregistered-banner-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .unregistered-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .unregistered-stat-card,
+    .unregistered-table-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .unregistered-stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .unregistered-stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .unregistered-stat-label {
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .unregistered-stat-value {
+        margin-top: .35rem;
+        color: #0f172a;
+        font-size: 1.7rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .unregistered-stat-note {
+        margin-top: .3rem;
+        color: #718396;
+        font-size: .88rem;
+    }
+
+    .unregistered-table-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1rem 0;
+    }
+
+    .unregistered-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .unregistered-section-copy {
+        margin: .3rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .unregistered-count-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .4rem .78rem;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .84rem;
+        font-weight: 700;
+    }
+
+    .unregistered-table-wrap {
+        margin-top: 1rem;
+    }
+
+    .unregistered-table thead th {
+        border-bottom-width: 1px;
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .unregistered-table tbody td {
+        padding-top: .95rem;
+        padding-bottom: .95rem;
+        vertical-align: middle;
+    }
+
+    .unregistered-student-name {
+        font-weight: 700;
+        color: #102133;
+    }
+
+    .unregistered-student-meta {
+        margin-top: .2rem;
+        color: #718396;
+        font-size: .86rem;
+    }
+
+    .unregistered-cohort-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .28rem .68rem;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: .78rem;
+        font-weight: 700;
+    }
+
+    .unregistered-assign-form {
+        display: flex;
+        gap: .65rem;
+        align-items: center;
+    }
+
+    .unregistered-assign-form .form-select {
+        min-height: 42px;
+        border-radius: 12px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .unregistered-assign-form .form-select:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
+    }
+
+    .unregistered-assign-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: .72rem .95rem;
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 700;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        white-space: nowrap;
+    }
+
+    .unregistered-empty {
+        padding: 2.5rem 1rem;
+        text-align: center;
+        color: #607284;
+    }
+
+    .unregistered-empty strong {
+        display: block;
+        margin-bottom: .35rem;
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 991.98px) {
+        .unregistered-stat-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .unregistered-banner-top,
+        .unregistered-banner-actions,
+        .unregistered-table-head,
+        .unregistered-assign-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .unregistered-back-btn,
+        .unregistered-banner-link,
+        .unregistered-assign-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="committee-page">
+    <div class="unregistered-page">
+        <section class="unregistered-banner">
+            <div class="unregistered-banner-top">
+                <div>
+                    <div class="unregistered-kicker">Unregistered Student</div>
+                    <h3 class="unregistered-title">Activate inactive student accounts with cleaner cohort assignment.</h3>
+                    <p class="unregistered-copy">Review student accounts that are still inactive, verify the linked student profile, and assign the correct cohort so the account can move into the normal student workflow.</p>
+                </div>
+                <a href="/Committee/Dashboard" class="unregistered-back-btn">Back to Dashboard</a>
+            </div>
+            <div class="unregistered-banner-actions">
+                <a asp-page="/Committee/Students" class="unregistered-banner-link">Back to Student List</a>
+                <a asp-page="/Committee/ImportStudents" class="unregistered-banner-link">Import Student</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-info mb-0">@Model.StatusMessage</div>
+        }
+
+        <section class="unregistered-stat-grid">
+            <article class="unregistered-stat-card">
+                <div class="unregistered-stat-label">Inactive Accounts</div>
+                <div class="unregistered-stat-value">@totalCount</div>
+                <div class="unregistered-stat-note">Student accounts that are still inactive and waiting for committee action.</div>
+            </article>
+            <article class="unregistered-stat-card">
+                <div class="unregistered-stat-label">Linked Profiles</div>
+                <div class="unregistered-stat-value">@withStudentIdCount</div>
+                <div class="unregistered-stat-note">Inactive accounts already matched to a student application record.</div>
+            </article>
+            <article class="unregistered-stat-card">
+                <div class="unregistered-stat-label">Missing Cohort</div>
+                <div class="unregistered-stat-value">@withoutCohortCount</div>
+                <div class="unregistered-stat-note">Students still showing no cohort assignment in the current view.</div>
+            </article>
+        </section>
+
+        <section class="unregistered-table-card">
+            <div class="unregistered-table-head">
+                <div>
+                    <h3 class="unregistered-section-title">Inactive Student Directory</h3>
+                    <p class="unregistered-section-copy">Assign a valid cohort to activate the account and connect the student back into the committee workflow.</p>
+                </div>
+                <div class="unregistered-count-pill">@totalCount record(s)</div>
+            </div>
+
+            <div class="table-responsive unregistered-table-wrap">
+                <table class="table align-middle mb-0 unregistered-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Cohort</th>
+                            <th>Assign Cohort</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.UnregisteredStudents.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="5" class="unregistered-empty">
+                                    <strong>No unregistered students found.</strong>
+                                    There are currently no inactive student accounts waiting for cohort assignment.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var s in Model.UnregisteredStudents)
+                            {
+                                <tr>
+                                    <td class="fw-semibold text-muted">@s.UserId</td>
+                                    <td>
+                                        <div class="unregistered-student-name">@s.Name</div>
+                                        <div class="unregistered-student-meta">Student ID: @s.StudentId</div>
+                                    </td>
+                                    <td>@s.Email</td>
+                                    <td>
+                                        <span class="unregistered-cohort-pill">@s.Cohort</span>
+                                    </td>
+                                    <td>
+                                        <form method="post" asp-page-handler="AssignCohort" class="unregistered-assign-form">
+                                            <input type="hidden" name="userId" value="@s.UserId" />
+                                            <select name="cohortId" class="form-select">
+                                                @foreach (var option in Model.CohortOptions)
+                                                {
+                                                    <option value="@option.Value">@option.Text</option>
+                                                }
+                                            </select>
+                                            <button type="submit" class="unregistered-assign-btn">Assign</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 </div>

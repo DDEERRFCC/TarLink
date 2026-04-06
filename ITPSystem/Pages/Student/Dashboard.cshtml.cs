@@ -15,17 +15,6 @@ using ITPSystem.Services;
 public class StudentDashboardModel : PageModel
 {
     private const long MaxUploadBytes = 10 * 1024 * 1024;
-    private const string DynamicCompanyAcceptanceFile = CompanyAcceptanceLetterWordTemplateBuilder.GeneratedFileName;
-    private const string DynamicIndemnityFile = IndemnityLetterWordTemplateBuilder.GeneratedFileName;
-    private const string DynamicParentAcknowledgementFile = ParentAcknowledgementFormWordTemplateBuilder.GeneratedFileName;
-    private const string DynamicStudentSupportLetterFile = StudentSupportLetterWordTemplateBuilder.GeneratedFileName;
-    private const string CompanySupervisorEvaluationTemplateFile = "FOCS_EmpF03.xlsx";
-    private const string ProgressReportTemplateFile = "FOCS_studF03 Progress Report Template.docx";
-    private const string FinalReportTemplateFile = "FOCS_studF04 Final Report Template.docx";
-    private const string AppointmentConfirmationLetterFile = "DownloadAppointmentLetter.docx";
-    private const string ApprovedCompanySupervisorEvaluationFile = "FOCS_EmpF03.xlsx";
-    private const string WarningLetterFile = "WarningLetter.docx";
-    private const string IndemnityDisplayTitle = "Indemnity Letter";
     private readonly IWebHostEnvironment _env;
     private readonly ApplicationDbContext _db;
     private readonly IConfiguration _config;
@@ -48,7 +37,7 @@ public class StudentDashboardModel : PageModel
     public int UnreadNotificationCount { get; private set; }
     public string Cohort { get; private set; } = "-";
     public string InternPeriod { get; private set; } = "-";
-    public string Status { get; private set; } = "-";
+    public string Status { get; private set; } = "None";
     public string Remark { get; private set; } = "-";
     public string InternshipStatusText { get; private set; } = "Internship timeline is not available.";
     public int InternshipProgressPercent { get; private set; }
@@ -59,12 +48,16 @@ public class StudentDashboardModel : PageModel
     public string CurrentFormAcknowledgementFile { get; private set; } = "-";
     public string CurrentLetterIdentityFile { get; private set; } = "-";
     public string CurrentOtherEvidenceFile { get; private set; } = "-";
+    public string TemplateSourceLabel { get; private set; } = "-";
+    public bool CanEditCompanyDetail { get; private set; } = true;
+    public string CompanyDetailActionLabel { get; private set; } = "Submit Company Details";
 
     [BindProperty]
     public CompanyDetailInput Input { get; set; } = new();
 
     public class DocumentItem
     {
+        public string Key { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string ViewPath { get; set; } = string.Empty;
         public string DownloadPath { get; set; } = string.Empty;
@@ -77,6 +70,13 @@ public class StudentDashboardModel : PageModel
         public int CompanyId { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<string> Addresses { get; set; } = new();
+        public List<CompanySupervisorOption> Supervisors { get; set; } = new();
+    }
+
+    public class CompanySupervisorOption
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Email { get; set; }
     }
 
     public class DeadlineItem
@@ -143,6 +143,12 @@ public class StudentDashboardModel : PageModel
             return Page();
         }
 
+        if (!CanEditCompanyDetailForStatus(student.applyStatus))
+        {
+            TempData["ErrorMessage"] = "Company details cannot be edited unless the current status is rejected.";
+            return RedirectToPage();
+        }
+
         TryValidateModel(Input, nameof(Input));
 
         LoadCompanyOptions();
@@ -159,6 +165,25 @@ public class StudentDashboardModel : PageModel
         if (selectedCompany != null && (string.IsNullOrWhiteSpace(selectedAddress) || !selectedCompany.Addresses.Contains(selectedAddress)))
         {
             ModelState.AddModelError("", "Please select a valid address for the selected company.");
+        }
+
+        var selectedSupervisorName = (Input.CompanySupervisorName ?? string.Empty).Trim();
+        CompanySupervisorOption? selectedSupervisor = null;
+        if (selectedCompany != null)
+        {
+            selectedSupervisor = selectedCompany.Supervisors
+                .FirstOrDefault(s => string.Equals(s.Name, selectedSupervisorName, StringComparison.OrdinalIgnoreCase));
+
+            if (selectedCompany.Supervisors.Count > 0 && selectedSupervisor == null)
+            {
+                ModelState.AddModelError("", "Please select a valid company supervisor.");
+            }
+
+            if (selectedSupervisor != null)
+            {
+                Input.CompanySupervisorName = selectedSupervisor.Name;
+                Input.CompanySupervisorEmail = selectedSupervisor.Email;
+            }
         }
 
         ValidateUpload(Input.FormAcceptanceFile, "Com. Acceptance Form");
@@ -184,13 +209,14 @@ public class StudentDashboardModel : PageModel
         student.formAcknowledgement = SaveUploadedFile(Input.FormAcknowledgementFile, "formAcknowledgement", student.formAcknowledgement, student);
         student.letterIdentity = SaveUploadedFile(Input.LetterOfIndemnityFile, "letterIdentity", student.letterIdentity, student);
         student.otherEvidence = SaveUploadedFile(Input.HiredEvidenceFile, "otherEvidence", student.otherEvidence, student);
+        student.applyStatus = "pending";
         student.updated_at = DateTime.Now;
 
         _db.SaveChanges();
         var emailSent = TrySendSupervisorEmail(student);
         TempData["SuccessMessage"] = emailSent
-            ? "Company details updated successfully. Notification email sent to supervisor."
-            : "Company details updated successfully.";
+            ? "Company details submitted successfully. Status is now pending and notification email was sent to supervisor."
+            : "Company details submitted successfully. Status is now pending.";
         return RedirectToPage();
     }
 
@@ -223,84 +249,68 @@ public class StudentDashboardModel : PageModel
             return RedirectToPage("/Login/StudentLogin");
         }
 
-        var allowedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            DynamicCompanyAcceptanceFile,
-            DynamicIndemnityFile,
-            DynamicParentAcknowledgementFile,
-            DynamicStudentSupportLetterFile,
-            CompanySupervisorEvaluationTemplateFile,
-            ProgressReportTemplateFile,
-            FinalReportTemplateFile,
-            AppointmentConfirmationLetterFile,
-            ApprovedCompanySupervisorEvaluationFile,
-            WarningLetterFile
-        };
-
-        var safeFileName = Path.GetFileName(file ?? string.Empty);
-        if (string.IsNullOrWhiteSpace(safeFileName) || !allowedFiles.Contains(safeFileName))
+        var key = (file ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(key))
         {
             return NotFound();
         }
 
-        if (string.Equals(safeFileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase))
-        {
-            var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
-            var fileBytes = IndemnityLetterWordTemplateBuilder.Build(student, _env.WebRootPath);
-            const string indemnityContentType = "application/pdf";
-            if (download)
-            {
-                return File(fileBytes, indemnityContentType, DynamicIndemnityFile);
-            }
-
-            return File(fileBytes, indemnityContentType);
-        }
-
-        if (string.Equals(safeFileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase))
-        {
-            var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
-            var fileBytes = CompanyAcceptanceLetterWordTemplateBuilder.Build(student, _env.WebRootPath);
-            const string companyAcceptanceContentType = "application/pdf";
-            if (download)
-            {
-                return File(fileBytes, companyAcceptanceContentType, DynamicCompanyAcceptanceFile);
-            }
-
-            return File(fileBytes, companyAcceptanceContentType);
-        }
-
-        if (string.Equals(safeFileName, DynamicParentAcknowledgementFile, StringComparison.OrdinalIgnoreCase))
-        {
-            var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
-            var fileBytes = ParentAcknowledgementFormWordTemplateBuilder.Build(student, _env.WebRootPath);
-            const string parentAcknowledgementContentType = "application/pdf";
-            if (download)
-            {
-                return File(fileBytes, parentAcknowledgementContentType, DynamicParentAcknowledgementFile);
-            }
-
-            return File(fileBytes, parentAcknowledgementContentType);
-        }
-
-        if (string.Equals(safeFileName, DynamicStudentSupportLetterFile, StringComparison.OrdinalIgnoreCase))
-        {
-            var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: false);
-            var fileBytes = StudentSupportLetterWordTemplateBuilder.Build(student, _env.WebRootPath);
-            const string studentSupportLetterContentType = "application/pdf";
-            if (download)
-            {
-                return File(fileBytes, studentSupportLetterContentType, DynamicStudentSupportLetterFile);
-            }
-
-            return File(fileBytes, studentSupportLetterContentType);
-        }
-
-        var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
-        var fullPath = Path.Combine(formDir, safeFileName);
-        if (!System.IO.File.Exists(fullPath))
+        var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
+        if (student == null)
         {
             return NotFound();
         }
+
+        var template = GetTemplateForStudent(student);
+        if (template == null)
+        {
+            return NotFound();
+        }
+
+        var storedPath = GetTemplatePath(template, key);
+        var fullPath = ResolveUploadFullPath(storedPath);
+        if (string.IsNullOrWhiteSpace(fullPath) || !System.IO.File.Exists(fullPath))
+        {
+            return NotFound();
+        }
+
+        if (string.Equals(key, "company_acceptance_letter", StringComparison.OrdinalIgnoreCase))
+        {
+            var fileBytes = CompanyAcceptanceLetterWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
+            const string pdfContentTypeCompanyAcceptance = "application/pdf";
+            return download
+                ? File(fileBytes, pdfContentTypeCompanyAcceptance, CompanyAcceptanceLetterWordTemplateBuilder.GeneratedFileName)
+                : File(fileBytes, pdfContentTypeCompanyAcceptance);
+        }
+
+        if (string.Equals(key, "indemnity_letter", StringComparison.OrdinalIgnoreCase))
+        {
+            var fileBytes = IndemnityLetterWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
+            const string pdfContentTypeIndemnity = "application/pdf";
+            return download
+                ? File(fileBytes, pdfContentTypeIndemnity, IndemnityLetterWordTemplateBuilder.GeneratedFileName)
+                : File(fileBytes, pdfContentTypeIndemnity);
+        }
+
+        if (string.Equals(key, "parent_acknowledgement_form", StringComparison.OrdinalIgnoreCase))
+        {
+            var fileBytes = ParentAcknowledgementFormWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
+            const string pdfContentTypeParentAcknowledgement = "application/pdf";
+            return download
+                ? File(fileBytes, pdfContentTypeParentAcknowledgement, ParentAcknowledgementFormWordTemplateBuilder.GeneratedFileName)
+                : File(fileBytes, pdfContentTypeParentAcknowledgement);
+        }
+
+        if (string.Equals(key, "student_support_letter", StringComparison.OrdinalIgnoreCase))
+        {
+            var fileBytes = StudentSupportLetterWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
+            const string pdfContentTypeStudentSupport = "application/pdf";
+            return download
+                ? File(fileBytes, pdfContentTypeStudentSupport, StudentSupportLetterWordTemplateBuilder.GeneratedFileName)
+                : File(fileBytes, pdfContentTypeStudentSupport);
+        }
+
+        var safeFileName = Path.GetFileName(fullPath);
 
         var provider = new FileExtensionContentTypeProvider();
         if (!provider.TryGetContentType(safeFileName, out var contentType))
@@ -318,25 +328,35 @@ public class StudentDashboardModel : PageModel
 
     private void LoadDocuments()
     {
-        var formDir = Path.Combine(_env.WebRootPath, "documents", "templates");
-        var requiredDocs = new (string Title, string FileName, bool CanView)[]
+        var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
+        var template = student != null
+            ? GetTemplateForStudent(student)
+            : null;
+
+        TemplateSourceLabel = template?.template_name
+            ?? (student?.Cohort?.description is { Length: > 0 } description
+                ? $"{description.Trim()} template"
+                : "No cohort template");
+
+        var requiredDocs = new (string Key, string Title, string? StoredPath, bool CanView)[]
         {
-            (IndemnityDisplayTitle, DynamicIndemnityFile, true),
-            ("Company Acceptance Letter", DynamicCompanyAcceptanceFile, true),
-            ("Parent Acknowledgement Form", DynamicParentAcknowledgementFile, true),
-            ("Company Supervisor Evaluation Form", CompanySupervisorEvaluationTemplateFile, false),
-            ("Progress Report Template", ProgressReportTemplateFile, false),
-            ("Final Report Template", FinalReportTemplateFile, false),
-            ("Student Support Letter", DynamicStudentSupportLetterFile, true)
+            ("indemnity_letter", "Indemnity Letter", template?.indemnity_letter_path, true),
+            ("company_acceptance_letter", "Company Acceptance Letter", template?.company_acceptance_letter_path, true),
+            ("parent_acknowledgement_form", "Parent Acknowledgement Form", template?.parent_acknowledgement_form_path, true),
+            ("company_supervisor_evaluation_form", "Company Supervisor Evaluation Form", template?.company_supervisor_evaluation_form_path, true),
+            ("progress_report_template", "Progress Report Template", template?.progress_report_template_path, true),
+            ("final_report_template", "Final Report Template", template?.final_report_template_path, true),
+            ("student_support_letter", "Student Support Letter", template?.student_support_letter_path, true)
         };
 
         Documents = requiredDocs
             .Select(d => new DocumentItem
             {
+                Key = d.Key,
                 Title = d.Title,
-                ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = false }) ?? "#",
-                DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = true }) ?? "#",
-                Exists = IsDynamicDocument(d.FileName) || StaticDocumentExists(d.FileName),
+                ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = false }) ?? "#",
+                DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = true }) ?? "#",
+                Exists = TemplateDocumentExists(d.StoredPath),
                 CanView = d.CanView
             })
             .ToList();
@@ -344,20 +364,20 @@ public class StudentDashboardModel : PageModel
         ApprovedStatusDocuments = new();
         if (string.Equals(Status?.Trim(), "Approved", StringComparison.OrdinalIgnoreCase))
         {
-            var approvedDocs = new (string Title, string FileName, bool CanView)[]
+            var approvedDocs = new (string Key, string Title, string? StoredPath, bool CanView)[]
             {
-                ("Appointment Confirmation Letter", AppointmentConfirmationLetterFile, true),
-                ("Company Supervisor Evaluation Form", ApprovedCompanySupervisorEvaluationFile, true),
-                ("Warning Letter", WarningLetterFile, true)
+                ("appointment_confirmation_letter", "Appointment Confirmation Letter", template?.appointment_confirmation_letter_path, true),
+                ("warning_letter", "Warning Letter", template?.warning_letter_path, true)
             };
 
             ApprovedStatusDocuments = approvedDocs
                 .Select(d => new DocumentItem
                 {
+                    Key = d.Key,
                     Title = d.Title,
-                    ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = false }) ?? "#",
-                    DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.FileName, download = true }) ?? "#",
-                    Exists = System.IO.File.Exists(Path.Combine(formDir, d.FileName)),
+                    ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = false }) ?? "#",
+                    DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = true }) ?? "#",
+                    Exists = TemplateDocumentExists(d.StoredPath),
                     CanView = d.CanView
                 })
                 .ToList();
@@ -380,8 +400,10 @@ public class StudentDashboardModel : PageModel
         var endDate = student.Cohort?.endDate?.ToString("yyyy-MM-dd") ?? "-";
         InternPeriod = $"{startDate} to {endDate}";
 
-        Status = string.IsNullOrWhiteSpace(student.applyStatus) ? "-" : student.applyStatus;
+        Status = string.IsNullOrWhiteSpace(student.applyStatus) ? "None" : student.applyStatus;
         Remark = string.IsNullOrWhiteSpace(student.remark) ? "-" : student.remark;
+        CanEditCompanyDetail = CanEditCompanyDetailForStatus(student.applyStatus);
+        CompanyDetailActionLabel = GetCompanyDetailActionLabel(student.applyStatus);
         CalculateInternshipProgress(student.Cohort, Status);
 
         CurrentFormAcceptanceFile = BuildCurrentFileDisplay(student.formAcceptance);
@@ -411,7 +433,7 @@ public class StudentDashboardModel : PageModel
         {
             InternshipStatusText = normalizedStatus == "approved"
                 ? "Application approved. Internship timeline is not configured yet."
-                : $"Application status: {(string.IsNullOrWhiteSpace(applyStatus) ? "-" : applyStatus)}.";
+                : $"Application status: {(string.IsNullOrWhiteSpace(applyStatus) ? "None" : applyStatus)}.";
             return;
         }
 
@@ -452,7 +474,7 @@ public class StudentDashboardModel : PageModel
             "pending" => "Application is pending approval.",
             "rejected" => "Application was rejected.",
             "withdrawn" => "Application was withdrawn.",
-            _ => $"Application status: {(string.IsNullOrWhiteSpace(applyStatus) ? "-" : applyStatus)}."
+            _ => $"Application status: {(string.IsNullOrWhiteSpace(applyStatus) ? "None" : applyStatus)}."
         };
     }
 
@@ -524,17 +546,26 @@ public class StudentDashboardModel : PageModel
 
     private void LoadCompanyOptions()
     {
-        var companies = _db.Companies.AsNoTracking()
-            .Where(c => (c.status ?? 1) == 1 && (c.visibility ?? 1) == 1)
-            .OrderBy(c => c.name)
-            .Select(c => new
+        var supervisorOptions = _db.UcSupervisors.AsNoTracking()
+            .Where(s => s.isActive && !string.IsNullOrWhiteSpace(s.name))
+            .Select(s => new CompanySupervisorOption
             {
-                c.company_id,
-                c.name,
-                c.address1,
-                c.address2,
-                c.address3
+                Name = s.name.Trim(),
+                Email = string.IsNullOrWhiteSpace(s.email) ? null : s.email.Trim()
             })
+            .ToList()
+            .Where(s => !string.IsNullOrWhiteSpace(s.Name))
+            .GroupBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
+            .Select(g => g
+                .OrderByDescending(x => !string.IsNullOrWhiteSpace(x.Email))
+                .First())
+            .OrderBy(s => s.Name)
+            .ToList();
+
+        var companies = _db.Companies.AsNoTracking()
+            .Include(c => c.Branches)
+            .Where(c => c.Branches.Any(b => (b.status ?? 0) == 1 && (b.visibility ?? 1) == 1))
+            .OrderBy(c => c.name)
             .ToList();
 
         CompanyOptions = companies
@@ -542,14 +573,34 @@ public class StudentDashboardModel : PageModel
             {
                 CompanyId = c.company_id,
                 Name = c.name,
-                Addresses = new[] { c.address1, c.address2, c.address3 }
+                Addresses = c.Branches
+                    .Where(a => (a.status ?? 0) == 1 && (a.visibility ?? 1) == 1)
+                    .OrderByDescending(a => a.is_hq)
+                    .ThenBy(a => a.branch_id)
+                    .Select(FormatBranchAddress)
                     .Where(a => !string.IsNullOrWhiteSpace(a))
-                    .Select(a => a!.Trim())
                     .Distinct(StringComparer.OrdinalIgnoreCase)
-                    .ToList()
+                    .ToList(),
+                Supervisors = supervisorOptions
             })
             .Where(c => c.Addresses.Count > 0)
             .ToList();
+    }
+
+    private static string FormatBranchAddress(CompanyBranch branch)
+    {
+        var parts = new[]
+        {
+            branch.address_line,
+            branch.city,
+            branch.state,
+            branch.postcode,
+            branch.country
+        };
+
+        return string.Join(", ", parts
+            .Where(part => !string.IsNullOrWhiteSpace(part))
+            .Select(part => part!.Trim()));
     }
 
     private void MapExistingCompanySelection()
@@ -591,7 +642,7 @@ public class StudentDashboardModel : PageModel
         {
             StudentName = student?.studentName ?? (HttpContext.Session.GetString("UserName") ?? "Student"),
             StudentId = HttpContext.Session.GetString("StudentID") ?? (student?.studentID ?? "-"),
-            Status = string.IsNullOrWhiteSpace(student?.applyStatus) ? "-" : student!.applyStatus!,
+            Status = string.IsNullOrWhiteSpace(student?.applyStatus) ? "None" : student!.applyStatus!,
             Cohort = string.IsNullOrWhiteSpace(student?.Cohort?.description) ? (student?.cohortId.ToString() ?? "-") : student!.Cohort!.description!,
             InternPeriod = student?.Cohort?.startDate != null && student.Cohort.endDate != null
                 ? $"{student.Cohort.startDate:yyyy-MM-dd} to {student.Cohort.endDate:yyyy-MM-dd}"
@@ -744,6 +795,13 @@ public class StudentDashboardModel : PageModel
 
         var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
         var normalizedPath = storedPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+        normalizedPath = normalizedPath.TrimStart(Path.DirectorySeparatorChar);
+
+        if (normalizedPath.StartsWith($"uploads{Path.DirectorySeparatorChar}", StringComparison.OrdinalIgnoreCase))
+        {
+            normalizedPath = normalizedPath.Substring($"uploads{Path.DirectorySeparatorChar}".Length);
+        }
+
         var combinedPath = Path.GetFullPath(Path.Combine(uploadsRoot, normalizedPath));
         var uploadsRootFullPath = Path.GetFullPath(uploadsRoot);
 
@@ -782,6 +840,24 @@ public class StudentDashboardModel : PageModel
             .Trim();
 
         return string.IsNullOrWhiteSpace(sanitized) ? fallbackPrefix : sanitized;
+    }
+
+    private static bool CanEditCompanyDetailForStatus(string? applyStatus)
+    {
+        var normalizedStatus = (applyStatus ?? string.Empty).Trim().ToLowerInvariant();
+        return string.IsNullOrWhiteSpace(normalizedStatus)
+            || normalizedStatus == "none"
+            || normalizedStatus == "rejected";
+    }
+
+    private static string GetCompanyDetailActionLabel(string? applyStatus)
+    {
+        var normalizedStatus = (applyStatus ?? string.Empty).Trim().ToLowerInvariant();
+        return normalizedStatus switch
+        {
+            "rejected" => "Resubmit Company Details",
+            _ => "Submit Company Details"
+        };
     }
 
     private StudentApplication? GetCurrentStudentApplication(bool asNoTracking, bool includeCohort)
@@ -892,18 +968,39 @@ public class StudentDashboardModel : PageModel
             .ToList();
     }
 
-    private static bool IsDynamicDocument(string fileName)
+    private AppointmentLetterTemplate? GetTemplateForStudent(StudentApplication student)
     {
-        return string.Equals(fileName, DynamicIndemnityFile, StringComparison.OrdinalIgnoreCase)
-            || string.Equals(fileName, DynamicCompanyAcceptanceFile, StringComparison.OrdinalIgnoreCase)
-            || string.Equals(fileName, DynamicParentAcknowledgementFile, StringComparison.OrdinalIgnoreCase)
-            || string.Equals(fileName, DynamicStudentSupportLetterFile, StringComparison.OrdinalIgnoreCase);
+        if (!student.templateVersion.HasValue)
+        {
+            return null;
+        }
+
+        var templateId = student.templateVersion.Value;
+        return _db.AppointmentLetterTemplates.AsNoTracking()
+            .FirstOrDefault(t => t.template_id == templateId);
     }
 
-    private bool StaticDocumentExists(string fileName)
+    private static string? GetTemplatePath(AppointmentLetterTemplate template, string key)
     {
-        var directory = Path.Combine(_env.WebRootPath, "documents", "templates");
-        return System.IO.File.Exists(Path.Combine(directory, fileName));
+        return key switch
+        {
+            "company_acceptance_letter" => template.company_acceptance_letter_path,
+            "indemnity_letter" => template.indemnity_letter_path,
+            "parent_acknowledgement_form" => template.parent_acknowledgement_form_path,
+            "company_supervisor_evaluation_form" => template.company_supervisor_evaluation_form_path,
+            "progress_report_template" => template.progress_report_template_path,
+            "final_report_template" => template.final_report_template_path,
+            "student_support_letter" => template.student_support_letter_path,
+            "appointment_confirmation_letter" => template.appointment_confirmation_letter_path,
+            "warning_letter" => template.warning_letter_path,
+            _ => null
+        };
+    }
+
+    private bool TemplateDocumentExists(string? storedPath)
+    {
+        var fullPath = ResolveUploadFullPath(storedPath);
+        return !string.IsNullOrWhiteSpace(fullPath) && System.IO.File.Exists(fullPath);
     }
 }
 

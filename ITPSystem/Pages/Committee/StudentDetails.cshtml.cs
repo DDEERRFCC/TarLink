@@ -19,6 +19,8 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
     }
 
     public List<Cohort> Cohorts { get; private set; } = new();
+    public List<CompanyOptionItem> CompanyOptions { get; private set; } = new();
+    public List<SupervisorOptionItem> SupervisorOptions { get; private set; } = new();
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
     public bool IsCreateMode { get; private set; }
@@ -118,6 +120,19 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         public bool isAgreed { get; set; }
     }
 
+    public class CompanyOptionItem
+    {
+        public string Name { get; set; } = string.Empty;
+        public List<string> Addresses { get; set; } = new();
+    }
+
+    public class SupervisorOptionItem
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Email { get; set; }
+        public string? Contact { get; set; }
+    }
+
     public IActionResult OnGet(int? applicationId)
     {
         if (!IsCommittee())
@@ -126,6 +141,8 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         }
 
         LoadCohorts();
+        LoadCompanyOptions();
+        LoadSupervisorOptions();
 
         if (!applicationId.HasValue || applicationId.Value <= 0)
         {
@@ -154,6 +171,8 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         }
 
         LoadCohorts();
+        LoadCompanyOptions();
+        LoadSupervisorOptions();
         if (!ModelState.IsValid)
         {
             return Page();
@@ -345,6 +364,49 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             .ToList();
     }
 
+    private void LoadCompanyOptions()
+    {
+        var companies = _db.Companies.AsNoTracking()
+            .Include(c => c.Branches)
+            .OrderBy(c => c.name)
+            .ToList();
+
+        CompanyOptions = companies
+            .Select(c => new CompanyOptionItem
+            {
+                Name = c.name,
+                Addresses = c.Branches
+                    .OrderByDescending(b => b.is_hq)
+                    .ThenBy(b => b.branch_id)
+                    .Select(FormatBranchAddress)
+                    .Where(a => !string.IsNullOrWhiteSpace(a))
+                    .Distinct()
+                    .ToList()
+            })
+            .Where(c => !string.IsNullOrWhiteSpace(c.Name) && c.Addresses.Count > 0)
+            .ToList();
+    }
+
+    private void LoadSupervisorOptions()
+    {
+        SupervisorOptions = _db.UcSupervisors.AsNoTracking()
+            .Where(s => s.isActive && !string.IsNullOrWhiteSpace(s.name))
+            .Select(s => new SupervisorOptionItem
+            {
+                Name = s.name.Trim(),
+                Email = string.IsNullOrWhiteSpace(s.email) ? null : s.email.Trim(),
+                Contact = string.IsNullOrWhiteSpace(s.contact) ? null : s.contact.Trim()
+            })
+            .ToList()
+            .GroupBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
+            .Select(g => g
+                .OrderByDescending(x => !string.IsNullOrWhiteSpace(x.Email))
+                .ThenByDescending(x => !string.IsNullOrWhiteSpace(x.Contact))
+                .First())
+            .OrderBy(s => s.Name)
+            .ToList();
+    }
+
     private void MapStudentToInput(StudentApplication student)
     {
         IsCreateMode = false;
@@ -441,6 +503,22 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
     private static string? TrimOrNull(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private static string FormatBranchAddress(CompanyBranch branch)
+    {
+        var parts = new[]
+        {
+            branch.address_line,
+            branch.city,
+            branch.state,
+            branch.postcode,
+            branch.country
+        };
+
+        return string.Join(", ", parts
+            .Where(part => !string.IsNullOrWhiteSpace(part))
+            .Select(part => part!.Trim()));
     }
 
     private void ValidateUpload(IFormFile? file, string label)

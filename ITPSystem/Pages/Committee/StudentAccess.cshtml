@@ -1,0 +1,508 @@
+@page
+@model CommitteeStudentAccessModel
+@{
+    ViewData["CommitteePageTitle"] = "Student Access";
+
+    var groupedRecords = Model.StudentAccessGroups.Where(x => x.CohortId != 0).ToList();
+    var totalStudents = groupedRecords.Sum(x => x.Students.Count);
+    var activeStudents = groupedRecords.Sum(x => x.Students.Count(s => string.Equals(s.AccessStatus, "Active", StringComparison.OrdinalIgnoreCase)));
+    var cohortCount = groupedRecords.Count;
+    var largestCohort = groupedRecords.OrderByDescending(x => x.Students.Count).FirstOrDefault();
+}
+
+<style>
+    .student-access-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .student-access-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.4rem;
+        color: #fff;
+        background:
+            radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 24%),
+            linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .student-access-banner::after {
+        content: "";
+        position: absolute;
+        right: -56px;
+        top: -56px;
+        width: 190px;
+        height: 190px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .student-access-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .student-access-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .student-access-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .student-access-title {
+        margin: .55rem 0 .4rem;
+        font-size: clamp(1.6rem, 3vw, 2.35rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .student-access-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .student-access-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .student-access-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .student-access-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .student-access-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1.05rem;
+    }
+
+    .student-access-banner-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .student-access-overview {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+        gap: 1rem;
+    }
+
+    .student-access-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .student-access-stat-card,
+    .student-access-highlight-card,
+    .student-access-directory-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .student-access-stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .student-access-stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .student-access-stat-label {
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .student-access-stat-value {
+        margin-top: .35rem;
+        color: #0f172a;
+        font-size: 1.7rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .student-access-stat-note {
+        margin-top: .3rem;
+        color: #718396;
+        font-size: .88rem;
+    }
+
+    .student-access-highlight-card {
+        padding: 1.05rem;
+        background:
+            linear-gradient(180deg, rgba(20, 184, 166, 0.08), rgba(255, 255, 255, 0)),
+            linear-gradient(180deg, #ffffff, #fbfdff);
+    }
+
+    .student-access-highlight-label {
+        color: #0f766e;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .student-access-highlight-title {
+        margin: .45rem 0 .3rem;
+        color: #132238;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .student-access-highlight-copy {
+        margin: 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .student-access-highlight-meta {
+        display: grid;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .student-access-highlight-chip {
+        display: flex;
+        justify-content: space-between;
+        gap: .75rem;
+        align-items: center;
+        border-radius: 16px;
+        padding: .85rem .95rem;
+        background: #f8fbfd;
+        border: 1px solid #e0edf6;
+    }
+
+    .student-access-highlight-chip strong {
+        color: #102133;
+    }
+
+    .student-access-directory-list {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .student-access-directory-card {
+        overflow: hidden;
+    }
+
+    .student-access-directory-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+        padding: 1rem 1rem 0;
+    }
+
+    .student-access-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .student-access-section-copy {
+        margin: .3rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .student-access-count-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .4rem .78rem;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .84rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .student-access-table-wrap {
+        margin-top: 1rem;
+    }
+
+    .student-access-table {
+        table-layout: fixed;
+    }
+
+    .student-access-table thead th {
+        border-bottom-width: 1px;
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
+
+    .student-access-table th,
+    .student-access-table td {
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+        vertical-align: middle;
+    }
+
+    .student-access-table tbody td {
+        padding-top: .95rem;
+        padding-bottom: .95rem;
+    }
+
+    .student-access-id {
+        font-weight: 700;
+        color: #64748b;
+    }
+
+    .student-access-name {
+        font-weight: 700;
+        color: #102133;
+    }
+
+    .student-access-email {
+        color: #334155;
+    }
+
+    .student-access-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .32rem .76rem;
+        font-size: .8rem;
+        font-weight: 700;
+    }
+
+    .student-access-pill.active {
+        background: #ecfdf5;
+        color: #0f766e;
+    }
+
+    .student-access-pill.inactive {
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    .student-access-empty {
+        padding: 2.7rem 1rem;
+        text-align: center;
+        color: #607284;
+    }
+
+    .student-access-empty strong {
+        display: block;
+        margin-bottom: .35rem;
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .student-access-overview {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .student-access-stat-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .student-access-banner-top,
+        .student-access-banner-actions,
+        .student-access-directory-head {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .student-access-back-btn,
+        .student-access-banner-link {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="committee-page">
+    <div class="student-access-page">
+        <section class="student-access-banner">
+            <div class="student-access-banner-top">
+                <div>
+                    <div class="student-access-kicker">Student Access</div>
+                    <h3 class="student-access-title">Track student portal access by cohort with a clearer access dashboard.</h3>
+                    <p class="student-access-copy">Review active student user records, see how access is distributed across cohorts, and scan the current student login directory without leaving the committee workspace.</p>
+                </div>
+                <a href="/Committee/Dashboard" class="student-access-back-btn">Back to Dashboard</a>
+            </div>
+            <div class="student-access-banner-actions">
+                <a asp-page="/Committee/Students" class="student-access-banner-link">Open Student List</a>
+                <a asp-page="/Committee/UnregisteredStudents" class="student-access-banner-link">Open Unregistered Student</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-info mb-0">@Model.StatusMessage</div>
+        }
+
+        <section class="student-access-overview">
+            <div class="student-access-stat-grid">
+                <article class="student-access-stat-card">
+                    <div class="student-access-stat-label">Student Accounts</div>
+                    <div class="student-access-stat-value">@totalStudents</div>
+                    <div class="student-access-stat-note">Student users currently included in the access directory.</div>
+                </article>
+                <article class="student-access-stat-card">
+                    <div class="student-access-stat-label">Active Access</div>
+                    <div class="student-access-stat-value">@activeStudents</div>
+                    <div class="student-access-stat-note">Accounts that are active and ready for student sign-in.</div>
+                </article>
+                <article class="student-access-stat-card">
+                    <div class="student-access-stat-label">Cohorts</div>
+                    <div class="student-access-stat-value">@cohortCount</div>
+                    <div class="student-access-stat-note">Distinct cohorts represented in the current access view.</div>
+                </article>
+            </div>
+
+            <aside class="student-access-highlight-card">
+                <div class="student-access-highlight-label">Access Snapshot</div>
+                <h3 class="student-access-highlight-title">@(largestCohort is null ? "No cohort data yet" : largestCohort.CohortLabel)</h3>
+                <p class="student-access-highlight-copy">
+                    @(largestCohort is null
+                        ? "Student access records will appear here once active student accounts are matched back to a valid cohort."
+                        : "This cohort currently has the largest visible student access group in the directory.")
+                </p>
+
+                <div class="student-access-highlight-meta">
+                    <div class="student-access-highlight-chip">
+                        <span>Largest cohort size</span>
+                        <strong>@(largestCohort?.Students.Count ?? 0) student(s)</strong>
+                    </div>
+                    <div class="student-access-highlight-chip">
+                        <span>Access coverage</span>
+                        <strong>@(totalStudents == 0 ? "0%" : $"{Math.Round((double)activeStudents / totalStudents * 100)}%") active</strong>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        @if (!groupedRecords.Any())
+        {
+            <section class="student-access-directory-card">
+                <div class="student-access-empty">
+                    <strong>No student access records.</strong>
+                    Student access entries will appear here once active student user accounts are linked to a cohort.
+                </div>
+            </section>
+        }
+        else
+        {
+            <section class="student-access-directory-list">
+                @foreach (var group in groupedRecords)
+                {
+                    <article class="student-access-directory-card">
+                        <div class="student-access-directory-head">
+                            <div>
+                                <h3 class="student-access-section-title">@group.CohortLabel</h3>
+                                <p class="student-access-section-copy">Student portal accounts currently connected to this cohort.</p>
+                            </div>
+                            <div class="student-access-count-pill">@group.Students.Count student(s)</div>
+                        </div>
+
+                        <div class="table-responsive student-access-table-wrap">
+                            <table class="table align-middle mb-0 student-access-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 18%;">Student ID</th>
+                                        <th style="width: 30%;">Student</th>
+                                        <th style="width: 34%;">Email</th>
+                                        <th style="width: 18%;">Access</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var student in group.Students)
+                                    {
+                                        var accessClass = string.Equals(student.AccessStatus, "Active", StringComparison.OrdinalIgnoreCase) ? "active" : "inactive";
+                                        <tr>
+                                            <td class="student-access-id">@student.StudentId</td>
+                                            <td>
+                                                <div class="student-access-name">@student.StudentName</div>
+                                            </td>
+                                            <td class="student-access-email">@student.Email</td>
+                                            <td>
+                                                <span class="student-access-pill @accessClass">@student.AccessStatus</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+                }
+            </section>
+        }
+    </div>
+</div>

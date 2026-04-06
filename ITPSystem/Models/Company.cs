@@ -9,52 +9,41 @@ namespace ITPSystem.Models
         [Key]
         public int company_id { get; set; }
 
-        public DateTime created_at { get; set; } = DateTime.Now;
-        public DateTime lastUpdate { get; set; } = DateTime.Now;
-        public DateTime? lastVisit { get; set; }
-        public DateTime? lastContact { get; set; }
-
+        [Required]
         [StringLength(15)]
-        public string? regNo { get; set; }
-
-        [StringLength(15)]
-        public string? vacancyLevel { get; set; }
+        [Column("reg_no")]
+        public string regNo { get; set; } = string.Empty;
 
         [StringLength(250)]
         public string name { get; set; } = string.Empty;
 
-        [StringLength(255)]
-        public string? address1 { get; set; }
-
-        [StringLength(255)]
-        public string? address2 { get; set; }
-
-        [StringLength(255)]
-        public string? address3 { get; set; }
-
-        public int? totalNoOfStaff { get; set; }
-
+        [Column("industry_involved")]
         [StringLength(150)]
         public string? industryInvolved { get; set; }
 
+        [Column("products_and_services")]
         [StringLength(150)]
         public string? productsAndServices { get; set; }
 
-        [StringLength(255)]
+        [Column("company_background")]
         public string? companyBackground { get; set; }
 
         public byte[]? logo { get; set; }
 
-        [StringLength(100)]
+        [StringLength(255)]
         public string? website { get; set; }
 
+        [Column("ssm_cert")]
         public byte[]? ssmCert { get; set; }
 
-        public byte? status { get; set; }
+        public DateTime created_at { get; set; } = DateTime.Now;
 
-        public byte? visibility { get; set; }
+        [Column("updated_at")]
+        public DateTime updated_at { get; set; } = DateTime.Now;
 
         [StringLength(500)]
         public string? remark { get; set; }
+
+        public ICollection<CompanyBranch> Branches { get; set; } = new List<CompanyBranch>();
     }
 }

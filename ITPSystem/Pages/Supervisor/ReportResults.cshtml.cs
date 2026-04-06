@@ -56,6 +56,7 @@ namespace ITPSystem.Pages.Supervisor
                 2 => "Approved",
                 3 => "Rejected",
                 1 => "Submitted",
+                4 => "Submitted Late",
                 _ => "Pending"
             };
         }
@@ -77,6 +78,7 @@ namespace ITPSystem.Pages.Supervisor
                 2 => "bg-success",
                 3 => "bg-danger",
                 1 => "bg-warning text-dark",
+                4 => "bg-warning text-dark",
                 _ => "bg-secondary"
             };
         }
@@ -153,7 +155,8 @@ namespace ITPSystem.Pages.Supervisor
                     {
                         Report = r,
                         StudentName = student?.studentName ?? "Unknown",
-                        StudentId = student?.studentID ?? "-"
+                        StudentId = student?.studentID ?? "-",
+                        IsLate = r.status == 0 && r.dueDate.Date < DateTime.Today
                     };
                 })
                 .ToList();
@@ -222,6 +225,7 @@ namespace ITPSystem.Pages.Supervisor
             public ProgressReport Report { get; set; } = new();
             public string StudentName { get; set; } = string.Empty;
             public string StudentId { get; set; } = string.Empty;
+            public bool IsLate { get; set; }
         }
 
         public class StudentReportSummary

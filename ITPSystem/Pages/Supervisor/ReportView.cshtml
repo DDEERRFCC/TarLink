@@ -1,6 +1,19 @@
 @page
 @model ITPSystem.Pages.Supervisor.ReportViewModel
-<h2>Report Content</h2>
+<style>
+    .sv-shell {
+        background: linear-gradient(160deg, #f0fdf4, #dcfce7 55%, #bbf7d0);
+        border: 1px solid #86efac;
+        border-radius: 14px;
+        padding: 1rem;
+        box-shadow: 0 10px 22px rgba(20, 83, 45, .08);
+    }
+    .sv-title { color: #14532d; }
+    .sv-card { border-radius: 12px; border: 1px solid #86efac; }
+    .sv-muted { color: #14532d; opacity: .7; }
+</style>
+<div class="sv-shell">
+<h2 class="sv-title">Report Content</h2>
 
 <div class="mb-3 d-flex gap-2">
     <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/ReportResults" asp-route-applicationId="@Model.applicationId">Back to Results</a>
@@ -13,7 +26,7 @@
 }
 else
 {
-    <div class="card">
+    <div class="card sv-card">
         <div class="card-body">
             <h5>@Model.GetReportTitle()</h5>
             <p class="mb-1"><strong>Student:</strong> @(Model.Student?.studentName ?? "Unknown") (@(Model.Student?.studentID ?? "-"))</p>
@@ -37,3 +50,7 @@ else
         </div>
     </div>
 }
+</div>
+
+
+

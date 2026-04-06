@@ -1,0 +1,271 @@
+@page
+@model CommitteeAppointmentTemplatesModel
+@{
+    ViewData["CommitteePageTitle"] = "Template Upload";
+    var totalTemplates = Model.Templates.Count;
+    var cohortCount = Model.Templates.Select(x => x.Template.cohort_id).Distinct().Count();
+    var withFilesCount = Model.Templates.Count(x =>
+        !string.IsNullOrWhiteSpace(x.Template.company_acceptance_letter_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.indemnity_letter_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.parent_acknowledgement_form_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.company_supervisor_evaluation_form_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.progress_report_template_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.final_report_template_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.student_support_letter_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.appointment_confirmation_letter_path) ||
+        !string.IsNullOrWhiteSpace(x.Template.warning_letter_path));
+}
+
+<style>
+    .tpl-page { display:grid; gap:1rem; max-width:1280px; margin:0 auto; }
+    .tpl-banner { position:relative; overflow:hidden; border-radius:24px; padding:1.35rem; color:#fff; background:linear-gradient(135deg,#132238,#0f766e 58%,#14b8a6); box-shadow:0 18px 36px rgba(15,23,42,.14); }
+    .tpl-banner::after { content:""; position:absolute; right:-42px; top:-50px; width:180px; height:180px; border-radius:999px; background:rgba(255,255,255,.12); }
+    .tpl-banner > * { position:relative; z-index:1; }
+    .tpl-top { display:flex; justify-content:space-between; align-items:start; gap:1rem; }
+    .tpl-kicker { display:inline-flex; padding:.34rem .72rem; border-radius:999px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .tpl-title { margin:.55rem 0 .35rem; font-size:clamp(1.55rem,3vw,2.2rem); font-family:Georgia,"Times New Roman",serif; }
+    .tpl-copy { margin:0; max-width:72ch; color:rgba(255,255,255,.88); line-height:1.75; }
+    .tpl-back { display:inline-flex; align-items:center; gap:.55rem; text-decoration:none; border-radius:999px; padding:.78rem 1rem; border:1px solid #cfe0ed; background:linear-gradient(180deg,#fff,#f5fbff); color:#12344b; font-weight:700; box-shadow:0 10px 22px rgba(15,23,42,.06); }
+    .tpl-back::before { content:"<"; display:inline-flex; align-items:center; justify-content:center; width:1.7rem; height:1.7rem; border-radius:999px; background:#e0f2fe; color:#0c4a6e; font-size:.9rem; }
+    .tpl-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.85rem; margin-top:1rem; }
+    .tpl-stat { border-radius:18px; padding:.95rem 1rem; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); }
+    .tpl-stat-label { font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.72); }
+    .tpl-stat-value { margin-top:.3rem; font-size:1.5rem; font-weight:700; }
+    .tpl-grid { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr); gap:1rem; align-items:start; }
+    .tpl-card { border:1px solid #d8e5f1; border-radius:22px; background:linear-gradient(180deg,#fff,#fbfdff); box-shadow:0 12px 26px rgba(15,23,42,.06); padding:1rem; }
+    .tpl-section-title { margin:0; color:#132238; font-size:1.05rem; font-weight:700; }
+    .tpl-section-copy { margin:.35rem 0 0; color:#607284; line-height:1.7; font-size:.92rem; }
+    .tpl-form { margin-top:1rem; display:grid; gap:1rem; }
+    .tpl-form-grid, .tpl-file-grid, .tpl-links { display:grid; gap:.9rem; }
+    .tpl-form-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .tpl-file-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .tpl-field, .tpl-file { display:grid; gap:.45rem; }
+    .tpl-field.full { grid-column:1 / -1; }
+    .tpl-field label, .tpl-file label { color:#36506a; font-size:.82rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+    .tpl-field .form-control, .tpl-field .form-select, .tpl-file .form-control { min-height:48px; border-radius:14px; border-color:#d1ddea; box-shadow:none; }
+    .tpl-field textarea.form-control { min-height:170px; }
+    .tpl-file { border:1px dashed #9fd8cf; border-radius:18px; background:linear-gradient(180deg,#f8fffd,#fff); padding:.95rem; }
+    .tpl-note { color:#607284; font-size:.88rem; }
+    .tpl-link { color:#0f766e; font-weight:700; text-decoration:none; word-break:break-all; }
+    .tpl-actions { display:flex; flex-wrap:wrap; gap:.8rem; align-items:center; }
+    .tpl-btn, .tpl-btn-lite, .tpl-btn-danger { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:.8rem 1rem; border-radius:14px; text-decoration:none; font-weight:700; }
+    .tpl-btn { min-width:170px; border:none; color:#fff; background:linear-gradient(90deg,#0f766e,#14b8a6); }
+    .tpl-btn-lite { border:1px solid #c8d7e5; background:#fff; color:#35516a; }
+    .tpl-btn-danger { border:1px solid #fecaca; background:#fff1f2; color:#be123c; }
+    .tpl-chip-row { display:flex; flex-wrap:wrap; gap:.45rem; margin-top:1rem; }
+    .tpl-chip { display:inline-flex; align-items:center; border-radius:999px; padding:.3rem .72rem; background:#ecfdf5; color:#0f766e; font-size:.8rem; font-weight:700; }
+    .tpl-list { display:grid; gap:.9rem; }
+    .tpl-list-card { border:1px solid #d8e5f1; border-radius:18px; background:#fff; padding:1rem; box-shadow:0 10px 22px rgba(15,23,42,.05); }
+    .tpl-list-top { display:flex; justify-content:space-between; align-items:start; gap:1rem; }
+    .tpl-list-title { margin:0; font-size:1.05rem; font-weight:700; color:#132238; }
+    .tpl-meta { margin-top:.35rem; color:#607284; font-size:.92rem; }
+    .tpl-links { grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:1rem; }
+    .tpl-link-item { padding:.8rem .9rem; border-radius:14px; background:#f8fbff; border:1px solid #dbe8f3; }
+    .tpl-link-label { color:#607284; font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+    .tpl-link-value { margin-top:.35rem; }
+    .tpl-content { margin-top:1rem; border:1px solid #dbe8f3; border-radius:16px; background:#f8fbff; padding:.95rem 1rem; color:#35516a; white-space:pre-wrap; }
+    .tpl-empty { border:1px dashed #c8d7e5; border-radius:18px; padding:1.3rem; text-align:center; color:#607284; background:linear-gradient(180deg,#fbfdff,#fff); }
+    @@media (max-width: 991.98px) {
+        .tpl-grid, .tpl-form-grid, .tpl-file-grid, .tpl-links, .tpl-stats { grid-template-columns:1fr; }
+        .tpl-top, .tpl-list-top, .tpl-actions { flex-direction:column; align-items:stretch; }
+        .tpl-back, .tpl-btn, .tpl-btn-lite, .tpl-btn-danger { width:100%; }
+    }
+</style>
+
+<div class="committee-page">
+    <div class="tpl-page">
+        <section class="tpl-banner">
+            <div class="tpl-top">
+                <div>
+                    <div class="tpl-kicker">Template Upload</div>
+                    <h3 class="tpl-title">Manage appointment letters and reporting templates by cohort.</h3>
+                    <p class="tpl-copy">Upload the document set committee members need, keep optional notes together with the files, and organize everything under the right cohort for easier document management.</p>
+                </div>
+                <a href="/Committee/Dashboard" class="tpl-back">Back to Dashboard</a>
+            </div>
+            <div class="tpl-stats">
+                <div class="tpl-stat"><div class="tpl-stat-label">Template Sets</div><div class="tpl-stat-value">@totalTemplates</div></div>
+                <div class="tpl-stat"><div class="tpl-stat-label">Cohorts Covered</div><div class="tpl-stat-value">@cohortCount</div></div>
+                <div class="tpl-stat"><div class="tpl-stat-label">Sets With Files</div><div class="tpl-stat-value">@withFilesCount</div></div>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-info mb-0">@Model.StatusMessage</div>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger mb-0">@Model.ErrorMessage</div>
+        }
+
+        <section class="tpl-card">
+            <div>
+                <h3 class="tpl-section-title">Upload Template Set</h3>
+                <p class="tpl-section-copy">Save one template bundle for a cohort, then return later to replace files or update the notes.</p>
+
+                <form method="post" asp-page-handler="Save" enctype="multipart/form-data" class="tpl-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="Input.TemplateId" type="hidden" />
+                    <input asp-for="Input.ExistingCompanyAcceptanceLetterPath" type="hidden" />
+                    <input asp-for="Input.ExistingIndemnityLetterPath" type="hidden" />
+                    <input asp-for="Input.ExistingParentAcknowledgementFormPath" type="hidden" />
+                    <input asp-for="Input.ExistingCompanySupervisorEvaluationFormPath" type="hidden" />
+                    <input asp-for="Input.ExistingProgressReportTemplatePath" type="hidden" />
+                    <input asp-for="Input.ExistingFinalReportTemplatePath" type="hidden" />
+                    <input asp-for="Input.ExistingStudentSupportLetterPath" type="hidden" />
+                    <input asp-for="Input.ExistingAppointmentConfirmationLetterPath" type="hidden" />
+                    <input asp-for="Input.ExistingWarningLetterPath" type="hidden" />
+
+                    <div class="tpl-form-grid">
+                        <div class="tpl-field">
+                            <label asp-for="Input.CohortId">Cohort</label>
+                            <select asp-for="Input.CohortId" class="form-select">
+                                <option value="">Select a cohort</option>
+                                @foreach (var cohort in Model.CohortOptions)
+                                {
+                                    <option value="@cohort.Id">@cohort.Label</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Input.CohortId" class="text-danger"></span>
+                        </div>
+                        <div class="tpl-field">
+                            <label asp-for="Input.TemplateName">Template Name</label>
+                            <input asp-for="Input.TemplateName" class="form-control" placeholder="Example: Degree Cohort Standard Pack" />
+                            <span asp-validation-for="Input.TemplateName" class="text-danger"></span>
+                        </div>
+                        <div class="tpl-field full">
+                            <label asp-for="Input.Content">Content / Notes</label>
+                            <textarea asp-for="Input.Content" class="form-control" placeholder="Add optional instructions, placeholders, or internal notes for this template set."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="tpl-file-grid">
+                        <div class="tpl-file">
+                            <label asp-for="CompanyAcceptanceLetterFile">Company Acceptance Letter</label>
+                            <input asp-for="CompanyAcceptanceLetterFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingCompanyAcceptanceLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingCompanyAcceptanceLetterPath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="IndemnityLetterFile">Indemnity Letter</label>
+                            <input asp-for="IndemnityLetterFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingIndemnityLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingIndemnityLetterPath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="ParentAcknowledgementFormFile">Parent Acknowledgement Form</label>
+                            <input asp-for="ParentAcknowledgementFormFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingParentAcknowledgementFormPath)) { <a class="tpl-link" href="@Model.Input.ExistingParentAcknowledgementFormPath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="CompanySupervisorEvaluationFormFile">Company Supervisor Evaluation Form</label>
+                            <input asp-for="CompanySupervisorEvaluationFormFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingCompanySupervisorEvaluationFormPath)) { <a class="tpl-link" href="@Model.Input.ExistingCompanySupervisorEvaluationFormPath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="ProgressReportTemplateFile">Progress Report Template</label>
+                            <input asp-for="ProgressReportTemplateFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingProgressReportTemplatePath)) { <a class="tpl-link" href="@Model.Input.ExistingProgressReportTemplatePath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="FinalReportTemplateFile">Final Report Template</label>
+                            <input asp-for="FinalReportTemplateFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingFinalReportTemplatePath)) { <a class="tpl-link" href="@Model.Input.ExistingFinalReportTemplatePath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="StudentSupportLetterFile">Student Support Letter</label>
+                            <input asp-for="StudentSupportLetterFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingStudentSupportLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingStudentSupportLetterPath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="AppointmentConfirmationLetterFile">Appointment Confirmation Letter</label>
+                            <input asp-for="AppointmentConfirmationLetterFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingAppointmentConfirmationLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingAppointmentConfirmationLetterPath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                        <div class="tpl-file">
+                            <label asp-for="WarningLetterFile">Warning Letter</label>
+                            <input asp-for="WarningLetterFile" type="file" class="form-control" />
+                            <div class="tpl-note">Current:
+                                @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingWarningLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingWarningLetterPath" target="_blank">Open file</a> } else { <span>None</span> }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tpl-actions">
+                        <button type="submit" class="tpl-btn">@(Model.Input.TemplateId.HasValue ? "Save Template Changes" : "Upload Template Set")</button>
+                        <a asp-page="/Committee/AppointmentTemplates" class="tpl-btn-lite">Clear Form</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section class="tpl-card">
+            <h3 class="tpl-section-title">Saved Template Sets</h3>
+            <p class="tpl-section-copy">Review current template records, open uploaded files, or edit a saved set when the cohort documents need a refresh.</p>
+
+            @if (Model.Templates.Count == 0)
+            {
+                <div class="tpl-empty">No template set has been uploaded yet.</div>
+            }
+            else
+            {
+                <div class="tpl-list">
+                    @foreach (var item in Model.Templates)
+                    {
+                        <article class="tpl-list-card">
+                            <div class="tpl-list-top">
+                                <div>
+                                    <h4 class="tpl-list-title">@item.Template.template_name</h4>
+                                    <div class="tpl-meta">@item.CohortLabel</div>
+                                    <div class="tpl-meta">Created @item.Template.created_at.ToString("dd MMM yyyy HH:mm")</div>
+                                </div>
+                                <div class="tpl-actions">
+                                    <a asp-page="/Committee/AppointmentTemplates" asp-route-editId="@item.Template.template_id" class="tpl-btn-lite">Edit</a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@item.Template.template_id" onsubmit="return confirm('Delete this template set?');">
+                                        <button type="submit" class="tpl-btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrWhiteSpace(item.Template.content))
+                            {
+                                <div class="tpl-content">@item.Template.content</div>
+                            }
+
+                            <div class="tpl-links">
+                                <div class="tpl-link-item"><div class="tpl-link-label">Company Acceptance Letter</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.company_acceptance_letter_path)) { <a class="tpl-link" href="@item.Template.company_acceptance_letter_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Indemnity Letter</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.indemnity_letter_path)) { <a class="tpl-link" href="@item.Template.indemnity_letter_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Parent Acknowledgement Form</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.parent_acknowledgement_form_path)) { <a class="tpl-link" href="@item.Template.parent_acknowledgement_form_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Company Supervisor Evaluation Form</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.company_supervisor_evaluation_form_path)) { <a class="tpl-link" href="@item.Template.company_supervisor_evaluation_form_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Progress Report Template</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.progress_report_template_path)) { <a class="tpl-link" href="@item.Template.progress_report_template_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Final Report Template</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.final_report_template_path)) { <a class="tpl-link" href="@item.Template.final_report_template_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Student Support Letter</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.student_support_letter_path)) { <a class="tpl-link" href="@item.Template.student_support_letter_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Appointment Confirmation Letter</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.appointment_confirmation_letter_path)) { <a class="tpl-link" href="@item.Template.appointment_confirmation_letter_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                                <div class="tpl-link-item"><div class="tpl-link-label">Warning Letter</div><div class="tpl-link-value">@if (!string.IsNullOrWhiteSpace(item.Template.warning_letter_path)) { <a class="tpl-link" href="@item.Template.warning_letter_path" target="_blank">Open file</a> } else { <span>-</span> }</div></div>
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -25,12 +25,17 @@ public static class ParentAcknowledgementFormWordTemplateBuilder
 
     public static byte[] Build(StudentApplication? student, string webRootPath)
     {
+        var templatePath = Path.Combine(webRootPath, "documents", "templates", TemplateFileName);
+        return BuildFromTemplatePath(student, templatePath);
+    }
+
+    public static byte[] BuildFromTemplatePath(StudentApplication? student, string templatePath)
+    {
         if (!OperatingSystem.IsWindows())
         {
             throw new PlatformNotSupportedException("Microsoft Word PDF export is only supported on Windows.");
         }
 
-        var templatePath = Path.Combine(webRootPath, "documents", "templates", TemplateFileName);
         if (!File.Exists(templatePath))
         {
             throw new FileNotFoundException("Parent acknowledgement form template was not found.", templatePath);
@@ -84,6 +89,9 @@ public static class ParentAcknowledgementFormWordTemplateBuilder
         string internshipEndDate,
         string returnByDate)
     {
+        var archive = entry.Archive;
+        var entryFullName = entry.FullName;
+
         string xml;
         using (var entryStream = entry.Open())
         using (var reader = new StreamReader(entryStream, Encoding.UTF8))
@@ -101,7 +109,7 @@ public static class ParentAcknowledgementFormWordTemplateBuilder
         xml = ReplaceReturnDateText(xml, returnByDate);
 
         entry.Delete();
-        var updatedEntry = entry.Archive.CreateEntry(entry.FullName, CompressionLevel.Optimal);
+        var updatedEntry = archive.CreateEntry(entryFullName, CompressionLevel.Optimal);
         using var updatedStream = updatedEntry.Open();
         using var writer = new StreamWriter(updatedStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         writer.Write(xml);

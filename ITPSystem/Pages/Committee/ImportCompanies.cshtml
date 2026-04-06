@@ -4,33 +4,344 @@
     ViewData["CommitteePageTitle"] = "Import Company";
 }
 
+<style>
+    .import-company-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .import-company-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .import-company-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .import-company-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .import-company-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .import-company-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .import-company-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .import-company-copy {
+        margin: 0;
+        max-width: 70ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .import-company-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .import-company-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .import-company-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .import-company-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .import-company-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .import-company-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .import-company-card,
+    .import-company-note-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+        padding: 1rem;
+    }
+
+    .import-company-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .import-company-section-copy {
+        margin: .35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .import-company-upload-box {
+        margin-top: 1rem;
+        border: 1px dashed #9fd8cf;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #f8fffd, #ffffff);
+        padding: 1rem;
+    }
+
+    .import-company-upload-box label {
+        display: block;
+        margin-bottom: .45rem;
+        color: #36506a;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .import-company-upload-box .form-control {
+        min-height: 48px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .import-company-upload-box .form-control:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
+    }
+
+    .import-company-upload-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .8rem;
+        margin-top: 1rem;
+        align-items: center;
+    }
+
+    .import-company-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 150px;
+        min-height: 46px;
+        padding: .8rem 1rem;
+        border: none;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 700;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .import-company-cancel-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: .8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #35516a;
+        background: #fff;
+        border: 1px solid #c8d7e5;
+    }
+
+    .import-company-upload-hint {
+        color: #607284;
+        font-size: .9rem;
+    }
+
+    .import-company-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-top: 1rem;
+    }
+
+    .import-company-chip {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .3rem .72rem;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .8rem;
+        font-weight: 700;
+    }
+
+    .import-company-note-list {
+        margin: 1rem 0 0;
+        padding-left: 1.1rem;
+        color: #607284;
+    }
+
+    .import-company-note-list li {
+        margin-bottom: .45rem;
+        line-height: 1.65;
+    }
+
+    @@media (max-width: 991.98px) {
+        .import-company-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .import-company-banner-top {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .import-company-banner-actions,
+        .import-company-upload-actions {
+            flex-direction: column;
+        }
+
+        .import-company-back-btn,
+        .import-company-link,
+        .import-company-submit-btn,
+        .import-company-cancel-btn {
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">Import Company</h5>
-    <a asp-page="/Committee/Companies" class="btn btn-sm btn-outline-secondary">Back to Company List</a>
-</div>
-
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="alert alert-info">@Model.StatusMessage</div>
-}
-
-<div class="card" style="max-width:920px;">
-    <div class="card-body">
-        <p class="text-muted mb-2">
-            CSV columns order:
-            <code>name,address1,address2,address3,regNo,vacancyLevel,website,remark,status,visibility</code>
-        </p>
-        <form method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label class="form-label">Company CSV File</label>
-                <input asp-for="CsvFile" type="file" accept=".csv,text/csv" class="form-control" />
+    <div class="import-company-page">
+        <section class="import-company-banner">
+            <div class="import-company-banner-top">
+                <div>
+                    <div class="import-company-kicker">Import Company</div>
+                    <h3 class="import-company-title">Bring company records into the portal with a cleaner bulk upload flow.</h3>
+                    <p class="import-company-copy">Upload a company CSV file, follow the required column order, and let the system import valid records while skipping duplicates or incomplete rows.</p>
+                </div>
+                <a href="/Committee/Dashboard" class="import-company-back-btn">Back to Dashboard</a>
             </div>
-            <button type="submit" class="btn btn-primary">Import Companies</button>
-            <a asp-page="/Committee/Companies" class="btn btn-outline-secondary">Cancel</a>
-        </form>
+            <div class="import-company-banner-actions">
+                <a asp-page="/Committee/Companies" class="import-company-link">Back to Company List</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-info mb-0">@Model.StatusMessage</div>
+        }
+
+        <section class="import-company-grid">
+            <div class="import-company-card">
+                <h3 class="import-company-section-title">Upload Company CSV</h3>
+                <p class="import-company-section-copy">Choose a prepared `.csv` file and import company records directly into the committee portal.</p>
+
+                <form method="post" enctype="multipart/form-data" class="import-company-upload-box">
+                    <label asp-for="CsvFile">Company CSV File</label>
+                    <input asp-for="CsvFile" type="file" accept=".csv,text/csv" class="form-control" />
+
+                    <div class="import-company-upload-actions">
+                        <button type="submit" class="import-company-submit-btn">Import Companies</button>
+                        <a asp-page="/Committee/Companies" class="import-company-cancel-btn">Cancel</a>
+                        <div class="import-company-upload-hint">Accepted file type: `.csv`</div>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="import-company-note-card">
+                <h3 class="import-company-section-title">CSV Format Guide</h3>
+                <p class="import-company-section-copy">Use this exact column order so the system can read the file correctly.</p>
+
+                <div class="import-company-chip-row">
+                    <span class="import-company-chip">name</span>
+                    <span class="import-company-chip">address1</span>
+                    <span class="import-company-chip">address2</span>
+                    <span class="import-company-chip">address3</span>
+                    <span class="import-company-chip">regNo</span>
+                    <span class="import-company-chip">vacancyLevel</span>
+                    <span class="import-company-chip">website</span>
+                    <span class="import-company-chip">remark</span>
+                    <span class="import-company-chip">status</span>
+                    <span class="import-company-chip">visibility</span>
+                </div>
+
+                <ul class="import-company-note-list">
+                    <li>`name`, `address1`, and `regNo` are required for each row.</li>
+                    <li>Duplicate company records with the same registration number are skipped.</li>
+                    <li>`status` defaults to `0` and `visibility` defaults to `1` when the CSV value is missing or invalid.</li>
+                </ul>
+            </aside>
+        </section>
     </div>
-</div>
 </div>

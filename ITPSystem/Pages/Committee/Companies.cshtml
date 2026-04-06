@@ -4,91 +4,768 @@
     ViewData["CommitteePageTitle"] = "Company";
 }
 
+<style>
+    .company-stack {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .company-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .company-back-link:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .company-back-link::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .company-surface,
+    .company-stat-card,
+    .company-list-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .company-banner {
+        position: relative;
+        overflow: hidden;
+        padding: 1.35rem;
+        border-radius: 24px;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .company-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .company-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .company-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .company-banner-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .34rem .72rem;
+        background: rgba(255, 255, 255, .14);
+        border: 1px solid rgba(255, 255, 255, .22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .company-banner h3 {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .company-banner p {
+        margin: 0;
+        max-width: 70ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .company-toolbar {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+    }
+
+    .company-toolbar .btn {
+        border-radius: 14px;
+        padding-inline: 1rem;
+        font-weight: 700;
+    }
+
+    .company-hero-note {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        margin-top: .9rem;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: .92rem;
+    }
+
+    .company-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .company-stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .company-stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .company-stat-label {
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .company-stat-value {
+        margin-top: .35rem;
+        color: #0f172a;
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .company-stat-note {
+        margin-top: .3rem;
+        color: #718396;
+        font-size: .88rem;
+    }
+
+    .company-filter-card {
+        padding: 1rem;
+    }
+
+    .company-filter-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+        margin-bottom: .9rem;
+    }
+
+    .company-filter-head h4,
+    .company-list-head h4 {
+        margin: 0;
+        color: #142436;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .company-filter-head p,
+    .company-list-head p {
+        margin: .2rem 0 0;
+        color: #607284;
+        line-height: 1.65;
+    }
+
+    .company-filter-grid {
+        display: grid;
+        grid-template-columns: 2.2fr 1fr 1fr 1fr auto;
+        gap: .85rem;
+        align-items: end;
+    }
+
+    .company-filter-grid .form-label {
+        font-size: .82rem;
+        font-weight: 700;
+        color: #516476;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    .company-filter-grid .form-control,
+    .company-filter-grid .form-select {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d4e2ef;
+        background: #fff;
+    }
+
+    .company-filter-actions {
+        display: flex;
+        gap: .65rem;
+    }
+
+    .company-filter-actions .btn {
+        min-width: 100px;
+        min-height: 44px;
+        border-radius: 14px;
+        font-weight: 700;
+    }
+
+    .company-list-card {
+        overflow: hidden;
+    }
+
+    .company-list-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1rem 0;
+    }
+
+    .company-count-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .4rem .78rem;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .85rem;
+        font-weight: 700;
+    }
+
+    .company-table {
+        margin: 1rem 0 0;
+    }
+
+    .company-table thead th {
+        border-bottom-width: 1px;
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .company-table tbody td {
+        padding-top: .95rem;
+        padding-bottom: .95rem;
+        vertical-align: top;
+    }
+
+    .company-name {
+        font-weight: 700;
+        color: #102133;
+    }
+
+    .company-subtext {
+        margin-top: .18rem;
+        color: #718396;
+        font-size: .88rem;
+        line-height: 1.55;
+    }
+
+    .company-address {
+        color: #314558;
+        line-height: 1.65;
+    }
+
+    .company-location-panel {
+        min-width: 240px;
+    }
+
+    .company-location-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: .55rem;
+        padding: .28rem .72rem;
+        border-radius: 999px;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .76rem;
+        font-weight: 700;
+        letter-spacing: .03em;
+        border: none;
+    }
+
+    .company-location-toggle.is-open {
+        background: #d1fae5;
+        color: #047857;
+    }
+
+    .company-address-item {
+        padding: .55rem .7rem;
+        border-radius: 12px;
+        background: #f8fbfd;
+        border: 1px solid #e2ebf2;
+    }
+
+    .company-address-label {
+        display: block;
+        margin-bottom: .15rem;
+        color: #607284;
+        font-size: .76rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
+
+    .company-extra-row {
+        display: none;
+    }
+
+    .company-extra-row.is-visible {
+        display: table-row;
+    }
+
+    .company-extra-row td {
+        background: #fbfdff;
+    }
+
+    .company-extra-spacer {
+        background: #ffffff;
+    }
+
+    .company-meta-stack {
+        display: grid;
+        gap: .4rem;
+    }
+
+    .company-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        min-width: 92px;
+        padding: .36rem .68rem;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .company-badge.is-active,
+    .company-badge.is-visible {
+        background: #ecfdf5;
+        color: #047857;
+    }
+
+    .company-badge.is-pending {
+        background: #fff7ed;
+        color: #c2410c;
+    }
+
+    .company-badge.is-inactive,
+    .company-badge.is-hidden {
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    .company-badge.is-suspended {
+        background: #f3e8ff;
+        color: #7e22ce;
+    }
+
+    .company-badge.is-level {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    .company-details-btn {
+        border-radius: 12px;
+        font-weight: 700;
+        min-width: 92px;
+    }
+
+    .company-empty {
+        padding: 2.2rem 1rem 2.4rem;
+        text-align: center;
+        color: #607284;
+    }
+
+    .company-empty strong {
+        display: block;
+        margin-bottom: .35rem;
+        color: #142436;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .company-stat-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .company-filter-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .company-filter-grid,
+        .company-filter-actions {
+            grid-template-columns: 1fr;
+            display: grid;
+        }
+
+        .company-list-head,
+        .company-filter-head {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .company-banner-top,
+        .company-toolbar {
+            flex-direction: column;
+        }
+
+        .company-toolbar .btn,
+        .company-filter-actions .btn,
+        .company-back-link {
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+    <div class="company-stack">
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mb-0">@Model.StatusMessage</div>
+        }
 
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
-}
+        <section class="company-banner">
+            <div class="company-banner-top">
+                <div class="company-banner-pill">Company Management</div>
+                <a href="/Committee/Dashboard" class="company-back-link">Back to Dashboard</a>
+            </div>
+            <h3>Manage internship partners with a clearer overview.</h3>
+            <p>Review company availability, visibility, and vacancy coverage from one page, then jump straight into adding, importing, or updating individual records.</p>
+            <div class="company-toolbar">
+                <a asp-page="/Committee/AddCompany" class="btn btn-success">Add Company</a>
+                <a asp-page="/Committee/ImportCompanies" class="btn btn-outline-light">Import Company</a>
+            </div>
+            <div class="company-hero-note">Showing @Model.FilteredCompanies of @Model.TotalCompanies companies in the portal.</div>
+        </section>
 
-<div class="d-flex gap-2 mb-3">
-    <a asp-page="/Committee/AddCompany" class="btn btn-sm btn-success">Add Company</a>
-    <a asp-page="/Committee/ImportCompanies" class="btn btn-sm btn-outline-primary">Import Company</a>
-</div>
+        <section class="company-stat-grid">
+            <article class="company-stat-card">
+                <div class="company-stat-label">Active Companies</div>
+                <div class="company-stat-value">@Model.ActiveCompanies</div>
+                <div class="company-stat-note">Companies currently marked as active.</div>
+            </article>
+            <article class="company-stat-card">
+                <div class="company-stat-label">Pending / Suspended</div>
+                <div class="company-stat-value">@Model.PendingCompanies / @Model.SuspendedCompanies</div>
+                <div class="company-stat-note">Companies awaiting activation or temporarily suspended.</div>
+            </article>
+            <article class="company-stat-card">
+                <div class="company-stat-label">Visible to Students</div>
+                <div class="company-stat-value">@Model.VisibleCompanies</div>
+                <div class="company-stat-note">Records still visible for student-side selection.</div>
+            </article>
+            <article class="company-stat-card">
+                <div class="company-stat-label">Vacancy Mix</div>
+                <div class="company-stat-value">@Model.DiplomaCompanies / @Model.DegreeCompanies</div>
+                <div class="company-stat-note">Diploma and degree-ready company openings.</div>
+            </article>
+        </section>
 
-<div class="card mb-3">
-    <div class="card-body">
-        <form method="get" class="row g-2 align-items-end">
-            <div class="col-md-4">
-                <label class="form-label">Search</label>
-                <input name="Search" value="@Model.Search" class="form-control form-control-sm" placeholder="Name, address, reg no, website" />
+        <section class="company-surface company-filter-card">
+            <div class="company-filter-head">
+                <div>
+                    <h4>Refine Company List</h4>
+                    <p>Search by company details and narrow the page by publication state or supported vacancy level.</p>
+                </div>
             </div>
-            <div class="col-md-2">
-                <label class="form-label">Status</label>
-                <select name="StatusFilter" class="form-select form-select-sm">
-                    <option value="">All</option>
-                    <option value="1" selected="@(Model.StatusFilter == "1")">1</option>
-                    <option value="0" selected="@(Model.StatusFilter == "0")">0</option>
-                </select>
+
+            <form method="get" class="company-filter-grid">
+                <div>
+                    <label class="form-label">Search</label>
+                    <input name="Search" value="@Model.Search" class="form-control" placeholder="Name, address, reg no, website" />
+                </div>
+                    <div>
+                        <label class="form-label">Status</label>
+                        <select name="StatusFilter" class="form-select">
+                            <option value="">All status</option>
+                            <option value="0" selected="@(Model.StatusFilter == "0")">Pending</option>
+                            <option value="1" selected="@(Model.StatusFilter == "1")">Active</option>
+                            <option value="2" selected="@(Model.StatusFilter == "2")">Inactive</option>
+                            <option value="3" selected="@(Model.StatusFilter == "3")">Suspended</option>
+                        </select>
+                    </div>
+                <div>
+                    <label class="form-label">Visibility</label>
+                    <select name="VisibilityFilter" class="form-select">
+                        <option value="">All visibility</option>
+                        <option value="1" selected="@(Model.VisibilityFilter == "1")">Visible</option>
+                        <option value="0" selected="@(Model.VisibilityFilter == "0")">Hidden</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Vacancy Level</label>
+                    <select name="VacancyLevelFilter" class="form-select">
+                        <option value="">All levels</option>
+                        <option value="Diploma" selected="@(Model.VacancyLevelFilter == "Diploma")">Diploma</option>
+                        <option value="Degree" selected="@(Model.VacancyLevelFilter == "Degree")">Degree</option>
+                    </select>
+                </div>
+                <div class="company-filter-actions">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                    <a asp-page="/Committee/Companies" class="btn btn-outline-secondary">Reset</a>
+                </div>
+            </form>
+        </section>
+
+        <section class="company-list-card">
+            <div class="company-list-head">
+                <div>
+                    <h4>Registered Companies</h4>
+                    <p>Each record shows identity, location, publication state, and quick access to the detail page.</p>
+                </div>
+                <div class="company-count-pill">@Model.FilteredCompanies records</div>
             </div>
-            <div class="col-md-2">
-                <label class="form-label">Visibility</label>
-                <select name="VisibilityFilter" class="form-select form-select-sm">
-                    <option value="">All</option>
-                    <option value="1" selected="@(Model.VisibilityFilter == "1")">1</option>
-                    <option value="0" selected="@(Model.VisibilityFilter == "0")">0</option>
-                </select>
+
+            <div class="table-responsive company-table">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Company</th>
+                            <th>Locations</th>
+                            <th>Status</th>
+                            <th>Visibility</th>
+                            <th>Vacancy</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Companies.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="7" class="company-empty">
+                                    <strong>No companies match this filter.</strong>
+                                    Try widening the search or resetting the filters to view more records.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                                @foreach (var c in Model.Companies)
+                                {
+                                    var orderedBranches = c.Branches
+                                        .OrderByDescending(a => a.is_hq)
+                                        .ThenBy(a => a.branch_id)
+                                        .ToList();
+                                    var primaryBranch = orderedBranches
+                                        .FirstOrDefault();
+                                    var displayBranches = orderedBranches
+                                        .Where(a => !string.IsNullOrWhiteSpace(a.address_line))
+                                        .Select((branch, index) => new
+                                        {
+                                            BranchId = branch.branch_id,
+                                            Label = index switch
+                                            {
+                                                0 => "Address 1",
+                                                1 => "Address 2",
+                                                2 => "Address 3",
+                                                _ => $"Address {index + 1}"
+                                            },
+                                            Address = branch.address_line!.Trim(),
+                                            Status = branch.status ?? 0,
+                                            Visibility = branch.visibility ?? 1,
+                                            Vacancy = string.IsNullOrWhiteSpace(branch.vacancyLevel) ? "Not set" : branch.vacancyLevel,
+                                            ActionRoute = c.company_id
+                                        })
+                                        .ToList();
+                                var branchStatus = primaryBranch?.status ?? 0;
+                                var statusClass = branchStatus switch
+                                {
+                                    1 => "is-active",
+                                    2 => "is-inactive",
+                                    3 => "is-suspended",
+                                    _ => "is-pending"
+                                };
+                                var statusText = branchStatus switch
+                                {
+                                    1 => "Active",
+                                    2 => "Inactive",
+                                    3 => "Suspended",
+                                    _ => "Pending"
+                                };
+                                var branchVisibility = primaryBranch?.visibility ?? 1;
+                                var visibilityClass = branchVisibility == 1 ? "is-visible" : "is-hidden";
+                                var visibilityText = branchVisibility == 1 ? "Visible" : "Hidden";
+                                var vacancyText = string.IsNullOrWhiteSpace(primaryBranch?.vacancyLevel) ? "Not set" : primaryBranch!.vacancyLevel;
+
+                                <tr>
+                                    <td class="fw-semibold text-muted">@c.company_id</td>
+                                    <td>
+                                        <div class="company-name">@c.name</div>
+                                        <div class="company-subtext">
+                                            Reg No: @c.regNo
+                                            @if (!string.IsNullOrWhiteSpace(c.website))
+                                            {
+                                                <span>| @c.website</span>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (displayBranches.Count == 0)
+                                        {
+                                            <div class="company-address">Location not provided</div>
+                                        }
+                                        else if (displayBranches.Count == 1)
+                                        {
+                                            var firstBranch = displayBranches[0];
+                                            <div class="company-address-item company-location-panel">
+                                                <span class="company-address-label">@firstBranch.Label</span>
+                                                <div class="company-address">@firstBranch.Address</div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            var firstBranch = displayBranches[0];
+                                            var extraBranches = displayBranches.Skip(1).ToList();
+                                            var groupId = $"company-branches-{c.company_id}";
+
+                                            <div class="company-location-panel">
+                                                <div class="company-address-item">
+                                                    <span class="company-address-label">@firstBranch.Label</span>
+                                                    <div class="company-address">@firstBranch.Address</div>
+                                                </div>
+                                                <button type="button" class="company-location-toggle" data-branch-group="@groupId">Show more</button>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="company-meta-stack">
+                                            <span class="company-badge @statusClass">@statusText</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="company-badge @visibilityClass">@visibilityText</span>
+                                    </td>
+                                    <td>
+                                        <span class="company-badge is-level">@vacancyText</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <a class="btn btn-primary btn-sm company-details-btn"
+                                           asp-page="/Committee/CompanyDetails"
+                                           asp-route-companyId="@c.company_id"
+                                           asp-route-branchId="@primaryBranch?.branch_id">Details</a>
+                                    </td>
+                                </tr>
+
+                                @if (displayBranches.Count > 1)
+                                {
+                                    var groupId = $"company-branches-{c.company_id}";
+                                    foreach (var branch in displayBranches.Skip(1))
+                                    {
+                                        var extraBranchStatusClass = branch.Status switch
+                                        {
+                                            1 => "is-active",
+                                            2 => "is-inactive",
+                                            3 => "is-suspended",
+                                            _ => "is-pending"
+                                        };
+                                        var extraBranchStatusText = branch.Status switch
+                                        {
+                                            1 => "Active",
+                                            2 => "Inactive",
+                                            3 => "Suspended",
+                                            _ => "Pending"
+                                        };
+                                        var extraBranchVisibilityClass = branch.Visibility == 1 ? "is-visible" : "is-hidden";
+                                        var extraBranchVisibilityText = branch.Visibility == 1 ? "Visible" : "Hidden";
+
+                                        <tr class="company-extra-row" data-branch-group-row="@groupId">
+                                            <td class="company-extra-spacer"></td>
+                                            <td class="company-extra-spacer"></td>
+                                            <td>
+                                                <div class="company-address-item company-location-panel">
+                                                    <span class="company-address-label">@branch.Label</span>
+                                                    <div class="company-address">@branch.Address</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="company-badge @extraBranchStatusClass">@extraBranchStatusText</span>
+                                            </td>
+                                            <td>
+                                                <span class="company-badge @extraBranchVisibilityClass">@extraBranchVisibilityText</span>
+                                            </td>
+                                            <td>
+                                                <span class="company-badge is-level">@branch.Vacancy</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <a class="btn btn-primary btn-sm company-details-btn"
+                                                   asp-page="/Committee/CompanyDetails"
+                                                   asp-route-companyId="@branch.ActionRoute"
+                                                   asp-route-branchId="@branch.BranchId">Details</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
-            <div class="col-md-2">
-                <label class="form-label">Vacancy Level</label>
-                <select name="VacancyLevelFilter" class="form-select form-select-sm">
-                    <option value="">All</option>
-                    <option value="Diploma" selected="@(Model.VacancyLevelFilter == "Diploma")">Diploma</option>
-                    <option value="Degree" selected="@(Model.VacancyLevelFilter == "Degree")">Degree</option>
-                </select>
-            </div>
-            <div class="col-md-2 d-flex gap-2">
-                <button type="submit" class="btn btn-sm btn-primary w-100">Apply</button>
-                <a asp-page="/Committee/Companies" class="btn btn-sm btn-outline-secondary w-100">Reset</a>
-            </div>
-        </form>
-        <div class="mt-2 small text-muted">
-            Number of companies: @Model.FilteredCompanies / @Model.TotalCompanies
-        </div>
+        </section>
     </div>
 </div>
 
-<div class="table-responsive">
-    <table class="table table-sm table-bordered align-middle">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Status</th>
-                <th>Visibility</th>
-                <th style="width:110px;">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var c in Model.Companies)
-            {
-                <tr>
-                    <td>@c.company_id</td>
-                    <td>@c.name</td>
-                    <td>@string.Join(", ", new[] { c.address1, c.address2, c.address3 }.Where(x => !string.IsNullOrWhiteSpace(x)))</td>
-                    <td>@c.status</td>
-                    <td>@c.visibility</td>
-                    <td>
-                        <a class="btn btn-sm btn-primary"
-                           asp-page="/Committee/CompanyDetails"
-                           asp-route-companyId="@c.company_id">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-</div>
+<script>
+    document.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-branch-group]");
+        if (!button) {
+            return;
+        }
+
+        var groupId = button.getAttribute("data-branch-group");
+        var rows = document.querySelectorAll('[data-branch-group-row="' + groupId + '"]');
+        var isOpen = button.classList.contains("is-open");
+
+        rows.forEach(function (row) {
+            row.classList.toggle("is-visible", !isOpen);
+        });
+
+        button.classList.toggle("is-open", !isOpen);
+        button.textContent = isOpen ? "Show more" : "Hide extra";
+    });
+</script>

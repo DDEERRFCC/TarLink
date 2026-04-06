@@ -12,7 +12,7 @@ public class CommitteeMembersModel : CommitteePageModelBase
         _db = db;
     }
 
-    public List<SysUser> Members { get; private set; } = new();
+    public List<CommitteeMemberRow> Members { get; private set; } = new();
 
     public IActionResult OnGet()
     {
@@ -21,11 +21,55 @@ public class CommitteeMembersModel : CommitteePageModelBase
             return RedirectToPage("/Login/CommitteeLogin");
         }
 
-        Members = _db.SysUsers.AsNoTracking()
+        var sysUsers = _db.SysUsers.AsNoTracking()
             .Where(u => u.role == "committee")
-            .OrderBy(u => u.username)
+            .Select(u => new CommitteeMemberRow
+            {
+                staffId = _db.UcSupervisors
+                    .Where(s => s.email == u.email)
+                    .Select(s => s.staffId)
+                    .FirstOrDefault(),
+                name = _db.UcSupervisors
+                    .Where(s => s.email == u.email)
+                    .Select(s => s.name)
+                    .FirstOrDefault(),
+                username = u.username,
+                email = u.email,
+                is_active = u.is_active,
+                is_locked = u.is_locked
+            })
+            .ToList();
+
+        var supervisors = _db.UcSupervisors.AsNoTracking()
+            .Where(s => s.isCommittee)
+            .Select(s => new CommitteeMemberRow
+            {
+                staffId = s.staffId,
+                name = s.name,
+                username = s.staffId,
+                email = s.email,
+                is_active = s.isActive,
+                is_locked = null
+            })
+            .ToList();
+
+        Members = sysUsers
+            .Concat(supervisors)
+            .GroupBy(m => (m.email ?? string.Empty).Trim().ToLowerInvariant())
+            .Select(g => g.First())
+            .OrderBy(m => m.username)
             .ToList();
 
         return Page();
+    }
+
+    public class CommitteeMemberRow
+    {
+        public string? staffId { get; set; }
+        public string? name { get; set; }
+        public string username { get; set; } = string.Empty;
+        public string? email { get; set; }
+        public bool is_active { get; set; }
+        public bool? is_locked { get; set; }
     }
 }

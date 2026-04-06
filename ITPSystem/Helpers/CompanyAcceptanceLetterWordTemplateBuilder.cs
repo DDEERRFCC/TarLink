@@ -18,12 +18,17 @@ public static class CompanyAcceptanceLetterWordTemplateBuilder
 
     public static byte[] Build(StudentApplication? student, string webRootPath)
     {
+        var templatePath = Path.Combine(webRootPath, "documents", "templates", TemplateFileName);
+        return BuildFromTemplatePath(student, templatePath);
+    }
+
+    public static byte[] BuildFromTemplatePath(StudentApplication? student, string templatePath)
+    {
         if (!OperatingSystem.IsWindows())
         {
             throw new PlatformNotSupportedException("Microsoft Word PDF export is only supported on Windows.");
         }
 
-        var templatePath = Path.Combine(webRootPath, "documents", "templates", TemplateFileName);
         if (!File.Exists(templatePath))
         {
             throw new FileNotFoundException("Company acceptance letter template was not found.", templatePath);

@@ -86,6 +86,8 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
         var seenStudentIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var seenEmails = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var seenIc = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var seenPersonIds = new HashSet<int>();
+        var seenUsernames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         for (var i = 0; i < rows.Count; i++)
         {
@@ -115,6 +117,16 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
                 Errors.Add(new ImportError(rowNo, $"Duplicate number_ic in file: {row.number_ic}"));
                 continue;
             }
+            if (!seenPersonIds.Add(row.personId))
+            {
+                Errors.Add(new ImportError(rowNo, $"Duplicate person id in file: {row.personId}"));
+                continue;
+            }
+            if (!seenUsernames.Add(row.studentName))
+            {
+                Errors.Add(new ImportError(rowNo, $"Duplicate studentName in file: {row.studentName}"));
+                continue;
+            }
 
             if (!_db.Cohorts.Any(c => c.cohort_id == row.cohortId))
             {
@@ -132,11 +144,16 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
             }
 
             if (_db.SysUsers.Any(u =>
-                u.username == row.studentID ||
+                u.username == row.studentName ||
                 u.email == row.studentEmail ||
                 u.ic_number == row.number_ic))
             {
                 Errors.Add(new ImportError(rowNo, "Account already exists (username/email/IC)."));
+                continue;
+            }
+            if (_db.Persons.Any(p => p.person_id == row.personId))
+            {
+                Errors.Add(new ImportError(rowNo, $"Person id already exists: {row.personId}."));
                 continue;
             }
 
@@ -167,11 +184,23 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
                 _db.StudentApplications.Add(app);
                 _db.SaveChanges();
 
+                var person = new Person
+                {
+                    person_id = row.personId,
+                    full_name = app.studentName,
+                    email = app.studentEmail,
+                    role = "student",
+                    created_at = now
+                };
+
+                _db.Persons.Add(person);
+                _db.SaveChanges();
+
                 var user = new SysUser
                 {
                     email = app.studentEmail,
-                    username = app.studentID,
-                    password = app.number_ic,
+                    username = app.studentName,
+                    password = NormalizePassword(app.number_ic),
                     role = "student",
                     ic_number = app.number_ic,
                     application_id = app.application_id,
@@ -355,7 +384,7 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
         row.studentName = (row.studentName ?? string.Empty).Trim();
         row.studentEmail = (row.studentEmail ?? string.Empty).Trim();
         row.programme = (row.programme ?? string.Empty).Trim().ToUpperInvariant();
-        row.applyStatus = string.IsNullOrWhiteSpace(row.applyStatus) ? "pending" : row.applyStatus.Trim();
+        row.applyStatus = string.IsNullOrWhiteSpace(row.applyStatus) ? "none" : row.applyStatus.Trim();
 
         if (int.TryParse(row.cohortIdRaw, NumberStyles.Integer, CultureInfo.InvariantCulture, out var cohortId))
         {
@@ -369,6 +398,8 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
         {
             row.groupNo = groupNo;
         }
+
+        row.personId = ExtractDigitsAsInt(row.studentID);
     }
 
     private static string? ValidateRow(ImportStudentRow row)
@@ -381,6 +412,7 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
         if (row.cohortId <= 0) return "cohortId must be a valid integer.";
         if (row.groupNo <= 0) return "groupNo must be a valid integer.";
         if (row.level <= 0) return "level must be a positive integer.";
+        if (row.personId <= 0) return "studentID must contain digits to form person id.";
         if (!row.studentEmail.Contains('@')) return "studentEmail is invalid.";
         if (row.programme.Length > 4) return "programme max length is 4.";
         return null;
@@ -400,16 +432,39 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
         var value = (rawStatus ?? string.Empty).Trim().ToLowerInvariant();
         return value switch
         {
+            "none" => "none",
             "approved" => "approved",
             "rejected" => "rejected",
             "withdrawn" => "withdrawn",
-            _ => "pending"
+            "pending" => "pending",
+            _ => "none"
         };
     }
 
     private static string? NullIfWhiteSpace(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private static int ExtractDigitsAsInt(string value)
+    {
+        var digits = new string(value.Where(char.IsDigit).ToArray());
+        if (string.IsNullOrWhiteSpace(digits))
+        {
+            return 0;
+        }
+
+        return int.TryParse(digits, NumberStyles.Integer, CultureInfo.InvariantCulture, out var result) ? result : 0;
+    }
+
+    private static string NormalizePassword(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        return new string(value.Where(char.IsLetterOrDigit).ToArray());
     }
 
     public class ImportStudentRow
@@ -430,6 +485,7 @@ public class CommitteeImportStudentsModel : CommitteePageModelBase
         public int cohortId { get; set; }
         public byte level { get; set; }
         public int groupNo { get; set; }
+        public int personId { get; set; }
     }
 
     public record ImportError(int RowNo, string Error);

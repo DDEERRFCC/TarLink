@@ -121,26 +121,31 @@ public class CommitteeCompanyRequestsModel : CommitteePageModelBase
         var nameLower = companyName.ToLower();
         var addressLower = address.ToLower();
 
-        var existing = _db.Companies.FirstOrDefault(c =>
-            c.name.ToLower() == nameLower &&
-            (c.address1 ?? string.Empty).ToLower() == addressLower);
+        var existing = _db.Companies
+            .Include(c => c.Branches)
+            .FirstOrDefault(c =>
+                c.name.ToLower() == nameLower &&
+                c.Branches.Any(a => (a.address_line ?? string.Empty).ToLower() == addressLower));
 
         if (existing == null)
         {
-            _db.Companies.Add(new Company
+            var company = new Company
             {
                 created_at = DateTime.Now,
-                lastUpdate = DateTime.Now,
+                updated_at = DateTime.Now,
+                regNo = $"REQ{DateTime.Now:yyyyMMddHHmmssfff}",
                 name = companyName,
-                address1 = address,
-                status = 1,
-                visibility = 1
-            });
+            };
+            company.Branches.Add(new CompanyBranch { address_line = address, status = 1, visibility = 1, is_hq = true });
+            _db.Companies.Add(company);
             return;
         }
 
-        existing.status = 1;
-        existing.visibility = 1;
+        foreach (var branch in existing.Branches.Where(b => string.Equals(b.address_line, address, StringComparison.OrdinalIgnoreCase)))
+        {
+            branch.status = 1;
+            branch.visibility = 1;
+        }
     }
 
     private static string NormalizeStatus(string? rawStatus)

@@ -22,6 +22,7 @@ namespace ITPSystem.Pages.Supervisor
         public List<MarkViewItem> DetailItems { get; set; } = new();
         public List<StudentSummary> Summaries { get; set; } = new();
         public List<RubricDefinition> RubricDefinitions { get; } = BuildRubricDefinitions();
+        public HashSet<int> FinalReportSubmittedIds { get; private set; } = new();
 
         [BindProperty]
         public MarksInput Input { get; set; } = new();
@@ -64,6 +65,18 @@ namespace ITPSystem.Pages.Supervisor
                 if (assignedStudent == null)
                 {
                     ModelState.AddModelError(nameof(Input.ApplicationId), "Selected student is not assigned to you.");
+                }
+                else
+                {
+                    var hasFinalReport = _db.ProgressReports.AsNoTracking()
+                        .Any(r => r.applicantId == appId
+                                  && r.reportType == "final"
+                                  && r.status >= 1
+                                  && !string.IsNullOrWhiteSpace(r.file_path));
+                    if (!hasFinalReport)
+                    {
+                        ModelState.AddModelError(nameof(Input.ApplicationId), "Final report not submitted yet. Assessment marks can only be submitted after final report submission.");
+                    }
                 }
             }
 
@@ -279,6 +292,11 @@ namespace ITPSystem.Pages.Supervisor
                 .GroupBy(r => r.applicantId)
                 .ToDictionary(g => g.Key, g => g.First());
 
+            FinalReportSubmittedIds = finalReports
+                .Where(kvp => kvp.Value.status >= 1 && !string.IsNullOrWhiteSpace(kvp.Value.file_path))
+                .Select(kvp => kvp.Key)
+                .ToHashSet();
+
             Summaries = Students
                 .Select(s =>
                 {
@@ -293,7 +311,8 @@ namespace ITPSystem.Pages.Supervisor
                         StudentId = s.studentID,
                         TotalScore = totalScore,
                         TotalMax = totalMax,
-                        FinalReportId = report?.report_id
+                        FinalReportId = report?.report_id,
+                        FinalReportSubmitted = FinalReportSubmittedIds.Contains(s.application_id)
                     };
                 })
                 .OrderBy(s => s.StudentName)
@@ -324,6 +343,7 @@ namespace ITPSystem.Pages.Supervisor
             public decimal TotalScore { get; set; }
             public decimal TotalMax { get; set; }
             public long? FinalReportId { get; set; }
+            public bool FinalReportSubmitted { get; set; }
         }
 
         public class MarksInput

@@ -18,6 +18,9 @@ namespace ITPSystem.Models
         [StringLength(250)]
         public string? email { get; set; }
 
+        [StringLength(20)]
+        public string? contact { get; set; }
+
         [StringLength(255)]
         public string? password { get; set; }
 

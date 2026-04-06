@@ -17,6 +17,7 @@ appointmentlettertemplate,
 blacklistcompany,
 cohort,
 company,
+companybranch,
 person,
 sysuser,
 sysconfig,
@@ -42,29 +43,41 @@ CREATE TABLE person (
 -- ==============================
 CREATE TABLE company (
     company_id INT AUTO_INCREMENT PRIMARY KEY,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    lastUpdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    lastVisit DATE,
-    lastContact DATE,
-    regNo VARCHAR(15),
-    vacancyLevel VARCHAR(15),
+    reg_no VARCHAR(15) NOT NULL UNIQUE,
     name VARCHAR(250) NOT NULL,
-    address1 VARCHAR(255),
-    address2 VARCHAR(255),
-    address3 VARCHAR(255),
-    totalNoOfStaff INT,
-    industryInvolved VARCHAR(150),
-    productsAndServices VARCHAR(150),
-    companyBackground VARCHAR(255),
+    industry_involved VARCHAR(150),
+    products_and_services VARCHAR(150),
+    company_background TEXT,
     logo BLOB,
-    website VARCHAR(100),
-    ssmCert LONGBLOB,
-    status TINYINT DEFAULT 1,
-    visibility TINYINT(1) DEFAULT 1,
+    website VARCHAR(255),
+    ssm_cert LONGBLOB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     remark VARCHAR(500),
-    INDEX idx_regNo (regNo),
-    INDEX idx_status (status),
     INDEX idx_name (name(100))
+);
+CREATE TABLE companybranch (
+    branch_id INT AUTO_INCREMENT PRIMARY KEY,
+    company_id INT NOT NULL,
+    address_line VARCHAR(255),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postcode VARCHAR(20),
+    country VARCHAR(100),
+    total_no_of_staff INT,
+    vacancy_level VARCHAR(15),
+    status TINYINT DEFAULT 0 COMMENT '0=Pending, 1=Active, 2=Inactive, 3=Suspended',
+    visibility TINYINT(1) DEFAULT 1 COMMENT '0=Hidden, 1=Visible',
+    last_visit DATE,
+    last_contact DATE,
+    is_hq TINYINT(1) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_company_branch_company FOREIGN KEY (company_id) REFERENCES company(company_id) ON DELETE CASCADE,
+    INDEX idx_company_id (company_id),
+    INDEX idx_status (status),
+    INDEX idx_visibility (visibility),
+    INDEX idx_city (city)
 );
 -- ==============================
 -- BLACKLIST COMPANY TABLE
@@ -76,9 +89,9 @@ CREATE TABLE blacklistcompany (
     address VARCHAR(500),
     reason VARCHAR(500),
     byCommittee VARCHAR(255),
-    campus VARCHAR(45),
-    faculty VARCHAR(45),
-    attachment VARCHAR(255)
+    attachment VARCHAR(255),
+    is_removed TINYINT(1) DEFAULT 0,
+    removed_at TIMESTAMP NULL
 );
 -- ==============================
 -- COHORT TABLE
@@ -143,9 +156,21 @@ CREATE TABLE companyrequest (
 -- ==============================
 CREATE TABLE appointmentlettertemplate (
     template_id INT AUTO_INCREMENT PRIMARY KEY,
+    cohort_id INT NOT NULL,
     template_name VARCHAR(100),
     content TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    company_acceptance_letter_path VARCHAR(500),
+    indemnity_letter_path VARCHAR(500),
+    parent_acknowledgement_form_path VARCHAR(500),
+    company_supervisor_evaluation_form_path VARCHAR(500),
+    progress_report_template_path VARCHAR(500),
+    final_report_template_path VARCHAR(500),
+    student_support_letter_path VARCHAR(500),
+    appointment_confirmation_letter_path VARCHAR(500),
+    warning_letter_path VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_cohort_id (cohort_id),
+    CONSTRAINT fk_appointmentlettertemplate_cohort FOREIGN KEY (cohort_id) REFERENCES cohort(cohort_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 -- ==============================
 -- STUDENT APPLICATION TABLE
@@ -171,7 +196,13 @@ CREATE TABLE studentapplication (
     ucSupervisor VARCHAR(255),
     ucSupervisorEmail VARCHAR(255),
     ucSupervisorContact VARCHAR(255),
-    applyStatus ENUM('pending', 'approved', 'rejected', 'withdrawn') DEFAULT 'pending',
+    applyStatus ENUM(
+        'none',
+        'pending',
+        'approved',
+        'rejected',
+        'withdrawn'
+    ) DEFAULT 'none',
     remark TEXT,
     level TINYINT,
     cohortId INT NOT NULL,
@@ -317,6 +348,7 @@ CREATE TABLE ucsupervisor (
     name VARCHAR(150) NOT NULL,
     email VARCHAR(250) UNIQUE,
     password VARCHAR(255),
+    contact VARCHAR(20),
     remark VARCHAR(150),
     isActive TINYINT(1) DEFAULT 1,
     isCommittee TINYINT(1) DEFAULT 0,

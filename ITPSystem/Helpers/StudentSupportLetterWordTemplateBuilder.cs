@@ -26,13 +26,18 @@ public static class StudentSupportLetterWordTemplateBuilder
 
     public static byte[] Build(StudentApplication? student, string webRootPath)
     {
+        var templateFileName = GetTemplateFileName(student?.level);
+        var templatePath = Path.Combine(webRootPath, "documents", "templates", templateFileName);
+        return BuildFromTemplatePath(student, templatePath);
+    }
+
+    public static byte[] BuildFromTemplatePath(StudentApplication? student, string templatePath)
+    {
         if (!OperatingSystem.IsWindows())
         {
             throw new PlatformNotSupportedException("Microsoft Word PDF export is only supported on Windows.");
         }
 
-        var templateFileName = GetTemplateFileName(student?.level);
-        var templatePath = Path.Combine(webRootPath, "documents", "templates", templateFileName);
         if (!File.Exists(templatePath))
         {
             throw new FileNotFoundException("Student support letter template was not found.", templatePath);
@@ -83,6 +88,8 @@ public static class StudentSupportLetterWordTemplateBuilder
 
         foreach (var entry in wordXmlEntries)
         {
+            var entryFullName = entry.FullName;
+
             string xml;
             using (var entryStream = entry.Open())
             using (var reader = new StreamReader(entryStream, Encoding.UTF8))
@@ -102,7 +109,7 @@ public static class StudentSupportLetterWordTemplateBuilder
             xml = xml.Replace(EndDatePlaceholder, endDate, StringComparison.Ordinal);
 
             entry.Delete();
-            var updatedEntry = archive.CreateEntry(entry.FullName, CompressionLevel.Optimal);
+            var updatedEntry = archive.CreateEntry(entryFullName, CompressionLevel.Optimal);
             using var updatedStream = updatedEntry.Open();
             using var writer = new StreamWriter(updatedStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
             writer.Write(xml);

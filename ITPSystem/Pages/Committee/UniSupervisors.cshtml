@@ -2,201 +2,700 @@
 @model CommitteeUniSupervisorsModel
 @{
     ViewData["CommitteePageTitle"] = "University Supervisor";
+
+    var totalSupervisors = Model.Supervisors.Count;
+    var activeSupervisors = Model.Supervisors.Count(x => x.isActive);
+    var committeeEnabled = Model.Supervisors.Count(x => x.isCommittee);
+    var assignedStudents = Model.Supervisors.Sum(x => x.StudentCount);
 }
+
+<style>
+    .uni-supervisor-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .uni-supervisor-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .uni-supervisor-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .uni-supervisor-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .uni-supervisor-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .uni-supervisor-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .uni-supervisor-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .uni-supervisor-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .uni-supervisor-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .uni-supervisor-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .uni-supervisor-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .uni-supervisor-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .uni-supervisor-banner-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .uni-supervisor-stat-grid,
+    .uni-supervisor-body-grid {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .uni-supervisor-stat-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .uni-supervisor-body-grid {
+        grid-template-columns: minmax(360px, .92fr) minmax(0, 1.08fr);
+        align-items: start;
+    }
+
+    .uni-supervisor-stat-card,
+    .uni-supervisor-form-card,
+    .uni-supervisor-table-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .uni-supervisor-stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .uni-supervisor-stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .uni-supervisor-stat-label {
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .uni-supervisor-stat-value {
+        margin-top: .35rem;
+        color: #0f172a;
+        font-size: 1.7rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .uni-supervisor-stat-note {
+        margin-top: .3rem;
+        color: #718396;
+        font-size: .88rem;
+    }
+
+    .uni-supervisor-form-card,
+    .uni-supervisor-table-card {
+        padding: 1rem;
+    }
+
+    .uni-supervisor-form-card.editing {
+        border-color: #fde68a;
+        box-shadow: 0 14px 28px rgba(217, 119, 6, 0.12);
+    }
+
+    .uni-supervisor-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .uni-supervisor-section-copy {
+        margin: .35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .uni-supervisor-form-shell {
+        margin-top: 1rem;
+        border: 1px dashed #9fd8cf;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #f8fffd, #ffffff);
+        padding: 1rem;
+    }
+
+    .uni-supervisor-form-shell .form-control,
+    .uni-supervisor-form-shell .form-select {
+        min-height: 46px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .uni-supervisor-form-shell .form-control:focus,
+    .uni-supervisor-form-shell .form-select:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
+    }
+
+    .uni-supervisor-flag-row {
+        display: flex;
+        gap: .75rem;
+        flex-wrap: wrap;
+    }
+
+    .uni-supervisor-flag {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        min-height: 46px;
+        padding: .75rem .95rem;
+        border: 1px solid #d8e5f1;
+        border-radius: 14px;
+        background: #fff;
+    }
+
+    .uni-supervisor-flag .form-check-input {
+        float: none;
+        margin: 0;
+    }
+
+    .uni-supervisor-action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .uni-supervisor-primary-btn,
+    .uni-supervisor-secondary-btn,
+    .uni-supervisor-table-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: .75rem 1rem;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .uni-supervisor-primary-btn {
+        border: none;
+        color: #fff;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .uni-supervisor-secondary-btn {
+        border: 1px solid #d1ddea;
+        background: #fff;
+        color: #12344b;
+    }
+
+    .uni-supervisor-table-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .uni-supervisor-count-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .4rem .78rem;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .84rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .uni-supervisor-table-wrap {
+        margin-top: 1rem;
+    }
+
+    .uni-supervisor-table thead th {
+        border-bottom-width: 1px;
+        background: #f6fafc;
+        color: #607284;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .uni-supervisor-table tbody td {
+        padding-top: .95rem;
+        padding-bottom: .95rem;
+        vertical-align: middle;
+    }
+
+    .uni-supervisor-name {
+        font-weight: 700;
+        color: #102133;
+    }
+
+    .uni-supervisor-meta {
+        margin-top: .18rem;
+        color: #718396;
+        font-size: .86rem;
+    }
+
+    .uni-supervisor-status {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .28rem .68rem;
+        font-size: .78rem;
+        font-weight: 700;
+    }
+
+    .uni-supervisor-status.active {
+        background: #ecfdf5;
+        color: #0f766e;
+    }
+
+    .uni-supervisor-status.inactive {
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    .uni-supervisor-status.committee {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+
+    .uni-supervisor-status.standard {
+        background: #f8fafc;
+        color: #475569;
+    }
+
+    .uni-supervisor-row-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+
+    .uni-supervisor-table-btn {
+        min-height: 38px;
+        padding: .55rem .85rem;
+        border: 1px solid #d1ddea;
+        background: #fff;
+        color: #12344b;
+    }
+
+    .uni-supervisor-table-btn.delete {
+        border-color: #fecdd3;
+        color: #be123c;
+        background: #fff1f2;
+    }
+
+    .uni-supervisor-empty {
+        padding: 2.5rem 1rem;
+        text-align: center;
+        color: #607284;
+    }
+
+    .uni-supervisor-empty strong {
+        display: block;
+        margin-bottom: .35rem;
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .uni-supervisor-stat-grid,
+        .uni-supervisor-body-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .uni-supervisor-banner-top,
+        .uni-supervisor-banner-actions,
+        .uni-supervisor-action-row,
+        .uni-supervisor-table-head,
+        .uni-supervisor-row-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .uni-supervisor-back-btn,
+        .uni-supervisor-banner-link,
+        .uni-supervisor-primary-btn,
+        .uni-supervisor-secondary-btn,
+        .uni-supervisor-table-btn {
+            width: 100%;
+        }
+    }
+</style>
 
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+    <div class="uni-supervisor-page">
+        <section class="uni-supervisor-banner">
+            <div class="uni-supervisor-banner-top">
+                <div>
+                    <div class="uni-supervisor-kicker">University Supervisor</div>
+                    <h3 class="uni-supervisor-title">Manage supervisor accounts, committee access, and student assignment coverage from one place.</h3>
+                    <p class="uni-supervisor-copy">Create new supervisor records, maintain faculty and campus details, and keep committee-linked supervisor accounts aligned with the student supervision workload.</p>
+                </div>
+                <a href="/Committee/Dashboard" class="uni-supervisor-back-btn">Back to Dashboard</a>
+            </div>
+            <div class="uni-supervisor-banner-actions">
+                <a asp-page="/Committee/CommitteeMembers" class="uni-supervisor-banner-link">Open Committee Member</a>
+                <a asp-page="/Committee/StudentAccess" class="uni-supervisor-banner-link">Open Student Access</a>
+            </div>
+        </section>
 
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="alert alert-info">@Model.StatusMessage</div>
-}
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-info mb-0">@Model.StatusMessage</div>
+        }
 
-@if (!Model.ShowEditForm)
-{
-    <div class="card mb-3">
-        <div class="card-header">Create New University Supervisor</div>
-        <div class="card-body">
-            <form method="post" asp-page-handler="Create" class="row g-3">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <section class="uni-supervisor-stat-grid">
+            <article class="uni-supervisor-stat-card">
+                <div class="uni-supervisor-stat-label">Supervisors</div>
+                <div class="uni-supervisor-stat-value">@totalSupervisors</div>
+                <div class="uni-supervisor-stat-note">Supervisor profiles currently listed in the university supervisor directory.</div>
+            </article>
+            <article class="uni-supervisor-stat-card">
+                <div class="uni-supervisor-stat-label">Active Profiles</div>
+                <div class="uni-supervisor-stat-value">@activeSupervisors</div>
+                <div class="uni-supervisor-stat-note">Supervisors who are currently marked as active in the portal.</div>
+            </article>
+            <article class="uni-supervisor-stat-card">
+                <div class="uni-supervisor-stat-label">Committee Enabled</div>
+                <div class="uni-supervisor-stat-value">@committeeEnabled</div>
+                <div class="uni-supervisor-stat-note">Supervisor records that also carry committee portal access.</div>
+            </article>
+            <article class="uni-supervisor-stat-card">
+                <div class="uni-supervisor-stat-label">Assigned Students</div>
+                <div class="uni-supervisor-stat-value">@assignedStudents</div>
+                <div class="uni-supervisor-stat-note">Student application records currently mapped back to this supervisor list.</div>
+            </article>
+        </section>
 
-                <div class="col-md-3">
-                    <label asp-for="CreateInput.staffId" class="form-label">Staff ID</label>
-                    <input asp-for="CreateInput.staffId" class="form-control" placeholder="US001" />
-                    <span asp-validation-for="CreateInput.staffId" class="text-danger"></span>
-                </div>
-                <div class="col-md-5">
-                    <label asp-for="CreateInput.name" class="form-label">Name</label>
-                    <input asp-for="CreateInput.name" class="form-control" />
-                    <span asp-validation-for="CreateInput.name" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="CreateInput.email" class="form-label">Email</label>
-                    <input asp-for="CreateInput.email" class="form-control" />
-                    <span asp-validation-for="CreateInput.email" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="CreateInput.password" class="form-label">Password</label>
-                    <input asp-for="CreateInput.password" class="form-control" />
-                    <span asp-validation-for="CreateInput.password" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="CreateInput.faculty" class="form-label">Faculty</label>
-                    <select asp-for="CreateInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
-                        <option value="">-- Select Faculty --</option>
-                    </select>
-                    <span asp-validation-for="CreateInput.faculty" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="CreateInput.campus" class="form-label">Campus</label>
-                    <select asp-for="CreateInput.campus" asp-items="Model.CampusOptions" class="form-select">
-                        <option value="">-- Select Campus --</option>
-                    </select>
-                    <span asp-validation-for="CreateInput.campus" class="text-danger"></span>
-                </div>
-                <div class="col-md-8">
-                    <label asp-for="CreateInput.remark" class="form-label">Remark</label>
-                    <input asp-for="CreateInput.remark" class="form-control" />
-                    <span asp-validation-for="CreateInput.remark" class="text-danger"></span>
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                    <div class="form-check mt-4">
-                        <input asp-for="CreateInput.isActive" class="form-check-input" />
-                        <label asp-for="CreateInput.isActive" class="form-check-label">Active</label>
+        <section class="uni-supervisor-body-grid">
+            <article class="uni-supervisor-form-card @(Model.ShowEditForm ? "editing" : string.Empty)">
+                <h3 class="uni-supervisor-section-title">@(Model.ShowEditForm ? "Edit Supervisor" : "Create New University Supervisor")</h3>
+                <p class="uni-supervisor-section-copy">@(Model.ShowEditForm ? "Update the selected supervisor record while keeping the related committee account in sync." : "Create a new supervisor profile and optionally enable committee access from the same setup flow.")</p>
+
+                @if (!Model.ShowEditForm)
+                {
+                    <form method="post" asp-page-handler="Create" class="uni-supervisor-form-shell row g-3">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Staff ID (Auto)</label>
+                            <input value="@Model.NextStaffId" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-8">
+                            <label asp-for="CreateInput.name" class="form-label">Name</label>
+                            <input asp-for="CreateInput.name" class="form-control" />
+                            <span asp-validation-for="CreateInput.name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CreateInput.email" class="form-label">Email</label>
+                            <input asp-for="CreateInput.email" class="form-control" />
+                            <span asp-validation-for="CreateInput.email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CreateInput.contact" class="form-label">Contact</label>
+                            <input asp-for="CreateInput.contact" class="form-control" />
+                            <span asp-validation-for="CreateInput.contact" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CreateInput.icNumber" class="form-label">IC Number</label>
+                            <input asp-for="CreateInput.icNumber" class="form-control" />
+                            <span asp-validation-for="CreateInput.icNumber" class="text-danger"></span>
+                            <div class="form-text">Password is generated from the IC number.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CreateInput.faculty" class="form-label">Faculty</label>
+                            <select asp-for="CreateInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
+                                <option value="">-- Select Faculty --</option>
+                            </select>
+                            <span asp-validation-for="CreateInput.faculty" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CreateInput.campus" class="form-label">Campus</label>
+                            <select asp-for="CreateInput.campus" asp-items="Model.CampusOptions" class="form-select">
+                                <option value="">-- Select Campus --</option>
+                            </select>
+                            <span asp-validation-for="CreateInput.campus" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="CreateInput.remark" class="form-label">Remark</label>
+                            <input asp-for="CreateInput.remark" class="form-control" />
+                            <span asp-validation-for="CreateInput.remark" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <div class="uni-supervisor-flag-row">
+                                <label class="uni-supervisor-flag">
+                                    <input asp-for="CreateInput.isActive" class="form-check-input" />
+                                    <span>Active</span>
+                                </label>
+                                <label class="uni-supervisor-flag">
+                                    <input asp-for="CreateInput.isCommittee" class="form-check-input" />
+                                    <span>Committee Access</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="uni-supervisor-action-row">
+                                <button type="submit" class="uni-supervisor-primary-btn">Create Supervisor</button>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <form method="post" asp-page-handler="Update" class="uni-supervisor-form-shell row g-3">
+                        <input asp-for="EditInput.staffId" type="hidden" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Staff ID</label>
+                            <input value="@Model.EditInput.staffId" class="form-control" disabled />
+                        </div>
+                        <div class="col-md-8">
+                            <label asp-for="EditInput.name" class="form-label">Name</label>
+                            <input asp-for="EditInput.name" class="form-control" />
+                            <span asp-validation-for="EditInput.name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EditInput.email" class="form-label">Email</label>
+                            <input asp-for="EditInput.email" class="form-control" />
+                            <span asp-validation-for="EditInput.email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EditInput.contact" class="form-label">Contact</label>
+                            <input asp-for="EditInput.contact" class="form-control" />
+                            <span asp-validation-for="EditInput.contact" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EditInput.remark" class="form-label">Remark</label>
+                            <input asp-for="EditInput.remark" class="form-control" />
+                            <span asp-validation-for="EditInput.remark" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EditInput.faculty" class="form-label">Faculty</label>
+                            <select asp-for="EditInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
+                                <option value="">-- Select Faculty --</option>
+                            </select>
+                            <span asp-validation-for="EditInput.faculty" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="EditInput.campus" class="form-label">Campus</label>
+                            <select asp-for="EditInput.campus" asp-items="Model.CampusOptions" class="form-select">
+                                <option value="">-- Select Campus --</option>
+                            </select>
+                            <span asp-validation-for="EditInput.campus" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <div class="uni-supervisor-flag-row">
+                                <label class="uni-supervisor-flag">
+                                    <input asp-for="EditInput.isActive" class="form-check-input" />
+                                    <span>Active</span>
+                                </label>
+                                <label class="uni-supervisor-flag">
+                                    <input asp-for="EditInput.isCommittee" class="form-check-input" />
+                                    <span>Committee Access</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="uni-supervisor-action-row">
+                                <button type="submit" class="uni-supervisor-primary-btn">Update Supervisor</button>
+                                <a href="/Committee/UniSupervisors" class="uni-supervisor-secondary-btn">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                }
+            </article>
+
+            <article class="uni-supervisor-table-card">
+                <div class="uni-supervisor-table-head">
+                    <div>
+                        <h3 class="uni-supervisor-section-title">Supervisor Directory</h3>
+                        <p class="uni-supervisor-section-copy">Review campus and faculty placement, committee access status, and the current number of students assigned to each supervisor.</p>
                     </div>
+                    <div class="uni-supervisor-count-pill">@totalSupervisors record(s)</div>
                 </div>
-                <div class="col-md-2 d-flex align-items-center">
-                    <div class="form-check mt-4">
-                        <input asp-for="CreateInput.isCommittee" class="form-check-input" />
-                        <label asp-for="CreateInput.isCommittee" class="form-check-label">Committee</label>
-                    </div>
+
+                <div class="table-responsive uni-supervisor-table-wrap">
+                    <table class="table align-middle mb-0 uni-supervisor-table">
+                        <thead>
+                            <tr>
+                                <th>Staff ID</th>
+                                <th>Supervisor</th>
+                                <th>Contact</th>
+                                <th>Faculty / Campus</th>
+                                <th>Access</th>
+                                <th>Assigned</th>
+                                <th>Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Supervisors.Any())
+                            {
+                                <tr>
+                                    <td colspan="8" class="uni-supervisor-empty">
+                                        <strong>No university supervisors found.</strong>
+                                        Create the first supervisor record to start building the supervision directory.
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var supervisor in Model.Supervisors)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold text-muted">@supervisor.staffId</td>
+                                        <td>
+                                            <div class="uni-supervisor-name">@supervisor.name</div>
+                                            <div class="uni-supervisor-meta">@(string.IsNullOrWhiteSpace(supervisor.email) ? "No email recorded" : supervisor.email)</div>
+                                            @if (!string.IsNullOrWhiteSpace(supervisor.remark))
+                                            {
+                                                <div class="uni-supervisor-meta">@supervisor.remark</div>
+                                            }
+                                        </td>
+                                        <td>@(string.IsNullOrWhiteSpace(supervisor.contact) ? "-" : supervisor.contact)</td>
+                                        <td>
+                                            <div>@(string.IsNullOrWhiteSpace(supervisor.faculty) ? "-" : supervisor.faculty)</div>
+                                            <div class="uni-supervisor-meta">@(string.IsNullOrWhiteSpace(supervisor.campus) ? "-" : supervisor.campus)</div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <span class="uni-supervisor-status @(supervisor.isActive ? "active" : "inactive")">@(supervisor.isActive ? "Active" : "Inactive")</span>
+                                            </div>
+                                            <div class="mt-2">
+                                                <span class="uni-supervisor-status @(supervisor.isCommittee ? "committee" : "standard")">@(supervisor.isCommittee ? "Committee" : "Supervisor Only")</span>
+                                            </div>
+                                        </td>
+                                        <td class="fw-semibold">@supervisor.StudentCount</td>
+                                        <td>@supervisor.created_at.ToString("dd MMM yyyy HH:mm")</td>
+                                        <td>
+                                            <div class="uni-supervisor-row-actions">
+                                                <a asp-page="/Committee/UniSupervisors" asp-route-editId="@supervisor.staffId" class="uni-supervisor-table-btn">Edit</a>
+                                                <form method="post" asp-page-handler="Delete" class="d-inline">
+                                                    <input type="hidden" name="staffId" value="@supervisor.staffId" />
+                                                    <button type="submit" class="uni-supervisor-table-btn delete" onclick="return confirm('Delete supervisor @supervisor.staffId?');">Delete</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Create Supervisor</button>
-                </div>
-            </form>
-        </div>
+            </article>
+        </section>
     </div>
-}
-
-@if (Model.ShowEditForm)
-{
-    <div class="card mb-3 border-warning">
-        <div class="card-header bg-warning-subtle">Edit Supervisor - @Model.EditInput.staffId</div>
-        <div class="card-body">
-            <form method="post" asp-page-handler="Update" class="row g-3">
-                <input asp-for="EditInput.staffId" type="hidden" />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Staff ID</label>
-                    <input value="@Model.EditInput.staffId" class="form-control" disabled />
-                </div>
-                <div class="col-md-5">
-                    <label asp-for="EditInput.name" class="form-label">Name</label>
-                    <input asp-for="EditInput.name" class="form-control" />
-                    <span asp-validation-for="EditInput.name" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="EditInput.email" class="form-label">Email</label>
-                    <input asp-for="EditInput.email" class="form-control" />
-                    <span asp-validation-for="EditInput.email" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="EditInput.password" class="form-label">Password</label>
-                    <input asp-for="EditInput.password" class="form-control" />
-                    <span asp-validation-for="EditInput.password" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="EditInput.faculty" class="form-label">Faculty</label>
-                    <select asp-for="EditInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
-                        <option value="">-- Select Faculty --</option>
-                    </select>
-                    <span asp-validation-for="EditInput.faculty" class="text-danger"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="EditInput.campus" class="form-label">Campus</label>
-                    <select asp-for="EditInput.campus" asp-items="Model.CampusOptions" class="form-select">
-                        <option value="">-- Select Campus --</option>
-                    </select>
-                    <span asp-validation-for="EditInput.campus" class="text-danger"></span>
-                </div>
-                <div class="col-md-8">
-                    <label asp-for="EditInput.remark" class="form-label">Remark</label>
-                    <input asp-for="EditInput.remark" class="form-control" />
-                    <span asp-validation-for="EditInput.remark" class="text-danger"></span>
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                    <div class="form-check mt-4">
-                        <input asp-for="EditInput.isActive" class="form-check-input" />
-                        <label asp-for="EditInput.isActive" class="form-check-label">Active</label>
-                    </div>
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                    <div class="form-check mt-4">
-                        <input asp-for="EditInput.isCommittee" class="form-check-input" />
-                        <label asp-for="EditInput.isCommittee" class="form-check-label">Committee</label>
-                    </div>
-                </div>
-                <div class="col-12 d-flex gap-2">
-                    <button type="submit" class="btn btn-warning">Update</button>
-                    <a asp-page="/Committee/UniSupervisors" class="btn btn-outline-secondary">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>
-}
-
-<div class="table-responsive">
-    <table class="table table-sm table-bordered align-middle">
-        <thead>
-            <tr>
-                <th>Staff ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Faculty</th>
-                <th>Campus</th>
-                <th>Remark</th>
-                <th>Active</th>
-                <th>Committee</th>
-                <th>Created At</th>
-                <th>Assigned Students</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!Model.Supervisors.Any())
-            {
-                <tr>
-                    <td colspan="11" class="text-center text-muted">No university supervisors found.</td>
-                </tr>
-            }
-            @foreach (var s in Model.Supervisors)
-            {
-                <tr>
-                    <td>@s.staffId</td>
-                    <td>@s.name</td>
-                    <td>@(s.email ?? "-")</td>
-                    <td>@(s.faculty ?? "-")</td>
-                    <td>@(s.campus ?? "-")</td>
-                    <td>@(s.remark ?? "-")</td>
-                    <td>@(s.isActive ? "Yes" : "No")</td>
-                    <td>@(s.isCommittee ? "Yes" : "No")</td>
-                    <td>@s.created_at.ToString("dd MMM yyyy HH:mm")</td>
-                    <td>@s.StudentCount</td>
-                    <td class="d-flex gap-2">
-                        <a asp-page="/Committee/UniSupervisors" asp-route-editId="@s.staffId" class="btn btn-sm btn-outline-warning">Edit</a>
-                        <form method="post" asp-page-handler="Delete" class="d-inline">
-                            <input type="hidden" name="staffId" value="@s.staffId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete supervisor @s.staffId?');">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
 </div>
 
 @section Scripts {

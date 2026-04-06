@@ -22,16 +22,16 @@
                     <input asp-for="Input.name" class="form-control form-control-sm" />
                 </div>
                 <div class="col-md-4">
-                    <label asp-for="Input.address1" class="form-label">Address 1</label>
-                    <input asp-for="Input.address1" class="form-control form-control-sm" />
+                    <label asp-for="Input.address1" class="form-label">Main Office Address</label>
+                    <input asp-for="Input.address1" class="form-control form-control-sm" placeholder="Headquarters or primary office" />
                 </div>
                 <div class="col-md-2">
-                    <label asp-for="Input.address2" class="form-label">Address 2</label>
-                    <input asp-for="Input.address2" class="form-control form-control-sm" />
+                    <label asp-for="Input.address2" class="form-label">Subsidiary / Branch 1</label>
+                    <input asp-for="Input.address2" class="form-control form-control-sm" placeholder="Optional secondary location" />
                 </div>
                 <div class="col-md-2">
-                    <label asp-for="Input.address3" class="form-label">Address 3</label>
-                    <input asp-for="Input.address3" class="form-control form-control-sm" />
+                    <label asp-for="Input.address3" class="form-label">Subsidiary / Branch 2</label>
+                    <input asp-for="Input.address3" class="form-control form-control-sm" placeholder="Optional third location" />
                 </div>
                 <div class="col-md-2">
                     <label asp-for="Input.regNo" class="form-label">Reg No</label>
@@ -56,15 +56,17 @@
                 <div class="col-md-1">
                     <label asp-for="Input.status" class="form-label">Status</label>
                     <select asp-for="Input.status" class="form-select form-select-sm">
-                        <option value="1">1</option>
-                        <option value="0">0</option>
+                        <option value="0">Pending</option>
+                        <option value="1">Active</option>
+                        <option value="2">Inactive</option>
+                        <option value="3">Suspended</option>
                     </select>
                 </div>
                 <div class="col-md-1">
                     <label asp-for="Input.visibility" class="form-label">Visibility</label>
                     <select asp-for="Input.visibility" class="form-select form-select-sm">
-                        <option value="1">1</option>
-                        <option value="0">0</option>
+                        <option value="1">Visible</option>
+                        <option value="0">Hidden</option>
                     </select>
                 </div>
                 <div class="col-md-12 mt-2">

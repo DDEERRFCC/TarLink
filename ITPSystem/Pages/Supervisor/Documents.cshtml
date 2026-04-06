@@ -1,9 +1,25 @@
 @page
 @model ITPSystem.Pages.Supervisor.DocumentsModel
-<h2>Document Review</h2>
+<style>
+    .sv-shell {
+        background: #f0fdf4;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 1rem;
+        
+    }
+    .sv-title { color: #14532d; }
+    .sv-table th { background: transparent; }
+    .sv-actions .btn { border-radius: 10px; }
+    .sv-alert { border-radius: 10px; }
+    .sv-link { font-weight: 600; }
+    .sv-muted { color: #14532d; opacity: .7; }
+</style>
+<div class="sv-shell">
+<h2 class="sv-title">Document Review</h2>
 @if (!string.IsNullOrWhiteSpace(Model.SelectedStudent))
 {
-    <p class="text-muted">Showing documents for: <strong>@Model.SelectedStudent</strong></p>
+    <p class="text-muted" style="color:#14532d; opacity:.7;">Showing documents for: <strong>@Model.SelectedStudent</strong></p>
 }
 <div class="mb-3">
     <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Back to Dashboard</a>
@@ -15,7 +31,8 @@
     <div class="alert alert-success">@Model.Message</div>
 }
 
-<table class="table table-bordered table-sm">
+<div class="table-responsive">
+<table class="table table-bordered table-sm align-middle sv-table">
     <thead>
         <tr>
             <th>Student</th>
@@ -36,9 +53,9 @@
                     @if (!string.IsNullOrWhiteSpace(s.formAcceptance))
                     {
                         <div>@s.formAcceptance</div>
-                        <div class="d-flex gap-2 mt-1">
-                            <a asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance" target="_blank" rel="noopener">View</a>
-                            <a asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance">Download</a>
+                        <div class="d-flex gap-2 mt-1 sv-actions">
+                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance" target="_blank" rel="noopener">View</a>
+                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance">Download</a>
                         </div>
                     }
                     else
@@ -50,9 +67,9 @@
                     @if (!string.IsNullOrWhiteSpace(s.formAcknowledgement))
                     {
                         <div>@s.formAcknowledgement</div>
-                        <div class="d-flex gap-2 mt-1">
-                            <a asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement" target="_blank" rel="noopener">View</a>
-                            <a asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement">Download</a>
+                        <div class="d-flex gap-2 mt-1 sv-actions">
+                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement" target="_blank" rel="noopener">View</a>
+                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement">Download</a>
                         </div>
                     }
                     else
@@ -64,23 +81,23 @@
                     <div><strong>Letter:</strong> @(s.letterIdentity ?? "-")</div>
                     @if (!string.IsNullOrWhiteSpace(s.letterIdentity))
                     {
-                        <div class="d-flex gap-2 mt-1 mb-1">
-                            <a asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity" target="_blank" rel="noopener">View</a>
-                            <a asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity">Download</a>
+                        <div class="d-flex gap-2 mt-1 mb-1 sv-actions">
+                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity" target="_blank" rel="noopener">View</a>
+                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity">Download</a>
                         </div>
                     }
 
                     <div><strong>Other:</strong> @(s.otherEvidence ?? "-")</div>
                     @if (!string.IsNullOrWhiteSpace(s.otherEvidence))
                     {
-                        <div class="d-flex gap-2 mt-1">
-                            <a asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence" target="_blank" rel="noopener">View</a>
-                            <a asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence">Download</a>
+                        <div class="d-flex gap-2 mt-1 sv-actions">
+                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence" target="_blank" rel="noopener">View</a>
+                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence">Download</a>
                         </div>
                     }
                 </td>
                 <td>
-                    <form method="post" class="d-flex gap-1">
+                    <form method="post" class="sv-actions d-flex gap-1">
                         <input type="hidden" name="applicationId" value="@s.application_id" />
                         <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Application review remark" />
                         <button class="btn btn-success btn-sm" asp-page-handler="Approve" type="submit">Approve Application</button>
@@ -91,3 +108,9 @@
         }
     </tbody>
 </table>
+</div>
+</div>
+
+
+
+

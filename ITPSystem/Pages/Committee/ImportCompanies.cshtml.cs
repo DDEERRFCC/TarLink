@@ -1,6 +1,7 @@
 using ITPSystem.Data;
 using ITPSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 public class CommitteeImportCompaniesModel : CommitteePageModelBase
 {
@@ -76,9 +77,15 @@ public class CommitteeImportCompaniesModel : CommitteePageModelBase
                 continue;
             }
 
+            var regNo = GetCol(cols, 4);
+            if (string.IsNullOrWhiteSpace(regNo))
+            {
+                skipped++;
+                continue;
+            }
+
             var exists = _db.Companies.Any(c =>
-                c.name.ToLower() == name.ToLower() &&
-                (c.address1 ?? string.Empty).ToLower() == address1.ToLower());
+                c.regNo.ToLower() == regNo.ToLower());
             if (exists)
             {
                 skipped++;
@@ -88,18 +95,14 @@ public class CommitteeImportCompaniesModel : CommitteePageModelBase
             var company = new Company
             {
                 created_at = DateTime.Now,
-                lastUpdate = DateTime.Now,
+                updated_at = DateTime.Now,
                 name = name,
-                address1 = address1,
-                address2 = GetCol(cols, 2),
-                address3 = GetCol(cols, 3),
-                regNo = GetCol(cols, 4),
-                vacancyLevel = GetCol(cols, 5),
+                regNo = regNo,
                 website = GetCol(cols, 6),
                 remark = GetCol(cols, 7),
-                status = ParseByte(GetCol(cols, 8), 1),
-                visibility = ParseByte(GetCol(cols, 9), 1)
             };
+
+            AddBranches(company, ParseByte(GetCol(cols, 8), 0), ParseByte(GetCol(cols, 9), 1), GetCol(cols, 5), address1, GetCol(cols, 2), GetCol(cols, 3));
 
             _db.Companies.Add(company);
             imported++;
@@ -161,5 +164,27 @@ public class CommitteeImportCompaniesModel : CommitteePageModelBase
     private static byte ParseByte(string? raw, byte fallback)
     {
         return byte.TryParse(raw, out var parsed) ? parsed : fallback;
+    }
+
+    private static void AddBranches(Company company, byte status, byte visibility, string? vacancyLevel, params string?[] addresses)
+    {
+        var branchIndex = 0;
+        foreach (var address in addresses.Select(GetTrimmedOrNull).Where(a => !string.IsNullOrWhiteSpace(a)).Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            company.Branches.Add(new CompanyBranch
+            {
+                address_line = address,
+                vacancyLevel = vacancyLevel,
+                status = status,
+                visibility = visibility,
+                is_hq = branchIndex == 0
+            });
+            branchIndex++;
+        }
+    }
+
+    private static string? GetTrimmedOrNull(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
     }
 }

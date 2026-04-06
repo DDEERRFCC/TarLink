@@ -2,254 +2,879 @@
 @model CommitteeStudentDetailsModel
 @{
     ViewData["CommitteePageTitle"] = Model.IsCreateMode ? "Add Student" : "Student Details";
+    var companyOptionsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.CompanyOptions.Select(c => new { c.Name, c.Addresses }));
+    var supervisorOptionsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.SupervisorOptions.Select(s => new { s.Name, s.Email, s.Contact }));
 }
+
+<style>
+    .student-details-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .student-details-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .student-details-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .student-details-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .student-details-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .student-details-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .student-details-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .student-details-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .student-details-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .student-details-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .student-details-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .student-details-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .student-details-meta-card,
+    .student-details-section,
+    .student-details-danger {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .student-details-meta-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .student-details-meta-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .student-details-meta-label {
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .student-details-meta-value {
+        margin-top: .35rem;
+        color: #0f172a;
+        font-size: 1.2rem;
+        font-weight: 700;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+    }
+
+    .student-details-section {
+        padding: 1rem;
+    }
+
+    .student-details-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .student-details-section-copy {
+        margin: .35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .student-details-form-grid {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .student-details-fields {
+        margin-top: 1rem;
+    }
+
+    .student-details-fields .form-control,
+    .student-details-fields .form-select,
+    .student-details-fields textarea {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .student-details-fields textarea {
+        min-height: 110px;
+    }
+
+    .student-details-picker {
+        position: relative;
+        width: 100%;
+    }
+
+    .student-details-picker-list {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        z-index: 20;
+        display: none;
+        max-height: 220px;
+        overflow-y: auto;
+        border: 1px solid #d1ddea;
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.1);
+    }
+
+    .student-details-picker-list.show {
+        display: block;
+    }
+
+    .student-details-picker-item,
+    .student-details-picker-empty {
+        padding: .72rem .9rem;
+        font-size: .92rem;
+    }
+
+    .student-details-picker-item {
+        cursor: pointer;
+        color: #102133;
+        border-bottom: 1px solid #eef3f9;
+    }
+
+    .student-details-picker-item:last-child {
+        border-bottom: 0;
+    }
+
+    .student-details-picker-item:hover {
+        background: #f6fafc;
+    }
+
+    .student-details-picker-empty {
+        color: #64748b;
+    }
+
+    .student-details-fields .form-control:focus,
+    .student-details-fields .form-select:focus,
+    .student-details-fields textarea:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
+    }
+
+    .student-details-doc-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .student-details-doc-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 18px;
+        background: #fff;
+        padding: 1rem;
+    }
+
+    .student-details-doc-title {
+        margin: 0 0 .35rem;
+        color: #132238;
+        font-size: .98rem;
+        font-weight: 700;
+    }
+
+    .student-details-doc-file {
+        margin-top: .65rem;
+        color: #607284;
+        font-size: .88rem;
+        overflow-wrap: anywhere;
+    }
+
+    .student-details-doc-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .65rem;
+        margin-top: .75rem;
+    }
+
+    .student-details-primary-btn,
+    .student-details-secondary-btn,
+    .student-details-doc-btn,
+    .student-details-delete-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: .75rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    .student-details-primary-btn {
+        border: none;
+        color: #fff;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .student-details-secondary-btn,
+    .student-details-doc-btn {
+        border: 1px solid #d1ddea;
+        background: #fff;
+        color: #12344b;
+    }
+
+    .student-details-doc-btn.primary {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+        color: #1d4ed8;
+    }
+
+    .student-details-action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+    }
+
+    .student-details-danger {
+        padding: 1rem;
+        border-color: #fecdd3;
+        background: linear-gradient(180deg, #fff7f7, #fff);
+    }
+
+    .student-details-danger-title {
+        margin: 0;
+        color: #9f1239;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .student-details-danger-copy {
+        margin: .35rem 0 0;
+        color: #9f1239;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .student-details-delete-btn {
+        border: 1px solid #fecdd3;
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    @@media (max-width: 991.98px) {
+        .student-details-meta-grid,
+        .student-details-doc-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .student-details-banner-top,
+        .student-details-action-row,
+        .student-details-doc-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .student-details-back-btn,
+        .student-details-primary-btn,
+        .student-details-secondary-btn,
+        .student-details-doc-btn,
+        .student-details-delete-btn {
+            width: 100%;
+        }
+    }
+</style>
 
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">@(Model.IsCreateMode ? "Add Student" : "Student Details")</h5>
-    <a asp-page="/Committee/Students" class="btn btn-sm btn-outline-secondary">Back to Student List</a>
-</div>
-
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="alert alert-success mb-3">@Model.StatusMessage</div>
-}
-
-@if (!Model.IsCreateMode)
-{
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="row g-2">
-                <div class="col-md-3"><strong>Application ID:</strong> @Model.Input.application_id</div>
-                <div class="col-md-3"><strong>Created:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</div>
-                <div class="col-md-3"><strong>Last Update:</strong> @Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+    <div class="student-details-page">
+        <section class="student-details-banner">
+            <div class="student-details-banner-top">
+                <div>
+                    <div class="student-details-kicker">@(Model.IsCreateMode ? "Add Student" : "Student Details")</div>
+                    <h3 class="student-details-title">@(Model.IsCreateMode ? "Create a new student record with complete internship details." : "Review and update the full student internship record from one place.")</h3>
+                    <p class="student-details-copy">Manage academic information, company placement, contact details, status, and uploaded internship documents without leaving the committee workspace.</p>
+                </div>
+                <a href="/Committee/Students" class="student-details-back-btn">Back to Student List</a>
             </div>
-        </div>
-    </div>
-}
+        </section>
 
-<form method="post" asp-page-handler="Save" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Input.application_id" />
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mb-0">@Model.StatusMessage</div>
+        }
 
-    <div class="card mb-3">
-        <div class="card-header fw-bold">Basic Information</div>
-        <div class="card-body">
-            <div class="row g-2">
-                <div class="col-md-3">
-                    <label asp-for="Input.number_ic" class="form-label">IC Number</label>
-                    <input asp-for="Input.number_ic" class="form-control form-control-sm" />
-                    <span asp-validation-for="Input.number_ic" class="text-danger"></span>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.studentID" class="form-label">Student ID</label>
-                    <input asp-for="Input.studentID" class="form-control form-control-sm" />
-                    <span asp-validation-for="Input.studentID" class="text-danger"></span>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.studentName" class="form-label">Student Name</label>
-                    <input asp-for="Input.studentName" class="form-control form-control-sm" />
-                    <span asp-validation-for="Input.studentName" class="text-danger"></span>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.studentEmail" class="form-label">Student Email</label>
-                    <input asp-for="Input.studentEmail" class="form-control form-control-sm" />
-                    <span asp-validation-for="Input.studentEmail" class="text-danger"></span>
-                </div>
+        @if (!Model.IsCreateMode)
+        {
+            <section class="student-details-meta-grid">
+                <article class="student-details-meta-card">
+                    <div class="student-details-meta-label">Application ID</div>
+                    <div class="student-details-meta-value">@Model.Input.application_id</div>
+                </article>
+                <article class="student-details-meta-card">
+                    <div class="student-details-meta-label">Created</div>
+                    <div class="student-details-meta-value">@Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+                </article>
+                <article class="student-details-meta-card">
+                    <div class="student-details-meta-label">Last Update</div>
+                    <div class="student-details-meta-value">@Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</div>
+                </article>
+            </section>
+        }
 
-                <div class="col-md-2">
-                    <label asp-for="Input.contactDate" class="form-label">Contact Date</label>
-                    <input asp-for="Input.contactDate" type="date" class="form-control form-control-sm" />
+        <form method="post" asp-page-handler="Save" enctype="multipart/form-data" class="student-details-form-grid">
+            <input type="hidden" asp-for="Input.application_id" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-0"></div>
+
+            <section class="student-details-section">
+                <h3 class="student-details-section-title">Basic Information</h3>
+                <p class="student-details-section-copy">Maintain the core student identity, academic placement, and cohort details used throughout the internship workflow.</p>
+
+                <div class="row g-3 student-details-fields">
+                    <div class="col-md-3">
+                        <label asp-for="Input.number_ic" class="form-label">IC Number</label>
+                        <input asp-for="Input.number_ic" class="form-control" />
+                        <span asp-validation-for="Input.number_ic" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.studentID" class="form-label">Student ID</label>
+                        <input asp-for="Input.studentID" class="form-control" />
+                        <span asp-validation-for="Input.studentID" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.studentName" class="form-label">Student Name</label>
+                        <input asp-for="Input.studentName" class="form-control" />
+                        <span asp-validation-for="Input.studentName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.studentEmail" class="form-label">Student Email</label>
+                        <input asp-for="Input.studentEmail" class="form-control" />
+                        <span asp-validation-for="Input.studentEmail" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="Input.contactDate" class="form-label">Contact Date</label>
+                        <input asp-for="Input.contactDate" type="date" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.level" class="form-label">Level</label>
+                        <select asp-for="Input.level" class="form-select">
+                            <option value="1">Diploma</option>
+                            <option value="2">Degree</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.gender" class="form-label">Gender</label>
+                        <select asp-for="Input.gender" class="form-select">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.CGPA" class="form-label">CGPA</label>
+                        <input asp-for="Input.CGPA" type="number" step="0.01" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.cohortId" class="form-label">Cohort</label>
+                        <select asp-for="Input.cohortId" class="form-select">
+                            @foreach (var c in Model.Cohorts)
+                            {
+                                <option value="@c.cohort_id">@((c.description ?? $"Cohort {c.cohort_id}") + (c.isActive ? " (Active)" : ""))</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.programme" class="form-label">Programme</label>
+                        <input asp-for="Input.programme" maxlength="4" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.groupNo" class="form-label">Group No</label>
+                        <input asp-for="Input.groupNo" type="number" class="form-control" />
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.level" class="form-label">Level</label>
-                    <select asp-for="Input.level" class="form-select form-select-sm">
-                        <option value="1">Diploma</option>
-                        <option value="2">Degree</option>
-                    </select>
+            </section>
+
+            <section class="student-details-section">
+                <h3 class="student-details-section-title">Company and Supervisor</h3>
+                <p class="student-details-section-copy">Update the student’s placement, company address, allowance, and both company-side and university-side supervisor contacts.</p>
+
+                <div class="row g-3 student-details-fields">
+                    <div class="col-md-4">
+                        <label asp-for="Input.comName" class="form-label">Company Name</label>
+                        <div class="student-details-picker">
+                            <input type="text" class="form-control" id="companyNameInput" value="@Model.Input.comName" placeholder="Type or select company name" autocomplete="off" />
+                            <div id="companyNameList" class="student-details-picker-list"></div>
+                        </div>
+                        <input asp-for="Input.comName" type="hidden" id="companyNameValue" />
+                    </div>
+                    <div class="col-md-8">
+                        <label asp-for="Input.comAddress" class="form-label">Company Address</label>
+                        <select asp-for="Input.comAddress" class="form-select" id="companyAddressSelect" data-selected="@Model.Input.comAddress">
+                            <option value="">-- Select Address --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.comSupervisor" class="form-label">Company Supervisor</label>
+                        <select asp-for="Input.comSupervisor" class="form-select" id="companySupervisorSelect" data-selected="@Model.Input.comSupervisor">
+                            <option value="">-- Select Company Supervisor --</option>
+                            @foreach (var supervisor in Model.SupervisorOptions)
+                            {
+                                <option value="@supervisor.Name">@supervisor.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.comSupervisorEmail" class="form-label">Company Supervisor Email</label>
+                        <input asp-for="Input.comSupervisorEmail" class="form-control" id="companySupervisorEmailInput" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.comSupervisorContact" class="form-label">Company Supervisor Contact</label>
+                        <input asp-for="Input.comSupervisorContact" class="form-control" id="companySupervisorContactInput" readonly />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.allowance" class="form-label">Allowance</label>
+                        <input asp-for="Input.allowance" type="number" step="0.01" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Input.ucSupervisor" class="form-label">UC Supervisor</label>
+                        <select asp-for="Input.ucSupervisor" class="form-select" id="ucSupervisorSelect" data-selected="@Model.Input.ucSupervisor">
+                            <option value="">-- Select UC Supervisor --</option>
+                            @foreach (var supervisor in Model.SupervisorOptions)
+                            {
+                                <option value="@supervisor.Name">@supervisor.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Input.ucSupervisorEmail" class="form-label">UC Supervisor Email</label>
+                        <input asp-for="Input.ucSupervisorEmail" class="form-control" id="ucSupervisorEmailInput" readonly />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Input.ucSupervisorContact" class="form-label">UC Supervisor Contact</label>
+                        <input asp-for="Input.ucSupervisorContact" class="form-control" id="ucSupervisorContactInput" readonly />
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.gender" class="form-label">Gender</label>
-                    <select asp-for="Input.gender" class="form-select form-select-sm">
-                        <option value="M">Male</option>
-                        <option value="F">Female</option>
-                        <option value="O">Other</option>
-                    </select>
+            </section>
+
+            <section class="student-details-section">
+                <h3 class="student-details-section-title">Contact, Skills, and Status</h3>
+                <p class="student-details-section-copy">Keep the student’s personal contact channels, internship readiness, document verification, and current application status accurate.</p>
+
+                <div class="row g-3 student-details-fields">
+                    <div class="col-md-4">
+                        <label asp-for="Input.personalEmail" class="form-label">Personal Email</label>
+                        <input asp-for="Input.personalEmail" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Input.tempAddress" class="form-label">Temporary Address</label>
+                        <input asp-for="Input.tempAddress" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Input.permanentAddress" class="form-label">Permanent Address</label>
+                        <input asp-for="Input.permanentAddress" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.permanentContact" class="form-label">Permanent Contact</label>
+                        <input asp-for="Input.permanentContact" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.ownTransport" class="form-label">Own Transport</label>
+                        <select asp-for="Input.ownTransport" class="form-select">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.programmingKnowledge" class="form-label">Programming Knowledge</label>
+                        <input asp-for="Input.programmingKnowledge" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.databaseKnowledge" class="form-label">Database Knowledge</label>
+                        <input asp-for="Input.databaseKnowledge" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.networkingKnowledge" class="form-label">Networking Knowledge</label>
+                        <input asp-for="Input.networkingKnowledge" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.templateVersion" class="form-label">Template Version</label>
+                        <input asp-for="Input.templateVersion" type="number" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.applyStatus" class="form-label">Application Status</label>
+                        <select asp-for="Input.applyStatus" class="form-select">
+                            <option value="none">none</option>
+                            <option value="pending">pending</option>
+                            <option value="approved">approved</option>
+                            <option value="rejected">rejected</option>
+                            <option value="withdrawn">withdrawn</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.isAgreed" class="form-label">Agreed</label>
+                        <select asp-for="Input.isAgreed" class="form-select">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Input.doVerifier" class="form-label">DO Verifier</label>
+                        <input asp-for="Input.doVerifier" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Input.doVerifierEmail" class="form-label">DO Verifier Email</label>
+                        <input asp-for="Input.doVerifierEmail" class="form-control" />
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="Input.healthRemark" class="form-label">Health Remark</label>
+                        <textarea asp-for="Input.healthRemark" class="form-control"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="Input.remark" class="form-label">Committee Remark</label>
+                        <textarea asp-for="Input.remark" class="form-control"></textarea>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.CGPA" class="form-label">CGPA</label>
-                    <input asp-for="Input.CGPA" type="number" step="0.01" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.cohortId" class="form-label">Cohort</label>
-                    <select asp-for="Input.cohortId" class="form-select form-select-sm">
-                        @foreach (var c in Model.Cohorts)
+            </section>
+
+            <section class="student-details-section">
+                <h3 class="student-details-section-title">Document Fields</h3>
+                <p class="student-details-section-copy">Upload replacement student files when needed and review the currently saved document assets directly from this page.</p>
+
+                <div class="student-details-doc-grid">
+                    <article class="student-details-doc-card">
+                        <h4 class="student-details-doc-title">Form Acceptance</h4>
+                        <input asp-for="FormAcceptanceFile" type="file" class="form-control mt-3" />
+                        @if (!string.IsNullOrWhiteSpace(Model.Input.formAcceptance))
                         {
-                            <option value="@c.cohort_id">@((c.description ?? $"Cohort {c.cohort_id}") + (c.isActive ? " (Active)" : ""))</option>
+                            <div class="student-details-doc-file">@System.IO.Path.GetFileName(Model.Input.formAcceptance)</div>
+                            <div class="student-details-doc-actions">
+                                <a class="student-details-doc-btn"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="formAcceptance"
+                                   asp-route-download="false"
+                                   target="_blank" rel="noopener">View</a>
+                                <a class="student-details-doc-btn primary"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="formAcceptance"
+                                   asp-route-download="true">Download</a>
+                            </div>
                         }
-                    </select>
+                    </article>
+
+                    <article class="student-details-doc-card">
+                        <h4 class="student-details-doc-title">Form Acknowledgement</h4>
+                        <input asp-for="FormAcknowledgementFile" type="file" class="form-control mt-3" />
+                        @if (!string.IsNullOrWhiteSpace(Model.Input.formAcknowledgement))
+                        {
+                            <div class="student-details-doc-file">@System.IO.Path.GetFileName(Model.Input.formAcknowledgement)</div>
+                            <div class="student-details-doc-actions">
+                                <a class="student-details-doc-btn"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="formAcknowledgement"
+                                   asp-route-download="false"
+                                   target="_blank" rel="noopener">View</a>
+                                <a class="student-details-doc-btn primary"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="formAcknowledgement"
+                                   asp-route-download="true">Download</a>
+                            </div>
+                        }
+                    </article>
+
+                    <article class="student-details-doc-card">
+                        <h4 class="student-details-doc-title">Letter Identity</h4>
+                        <input asp-for="LetterIdentityFile" type="file" class="form-control mt-3" />
+                        @if (!string.IsNullOrWhiteSpace(Model.Input.letterIdentity))
+                        {
+                            <div class="student-details-doc-file">@System.IO.Path.GetFileName(Model.Input.letterIdentity)</div>
+                            <div class="student-details-doc-actions">
+                                <a class="student-details-doc-btn"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="letterIdentity"
+                                   asp-route-download="false"
+                                   target="_blank" rel="noopener">View</a>
+                                <a class="student-details-doc-btn primary"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="letterIdentity"
+                                   asp-route-download="true">Download</a>
+                            </div>
+                        }
+                    </article>
+
+                    <article class="student-details-doc-card">
+                        <h4 class="student-details-doc-title">Other Evidence</h4>
+                        <input asp-for="OtherEvidenceFile" type="file" class="form-control mt-3" />
+                        @if (!string.IsNullOrWhiteSpace(Model.Input.otherEvidence))
+                        {
+                            <div class="student-details-doc-file">@System.IO.Path.GetFileName(Model.Input.otherEvidence)</div>
+                            <div class="student-details-doc-actions">
+                                <a class="student-details-doc-btn"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="otherEvidence"
+                                   asp-route-download="false"
+                                   target="_blank" rel="noopener">View</a>
+                                <a class="student-details-doc-btn primary"
+                                   asp-page-handler="Document"
+                                   asp-route-applicationId="@Model.Input.application_id"
+                                   asp-route-field="otherEvidence"
+                                   asp-route-download="true">Download</a>
+                            </div>
+                        }
+                    </article>
                 </div>
-                <div class="col-md-1">
-                    <label asp-for="Input.programme" class="form-label">Programme</label>
-                    <input asp-for="Input.programme" maxlength="4" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-1">
-                    <label asp-for="Input.groupNo" class="form-label">Group No</label>
-                    <input asp-for="Input.groupNo" type="number" class="form-control form-control-sm" />
-                </div>
+            </section>
+
+            <div class="student-details-action-row">
+                <button type="submit" class="student-details-primary-btn">@(Model.IsCreateMode ? "Create Student" : "Save Changes")</button>
+                <a href="/Committee/Students" class="student-details-secondary-btn">Cancel</a>
             </div>
-        </div>
-    </div>
+        </form>
 
-    <div class="card mb-3">
-        <div class="card-header fw-bold">Company and Supervisor</div>
-        <div class="card-body">
-            <div class="row g-2">
-                <div class="col-md-4"><label asp-for="Input.comName" class="form-label">Company Name</label><input asp-for="Input.comName" class="form-control form-control-sm" /></div>
-                <div class="col-md-8"><label asp-for="Input.comAddress" class="form-label">Company Address</label><input asp-for="Input.comAddress" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.comSupervisor" class="form-label">Company Supervisor</label><input asp-for="Input.comSupervisor" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.comSupervisorEmail" class="form-label">Company Supervisor Email</label><input asp-for="Input.comSupervisorEmail" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.comSupervisorContact" class="form-label">Company Supervisor Contact</label><input asp-for="Input.comSupervisorContact" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.allowance" class="form-label">Allowance</label><input asp-for="Input.allowance" type="number" step="0.01" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.ucSupervisor" class="form-label">UC Supervisor</label><input asp-for="Input.ucSupervisor" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.ucSupervisorEmail" class="form-label">UC Supervisor Email</label><input asp-for="Input.ucSupervisorEmail" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.ucSupervisorContact" class="form-label">UC Supervisor Contact</label><input asp-for="Input.ucSupervisorContact" class="form-control form-control-sm" /></div>
-            </div>
-        </div>
+        @if (!Model.IsCreateMode)
+        {
+            <section class="student-details-danger">
+                <h3 class="student-details-danger-title">Delete Student</h3>
+                <p class="student-details-danger-copy">Remove this student record only if it should no longer exist in the internship system. This action cannot be undone from this screen.</p>
+                <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Delete this student record?');" class="mt-3">
+                    <input type="hidden" name="applicationId" value="@Model.Input.application_id" />
+                    <button type="submit" class="student-details-delete-btn">Delete Student</button>
+                </form>
+            </section>
+        }
     </div>
-
-    <div class="card mb-3">
-        <div class="card-header fw-bold">Contact, Skills, and Status</div>
-        <div class="card-body">
-            <div class="row g-2">
-                <div class="col-md-4"><label asp-for="Input.personalEmail" class="form-label">Personal Email</label><input asp-for="Input.personalEmail" class="form-control form-control-sm" /></div>
-                <div class="col-md-4"><label asp-for="Input.tempAddress" class="form-label">Temporary Address</label><input asp-for="Input.tempAddress" class="form-control form-control-sm" /></div>
-                <div class="col-md-4"><label asp-for="Input.permanentAddress" class="form-label">Permanent Address</label><input asp-for="Input.permanentAddress" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.permanentContact" class="form-label">Permanent Contact</label><input asp-for="Input.permanentContact" class="form-control form-control-sm" /></div>
-                <div class="col-md-2"><label asp-for="Input.ownTransport" class="form-label">Own Transport</label><select asp-for="Input.ownTransport" class="form-select form-select-sm"><option value="true">Yes</option><option value="false">No</option></select></div>
-                <div class="col-md-3"><label asp-for="Input.programmingKnowledge" class="form-label">Programming Knowledge</label><input asp-for="Input.programmingKnowledge" class="form-control form-control-sm" /></div>
-                <div class="col-md-2"><label asp-for="Input.databaseKnowledge" class="form-label">Database Knowledge</label><input asp-for="Input.databaseKnowledge" class="form-control form-control-sm" /></div>
-                <div class="col-md-2"><label asp-for="Input.networkingKnowledge" class="form-label">Networking Knowledge</label><input asp-for="Input.networkingKnowledge" class="form-control form-control-sm" /></div>
-                <div class="col-md-2"><label asp-for="Input.templateVersion" class="form-label">Template Version</label><input asp-for="Input.templateVersion" type="number" class="form-control form-control-sm" /></div>
-                <div class="col-md-2"><label asp-for="Input.applyStatus" class="form-label">Application Status</label><select asp-for="Input.applyStatus" class="form-select form-select-sm"><option value="none">none</option><option value="pending">pending</option><option value="approved">approved</option><option value="rejected">rejected</option><option value="withdrawn">withdrawn</option></select></div>
-                <div class="col-md-2"><label asp-for="Input.isAgreed" class="form-label">Agreed</label><select asp-for="Input.isAgreed" class="form-select form-select-sm"><option value="true">Yes</option><option value="false">No</option></select></div>
-                <div class="col-md-3"><label asp-for="Input.doVerifier" class="form-label">DO Verifier</label><input asp-for="Input.doVerifier" class="form-control form-control-sm" /></div>
-                <div class="col-md-3"><label asp-for="Input.doVerifierEmail" class="form-label">DO Verifier Email</label><input asp-for="Input.doVerifierEmail" class="form-control form-control-sm" /></div>
-                <div class="col-md-12"><label asp-for="Input.healthRemark" class="form-label">Health Remark</label><textarea asp-for="Input.healthRemark" class="form-control form-control-sm" rows="2"></textarea></div>
-                <div class="col-md-12"><label asp-for="Input.remark" class="form-label">Committee Remark</label><textarea asp-for="Input.remark" class="form-control form-control-sm" rows="2"></textarea></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-header fw-bold">Document Fields</div>
-        <div class="card-body">
-            <div class="row g-2">
-                <div class="col-md-6">
-                    <label for="FormAcceptanceFile" class="form-label">Form Acceptance</label>
-                    <input asp-for="FormAcceptanceFile" type="file" class="form-control form-control-sm" />
-                    @if (!string.IsNullOrWhiteSpace(Model.Input.formAcceptance))
-                    {
-                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.formAcceptance)</div>
-                        <div class="mt-1">
-                            <a class="btn btn-sm btn-outline-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="formAcceptance"
-                               asp-route-download="false"
-                               target="_blank" rel="noopener">View</a>
-                            <a class="btn btn-sm btn-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="formAcceptance"
-                               asp-route-download="true">Download</a>
-                        </div>
-                    }
-                </div>
-                <div class="col-md-6">
-                    <label for="FormAcknowledgementFile" class="form-label">Form Acknowledgement</label>
-                    <input asp-for="FormAcknowledgementFile" type="file" class="form-control form-control-sm" />
-                    @if (!string.IsNullOrWhiteSpace(Model.Input.formAcknowledgement))
-                    {
-                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.formAcknowledgement)</div>
-                        <div class="mt-1">
-                            <a class="btn btn-sm btn-outline-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="formAcknowledgement"
-                               asp-route-download="false"
-                               target="_blank" rel="noopener">View</a>
-                            <a class="btn btn-sm btn-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="formAcknowledgement"
-                               asp-route-download="true">Download</a>
-                        </div>
-                    }
-                </div>
-                <div class="col-md-6">
-                    <label for="LetterIdentityFile" class="form-label">Letter Identity</label>
-                    <input asp-for="LetterIdentityFile" type="file" class="form-control form-control-sm" />
-                    @if (!string.IsNullOrWhiteSpace(Model.Input.letterIdentity))
-                    {
-                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.letterIdentity)</div>
-                        <div class="mt-1">
-                            <a class="btn btn-sm btn-outline-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="letterIdentity"
-                               asp-route-download="false"
-                               target="_blank" rel="noopener">View</a>
-                            <a class="btn btn-sm btn-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="letterIdentity"
-                               asp-route-download="true">Download</a>
-                        </div>
-                    }
-                </div>
-                <div class="col-md-6">
-                    <label for="OtherEvidenceFile" class="form-label">Other Evidence</label>
-                    <input asp-for="OtherEvidenceFile" type="file" class="form-control form-control-sm" />
-                    @if (!string.IsNullOrWhiteSpace(Model.Input.otherEvidence))
-                    {
-                        <div class="mt-1 small text-muted">@System.IO.Path.GetFileName(Model.Input.otherEvidence)</div>
-                        <div class="mt-1">
-                            <a class="btn btn-sm btn-outline-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="otherEvidence"
-                               asp-route-download="false"
-                               target="_blank" rel="noopener">View</a>
-                            <a class="btn btn-sm btn-primary"
-                               asp-page-handler="Document"
-                               asp-route-applicationId="@Model.Input.application_id"
-                               asp-route-field="otherEvidence"
-                               asp-route-download="true">Download</a>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="d-flex gap-2 mb-4">
-        <button type="submit" class="btn btn-primary">@(Model.IsCreateMode ? "Create Student" : "Save Changes")</button>
-        <a asp-page="/Committee/Students" class="btn btn-outline-secondary">Cancel</a>
-    </div>
-</form>
-
-@if (!Model.IsCreateMode)
-{
-    <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Delete this student record?');">
-        <input type="hidden" name="applicationId" value="@Model.Input.application_id" />
-        <button type="submit" class="btn btn-danger">Delete Student</button>
-    </form>
-}
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const companyOptions = @Html.Raw(companyOptionsJson);
+            const supervisorOptions = @Html.Raw(supervisorOptionsJson);
+
+            const companyNameInput = document.getElementById("companyNameInput");
+            const companyNameValue = document.getElementById("companyNameValue");
+            const companyNameList = document.getElementById("companyNameList");
+            const companyAddressSelect = document.getElementById("companyAddressSelect");
+            const companySupervisorSelect = document.getElementById("companySupervisorSelect");
+            const companySupervisorEmailInput = document.getElementById("companySupervisorEmailInput");
+            const companySupervisorContactInput = document.getElementById("companySupervisorContactInput");
+            const ucSupervisorSelect = document.getElementById("ucSupervisorSelect");
+            const ucSupervisorEmailInput = document.getElementById("ucSupervisorEmailInput");
+            const ucSupervisorContactInput = document.getElementById("ucSupervisorContactInput");
+
+            const selectedAddress = companyAddressSelect?.getAttribute("data-selected") || "";
+            const selectedCompanySupervisor = companySupervisorSelect?.getAttribute("data-selected") || "";
+            const selectedUcSupervisor = ucSupervisorSelect?.getAttribute("data-selected") || "";
+
+            const rebuildAddressOptions = (addresses, preferredAddress) => {
+                if (!companyAddressSelect) {
+                    return;
+                }
+
+                companyAddressSelect.innerHTML = "";
+                const defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.textContent = "-- Select Address --";
+                companyAddressSelect.appendChild(defaultOption);
+
+                for (const address of addresses) {
+                    const option = document.createElement("option");
+                    option.value = address;
+                    option.textContent = address;
+                    if (preferredAddress && preferredAddress === address) {
+                        option.selected = true;
+                    }
+                    companyAddressSelect.appendChild(option);
+                }
+            };
+
+            const applySupervisor = (selectElement, emailInput, contactInput) => {
+                if (!selectElement || !emailInput || !contactInput) {
+                    return;
+                }
+
+                const selectedName = (selectElement.value || "").trim().toLowerCase();
+                const matched = supervisorOptions.find(s => ((s.name || s.Name || "").trim().toLowerCase()) === selectedName);
+                emailInput.value = matched ? (matched.email || matched.Email || "") : "";
+                contactInput.value = matched ? (matched.contact || matched.Contact || "") : "";
+            };
+
+            const findCompanyByName = (name) => {
+                const normalized = (name || "").trim().toLowerCase();
+                if (!normalized) {
+                    return null;
+                }
+
+                return companyOptions.find(c => ((c.name || c.Name || "").trim().toLowerCase()) === normalized) || null;
+            };
+
+            const syncCompanySelection = (preferredAddress) => {
+                if (!companyNameInput || !companyNameValue) {
+                    return;
+                }
+
+                const matched = findCompanyByName(companyNameInput.value);
+                companyNameValue.value = matched ? (matched.name || matched.Name || "") : "";
+                rebuildAddressOptions(matched ? (matched.addresses || matched.Addresses || []) : [], preferredAddress || "");
+            };
+
+            const renderCompanyList = () => {
+                if (!companyNameInput || !companyNameList) {
+                    return;
+                }
+
+                const query = (companyNameInput.value || "").trim().toLowerCase();
+                const filtered = companyOptions.filter(c => {
+                    const name = (c.name || c.Name || "").toLowerCase();
+                    return query.length === 0 || name.includes(query);
+                });
+
+                companyNameList.innerHTML = "";
+                if (filtered.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.className = "student-details-picker-empty";
+                    empty.textContent = "No company found";
+                    companyNameList.appendChild(empty);
+                    return;
+                }
+
+                for (const company of filtered.slice(0, 80)) {
+                    const name = company.name || company.Name || "";
+                    const item = document.createElement("div");
+                    item.className = "student-details-picker-item";
+                    item.textContent = name;
+                    item.addEventListener("click", () => {
+                        companyNameInput.value = name;
+                        syncCompanySelection("");
+                        companyNameList.classList.remove("show");
+                    });
+                    companyNameList.appendChild(item);
+                }
+            };
+
+            syncCompanySelection(selectedAddress);
+            applySupervisor(companySupervisorSelect, companySupervisorEmailInput, companySupervisorContactInput);
+            applySupervisor(ucSupervisorSelect, ucSupervisorEmailInput, ucSupervisorContactInput);
+
+            companyNameInput?.addEventListener("focus", () => {
+                renderCompanyList();
+                companyNameList?.classList.add("show");
+            });
+            companyNameInput?.addEventListener("input", () => {
+                syncCompanySelection("");
+                renderCompanyList();
+                companyNameList?.classList.add("show");
+            });
+            companyNameInput?.addEventListener("change", () => syncCompanySelection(""));
+            companySupervisorSelect?.addEventListener("change", () => applySupervisor(companySupervisorSelect, companySupervisorEmailInput, companySupervisorContactInput));
+            ucSupervisorSelect?.addEventListener("change", () => applySupervisor(ucSupervisorSelect, ucSupervisorEmailInput, ucSupervisorContactInput));
+            document.addEventListener("click", (event) => {
+                if (!companyNameList || !companyNameInput) {
+                    return;
+                }
+
+                const target = event.target;
+                if (!companyNameList.contains(target) && target !== companyNameInput) {
+                    companyNameList.classList.remove("show");
+                }
+            });
+        });
+    </script>
 }

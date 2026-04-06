@@ -1,6 +1,26 @@
 @page
 @model ITPSystem.Pages.Supervisor.MarksModel
-<h2>Assessment Mark Sheet</h2>
+<style>
+    .sv-shell {
+        background: #f0fdf4;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 1rem;
+        
+    }
+    .sv-title { color: #14532d; }
+    .sv-table th { background: transparent; }
+    .sv-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #fff;
+        padding: .75rem;
+    }
+    .sv-actions .btn { border-radius: 10px; }
+    .sv-muted { color: #14532d; opacity: .7; }
+</style>
+<div class="sv-shell">
+<h2 class="sv-title">Assessment Mark Sheet</h2>
 <div class="mb-3">
     <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
     <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Marks" asp-page-handler="ExportExcel">Export XLSX</a>
@@ -11,7 +31,7 @@
     <div class="alert alert-success">@Model.Message</div>
 }
 
-<form method="post" class="mb-4">
+<form method="post" class="mb-4 sv-card">
     <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
     <div class="row g-2 align-items-end">
         <div class="col-md-5">
@@ -20,7 +40,10 @@
                 <option value="">Select student</option>
                 @foreach (var s in Model.Students)
                 {
-                    <option value="@s.application_id">@s.studentName (@s.studentID)</option>
+                    var canMark = Model.FinalReportSubmittedIds.Contains(s.application_id);
+                    <option value="@s.application_id" disabled="@(canMark ? null : "disabled")">
+                        @s.studentName (@s.studentID)@(canMark ? "" : " - Final report not submitted")
+                    </option>
                 }
             </select>
             <span asp-validation-for="Input.ApplicationId" class="text-danger"></span>
@@ -76,7 +99,8 @@
 </form>
 
 <h5>Student Marks</h5>
-<table class="table table-bordered table-sm">
+<div class="table-responsive">
+<table class="table table-bordered table-sm align-middle sv-table">
     <thead>
         <tr>
             <th>Student</th>
@@ -106,14 +130,22 @@
                     }
                 </td>
                 <td>
-                    <a class="btn btn-outline-primary btn-sm"
-                       asp-page="/Supervisor/Marks"
-                       asp-route-applicationId="@item.ApplicationId">View Details</a>
+                    @if (item.FinalReportSubmitted)
+                    {
+                        <a class="btn btn-outline-primary btn-sm"
+                           asp-page="/Supervisor/Marks"
+                           asp-route-applicationId="@item.ApplicationId">View Details</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Final report not submitted</span>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</div>
 
 @if (Model.applicationId.HasValue)
 {
@@ -124,7 +156,8 @@
     }
     else
     {
-        <table class="table table-bordered table-sm">
+        <div class="table-responsive">
+        <table class="table table-bordered table-sm align-middle sv-table">
             <thead>
                 <tr>
                     <th>Rubric</th>
@@ -147,5 +180,11 @@
                 }
             </tbody>
         </table>
+        </div>
     }
 }
+</div>
+
+
+
+

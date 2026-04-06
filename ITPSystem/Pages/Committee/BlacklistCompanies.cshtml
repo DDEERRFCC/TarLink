@@ -2,13 +2,619 @@
 @model CommitteeBlacklistCompaniesModel
 @{
     ViewData["CommitteePageTitle"] = "Blacklist Company";
+
+    var totalCount = Model.BlacklistCompanies.Count;
+    var activeCount = Model.BlacklistCompanies.Count(x => !x.is_removed);
+    var removedCount = Model.BlacklistCompanies.Count(x => x.is_removed);
 }
 
-<div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+<style>
+    .blacklist-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
 
-<div class="alert alert-warning mb-0">
-    Placeholder: `blacklistcompany` table exists in DB design but is not mapped in `ApplicationDbContext` yet.
+    .blacklist-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .blacklist-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .blacklist-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .blacklist-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .blacklist-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .blacklist-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .blacklist-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .blacklist-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .blacklist-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .blacklist-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .blacklist-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .blacklist-banner-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .8rem 1rem;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .blacklist-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .blacklist-stat-card,
+    .blacklist-form-card,
+    .blacklist-table-card {
+        border: 1px solid #d8e5f1;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .blacklist-stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .blacklist-stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #0f766e, #14b8a6);
+    }
+
+    .blacklist-stat-label {
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .blacklist-stat-value {
+        margin-top: .35rem;
+        color: #0f172a;
+        font-size: 1.7rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .blacklist-stat-note {
+        margin-top: .3rem;
+        color: #718396;
+        font-size: .88rem;
+    }
+
+    .blacklist-form-card {
+        padding: 1rem;
+    }
+
+    .blacklist-section-title {
+        margin: 0;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .blacklist-section-copy {
+        margin: .35rem 0 0;
+        color: #607284;
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .blacklist-form-grid {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: .9rem;
+        margin-top: 1rem;
+    }
+
+    .blacklist-field {
+        grid-column: span 12;
+    }
+
+    .blacklist-field.is-company {
+        grid-column: span 4;
+    }
+
+    .blacklist-field.is-address {
+        grid-column: span 5;
+    }
+
+    .blacklist-field.is-file {
+        grid-column: span 3;
+    }
+
+    .blacklist-field.is-reason {
+        grid-column: span 8;
+    }
+
+    .blacklist-field.is-submit {
+        grid-column: span 4;
+        display: flex;
+        align-items: end;
+    }
+
+    .blacklist-field label {
+        display: block;
+        margin-bottom: .4rem;
+        color: #36506a;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .blacklist-field .form-control,
+    .blacklist-field .form-select {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .blacklist-field .form-control:focus,
+    .blacklist-field .form-select:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
+    }
+
+    .blacklist-submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 44px;
+        border: none;
+        border-radius: 14px;
+        color: #fff;
+        font-weight: 700;
+        background: linear-gradient(90deg, #dc2626, #ef4444);
+    }
+
+    .blacklist-table-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1rem 0;
+    }
+
+    .blacklist-count-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .4rem .78rem;
+        background: #fff1f2;
+        color: #be123c;
+        font-size: .84rem;
+        font-weight: 700;
+    }
+
+    .blacklist-table-wrap {
+        margin-top: 1rem;
+    }
+
+    .blacklist-table thead th {
+        border-bottom-width: 1px;
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .blacklist-table tbody td {
+        padding-top: .95rem;
+        padding-bottom: .95rem;
+        vertical-align: top;
+    }
+
+    .blacklist-name {
+        font-weight: 700;
+        color: #102133;
+    }
+
+    .blacklist-subtext {
+        margin-top: .2rem;
+        color: #718396;
+        font-size: .86rem;
+        line-height: 1.55;
+    }
+
+    .blacklist-status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        min-width: 90px;
+        padding: .34rem .68rem;
+        font-size: .78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .blacklist-status-badge.is-active {
+        background: #fff1f2;
+        color: #be123c;
+    }
+
+    .blacklist-status-badge.is-removed {
+        background: #e5e7eb;
+        color: #4b5563;
+    }
+
+    .blacklist-link {
+        color: #1d4ed8;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .blacklist-remove-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: .62rem .85rem;
+        border: 1px solid #ef4444;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 700;
+        background: linear-gradient(90deg, #dc2626, #ef4444);
+    }
+
+    .blacklist-empty {
+        padding: 2.5rem 1rem;
+        text-align: center;
+        color: #607284;
+    }
+
+    .blacklist-empty strong {
+        display: block;
+        margin-bottom: .35rem;
+        color: #132238;
+        font-size: 1rem;
+    }
+
+    @@media (max-width: 991.98px) {
+        .blacklist-stat-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .blacklist-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .blacklist-field,
+        .blacklist-field.is-company,
+        .blacklist-field.is-address,
+        .blacklist-field.is-file,
+        .blacklist-field.is-reason,
+        .blacklist-field.is-submit {
+            grid-column: span 1;
+        }
+
+        .blacklist-banner-top,
+        .blacklist-banner-actions,
+        .blacklist-table-head {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .blacklist-back-btn,
+        .blacklist-banner-link,
+        .blacklist-submit-btn,
+        .blacklist-remove-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="committee-page">
+    <div class="blacklist-page">
+        <section class="blacklist-banner">
+            <div class="blacklist-banner-top">
+                <div>
+                    <div class="blacklist-kicker">Blacklist Company</div>
+                    <h3 class="blacklist-title">Protect the programme by flagging risky company records clearly.</h3>
+                    <p class="blacklist-copy">Record blacklisted companies with the affected address, supporting reason, and optional evidence so the committee keeps a reliable history of restricted placements.</p>
+                </div>
+                <a href="/Committee/Dashboard" class="blacklist-back-btn">Back to Dashboard</a>
+            </div>
+            <div class="blacklist-banner-actions">
+                <a asp-page="/Committee/Companies" class="blacklist-banner-link">Back to Company List</a>
+                <a asp-page="/Committee/CompanyRequests" class="blacklist-banner-link">Open Company Request</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-info mb-0">@Model.StatusMessage</div>
+        }
+
+        <section class="blacklist-stat-grid">
+            <article class="blacklist-stat-card">
+                <div class="blacklist-stat-label">Blacklist Records</div>
+                <div class="blacklist-stat-value">@totalCount</div>
+                <div class="blacklist-stat-note">Total blacklist entries currently stored in the committee record.</div>
+            </article>
+            <article class="blacklist-stat-card">
+                <div class="blacklist-stat-label">Active Restrictions</div>
+                <div class="blacklist-stat-value">@activeCount</div>
+                <div class="blacklist-stat-note">Companies or addresses that are still actively restricted.</div>
+            </article>
+            <article class="blacklist-stat-card">
+                <div class="blacklist-stat-label">Removed Entries</div>
+                <div class="blacklist-stat-value">@removedCount</div>
+                <div class="blacklist-stat-note">Blacklist records that were later marked as removed.</div>
+            </article>
+        </section>
+
+        <section class="blacklist-form-card">
+            <h3 class="blacklist-section-title">Add Blacklist Entry</h3>
+            <p class="blacklist-section-copy">Select a company, choose the affected address, attach supporting evidence if needed, and record the reason for the blacklist action.</p>
+
+            <form method="post" asp-page-handler="Add" enctype="multipart/form-data" class="blacklist-form-grid">
+                <div class="blacklist-field is-company">
+                    <label>Company</label>
+                    <select asp-for="Input.CompanyId" class="form-select" id="companySelect">
+                        @foreach (var c in Model.CompanyAddressItems)
+                        {
+                            <option value="@c.CompanyId"
+                                    data-addresses="@string.Join("||", c.Addresses)"
+                                    selected="@(c.CompanyId == Model.Input.CompanyId ? "selected" : null)">
+                                @c.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="blacklist-field is-address">
+                    <label>Address</label>
+                    <select asp-for="Input.AddressChoice" class="form-select" id="addressSelect">
+                        @foreach (var option in Model.AddressOptions)
+                        {
+                            <option value="@option.Value">@option.Text</option>
+                        }
+                    </select>
+                    <input asp-for="Input.CustomAddress" class="form-control mt-2" placeholder="Custom address if the branch is not listed" />
+                </div>
+
+                <div class="blacklist-field is-file">
+                    <label>Attachment</label>
+                    <input type="file" name="AttachmentFile" class="form-control" />
+                </div>
+
+                <div class="blacklist-field is-reason">
+                    <label>Reason</label>
+                    <textarea asp-for="Input.Reason" class="form-control" rows="3" placeholder="Explain why this company or address is being blacklisted"></textarea>
+                </div>
+
+                <div class="blacklist-field is-submit">
+                    <button type="submit" class="blacklist-submit-btn">Add to Blacklist</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="blacklist-table-card">
+            <div class="blacklist-table-head">
+                <div>
+                    <h3 class="blacklist-section-title">Blacklist Directory</h3>
+                    <p class="blacklist-section-copy">Review active and removed blacklist entries, including the company address, committee reason, attachment, and current record state.</p>
+                </div>
+                <div class="blacklist-count-pill">@totalCount record(s)</div>
+            </div>
+
+            <div class="table-responsive blacklist-table-wrap">
+                <table class="table align-middle mb-0 blacklist-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Company</th>
+                            <th>Address</th>
+                            <th>Reason</th>
+                            <th>By Committee</th>
+                            <th>Attachment</th>
+                            <th>Created</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.BlacklistCompanies.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="9" class="blacklist-empty">
+                                    <strong>No blacklist companies found.</strong>
+                                    Add the first blacklist record when a company or address should be restricted from the programme.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.BlacklistCompanies)
+                            {
+                                var statusClass = item.is_removed ? "is-removed" : "is-active";
+                                var statusText = item.is_removed ? "Removed" : "Active";
+
+                                <tr>
+                                    <td class="fw-semibold text-muted">@item.id</td>
+                                    <td>
+                                        <div class="blacklist-name">@(item.comName ?? "-")</div>
+                                        <div class="blacklist-subtext">Committee record entry</div>
+                                    </td>
+                                    <td>@(item.address ?? "-")</td>
+                                    <td>@(item.reason ?? "-")</td>
+                                    <td>@(item.byCommittee ?? "-")</td>
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(item.attachment))
+                                        {
+                                            <a class="blacklist-link" href="~/uploads/Blacklist/@item.attachment" target="_blank">View Attachment</a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>@(item.created_at?.ToString("yyyy-MM-dd") ?? "-")</td>
+                                    <td>
+                                        <span class="blacklist-status-badge @statusClass">@statusText</span>
+                                    </td>
+                                    <td class="text-end">
+                                        @if (item.is_removed)
+                                        {
+                                            <span class="text-muted">Removed</span>
+                                        }
+                                        else
+                                        {
+                                            <form method="post" asp-page-handler="Delete" class="d-inline">
+                                                <input type="hidden" name="id" value="@item.id" />
+                                                <button type="submit" class="blacklist-remove-btn" onclick="return confirm('Remove this blacklist company?');">Remove</button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 </div>
-</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const companySelect = document.getElementById("companySelect");
+            const addressSelect = document.getElementById("addressSelect");
+            if (!companySelect || !addressSelect) return;
+
+            function rebuildAddresses() {
+                const selected = companySelect.options[companySelect.selectedIndex];
+                const rawAddresses = selected.getAttribute("data-addresses") || "";
+                const entries = rawAddresses
+                    .split("||")
+                    .map((value, index) => ({ key: "address" + (index + 1), value }))
+                    .filter(x => x.value && x.value.trim().length > 0);
+
+                addressSelect.innerHTML = "";
+                entries.forEach(x => {
+                    const opt = document.createElement("option");
+                    opt.value = x.key;
+                    opt.textContent = x.value;
+                    addressSelect.appendChild(opt);
+                });
+
+                const custom = document.createElement("option");
+                custom.value = "custom";
+                custom.textContent = "Custom address";
+                addressSelect.appendChild(custom);
+            }
+
+            companySelect.addEventListener("change", rebuildAddresses);
+            rebuildAddresses();
+        })();
+    </script>
+}

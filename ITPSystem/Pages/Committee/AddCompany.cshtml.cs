@@ -1,6 +1,7 @@
 using ITPSystem.Data;
 using ITPSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 public class CommitteeAddCompanyModel : CommitteePageModelBase
@@ -34,8 +35,9 @@ public class CommitteeAddCompanyModel : CommitteePageModelBase
         [StringLength(255)]
         public string? address3 { get; set; }
 
+        [Required]
         [StringLength(15)]
-        public string? regNo { get; set; }
+        public string regNo { get; set; } = string.Empty;
 
         [StringLength(15)]
         public string? vacancyLevel { get; set; }
@@ -46,7 +48,7 @@ public class CommitteeAddCompanyModel : CommitteePageModelBase
         [StringLength(500)]
         public string? remark { get; set; }
 
-        public byte? status { get; set; } = 1;
+        public byte? status { get; set; } = 0;
         public byte? visibility { get; set; } = 1;
     }
 
@@ -74,30 +76,27 @@ public class CommitteeAddCompanyModel : CommitteePageModelBase
 
         var name = Input.name.Trim();
         var address1 = Input.address1.Trim();
+        var regNo = Input.regNo.Trim();
         var exists = _db.Companies.Any(c =>
-            c.name.ToLower() == name.ToLower() &&
-            (c.address1 ?? string.Empty).ToLower() == address1.ToLower());
+            c.regNo.ToLower() == regNo.ToLower());
         if (exists)
         {
-            ModelState.AddModelError("", "Company with same name and address already exists.");
+            ModelState.AddModelError("", "Company with same registration number already exists.");
             return Page();
         }
 
-        _db.Companies.Add(new Company
+        var company = new Company
         {
             created_at = DateTime.Now,
-            lastUpdate = DateTime.Now,
             name = name,
-            address1 = address1,
-            address2 = TrimOrNull(Input.address2),
-            address3 = TrimOrNull(Input.address3),
-            regNo = TrimOrNull(Input.regNo),
-            vacancyLevel = TrimOrNull(Input.vacancyLevel),
+            regNo = regNo,
             website = TrimOrNull(Input.website),
             remark = TrimOrNull(Input.remark),
-            status = Input.status ?? 1,
-            visibility = Input.visibility ?? 1
-        });
+            updated_at = DateTime.Now
+        };
+
+        AddBranches(company, Input.status ?? 0, Input.visibility ?? 1, TrimOrNull(Input.vacancyLevel), Input.address1, Input.address2, Input.address3);
+        _db.Companies.Add(company);
 
         _db.SaveChanges();
         TempData["StatusMessage"] = "Company added successfully.";
@@ -107,5 +106,22 @@ public class CommitteeAddCompanyModel : CommitteePageModelBase
     private static string? TrimOrNull(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private static void AddBranches(Company company, byte status, byte visibility, string? vacancyLevel, params string?[] addresses)
+    {
+        var branchIndex = 0;
+        foreach (var address in addresses.Select(TrimOrNull).Where(a => !string.IsNullOrWhiteSpace(a)).Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            company.Branches.Add(new CompanyBranch
+            {
+                address_line = address,
+                vacancyLevel = vacancyLevel,
+                status = status,
+                visibility = visibility,
+                is_hq = branchIndex == 0
+            });
+            branchIndex++;
+        }
     }
 }

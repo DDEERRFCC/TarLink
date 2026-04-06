@@ -6,9 +6,10 @@
     var studentName = HttpContext.Session.GetString("UserName") ?? "Student";
     var studentId = HttpContext.Session.GetString("StudentID") ?? "Not linked";
     var companyOptionsJson = System.Text.Json.JsonSerializer.Serialize(
-        Model.CompanyOptions.Select(c => new { c.CompanyId, c.Name, c.Addresses }));
+        Model.CompanyOptions.Select(c => new { c.CompanyId, c.Name, c.Addresses, c.Supervisors }));
     var selectedCompanyName = Model.CompanyOptions
         .FirstOrDefault(c => c.CompanyId == Model.Input.CompanyId)?.Name ?? "";
+    var companyDetailLocked = !Model.CanEditCompanyDetail;
 }
 
 <style>
@@ -362,6 +363,18 @@
         font-weight: 700;
     }
 
+    .itp-status-none {
+        color: #475569;
+        background: #e5e7eb;
+        border: 1px solid #cbd5e1;
+        display: inline-flex;
+        align-self: flex-start;
+        border-radius: 999px;
+        padding: .16rem .5rem;
+        font-size: .78rem;
+        font-weight: 700;
+    }
+
     .itp-docs {
         grid-column: 1 / -1;
     }
@@ -540,6 +553,22 @@
     .itp-note a {
         color: #b45309;
         font-weight: 700;
+    }
+
+    .itp-locked-form {
+        position: relative;
+        opacity: .7;
+        filter: grayscale(.12);
+    }
+
+    .itp-locked-form .itp-input,
+    .itp-locked-form .itp-company-picker,
+    .itp-locked-form .itp-profile-btn {
+        background-color: #f1f5f9;
+    }
+
+    .itp-locked-form:hover {
+        opacity: .82;
     }
 
     .itp-message-fab {
@@ -1026,6 +1055,10 @@
                         {
                             <span class="itp-status-pending">Pending</span>
                         }
+                        else if (string.Equals(Model.Status?.Trim(), "None", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="itp-status-none">None</span>
+                        }
                         else
                         {
                             <span class="itp-meta-value">@Model.Status</span>
@@ -1046,6 +1079,7 @@
                     </div>
                 </div>
                 <p class="itp-muted">View and download all required ITP documents directly from your dashboard.</p>
+                <p class="itp-help mt-2 mb-0">Template: @Model.TemplateSourceLabel</p>
 
                 <div class="itp-doc-list">
                     @foreach (var doc in Model.Documents)
@@ -1110,16 +1144,22 @@
                         <h3 class="itp-title">Company Detail</h3>
                     </div>
                 </div>
-                <p class="itp-muted mb-3">Select a company first, then choose one of its available addresses.</p>
+                <p class="itp-muted mb-3">Select a company first, then choose one of its available branch addresses with city, state, postcode, and country.</p>
+                @if (companyDetailLocked)
+                {
+                    <div class="itp-note mb-3">
+                        Please wait for your supervisor to approve or reject your company details submission.
+                    </div>
+                }
 
-                <form method="post" asp-page-handler="SaveCompany" enctype="multipart/form-data">
+                <form method="post" asp-page-handler="SaveCompany" enctype="multipart/form-data" class="@(companyDetailLocked ? "itp-locked-form" : string.Empty)">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
                     <div class="itp-form-grid">
                         <div class="itp-field itp-field-full">
                             <label class="itp-label" asp-for="Input.CompanyId">Company</label>
                             <div class="itp-company-picker">
-                                <input class="itp-input" id="companyNameInput" value="@selectedCompanyName" placeholder="Type or select company name" autocomplete="off" />
+                                <input class="itp-input" id="companyNameInput" value="@selectedCompanyName" placeholder="Type or select company name" autocomplete="off" @(companyDetailLocked ? "readonly" : null) />
                                 <div id="companyListBox" class="itp-company-list"></div>
                             </div>
                             <input type="hidden" asp-for="Input.CompanyId" id="companyIdInput" />
@@ -1131,10 +1171,11 @@
                             <select class="itp-input"
                                     asp-for="Input.Address"
                                     id="addressSelect"
-                                    data-selected="@Model.Input.Address">
+                                    data-selected="@Model.Input.Address"
+                                    disabled="@companyDetailLocked">
                                 <option value="">-- Select Address --</option>
                             </select>
-                            <small class="itp-help">Address options depend on the selected company.</small>
+                            <small class="itp-help">Address options show the full branch location for the selected company.</small>
                             <div class="mt-2">
                                 <a asp-page="/Student/OwnCompanyRequest">I wish to apply to a company of my own choice.</a>
                             </div>
@@ -1142,43 +1183,50 @@
 
                         <div class="itp-field">
                             <label class="itp-label" asp-for="Input.MonthlyAllowance">Monthly Allowance</label>
-                            <input class="itp-input" asp-for="Input.MonthlyAllowance" type="number" min="0" step="0.01" />
+                            <input class="itp-input" asp-for="Input.MonthlyAllowance" type="number" min="0" step="0.01" readonly="@companyDetailLocked" />
                         </div>
 
                         <div class="itp-field">
                             <label class="itp-label" asp-for="Input.CompanySupervisorName">Com. Supervisor Name</label>
-                            <input class="itp-input" asp-for="Input.CompanySupervisorName" />
+                            <select class="itp-input"
+                                    asp-for="Input.CompanySupervisorName"
+                                    id="companySupervisorSelect"
+                                    data-selected="@Model.Input.CompanySupervisorName"
+                                    disabled="@companyDetailLocked">
+                                <option value="">-- Select Company Supervisor --</option>
+                            </select>
                         </div>
 
                         <div class="itp-field itp-field-full">
                             <label class="itp-label" asp-for="Input.CompanySupervisorEmail">Com. Supervisor Email</label>
-                            <input class="itp-input" asp-for="Input.CompanySupervisorEmail" type="email" />
+                            <input class="itp-input" asp-for="Input.CompanySupervisorEmail" id="companySupervisorEmailInput" type="email" readonly />
+                            <small class="itp-help">This email fills automatically when you choose a supervisor.</small>
                         </div>
 
                         <div class="itp-field">
                             <label class="itp-label" asp-for="Input.FormAcceptanceFile">Com. Acceptance Form</label>
-                            <input class="itp-input" asp-for="Input.FormAcceptanceFile" type="file" data-file-preview="form-acceptance-preview" />
+                            <input class="itp-input" asp-for="Input.FormAcceptanceFile" type="file" data-file-preview="form-acceptance-preview" disabled="@companyDetailLocked" />
                             <small id="form-acceptance-preview" class="itp-help" data-default-size-text="Size: -">Size: -</small>
                             <small class="itp-help">Current: @Model.CurrentFormAcceptanceFile</small>
                         </div>
 
                         <div class="itp-field">
                             <label class="itp-label" asp-for="Input.FormAcknowledgementFile">Parent Ack. Form</label>
-                            <input class="itp-input" asp-for="Input.FormAcknowledgementFile" type="file" data-file-preview="form-ack-preview" />
+                            <input class="itp-input" asp-for="Input.FormAcknowledgementFile" type="file" data-file-preview="form-ack-preview" disabled="@companyDetailLocked" />
                             <small id="form-ack-preview" class="itp-help" data-default-size-text="Size: -">Size: -</small>
                             <small class="itp-help">Current: @Model.CurrentFormAcknowledgementFile</small>
                         </div>
 
                         <div class="itp-field">
                             <label class="itp-label" asp-for="Input.LetterOfIndemnityFile">Letter of Indemnity</label>
-                            <input class="itp-input" asp-for="Input.LetterOfIndemnityFile" type="file" data-file-preview="letter-identity-preview" />
+                            <input class="itp-input" asp-for="Input.LetterOfIndemnityFile" type="file" data-file-preview="letter-identity-preview" disabled="@companyDetailLocked" />
                             <small id="letter-identity-preview" class="itp-help" data-default-size-text="Size: -">Size: -</small>
                             <small class="itp-help">Current: @Model.CurrentLetterIdentityFile</small>
                         </div>
 
                         <div class="itp-field">
                             <label class="itp-label" asp-for="Input.HiredEvidenceFile">Hired evidence (if any)</label>
-                            <input class="itp-input" asp-for="Input.HiredEvidenceFile" type="file" data-file-preview="other-evidence-preview" />
+                            <input class="itp-input" asp-for="Input.HiredEvidenceFile" type="file" data-file-preview="other-evidence-preview" disabled="@companyDetailLocked" />
                             <small id="other-evidence-preview" class="itp-help" data-default-size-text="Size: -">Size: -</small>
                             <small class="itp-help">Current: @Model.CurrentOtherEvidenceFile</small>
                         </div>
@@ -1190,7 +1238,10 @@
                         to do the compression if required.
                     </div>
 
-                    <button type="submit" class="itp-profile-btn mt-2">Save Company Details</button>
+                    @if (Model.CanEditCompanyDetail)
+                    {
+                        <button type="submit" class="itp-profile-btn mt-2">@Model.CompanyDetailActionLabel</button>
+                    }
                 </form>
             </section>
 
@@ -1256,6 +1307,9 @@
         const companyIdInput = document.getElementById("companyIdInput");
         const companyListBox = document.getElementById("companyListBox");
         const addressSelect = document.getElementById("addressSelect");
+        const companySupervisorSelect = document.getElementById("companySupervisorSelect");
+        const companySupervisorEmailInput = document.getElementById("companySupervisorEmailInput");
+        const companyDetailLocked = companyNameInput?.hasAttribute("readonly") || false;
 
         const setAnnouncementPanelState = (isOpen) => {
             if (!announcementBell || !announcementPanel) {
@@ -1286,11 +1340,32 @@
             });
         }
 
-        if (!companyNameInput || !companyIdInput || !companyListBox || !addressSelect) {
+        if (!companyNameInput || !companyIdInput || !companyListBox || !addressSelect || !companySupervisorSelect || !companySupervisorEmailInput) {
             return;
         }
 
         const selectedAddress = addressSelect.getAttribute("data-selected") || "";
+        const selectedSupervisor = companySupervisorSelect.getAttribute("data-selected") || "";
+        const allSupervisors = (() => {
+            const unique = new Map();
+            for (const company of companyOptions) {
+                const supervisors = company.supervisors || company.Supervisors || [];
+                for (const supervisor of supervisors) {
+                    const name = (supervisor.name || supervisor.Name || "").trim();
+                    if (!name) {
+                        continue;
+                    }
+
+                    const key = name.toLowerCase();
+                    const email = (supervisor.email || supervisor.Email || "").trim();
+                    if (!unique.has(key) || (email && !(unique.get(key).email || "").trim())) {
+                        unique.set(key, { name, email });
+                    }
+                }
+            }
+
+            return Array.from(unique.values()).sort((a, b) => a.name.localeCompare(b.name));
+        })();
 
         const findCompanyByName = (name) => {
             const normalized = (name || "").trim().toLowerCase();
@@ -1317,16 +1392,43 @@
             }
         };
 
-        const syncCompanySelection = (preferredAddress) => {
+        const rebuildSupervisorOptions = (supervisors, preferredSupervisor) => {
+            companySupervisorSelect.innerHTML = "";
+
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "-- Select Company Supervisor --";
+            companySupervisorSelect.appendChild(defaultOption);
+
+            for (const supervisor of supervisors) {
+                const option = document.createElement("option");
+                const supervisorName = supervisor.name || supervisor.Name || "";
+                option.value = supervisorName;
+                option.textContent = supervisorName;
+                option.dataset.email = supervisor.email || supervisor.Email || "";
+                if (preferredSupervisor && preferredSupervisor === supervisorName) {
+                    option.selected = true;
+                }
+                companySupervisorSelect.appendChild(option);
+            }
+
+            const selectedOption = companySupervisorSelect.selectedOptions[0];
+            companySupervisorEmailInput.value = selectedOption?.dataset.email || "";
+        };
+
+        const syncCompanySelection = (preferredAddress, preferredSupervisor) => {
             const matched = findCompanyByName(companyNameInput.value);
             if (!matched) {
                 companyIdInput.value = "";
                 rebuildAddressOptions([], "");
+                rebuildSupervisorOptions(allSupervisors, preferredSupervisor || "");
                 return;
             }
 
             companyIdInput.value = matched.companyId ?? matched.CompanyId;
             rebuildAddressOptions(matched.addresses ?? matched.Addresses ?? [], preferredAddress || "");
+            const supervisors = matched.supervisors ?? matched.Supervisors ?? [];
+            rebuildSupervisorOptions(supervisors.length > 0 ? supervisors : allSupervisors, preferredSupervisor || "");
         };
 
         const renderCompanyList = () => {
@@ -1352,24 +1454,40 @@
                 item.textContent = name;
                 item.addEventListener("click", () => {
                     companyNameInput.value = name;
-                    syncCompanySelection("");
+                    syncCompanySelection("", "");
                     companyListBox.classList.remove("show");
                 });
                 companyListBox.appendChild(item);
             }
         };
 
-        syncCompanySelection(selectedAddress);
+        syncCompanySelection(selectedAddress, selectedSupervisor);
         companyNameInput.addEventListener("focus", () => {
+            if (companyDetailLocked) {
+                return;
+            }
             renderCompanyList();
             companyListBox.classList.add("show");
         });
         companyNameInput.addEventListener("input", () => {
-            syncCompanySelection("");
+            if (companyDetailLocked) {
+                return;
+            }
+            syncCompanySelection("", "");
             renderCompanyList();
             companyListBox.classList.add("show");
         });
-        companyNameInput.addEventListener("change", () => syncCompanySelection(""));
+        companyNameInput.addEventListener("change", () => {
+            if (companyDetailLocked) {
+                return;
+            }
+
+            syncCompanySelection("", "");
+        });
+        companySupervisorSelect.addEventListener("change", () => {
+            const selectedOption = companySupervisorSelect.selectedOptions[0];
+            companySupervisorEmailInput.value = selectedOption?.dataset.email || "";
+        });
         document.addEventListener("click", (event) => {
             if (!companyListBox.contains(event.target) && event.target !== companyNameInput) {
                 companyListBox.classList.remove("show");

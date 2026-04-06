@@ -9,68 +9,74 @@
     .summary-page {
         display: grid;
         gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
     .summary-banner {
         position: relative;
         overflow: hidden;
         border-radius: 24px;
-        padding: 1.3rem;
+        padding: 1.35rem;
         color: #fff;
-        background: linear-gradient(135deg, #10203a, #1d4ed8 58%, #14b8a6);
-        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
     }
 
-    .summary-banner::before {
+    .summary-banner::after {
         content: "";
         position: absolute;
-        right: -60px;
-        top: -75px;
-        width: 220px;
-        height: 220px;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.12);
     }
 
-    .summary-banner-content {
+    .summary-banner > * {
         position: relative;
         z-index: 1;
+    }
+
+    .summary-banner-top {
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-between;
-        align-items: end;
+        align-items: start;
         gap: 1rem;
     }
 
     .summary-kicker {
         display: inline-flex;
-        padding: 0.3rem 0.72rem;
+        align-items: center;
+        padding: .34rem .72rem;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        font-size: 0.78rem;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
         font-weight: 700;
-        letter-spacing: 0.08em;
+        letter-spacing: .08em;
         text-transform: uppercase;
     }
 
     .summary-title {
-        margin: 0.45rem 0 0.3rem;
-        font-size: clamp(1.65rem, 3vw, 2.25rem);
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
         font-family: Georgia, "Times New Roman", serif;
     }
 
     .summary-copy {
         margin: 0;
-        max-width: 62ch;
-        color: rgba(255, 255, 255, 0.9);
-        line-height: 1.7;
+        max-width: 70ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
     }
 
     .summary-banner-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
+        gap: .75rem;
+        margin-top: 1rem;
     }
 
     .summary-banner-btn,
@@ -85,15 +91,45 @@
     }
 
     .summary-banner-btn {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .summary-banner-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .summary-banner-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
     }
 
     .summary-banner-btn-secondary {
-        color: #0f172a;
-        background: #f8fafc;
-        box-shadow: 0 14px 24px rgba(15, 23, 42, 0.12);
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
     }
 
     .summary-grid {
@@ -154,8 +190,8 @@
     }
 
     .summary-field .form-select:focus {
-        border-color: #38bdf8;
-        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.14);
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.14);
     }
 
     .summary-option-grid {
@@ -177,7 +213,7 @@
     }
 
     .summary-option:hover {
-        border-color: #8ab7e0;
+        border-color: #9fcae4;
         box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
         transform: translateY(-1px);
     }
@@ -232,8 +268,8 @@
     }
 
     .summary-history-table thead th {
-        background: #eff6ff;
-        color: #25415e;
+        background: #f6fafc;
+        color: #607284;
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -254,9 +290,9 @@
         border-radius: 12px;
         text-decoration: none;
         font-weight: 700;
-        color: #1d4ed8;
-        background: #eef6ff;
-        border: 1px solid #d6e5f6;
+        color: #35516a;
+        background: #fff;
+        border: 1px solid #c8d7e5;
     }
 
     .summary-report-card {
@@ -292,8 +328,8 @@
     }
 
     .summary-table thead th {
-        background: #eff6ff;
-        color: #25415e;
+        background: #f6fafc;
+        color: #607284;
         font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -325,6 +361,19 @@
         .summary-grid {
             grid-template-columns: 1fr;
         }
+
+        .summary-banner-top {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .summary-banner-actions {
+            flex-direction: column;
+        }
+
+        .summary-banner-btn {
+            width: 100%;
+        }
     }
 </style>
 
@@ -336,16 +385,16 @@
 
     <div class="summary-page">
         <section class="summary-banner">
-            <div class="summary-banner-content">
+            <div class="summary-banner-top">
                 <div>
                     <div class="summary-kicker">Summary Reports</div>
                     <h3 class="summary-title">Generate focused programme reports from one cleaner committee workspace.</h3>
                     <p class="summary-copy">Pick one report type at a time, adjust the cohort or level filters when needed, and review the latest generated output below without leaving the page.</p>
                 </div>
-                <div class="summary-banner-actions">
-                    <a asp-page="/Committee/Dashboard" class="summary-banner-btn">Back to Dashboard</a>
-                    <a asp-page="/Committee/Students" class="summary-banner-btn-secondary">Open Student List</a>
-                </div>
+                <a href="/Committee/Dashboard" class="summary-banner-btn">Back to Dashboard</a>
+            </div>
+            <div class="summary-banner-actions">
+                <a asp-page="/Committee/Students" class="summary-banner-btn-secondary">Open Student List</a>
             </div>
         </section>
 

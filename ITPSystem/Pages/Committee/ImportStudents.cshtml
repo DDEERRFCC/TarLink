@@ -8,163 +8,205 @@
     .import-student-page {
         display: grid;
         gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
     .import-student-banner {
         position: relative;
         overflow: hidden;
         border-radius: 24px;
-        padding: 1.3rem;
+        padding: 1.35rem;
         color: #fff;
-        background: linear-gradient(135deg, #10203a, #1d4ed8 58%, #14b8a6);
-        box-shadow: 0 18px 34px rgba(15, 23, 42, 0.14);
+        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
     }
 
-    .import-student-banner::before {
+    .import-student-banner::after {
         content: "";
         position: absolute;
-        right: -60px;
-        top: -75px;
-        width: 220px;
-        height: 220px;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.12);
     }
 
-    .import-student-banner-content {
+    .import-student-banner > * {
         position: relative;
         z-index: 1;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: end;
-        gap: 1rem;
     }
 
-    .import-student-banner-actions {
+    .import-student-banner-top {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
     }
 
     .import-student-kicker {
         display: inline-flex;
-        padding: 0.3rem 0.72rem;
+        align-items: center;
+        padding: .34rem .72rem;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        font-size: 0.78rem;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
         font-weight: 700;
-        letter-spacing: 0.08em;
+        letter-spacing: .08em;
         text-transform: uppercase;
     }
 
     .import-student-title {
-        margin: 0.45rem 0 0.3rem;
-        font-size: clamp(1.65rem, 3vw, 2.25rem);
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
         font-family: Georgia, "Times New Roman", serif;
     }
 
     .import-student-copy {
         margin: 0;
-        max-width: 62ch;
-        color: rgba(255, 255, 255, 0.9);
-        line-height: 1.7;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
     }
 
     .import-student-back-btn {
         display: inline-flex;
         align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #cfe0ed;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #12344b;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .import-student-back-btn:hover {
+        color: #0f3f54;
+        border-color: #9fcae4;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .import-student-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
         justify-content: center;
-        padding: 0.8rem 1rem;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #e0f2fe;
+        color: #0c4a6e;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .import-student-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1rem;
+    }
+
+    .import-student-banner-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .8rem 1rem;
         border-radius: 14px;
-        color: #fff;
         text-decoration: none;
         font-weight: 700;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
     }
 
     .import-student-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        grid-template-columns: minmax(0, 1.12fr) minmax(320px, .88fr);
         gap: 1rem;
         align-items: start;
     }
 
-    .import-card,
-    .import-note-card,
-    .import-errors-card {
+    .import-student-card,
+    .import-student-note-card,
+    .import-student-error-card {
         border: 1px solid #d8e5f1;
         border-radius: 22px;
         background: linear-gradient(180deg, #ffffff, #fbfdff);
         box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
 
-    .import-card,
-    .import-note-card {
+    .import-student-card,
+    .import-student-note-card {
         padding: 1rem;
     }
 
-    .import-section-title {
+    .import-student-section-title {
         margin: 0;
         color: #132238;
         font-size: 1.05rem;
         font-weight: 700;
     }
 
-    .import-section-copy {
-        margin: 0.35rem 0 0;
+    .import-student-section-copy {
+        margin: .35rem 0 0;
         color: #607284;
         line-height: 1.7;
-        font-size: 0.92rem;
+        font-size: .92rem;
     }
 
-    .import-upload-box {
+    .import-student-upload-box {
         margin-top: 1rem;
-        border: 1px dashed #9fc5e8;
+        border: 1px dashed #9fd8cf;
         border-radius: 18px;
-        background: linear-gradient(180deg, #f8fbff, #ffffff);
+        background: linear-gradient(180deg, #f8fffd, #ffffff);
         padding: 1rem;
     }
 
-    .import-upload-box label {
+    .import-student-upload-box label {
         display: block;
-        margin-bottom: 0.45rem;
+        margin-bottom: .45rem;
         color: #36506a;
-        font-size: 0.82rem;
+        font-size: .82rem;
         font-weight: 700;
-        letter-spacing: 0.04em;
+        letter-spacing: .04em;
         text-transform: uppercase;
     }
 
-    .import-upload-box .form-control {
+    .import-student-upload-box .form-control {
         min-height: 48px;
         border-radius: 14px;
         border-color: #d1ddea;
         box-shadow: none;
     }
 
-    .import-upload-box .form-control:focus {
-        border-color: #38bdf8;
-        box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.14);
+    .import-student-upload-box .form-control:focus {
+        border-color: #14b8a6;
+        box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
     }
 
-    .import-upload-actions {
+    .import-student-upload-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.8rem;
+        gap: .8rem;
         margin-top: 1rem;
         align-items: center;
     }
 
-    .import-submit-btn {
+    .import-student-submit-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 140px;
+        min-width: 150px;
         min-height: 46px;
-        padding: 0.8rem 1rem;
+        padding: .8rem 1rem;
         border: none;
         border-radius: 14px;
         color: #fff;
@@ -172,117 +214,93 @@
         background: linear-gradient(90deg, #0f766e, #14b8a6);
     }
 
-    .import-upload-hint {
+    .import-student-hint {
         color: #607284;
-        font-size: 0.9rem;
+        font-size: .9rem;
     }
 
-    .import-tag-grid {
-        display: grid;
-        gap: 1rem;
+    .import-student-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
         margin-top: 1rem;
     }
 
-    .import-tag-group strong {
-        display: block;
-        margin-bottom: 0.55rem;
-        color: #132238;
-        font-size: 0.92rem;
-    }
-
-    .import-chip-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-    }
-
-    .import-chip {
+    .import-student-chip {
         display: inline-flex;
         align-items: center;
         border-radius: 999px;
-        padding: 0.3rem 0.72rem;
-        background: #eef6ff;
-        color: #1e4f8f;
-        font-size: 0.8rem;
+        padding: .3rem .72rem;
+        background: #ecfdf5;
+        color: #0f766e;
+        font-size: .8rem;
         font-weight: 700;
     }
 
-    .import-note-list {
+    .import-student-note-list {
         margin: 1rem 0 0;
         padding-left: 1.1rem;
         color: #607284;
     }
 
-    .import-note-list li {
-        margin-bottom: 0.45rem;
+    .import-student-note-list li {
+        margin-bottom: .45rem;
         line-height: 1.65;
     }
 
-    .import-summary-bar {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.8rem;
-    }
-
-    .import-summary-item {
-        border-radius: 16px;
-        background: #f8fbff;
-        border: 1px solid #e4edf6;
-        padding: 0.9rem;
-    }
-
-    .import-summary-item span {
-        display: block;
-        color: #607284;
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-    }
-
-    .import-summary-item strong {
-        display: block;
-        margin-top: 0.35rem;
-        color: #132238;
-        font-size: 1.3rem;
-    }
-
-    .import-errors-card {
+    .import-student-error-card {
         overflow: hidden;
     }
 
-    .import-errors-head {
+    .import-student-error-head {
         display: flex;
         justify-content: space-between;
-        gap: 1rem;
         align-items: center;
-        padding: 1rem 1rem 0.8rem;
-        border-bottom: 1px solid #e5eef7;
+        gap: 1rem;
+        padding: 1rem 1rem 0;
     }
 
-    .import-errors-table {
-        margin-bottom: 0;
-    }
-
-    .import-errors-table thead th {
-        background: #eff6ff;
-        color: #25415e;
-        font-size: 0.8rem;
+    .import-student-error-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .4rem .78rem;
+        background: #fff1f2;
+        color: #be123c;
+        font-size: .84rem;
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
     }
 
-    .import-errors-table td,
-    .import-errors-table th {
-        padding: 0.8rem 0.9rem;
-        vertical-align: top;
+    .import-student-error-table {
+        margin: 1rem 0 0;
+    }
+
+    .import-student-error-table thead th {
+        border-bottom-width: 1px;
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        white-space: nowrap;
     }
 
     @@media (max-width: 991.98px) {
-        .import-student-grid,
-        .import-summary-bar {
+        .import-student-grid {
             grid-template-columns: 1fr;
+        }
+
+        .import-student-banner-top,
+        .import-student-banner-actions,
+        .import-student-upload-actions {
+            flex-direction: column;
+        }
+
+        .import-student-back-btn,
+        .import-student-banner-link,
+        .import-student-submit-btn {
+            width: 100%;
         }
     }
 </style>
@@ -290,16 +308,17 @@
 <div class="committee-page">
     <div class="import-student-page">
         <section class="import-student-banner">
-            <div class="import-student-banner-content">
+            <div class="import-student-banner-top">
                 <div>
                     <div class="import-student-kicker">Import Student</div>
-                    <h3 class="import-student-title">Bring student records into the system with a cleaner upload workflow.</h3>
-                    <p class="import-student-copy">Upload a `.xlsx` or `.csv` file, validate the required sheet structure, and review any row-level issues before correcting and importing again.</p>
+                    <h3 class="import-student-title">Bring student records into the portal with a cleaner intake flow.</h3>
+                    <p class="import-student-copy">Upload an Excel or CSV file, validate the required columns, and import student records directly into the student application system with clearer feedback on anything that needs fixing.</p>
                 </div>
-                <div class="import-student-banner-actions">
-                    <a asp-page="/Committee/Dashboard" class="import-student-back-btn">Back to Dashboard</a>
-                    <a asp-page="/Committee/Students" class="import-student-back-btn">Back to Student List</a>
-                </div>
+                <a href="/Committee/Dashboard" class="import-student-back-btn">Back to Dashboard</a>
+            </div>
+            <div class="import-student-banner-actions">
+                <a asp-page="/Committee/Students" class="import-student-banner-link">Back to Student List</a>
+                <a asp-page="/Committee/UnregisteredStudents" class="import-student-banner-link">Open Unregistered Student</a>
             </div>
         </section>
 
@@ -308,89 +327,58 @@
             <div class="alert alert-info mb-0">@Model.Message</div>
         }
 
-        <section class="import-summary-bar">
-            <div class="import-summary-item">
-                <span>Imported</span>
-                <strong>@Model.ImportedCount</strong>
-            </div>
-            <div class="import-summary-item">
-                <span>Failed</span>
-                <strong>@Model.FailedCount</strong>
-            </div>
-            <div class="import-summary-item">
-                <span>Error Rows</span>
-                <strong>@Model.Errors.Count</strong>
-            </div>
-        </section>
-
         <section class="import-student-grid">
-            <div class="import-card">
-                <h3 class="import-section-title">Upload Student Sheet</h3>
-                <p class="import-section-copy">Choose a prepared `.xlsx` or `.csv` file and import the student records directly into the committee portal.</p>
+            <div class="import-student-card">
+                <h3 class="import-student-section-title">Upload Student Sheet</h3>
+                <p class="import-student-section-copy">Choose a prepared `.xlsx` or `.csv` file and import student records into `studentapplication` together with the related account setup.</p>
 
-                <form method="post" asp-page-handler="Import" enctype="multipart/form-data" class="import-upload-box">
-                    <label asp-for="UploadFile">Student Sheet File</label>
+                <form method="post" asp-page-handler="Import" enctype="multipart/form-data" class="import-student-upload-box">
+                    <label asp-for="UploadFile">Student File</label>
                     <input asp-for="UploadFile" type="file" class="form-control" accept=".xlsx,.csv" />
 
-                    <div class="import-upload-actions">
-                        <button type="submit" class="import-submit-btn">Import Students</button>
-                        <div class="import-upload-hint">Accepted file types: `.xlsx`, `.csv`</div>
+                    <div class="import-student-upload-actions">
+                        <button type="submit" class="import-student-submit-btn">Import Students</button>
+                        <div class="import-student-hint">Accepted file types: `.xlsx`, `.csv`</div>
                     </div>
                 </form>
             </div>
 
-            <aside class="import-note-card">
-                <h3 class="import-section-title">Sheet Requirements</h3>
-                <p class="import-section-copy">Use these headers exactly so the system can read and validate the upload correctly.</p>
+            <aside class="import-student-note-card">
+                <h3 class="import-student-section-title">File Format Guide</h3>
+                <p class="import-student-section-copy">Use these required columns so the import can map the file correctly.</p>
 
-                <div class="import-tag-grid">
-                    <div class="import-tag-group">
-                        <strong>Required Columns</strong>
-                        <div class="import-chip-row">
-                            <span class="import-chip">number_ic</span>
-                            <span class="import-chip">studentID</span>
-                            <span class="import-chip">studentName</span>
-                            <span class="import-chip">studentEmail</span>
-                            <span class="import-chip">cohortId</span>
-                            <span class="import-chip">level</span>
-                            <span class="import-chip">programme</span>
-                            <span class="import-chip">groupNo</span>
-                        </div>
-                    </div>
-
-                    <div class="import-tag-group">
-                        <strong>Optional Columns</strong>
-                        <div class="import-chip-row">
-                            <span class="import-chip">password</span>
-                            <span class="import-chip">applyStatus</span>
-                            <span class="import-chip">ucSupervisor</span>
-                            <span class="import-chip">ucSupervisorEmail</span>
-                            <span class="import-chip">ucSupervisorContact</span>
-                        </div>
-                    </div>
+                <div class="import-student-chip-row">
+                    <span class="import-student-chip">number_ic</span>
+                    <span class="import-student-chip">studentID</span>
+                    <span class="import-student-chip">studentName</span>
+                    <span class="import-student-chip">studentEmail</span>
+                    <span class="import-student-chip">cohortId</span>
+                    <span class="import-student-chip">level</span>
+                    <span class="import-student-chip">programme</span>
+                    <span class="import-student-chip">groupNo</span>
                 </div>
 
-                <ul class="import-note-list">
-                    <li>Personal-information fields are intentionally excluded from this import page.</li>
-                    <li>If `password` is empty, the password defaults to the IC / UC number.</li>
-                    <li>Fix any error rows shown below, then re-upload the corrected file.</li>
+                <ul class="import-student-note-list">
+                    <li>Optional columns supported: `applyStatus`, `ucSupervisor`, `ucSupervisorEmail`, `ucSupervisorContact`.</li>
+                    <li>Rows are rejected when student ID, email, IC number, cohort, or person ID rules fail validation.</li>
+                    <li>Imported records are written into `studentapplication`, then linked to `person` and `sysuser`.</li>
                 </ul>
             </aside>
         </section>
 
         @if (Model.Errors.Any())
         {
-            <section class="import-errors-card">
-                <div class="import-errors-head">
+            <section class="import-student-error-card">
+                <div class="import-student-error-head">
                     <div>
-                        <h3 class="import-section-title">Import Errors</h3>
-                        <p class="import-section-copy">Review the failed rows below and correct them in the source sheet before importing again.</p>
+                        <h3 class="import-student-section-title">Import Errors</h3>
+                        <p class="import-student-section-copy">Review the failed rows below, fix the source file, and import again.</p>
                     </div>
-                    <strong>@Model.Errors.Count issue(s)</strong>
+                    <div class="import-student-error-pill">@Model.Errors.Count issue(s)</div>
                 </div>
 
-                <div class="table-responsive">
-                    <table class="table table-sm import-errors-table">
+                <div class="table-responsive import-student-error-table">
+                    <table class="table align-middle mb-0">
                         <thead>
                             <tr>
                                 <th style="width: 120px;">Row</th>
