@@ -46,8 +46,8 @@ VALUES (
         'April',
         'May',
         'June',
-        'UTM Skudai',
-        'Faculty of Built Environment & Surveying',
+        'Johor Branch Campus',
+        'Faculty of Built Environment',
         'Dr. Aisha Rahman',
         'aisha.rahman@utm.my'
     ),
@@ -72,8 +72,8 @@ VALUES (
         'October',
         'November',
         'December',
-        'UTM Skudai',
-        'Faculty of Computing',
+        'Johor Branch Campus',
+        'Faculty of Computing and Information Technology',
         'Mr. Hafiz Ismail',
         'hafiz.ismail@utm.my'
     ),
@@ -98,8 +98,8 @@ VALUES (
         'May',
         'June',
         'July',
-        'UTM Kuala Lumpur',
-        'Faculty of Engineering',
+        'Kuala Lumpur Main Campus',
+        'Faculty of Engineering and Technology',
         'Ir. Siti Nurul',
         'siti.nurul@utm.my'
     ),
@@ -124,8 +124,8 @@ VALUES (
         'June',
         'July',
         'August',
-        'UTM Skudai',
-        'Faculty of Management',
+        'Johor Branch Campus',
+        'Faculty of Business and Finance',
         'Dr. Lim Wei Jian',
         'limweijian@utm.my'
     ),
@@ -150,8 +150,8 @@ VALUES (
         'December',
         'January',
         'February',
-        'UTM Kuala Lumpur',
-        'Faculty of Science',
+        'Kuala Lumpur Main Campus',
+        'Faculty of Social Science and Humanities',
         'Ms. Noraini Salleh',
         'noraini.salleh@utm.my'
     );
@@ -171,20 +171,6 @@ INSERT INTO sysuser (
         email_verified_at
     )
 VALUES -- Committee (no IC, password set to a placeholder since rule applies to IC users)
-    (
-        'committee1@univ.edu.my',
-        'committee1',
-        'committee123',
-        'committee',
-        NULL,
-        NULL,
-        TRUE,
-        FALSE,
-        0,
-        '2026-02-25 09:10:00',
-        '2026-02-01 08:00:00',
-        '2026-02-01 08:05:00'
-    ),
     (
         'supervisor1@univ.edu.my',
         'sv_rahman',
@@ -350,8 +336,8 @@ VALUES (
         'A briefing session will be held for students to explain the internship process, document requirements, and evaluation method. Please check your timetable and attend.',
         'student',
         @active_cohort_id,
-        'FABU',
-        'UTM Johor Bahru',
+        'Faculty of Built Environment',
+        'Johor Branch Campus',
         1,
         NOW(),
         DATE_ADD(NOW(), INTERVAL 30 DAY)

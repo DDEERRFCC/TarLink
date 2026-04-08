@@ -1,8 +1,363 @@
-﻿@page
+@page
 @model PrivacyModel
 @{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<style>
+    :root {
+        --privacy-ink: #132238;
+        --privacy-muted: #607080;
+        --privacy-surface: rgba(255, 255, 255, 0.88);
+        --privacy-line: rgba(19, 34, 56, 0.1);
+        --privacy-accent: #8f2d56;
+        --privacy-accent-soft: rgba(143, 45, 86, 0.1);
+        --privacy-secondary: #0f7b6c;
+    }
+
+    body {
+        background:
+            radial-gradient(circle at top left, rgba(255, 209, 102, 0.28), transparent 24%),
+            radial-gradient(circle at top right, rgba(15, 123, 108, 0.16), transparent 22%),
+            linear-gradient(180deg, #f4efe5 0%, #edf4f7 55%, #f7fbfc 100%);
+    }
+
+    .privacy-shell {
+        position: relative;
+        padding: 1.25rem 0 3rem;
+        color: var(--privacy-ink);
+        font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+    }
+
+    .privacy-shell::before,
+    .privacy-shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(8px);
+        opacity: .85;
+        z-index: 0;
+    }
+
+    .privacy-shell::before {
+        width: 220px;
+        height: 220px;
+        top: 0;
+        right: -3rem;
+        background: rgba(15, 123, 108, 0.12);
+    }
+
+    .privacy-shell::after {
+        width: 170px;
+        height: 170px;
+        left: -2.5rem;
+        bottom: 3rem;
+        background: rgba(143, 45, 86, 0.12);
+    }
+
+    .privacy-stack,
+    .privacy-grid {
+        position: relative;
+        z-index: 1;
+    }
+
+    .privacy-stack {
+        display: grid;
+        gap: 1.2rem;
+    }
+
+    .privacy-hero,
+    .privacy-card,
+    .privacy-note {
+        border: 1px solid var(--privacy-line);
+        background: var(--privacy-surface);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 18px 40px rgba(19, 34, 56, 0.08);
+    }
+
+    .privacy-hero {
+        border-radius: 30px;
+        padding: 2.2rem;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .privacy-hero::after {
+        content: "";
+        position: absolute;
+        right: -2rem;
+        top: -2rem;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(143, 45, 86, 0.16), rgba(15, 123, 108, 0.12));
+    }
+
+    .privacy-hero > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .privacy-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .48rem .88rem;
+        border-radius: 999px;
+        background: rgba(19, 34, 56, 0.06);
+        color: var(--privacy-muted);
+        text-transform: uppercase;
+        font-size: .78rem;
+        letter-spacing: .12em;
+        margin-bottom: 1rem;
+    }
+
+    .privacy-title {
+        margin-bottom: .8rem;
+        max-width: none;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        line-height: 1.03;
+        letter-spacing: -.04em;
+    }
+
+    .privacy-copy {
+        max-width: none;
+        color: var(--privacy-muted);
+        font-size: 1rem;
+        line-height: 1.8;
+        margin-bottom: 1.25rem;
+    }
+
+    .privacy-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+    }
+
+    .privacy-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: .5rem .8rem;
+        border-radius: 999px;
+        font-size: .82rem;
+        font-weight: 700;
+        background: var(--privacy-accent-soft);
+        color: var(--privacy-accent);
+    }
+
+    .privacy-grid {
+        display: grid;
+        grid-template-columns: 1.15fr .85fr;
+        gap: 1.2rem;
+        align-items: start;
+    }
+
+    .privacy-card,
+    .privacy-note {
+        border-radius: 24px;
+        padding: 1.35rem;
+    }
+
+    .privacy-card h2,
+    .privacy-note h2 {
+        margin-bottom: .9rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.45rem;
+    }
+
+    .privacy-section {
+        padding: 1rem 0;
+        border-top: 1px solid rgba(19, 34, 56, 0.08);
+    }
+
+    .privacy-section:first-of-type {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+    .privacy-section h3 {
+        margin-bottom: .45rem;
+        color: var(--privacy-ink);
+        font-size: 1.02rem;
+        font-weight: 700;
+    }
+
+    .privacy-section p,
+    .privacy-note p,
+    .privacy-note li {
+        color: var(--privacy-muted);
+        line-height: 1.75;
+        margin-bottom: .65rem;
+    }
+
+    .privacy-note ul {
+        margin: 0;
+        padding-left: 1.1rem;
+    }
+
+    .privacy-highlight {
+        padding: 1rem 1.05rem;
+        border-radius: 18px;
+        border: 1px solid rgba(15, 123, 108, 0.14);
+        background: rgba(15, 123, 108, 0.06);
+        margin-top: 1rem;
+    }
+
+    .privacy-highlight strong {
+        display: block;
+        margin-bottom: .3rem;
+        color: var(--privacy-secondary);
+    }
+
+    .privacy-contact {
+        margin-top: 1rem;
+        padding: 1rem 1.05rem;
+        border-radius: 18px;
+        background: rgba(143, 45, 86, 0.06);
+        border: 1px solid rgba(143, 45, 86, 0.12);
+    }
+
+    .privacy-contact a {
+        color: var(--privacy-accent);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    @@media (max-width: 991.98px) {
+        .privacy-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .privacy-hero {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<div class="privacy-shell">
+    <div class="privacy-stack">
+        <section class="privacy-hero">
+            <div class="privacy-kicker">Policy & Data Protection</div>
+            <h1 class="privacy-title">Privacy Policy for the Internship Management System</h1>
+            <p class="privacy-copy">
+                This Privacy Policy explains how the Internship Training Programme System collects, uses, stores, and protects
+                personal information when students, supervisors, committee members, and related users access the portal.
+            </p>
+            <div class="privacy-meta">
+                <span class="privacy-chip">Last updated: April 9, 2026</span>
+                <span class="privacy-chip">Applies to student, supervisor, and committee portals</span>
+            </div>
+        </section>
+
+        <section class="privacy-grid">
+            <article class="privacy-card">
+                <h2>How We Handle Information</h2>
+
+                <div class="privacy-section">
+                    <h3>1. Information We Collect</h3>
+                    <p>
+                        The system may collect personal and academic information such as names, email addresses, student IDs,
+                        IC numbers, phone numbers, cohort details, faculty and campus information, internship placement data,
+                        uploaded documents, report submissions, evaluation records, login activity, and notification history.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>2. Why We Collect It</h3>
+                    <p>
+                        Information is used to manage internship applications, assign supervisors, track report submission,
+                        support document review, generate announcements and notifications, maintain committee oversight, and
+                        operate the system securely and effectively.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>3. How Information Is Used</h3>
+                    <p>
+                        Data in this portal is used only for internship administration and related academic management purposes.
+                        This includes reviewing student placement details, monitoring programme progress, communicating deadlines,
+                        evaluating submissions, and supporting legitimate operational or audit needs inside the institution.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>4. Sharing and Access</h3>
+                    <p>
+                        Access to data is limited according to user role. Students can view their own records. Supervisors can
+                        access information relevant to assigned students and evaluations. Committee members can access broader
+                        administrative records needed to manage the programme. Information is not intended for public disclosure.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>5. Document Storage</h3>
+                    <p>
+                        Files uploaded through the system, such as CVs, forms, and progress reports, are stored for internship
+                        processing and academic reference. Users should only upload documents that are necessary for official
+                        internship requirements.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>6. Retention</h3>
+                    <p>
+                        Records may be retained for as long as required to support active internship operations, academic review,
+                        reporting obligations, dispute handling, or institutional retention policy. Data that is no longer needed
+                        should be removed or archived according to internal rules.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>7. Security</h3>
+                    <p>
+                        Reasonable technical and administrative measures are used to reduce unauthorized access, misuse, loss,
+                        or disclosure of information. Even so, no online platform can guarantee absolute security, so users are
+                        responsible for protecting their login credentials and using the system appropriately.
+                    </p>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>8. Policy Changes</h3>
+                    <p>
+                        This Privacy Policy may be updated when the system, institutional workflow, or legal requirements change.
+                        The most current version published on this page will apply from its stated update date.
+                    </p>
+                </div>
+            </article>
+
+            <aside class="privacy-note">
+                <h2>Key Privacy Notes</h2>
+                <p>This system is designed for internship programme operations, so privacy decisions should be tied to that purpose.</p>
+                <ul>
+                    <li>Only collect information that is relevant to placement, supervision, reporting, and evaluation.</li>
+                    <li>Do not share student or staff data outside authorized academic or administrative processes.</li>
+                    <li>Use notifications and announcements responsibly, especially when targeting by faculty, campus, or cohort.</li>
+                    <li>Keep uploaded files limited to official internship documents.</li>
+                    <li>Review access rights regularly for student, supervisor, and committee accounts.</li>
+                </ul>
+
+                <div class="privacy-highlight">
+                    <strong>Password and Account Safety</strong>
+                    Users should keep passwords confidential, avoid shared accounts, and report suspected unauthorized access as soon as possible.
+                </div>
+
+                <div class="privacy-highlight">
+                    <strong>Accuracy of Information</strong>
+                    Users are responsible for ensuring that submitted internship and contact details are correct, complete, and up to date.
+                </div>
+
+                <div class="privacy-contact">
+                    <h2>Questions or Requests</h2>
+                    <p>
+                        If a user needs help with data correction, account access, or privacy-related concerns, they should contact the
+                        internship committee or the person in charge listed for their cohort.
+                    </p>
+                    <p class="mb-0">
+                        Contact through the appropriate committee or supervisor channel provided inside the portal.
+                    </p>
+                </div>
+            </aside>
+        </section>
+    </div>
+</div>

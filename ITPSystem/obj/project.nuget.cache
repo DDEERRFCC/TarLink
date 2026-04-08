@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HSyZOuHYGPo=",
+  "dgSpecHash": "4+Sgz4B47NM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\ITPSystem\\ITPSystem.csproj",
+  "projectFilePath": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\ITPSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kimch\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\kimch\\.nuget\\packages\\closedxml\\0.104.2\\closedxml.0.104.2.nupkg.sha512",

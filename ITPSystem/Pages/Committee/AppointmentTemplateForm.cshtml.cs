@@ -4,20 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
+public class CommitteeAppointmentTemplateFormModel : CommitteePageModelBase
 {
     private const long MaxUploadBytes = 15 * 1024 * 1024;
     private readonly ApplicationDbContext _db;
     private readonly IWebHostEnvironment _env;
 
-    public CommitteeAppointmentTemplatesModel(ApplicationDbContext db, IWebHostEnvironment env)
+    public CommitteeAppointmentTemplateFormModel(ApplicationDbContext db, IWebHostEnvironment env)
     {
         _db = db;
         _env = env;
     }
 
     public List<CohortOption> CohortOptions { get; private set; } = new();
-    public List<TemplateListItem> Templates { get; private set; } = new();
 
     [BindProperty]
     public TemplateInputModel Input { get; set; } = new();
@@ -39,12 +38,6 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
     {
         public int Id { get; set; }
         public string Label { get; set; } = string.Empty;
-    }
-
-    public class TemplateListItem
-    {
-        public AppointmentLetterTemplate Template { get; set; } = null!;
-        public string CohortLabel { get; set; } = string.Empty;
     }
 
     public class TemplateInputModel
@@ -91,14 +84,14 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
         if (template == null)
         {
             ErrorMessage = "Selected template record was not found.";
-            return RedirectToPage();
+            return RedirectToPage("/Committee/AppointmentTemplates");
         }
 
         Input = MapToInput(template);
         return Page();
     }
 
-    public IActionResult OnPostSave()
+    public IActionResult OnPost()
     {
         if (!IsCommittee())
         {
@@ -133,7 +126,7 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
             if (template == null)
             {
                 ErrorMessage = "Selected template record was not found.";
-                return RedirectToPage();
+                return RedirectToPage("/Committee/AppointmentTemplates");
             }
         }
         else
@@ -164,38 +157,7 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
             ? $"Template set \"{template.template_name}\" updated successfully."
             : $"Template set \"{template.template_name}\" uploaded successfully.";
 
-        return RedirectToPage();
-    }
-
-    public IActionResult OnPostDelete(int id)
-    {
-        if (!IsCommittee())
-        {
-            return RedirectToPage("/Login/CommitteeLogin");
-        }
-
-        var template = _db.AppointmentLetterTemplates.FirstOrDefault(x => x.template_id == id);
-        if (template == null)
-        {
-            ErrorMessage = "Selected template record was not found.";
-            return RedirectToPage();
-        }
-
-        DeleteStoredFile(template.company_acceptance_letter_path);
-        DeleteStoredFile(template.indemnity_letter_path);
-        DeleteStoredFile(template.parent_acknowledgement_form_path);
-        DeleteStoredFile(template.company_supervisor_evaluation_form_path);
-        DeleteStoredFile(template.progress_report_template_path);
-        DeleteStoredFile(template.final_report_template_path);
-        DeleteStoredFile(template.student_support_letter_path);
-        DeleteStoredFile(template.appointment_confirmation_letter_path);
-        DeleteStoredFile(template.warning_letter_path);
-
-        _db.AppointmentLetterTemplates.Remove(template);
-        _db.SaveChanges();
-
-        StatusMessage = "Template set deleted successfully.";
-        return RedirectToPage();
+        return RedirectToPage("/Committee/AppointmentTemplates");
     }
 
     private void LoadPageData()
@@ -207,18 +169,6 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
             {
                 Id = c.cohort_id,
                 Label = BuildCohortLabel(c)
-            })
-            .ToList();
-
-        Templates = _db.AppointmentLetterTemplates
-            .AsNoTracking()
-            .Include(x => x.Cohort)
-            .OrderByDescending(x => x.created_at)
-            .ThenByDescending(x => x.template_id)
-            .Select(x => new TemplateListItem
-            {
-                Template = x,
-                CohortLabel = x.Cohort != null ? BuildCohortLabel(x.Cohort) : $"Cohort {x.cohort_id}"
             })
             .ToList();
     }
@@ -329,7 +279,6 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
             }
             catch
             {
-                // keep save success even if old cleanup fails
             }
         }
 
@@ -339,36 +288,6 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
         var uploadsRoot = Path.Combine(_env.WebRootPath, "uploads");
         var relativeFolder = Path.GetRelativePath(uploadsRoot, folderPath).Replace("\\", "/");
         return $"/uploads/{relativeFolder}/{safeName}";
-    }
-
-    private void DeleteStoredFile(string? storedPath)
-    {
-        var fullPath = ResolveUploadFullPath(storedPath);
-        if (string.IsNullOrWhiteSpace(fullPath) || !System.IO.File.Exists(fullPath))
-        {
-            return;
-        }
-
-        try
-        {
-            System.IO.File.Delete(fullPath);
-        }
-        catch
-        {
-            // ignore cleanup failure on delete
-        }
-    }
-
-    public string GetFileSizeLabel(string? storedPath)
-    {
-        var fullPath = ResolveUploadFullPath(storedPath);
-        if (string.IsNullOrWhiteSpace(fullPath) || !System.IO.File.Exists(fullPath))
-        {
-            return "-";
-        }
-
-        var fileInfo = new FileInfo(fullPath);
-        return FormatFileSize(fileInfo.Length);
     }
 
     private string? ResolveUploadFullPath(string? storedPath)
@@ -390,6 +309,18 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
         return combinedPath.StartsWith(uploadsRootFullPath, StringComparison.OrdinalIgnoreCase)
             ? combinedPath
             : null;
+    }
+
+    public string GetFileSizeLabel(string? storedPath)
+    {
+        var fullPath = ResolveUploadFullPath(storedPath);
+        if (string.IsNullOrWhiteSpace(fullPath) || !System.IO.File.Exists(fullPath))
+        {
+            return "-";
+        }
+
+        var fileInfo = new FileInfo(fullPath);
+        return FormatFileSize(fileInfo.Length);
     }
 
     private static string BuildSafeUploadFileName(string? originalFileName, string fallbackPrefix)
@@ -417,19 +348,6 @@ public class CommitteeAppointmentTemplatesModel : CommitteePageModelBase
             : cohort.description.Trim();
 
         return $"{description} (ID {cohort.cohort_id})";
-    }
-
-    private static string BuildCohortFolderName(Cohort cohort)
-    {
-        var rawName = string.IsNullOrWhiteSpace(cohort.description)
-            ? $"Cohort_{cohort.cohort_id}"
-            : cohort.description.Trim();
-
-        var invalidChars = Path.GetInvalidFileNameChars();
-        var sanitized = new string(rawName.Select(ch => invalidChars.Contains(ch) ? '_' : ch).ToArray());
-        sanitized = string.Join("_", sanitized.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
-
-        return string.IsNullOrWhiteSpace(sanitized) ? $"Cohort_{cohort.cohort_id}" : sanitized;
     }
 
     private static string BuildTemplateCohortFolderName(Cohort cohort)

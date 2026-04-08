@@ -1,3 +1,44 @@
+﻿<style>
+    .committee-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #e6cdd7;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #4f3041;
+        font-weight: 700;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .committee-back-link:hover {
+        color: #6b2847;
+        border-color: #d7a7ba;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .committee-back-link::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #f6dfe9;
+        color: #7b264b;
+        font-size: .9rem;
+        line-height: 1;
+    }
+</style>
+
 <div class="mb-3">
-    <a asp-page="/Committee/Dashboard" class="btn btn-sm btn-outline-secondary">Back to Dashboard</a>
+    <a asp-page="/Committee/Dashboard" class="committee-back-link">Back to Dashboard</a>
 </div>
+

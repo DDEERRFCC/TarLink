@@ -2,7 +2,6 @@ using ITPSystem.Data;
 using ITPSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace ITPSystem.Pages.Supervisor
@@ -20,7 +19,6 @@ namespace ITPSystem.Pages.Supervisor
         public List<StudentApplication> CurrentStudents { get; set; } = new();
         public List<StudentApplication> HistoryStudents { get; set; } = new();
         private Dictionary<int, Cohort> CohortMap { get; set; } = new();
-        public List<SelectListItem> CohortOptions { get; private set; } = new();
 
         [BindProperty(SupportsGet = true)]
         public byte? level { get; set; }
@@ -232,20 +230,9 @@ namespace ITPSystem.Pages.Supervisor
                 .ToList();
 
             CohortMap = cohorts.ToDictionary(c => c.cohort_id);
-            CohortOptions = cohorts
-                .Select(c =>
-                {
-                    var label = GetCohortRangeLabel(c);
-                    if (c.level.HasValue)
-                    {
-                        label = $"{label} (Level {c.level.Value})";
-                    }
-
-                    return new SelectListItem(label, c.cohort_id.ToString());
-                })
-                .ToList();
 
             var query = _db.StudentApplications.AsNoTracking()
+                .Include(s => s.Cohort)
                 .Where(s => s.ucSupervisorEmail == userEmail || s.comSupervisorEmail == userEmail)
                 .AsQueryable();
 
@@ -255,17 +242,15 @@ namespace ITPSystem.Pages.Supervisor
             }
 
             Students = query
-                .OrderBy(s => s.applyStatus == "pending" ? 0 : 1)
-                .ThenBy(s => s.studentName)
+                .Where(s => s.Cohort != null && s.Cohort.isActive)
+                .OrderBy(s => s.studentName)
                 .ToList();
 
             CurrentStudents = Students
-                .Where(s => !CohortMap.TryGetValue(s.cohortId, out var cohort) || cohort.isActive)
+                .Where(s => string.Equals(s.applyStatus, "pending", StringComparison.OrdinalIgnoreCase))
                 .ToList();
 
-            HistoryStudents = Students
-                .Where(s => CohortMap.TryGetValue(s.cohortId, out var cohort) && !cohort.isActive)
-                .ToList();
+            HistoryStudents = new List<StudentApplication>();
 
             // CurrentStudents and HistoryStudents are available for separate display.
         }

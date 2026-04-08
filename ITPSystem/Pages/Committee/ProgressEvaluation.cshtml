@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model CommitteeProgressEvaluationModel
 @{
     ViewData["CommitteePageTitle"] = "Progress Report & Evaluation";
@@ -22,7 +22,7 @@
         border-radius: 24px;
         padding: 1.35rem;
         color: #fff;
-        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873);
         box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
     }
 
@@ -82,17 +82,18 @@
         text-decoration: none;
         border-radius: 999px;
         padding: .78rem 1rem;
-        border: 1px solid #cfe0ed;
+        border: 1px solid #e6cdd7;
         background: linear-gradient(180deg, #ffffff, #f5fbff);
-        color: #12344b;
+        color: #4f3041;
         font-weight: 700;
+        white-space: nowrap;
         box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
         transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
     }
 
     .progress-back-btn:hover {
-        color: #0f3f54;
-        border-color: #9fcae4;
+        color: #6b2847;
+        border-color: #d7a7ba;
         box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
         transform: translateY(-1px);
     }
@@ -105,8 +106,8 @@
         width: 1.7rem;
         height: 1.7rem;
         border-radius: 999px;
-        background: #e0f2fe;
-        color: #0c4a6e;
+        background: #f6dfe9;
+        color: #7b264b;
         font-size: .9rem;
         line-height: 1;
     }
@@ -140,9 +141,9 @@
     .progress-stat,
     .progress-filter-card,
     .progress-table-card {
-        border: 1px solid #d8e5f1;
+        border: 1px solid #eadce2;
         border-radius: 22px;
-        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        background: linear-gradient(180deg, #ffffff, #fff9fb);
         box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
 
@@ -157,11 +158,11 @@
         position: absolute;
         inset: 0 0 auto 0;
         height: 5px;
-        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        background: linear-gradient(90deg, #8f2d56, #b34873);
     }
 
     .progress-stat-label {
-        color: #607284;
+        color: #7a6673;
         font-size: .8rem;
         font-weight: 700;
         letter-spacing: .05em;
@@ -170,7 +171,7 @@
 
     .progress-stat-value {
         margin-top: .4rem;
-        color: #0f172a;
+        color: #2f1724;
         font-size: 1.6rem;
         font-weight: 700;
         line-height: 1;
@@ -178,7 +179,7 @@
 
     .progress-stat-note {
         margin-top: .35rem;
-        color: #718396;
+        color: #917d89;
         font-size: .88rem;
     }
 
@@ -207,8 +208,8 @@
         min-width: 72px;
         padding: .35rem .7rem;
         border-radius: 999px;
-        background: #ecfdf5;
-        color: #0f766e;
+        background: #d1e7dd;
+        color: #0f5132;
         font-size: .76rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -217,8 +218,8 @@
 
     details[open] .progress-filter-toggle::after {
         content: "Close";
-        background: #d1fae5;
-        color: #047857;
+        background: #f3d6e2;
+        color: #7b264b;
     }
 
     .progress-filter-content {
@@ -234,7 +235,7 @@
 
     .progress-section-copy {
         margin: .35rem 0 0;
-        color: #607284;
+        color: #7a6673;
         line-height: 1.7;
         font-size: .92rem;
     }
@@ -265,7 +266,7 @@
 
     .progress-field .form-control:focus,
     .progress-field .form-select:focus {
-        border-color: #14b8a6;
+        border-color: #b34873;
         box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
     }
 
@@ -287,13 +288,13 @@
     }
 
     .progress-apply-btn {
-        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        background: linear-gradient(90deg, #8f2d56, #b34873);
         border: none;
         color: #fff;
     }
 
     .progress-reset-btn {
-        border: 1px solid #c8d7e5;
+        border: 1px solid #dcc9d2;
         color: #35516a;
         text-decoration: none;
         background: #fff;
@@ -317,8 +318,8 @@
         align-items: center;
         border-radius: 999px;
         padding: .28rem .7rem;
-        background: #ecfdf5;
-        color: #0f766e;
+        background: #f8e8ef;
+        color: #8f2d56;
         font-size: .8rem;
         font-weight: 700;
     }
@@ -345,8 +346,8 @@
     }
 
     .progress-table thead th {
-        background: #f6fafc;
-        color: #607284;
+        background: #faf1f5;
+        color: #7a6673;
         font-size: .8rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -409,17 +410,17 @@
     }
 
     .progress-status-submitted {
-        background: #ecfdf5;
-        color: #047857;
+        background: #f8e8ef;
+        color: #7b264b;
     }
 
     .progress-status-late {
         background: #ffedd5;
-        color: #c2410c;
+        color: #9a6a16;
     }
 
     .progress-status-approved {
-        background: #d1fae5;
+        background: #f3d6e2;
         color: #065f46;
     }
 
@@ -431,7 +432,7 @@
     .progress-empty {
         padding: 3rem 1.2rem;
         text-align: center;
-        color: #607284;
+        color: #7a6673;
     }
 
     .progress-empty strong {
@@ -686,3 +687,4 @@
         </section>
     </div>
 </div>
+

@@ -35,6 +35,7 @@ public class StudentDashboardModel : PageModel
     public List<Notification> RecentNotifications { get; private set; } = new();
     public List<DeadlineItem> ReportDeadlines { get; private set; } = new();
     public int UnreadNotificationCount { get; private set; }
+    public int BellItemCount => Announcements.Count + UnreadNotificationCount;
     public string Cohort { get; private set; } = "-";
     public string InternPeriod { get; private set; } = "-";
     public string Status { get; private set; } = "None";
@@ -51,6 +52,7 @@ public class StudentDashboardModel : PageModel
     public string TemplateSourceLabel { get; private set; } = "-";
     public bool CanEditCompanyDetail { get; private set; } = true;
     public string CompanyDetailActionLabel { get; private set; } = "Submit Company Details";
+    public bool CanViewProgressReport { get; private set; }
 
     [BindProperty]
     public CompanyDetailInput Input { get; set; } = new();
@@ -367,6 +369,7 @@ public class StudentDashboardModel : PageModel
             var approvedDocs = new (string Key, string Title, string? StoredPath, bool CanView)[]
             {
                 ("appointment_confirmation_letter", "Appointment Confirmation Letter", template?.appointment_confirmation_letter_path, true),
+                ("company_supervisor_evaluation_form", "Company Supervisor Evaluation Form", template?.company_supervisor_evaluation_form_path, true),
                 ("warning_letter", "Warning Letter", template?.warning_letter_path, true)
             };
 
@@ -404,6 +407,7 @@ public class StudentDashboardModel : PageModel
         Remark = string.IsNullOrWhiteSpace(student.remark) ? "-" : student.remark;
         CanEditCompanyDetail = CanEditCompanyDetailForStatus(student.applyStatus);
         CompanyDetailActionLabel = GetCompanyDetailActionLabel(student.applyStatus);
+        CanViewProgressReport = string.Equals(Status?.Trim(), "Approved", StringComparison.OrdinalIgnoreCase);
         CalculateInternshipProgress(student.Cohort, Status);
 
         CurrentFormAcceptanceFile = BuildCurrentFileDisplay(student.formAcceptance);
@@ -957,10 +961,17 @@ public class StudentDashboardModel : PageModel
     private void LoadAnnouncements()
     {
         var now = DateTime.Now;
+        var student = GetCurrentStudentApplication(asNoTracking: true, includeCohort: true);
+        var cohortId = student?.cohortId;
+        var faculty = student?.Cohort?.faculty;
+        var campus = student?.Cohort?.campus;
 
         Announcements = _db.Announcements.AsNoTracking()
             .Where(a => a.is_published)
             .Where(a => a.target_role == "all" || a.target_role == "student")
+            .Where(a => !a.cohort_id.HasValue || a.cohort_id == cohortId)
+            .Where(a => string.IsNullOrWhiteSpace(a.faculty) || a.faculty == faculty)
+            .Where(a => string.IsNullOrWhiteSpace(a.campus) || a.campus == campus)
             .Where(a => !a.publish_at.HasValue || a.publish_at.Value <= now)
             .Where(a => !a.expire_at.HasValue || a.expire_at.Value >= now)
             .OrderByDescending(a => a.publish_at ?? a.created_at)

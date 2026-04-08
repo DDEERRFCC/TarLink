@@ -110,6 +110,9 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         [Required]
         public string applyStatus { get; set; } = "none";
 
+        public bool isActive { get; set; } = true;
+        public bool isLocked { get; set; } = false;
+
         public string? remark { get; set; }
         public string? formAcceptance { get; set; }
         public string? formAcknowledgement { get; set; }
@@ -271,6 +274,16 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         student.updated_at = DateTime.Now;
 
         _db.SaveChanges();
+
+        var linkedUser = FindLinkedStudentUser(student);
+        if (linkedUser != null)
+        {
+            linkedUser.is_active = Input.isActive;
+            linkedUser.is_locked = Input.isLocked;
+            linkedUser.updated_at = DateTime.Now;
+            _db.SaveChanges();
+        }
+
         StatusMessage = isCreateMode
             ? "Student created successfully."
             : "Student details updated successfully.";
@@ -447,6 +460,8 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             networkingKnowledge = student.networkingKnowledge,
             templateVersion = student.templateVersion,
             applyStatus = NormalizeStatus(student.applyStatus),
+            isActive = true,
+            isLocked = false,
             remark = student.remark,
             formAcceptance = student.formAcceptance,
             formAcknowledgement = student.formAcknowledgement,
@@ -456,6 +471,13 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             doVerifierEmail = student.doVerifierEmail,
             isAgreed = student.isAgreed
         };
+
+        var linkedUser = FindLinkedStudentUser(student);
+        if (linkedUser != null)
+        {
+            Input.isActive = linkedUser.is_active;
+            Input.isLocked = linkedUser.is_locked;
+        }
     }
 
     private void InitializeNewStudentInput()
@@ -467,6 +489,8 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             application_id = 0,
             gender = "O",
             applyStatus = "none",
+            isActive = true,
+            isLocked = false,
             ownTransport = false,
             isAgreed = false,
             level = 1,
@@ -538,6 +562,39 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         {
             ModelState.AddModelError(string.Empty, $"{label}: file must not exceed 10MB.");
         }
+    }
+
+    private SysUser? FindLinkedStudentUser(StudentApplication student)
+    {
+        var studentId = student.application_id;
+        var email = (student.studentEmail ?? string.Empty).Trim();
+        var icNumber = (student.number_ic ?? string.Empty).Trim();
+
+        var candidates = _db.SysUsers
+            .Where(u => u.role == "student")
+            .AsQueryable();
+
+        var linkedUser = candidates.FirstOrDefault(u => u.application_id == studentId);
+        if (linkedUser != null)
+        {
+            return linkedUser;
+        }
+
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            linkedUser = candidates.FirstOrDefault(u => u.email == email);
+            if (linkedUser != null)
+            {
+                return linkedUser;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(icNumber))
+        {
+            linkedUser = candidates.FirstOrDefault(u => u.ic_number == icNumber);
+        }
+
+        return linkedUser;
     }
 
     private string? SaveUploadedFile(IFormFile? file, string prefix, string? existingFileName, StudentApplication student)

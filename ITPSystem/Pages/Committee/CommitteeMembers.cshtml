@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model CommitteeMembersModel
 @{
     ViewData["CommitteePageTitle"] = "Committee Member";
@@ -22,7 +22,7 @@
         border-radius: 24px;
         padding: 1.35rem;
         color: #fff;
-        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873);
         box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
     }
 
@@ -82,17 +82,17 @@
         text-decoration: none;
         border-radius: 999px;
         padding: .78rem 1rem;
-        border: 1px solid #cfe0ed;
+        border: 1px solid #e6cdd7;
         background: linear-gradient(180deg, #ffffff, #f5fbff);
-        color: #12344b;
+        color: #4f3041;
         font-weight: 700;
         box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
         transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
     }
 
     .committee-member-back-btn:hover {
-        color: #0f3f54;
-        border-color: #9fcae4;
+        color: #6b2847;
+        border-color: #d7a7ba;
         box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
         transform: translateY(-1px);
     }
@@ -105,8 +105,8 @@
         width: 1.7rem;
         height: 1.7rem;
         border-radius: 999px;
-        background: #e0f2fe;
-        color: #0c4a6e;
+        background: #f6dfe9;
+        color: #7b264b;
         font-size: .9rem;
         line-height: 1;
     }
@@ -139,9 +139,9 @@
 
     .committee-member-stat-card,
     .committee-member-table-card {
-        border: 1px solid #d8e5f1;
+        border: 1px solid #eadce2;
         border-radius: 22px;
-        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        background: linear-gradient(180deg, #ffffff, #fff9fb);
         box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
 
@@ -156,11 +156,11 @@
         position: absolute;
         inset: 0 0 auto 0;
         height: 5px;
-        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        background: linear-gradient(90deg, #8f2d56, #b34873);
     }
 
     .committee-member-stat-label {
-        color: #607284;
+        color: #7a6673;
         font-size: .8rem;
         font-weight: 700;
         letter-spacing: .06em;
@@ -169,7 +169,7 @@
 
     .committee-member-stat-value {
         margin-top: .35rem;
-        color: #0f172a;
+        color: #2f1724;
         font-size: 1.7rem;
         font-weight: 700;
         line-height: 1.1;
@@ -177,7 +177,7 @@
 
     .committee-member-stat-note {
         margin-top: .3rem;
-        color: #718396;
+        color: #917d89;
         font-size: .88rem;
     }
 
@@ -198,7 +198,7 @@
 
     .committee-member-section-copy {
         margin: .3rem 0 0;
-        color: #607284;
+        color: #7a6673;
         line-height: 1.7;
         font-size: .92rem;
     }
@@ -206,13 +206,15 @@
     .committee-member-count-pill {
         display: inline-flex;
         align-items: center;
-        border-radius: 999px;
-        padding: .4rem .78rem;
-        background: #ecfdf5;
-        color: #0f766e;
+        border-radius: 14px;
+        padding: .46rem .86rem;
+        background: linear-gradient(180deg, #dbeafe, #eff6ff);
+        border: 1px solid #bfdbfe;
+        color: #1d4ed8;
         font-size: .84rem;
         font-weight: 700;
         white-space: nowrap;
+        box-shadow: 0 8px 18px rgba(29, 78, 216, 0.08);
     }
 
     .committee-member-table-wrap {
@@ -221,8 +223,8 @@
 
     .committee-member-table thead th {
         border-bottom-width: 1px;
-        background: #f6fafc;
-        color: #607284;
+        background: #faf1f5;
+        color: #7a6673;
         font-size: .8rem;
         font-weight: 700;
         letter-spacing: .05em;
@@ -243,7 +245,7 @@
 
     .committee-member-meta {
         margin-top: .18rem;
-        color: #718396;
+        color: #917d89;
         font-size: .86rem;
     }
 
@@ -257,29 +259,29 @@
     }
 
     .committee-member-status.active {
-        background: #ecfdf5;
-        color: #0f766e;
+        background: #d1e7dd;
+        color: #0f5132;
     }
 
     .committee-member-status.inactive {
-        background: #fff1f2;
-        color: #be123c;
+        background: #fdecef;
+        color: #9f305d;
     }
 
     .committee-member-status.locked {
-        background: #fff7ed;
-        color: #c2410c;
+        background: #f8d7da;
+        color: #842029;
     }
 
     .committee-member-status.unlocked {
-        background: #eff6ff;
-        color: #1d4ed8;
+        background: #f8e8ef;
+        color: #6f2847;
     }
 
     .committee-member-empty {
         padding: 2.5rem 1rem;
         text-align: center;
-        color: #607284;
+        color: #7a6673;
     }
 
     .committee-member-empty strong {
@@ -413,3 +415,4 @@
         </section>
     </div>
 </div>
+

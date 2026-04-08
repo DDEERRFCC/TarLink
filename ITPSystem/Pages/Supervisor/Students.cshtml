@@ -2,30 +2,70 @@
 @model ITPSystem.Pages.Supervisor.StudentsModel
 
 <style>
-    .sv-shell {
-        background: #f0fdf4;
-        border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 1.1rem 1.2rem 1.4rem;
-        
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+        --itp-bg-1: #f5efe4;
+        --itp-bg-2: #edf4f4;
+        --itp-bg-3: #f9fbfc;
+        --itp-text: #182536;
+        --itp-muted: #617082;
+        --itp-primary: #0f7b6c;
+        --itp-primary-dark: #0d5f63;
+        --itp-accent: #d97706;
+        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-border: rgba(24, 37, 54, 0.09);
     }
-    .sv-page { padding-bottom: 1.5rem; }
+
+    .sv-portal {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 8% 8%, rgba(217, 119, 6, 0.18) 0%, transparent 25%),
+            radial-gradient(circle at 88% 14%, rgba(15, 123, 108, 0.16) 0%, transparent 23%),
+            linear-gradient(160deg, var(--itp-bg-1), var(--itp-bg-2) 52%, var(--itp-bg-3));
+        padding: 2rem 0 2.5rem;
+    }
+
+    .itp-shell {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .sv-shell {
+        background: var(--itp-card);
+        border: 1px solid var(--itp-border);
+        border-radius: 22px;
+        padding: 1.3rem;
+        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
+        backdrop-filter: blur(10px);
+    }
+
     .sv-header {
         background: #fff;
-        color: #0f172a;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: .9rem 1rem;
+        color: var(--itp-text);
+        border: 1px solid var(--itp-border);
+        border-radius: 16px;
+        padding: 1rem 1.1rem;
         margin-bottom: 1rem;
+        box-shadow: 0 10px 24px rgba(26, 40, 60, 0.06);
     }
+
     .sv-filter {
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
+        border: 1px solid var(--itp-border);
+        border-radius: 16px;
         background: #fff;
         box-shadow: 0 6px 14px rgba(15, 23, 42, .06);
-        padding: .8rem;
+        padding: .9rem;
         margin-bottom: 1rem;
     }
+
+    .sv-section-title {
+        color: var(--itp-text);
+        font-weight: 700;
+    }
+
     .sv-chip {
         display: inline-flex;
         align-items: center;
@@ -38,15 +78,24 @@
     .sv-chip-approved { background: #dcfce7; color: #166534; }
     .sv-chip-pending { background: #fef9c3; color: #92400e; }
     .sv-chip-rejected { background: #fee2e2; color: #991b1b; }
-    .sv-table th { background: transparent; }
-    .sv-actions .btn { border-radius: 10px; }
+
+    .sv-table thead th {
+        background: #f6fafc;
+        color: #607284;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+    }
+
+    .sv-actions .btn { border-radius: 12px; }
     .sv-actions .btn + .btn { margin-left: .35rem; }
-    .sv-muted { color: #14532d; opacity: .7; }
-    .sv-section-title { color: #0f172a; }
+    .sv-muted { color: #607284; }
 </style>
 
+<div class="sv-portal">
+<div class="itp-shell">
 <div class="sv-shell">
-<div class="sv-page">
     <div class="sv-header d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
             <div class="small" style="opacity:.8;">Supervisor Workspace</div>
@@ -79,10 +128,10 @@
         <div class="alert alert-info">@Model.Message</div>
     }
 
-    <h5 class="mt-4 sv-section-title">Current Students</h5>
+    <h5 class="mt-4 sv-section-title">Pending Applications (Active Cohorts)</h5>
     @if (!Model.CurrentStudents.Any())
     {
-        <div class="alert alert-info">No current students found for your filters.</div>
+        <div class="alert alert-info">No pending applications found for your filters.</div>
     }
     else
     {
@@ -98,7 +147,7 @@
                         <th>Supervisor</th>
                         <th>Application Status</th>
                         <th>Supervisor Remark</th>
-                        <th>Actions</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -118,66 +167,13 @@
                             <td><span class="sv-chip @chip">@s.applyStatus</span></td>
                             <td>@(string.IsNullOrWhiteSpace(s.remark) ? "-" : s.remark)</td>
                             <td>
-                                <div class="sv-actions">
-                                    <button type="button"
-                                            class="btn btn-outline-primary btn-sm"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#studentDetailModal"
-                                            data-name="@s.studentName"
-                                            data-id="@s.studentID"
-                                            data-email="@s.studentEmail"
-                                            data-status="@s.applyStatus"
-                                            data-cohort="@s.cohortId"
-                                            data-programme="@s.programme"
-                                            data-cgpa="@(s.CGPA?.ToString("0.00") ?? "-")"
-                                            data-company="@(s.comName ?? "-")">
-                                        View
-                                    </button>
-                                    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Documents" asp-route-applicationId="@s.application_id">Documents</a>
-                                    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/ReportResults" asp-route-applicationId="@s.application_id">Reports</a>
-                                </div>
-
-                                <form method="post" class="mt-2 d-flex gap-1 align-items-center">
-                                    <input type="hidden" name="applicationId" value="@s.application_id" />
-                                    <select name="cohortId" class="form-select form-select-sm">
-                                        @foreach (var option in Model.CohortOptions)
-                                        {
-                                            if (option.Value == s.cohortId.ToString())
-                                            {
-                                                <option value="@option.Value" selected>@option.Text</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@option.Value">@option.Text</option>
-                                            }
-                                        }
-                                    </select>
-                                    <button type="submit" asp-page-handler="UpdateCohort" class="btn btn-outline-secondary btn-sm">Update Cohort</button>
-                                </form>
-
                                 @if (string.Equals(s.applyStatus, "pending", System.StringComparison.OrdinalIgnoreCase))
                                 {
                                     <form method="post" class="mt-2">
                                         <input type="hidden" name="applicationId" value="@s.application_id" />
-                                        <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Decision remark (optional)" />
+                                        <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Reason (required for rejection)" />
                                         <button type="submit" asp-page-handler="Approve" class="btn btn-success btn-sm me-1">Approve</button>
                                         <button type="submit" asp-page-handler="Reject" class="btn btn-danger btn-sm">Reject</button>
-                                    </form>
-                                }
-                                else if (string.Equals(s.applyStatus, "rejected", System.StringComparison.OrdinalIgnoreCase))
-                                {
-                                    <form method="post" class="mt-2">
-                                        <input type="hidden" name="applicationId" value="@s.application_id" />
-                                        <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Approval remark (optional)" />
-                                        <button type="submit" asp-page-handler="Approve" class="btn btn-success btn-sm">Approve Again</button>
-                                    </form>
-                                }
-                                else if (string.Equals(s.applyStatus, "approved", System.StringComparison.OrdinalIgnoreCase))
-                                {
-                                    <form method="post" class="mt-2">
-                                        <input type="hidden" name="applicationId" value="@s.application_id" />
-                                        <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Rejection reason (required)" required />
-                                        <button type="submit" asp-page-handler="Reject" class="btn btn-danger btn-sm">Reject Approved Student</button>
                                     </form>
                                 }
                             </td>
@@ -187,172 +183,7 @@
             </table>
         </div>
     }
-
-    <h5 class="mt-4 sv-section-title">History Students</h5>
-    @if (!Model.HistoryStudents.Any())
-    {
-        <div class="alert alert-info">No history students found for your filters.</div>
-    }
-    else
-    {
-        var historyGroups = Model.HistoryStudents
-            .GroupBy(s => s.cohortId)
-            .OrderByDescending(g => Model.GetCohortStartDate(g.Key) ?? DateTime.MinValue)
-            .ToList();
-
-        foreach (var group in historyGroups)
-        {
-            <h6 class="mt-3 sv-section-title">@Model.GetCohortHeader(group.Key)</h6>
-            <div class="table-responsive">
-                <table class="table table-bordered table-sm align-middle sv-table">
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Academic</th>
-                            <th>Level</th>
-                            <th>Company</th>
-                            <th>Allowance</th>
-                            <th>Supervisor</th>
-                            <th>Application Status</th>
-                            <th>Supervisor Remark</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var s in group)
-                        {
-                            var status = (s.applyStatus ?? string.Empty).Trim().ToLowerInvariant();
-                            var chip = status == "approved" ? "sv-chip-approved"
-                                : status == "rejected" ? "sv-chip-rejected"
-                                : "sv-chip-pending";
-                            <tr>
-                                <td>@s.studentName<br /><small class="sv-muted">@s.studentID</small></td>
-                                <td>CGPA: @(s.CGPA?.ToString("0.00") ?? "-")<br />Programme: @s.programme</td>
-                                <td>@ITPSystem.Pages.Supervisor.StudentsModel.GetLevelLabel(s.level)</td>
-                                <td>@(s.comName ?? "-")<br /><small class="sv-muted">@(s.comAddress ?? "-")</small></td>
-                                <td>@(s.allowance?.ToString("0.00") ?? "-")</td>
-                                <td>@(s.comSupervisor ?? "-")<br /><small class="sv-muted">@(s.ucSupervisor ?? "-")</small></td>
-                                <td><span class="sv-chip @chip">@s.applyStatus</span></td>
-                                <td>@(string.IsNullOrWhiteSpace(s.remark) ? "-" : s.remark)</td>
-                                <td>
-                                    <div class="sv-actions">
-                                        <button type="button"
-                                                class="btn btn-outline-primary btn-sm"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#studentDetailModal"
-                                                data-name="@s.studentName"
-                                                data-id="@s.studentID"
-                                                data-email="@s.studentEmail"
-                                                data-status="@s.applyStatus"
-                                                data-cohort="@s.cohortId"
-                                                data-programme="@s.programme"
-                                                data-cgpa="@(s.CGPA?.ToString("0.00") ?? "-")"
-                                                data-company="@(s.comName ?? "-")">
-                                            View
-                                        </button>
-                                        <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Documents" asp-route-applicationId="@s.application_id">Documents</a>
-                                        <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/ReportResults" asp-route-applicationId="@s.application_id">Reports</a>
-                                    </div>
-
-                                    <form method="post" class="mt-2 d-flex gap-1 align-items-center">
-                                        <input type="hidden" name="applicationId" value="@s.application_id" />
-                                        <select name="cohortId" class="form-select form-select-sm">
-                                            @foreach (var option in Model.CohortOptions)
-                                            {
-                                                if (option.Value == s.cohortId.ToString())
-                                                {
-                                                    <option value="@option.Value" selected>@option.Text</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@option.Value">@option.Text</option>
-                                                }
-                                            }
-                                        </select>
-                                        <button type="submit" asp-page-handler="UpdateCohort" class="btn btn-outline-secondary btn-sm">Update Cohort</button>
-                                    </form>
-
-                                    @if (string.Equals(s.applyStatus, "pending", System.StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        <form method="post" class="mt-2">
-                                            <input type="hidden" name="applicationId" value="@s.application_id" />
-                                            <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Decision remark (optional)" />
-                                            <button type="submit" asp-page-handler="Approve" class="btn btn-success btn-sm me-1">Approve</button>
-                                            <button type="submit" asp-page-handler="Reject" class="btn btn-danger btn-sm">Reject</button>
-                                        </form>
-                                    }
-                                    else if (string.Equals(s.applyStatus, "rejected", System.StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        <form method="post" class="mt-2">
-                                            <input type="hidden" name="applicationId" value="@s.application_id" />
-                                            <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Approval remark (optional)" />
-                                            <button type="submit" asp-page-handler="Approve" class="btn btn-success btn-sm">Approve Again</button>
-                                        </form>
-                                    }
-                                    else if (string.Equals(s.applyStatus, "approved", System.StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        <form method="post" class="mt-2">
-                                            <input type="hidden" name="applicationId" value="@s.application_id" />
-                                            <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Rejection reason (required)" required />
-                                            <button type="submit" asp-page-handler="Reject" class="btn btn-danger btn-sm">Reject Approved Student</button>
-                                        </form>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-    }
-
-    <div class="modal fade" id="studentDetailModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Student Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-2"><strong>Name:</strong> <span id="detailName">-</span></div>
-                    <div class="mb-2"><strong>Student ID:</strong> <span id="detailId">-</span></div>
-                    <div class="mb-2"><strong>Email:</strong> <span id="detailEmail">-</span></div>
-                    <div class="mb-2"><strong>Status:</strong> <span id="detailStatus">-</span></div>
-                    <div class="mb-2"><strong>Cohort:</strong> <span id="detailCohort">-</span></div>
-                    <div class="mb-2"><strong>Programme:</strong> <span id="detailProgramme">-</span></div>
-                    <div class="mb-2"><strong>CGPA:</strong> <span id="detailCgpa">-</span></div>
-                    <div class="mb-2"><strong>Company:</strong> <span id="detailCompany">-</span></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 </div>
-
-@section Scripts {
-    <script>
-        (function () {
-            const modal = document.getElementById("studentDetailModal");
-            if (!modal) return;
-            modal.addEventListener("show.bs.modal", function (event) {
-                const button = event.relatedTarget;
-                if (!button) return;
-                document.getElementById("detailName").textContent = button.getAttribute("data-name") || "-";
-                document.getElementById("detailId").textContent = button.getAttribute("data-id") || "-";
-                document.getElementById("detailEmail").textContent = button.getAttribute("data-email") || "-";
-                document.getElementById("detailStatus").textContent = button.getAttribute("data-status") || "-";
-                document.getElementById("detailCohort").textContent = button.getAttribute("data-cohort") || "-";
-                document.getElementById("detailProgramme").textContent = button.getAttribute("data-programme") || "-";
-                document.getElementById("detailCgpa").textContent = button.getAttribute("data-cgpa") || "-";
-                document.getElementById("detailCompany").textContent = button.getAttribute("data-company") || "-";
-            });
-        })();
-    </script>
-}
-
-
-
+</div>
 

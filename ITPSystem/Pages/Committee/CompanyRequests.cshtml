@@ -1,137 +1,755 @@
-@page
+﻿@page
 @model CommitteeCompanyRequestsModel
 @{
-    ViewData["CommitteePageTitle"] = "Company Request";
+    ViewData["CommitteePageTitle"] = "";
+
+    var approvedCount = Model.HistoryRequests.Count(r => string.Equals(r.status, "approved", StringComparison.OrdinalIgnoreCase));
+    var rejectedCount = Model.HistoryRequests.Count(r => string.Equals(r.status, "rejected", StringComparison.OrdinalIgnoreCase));
+    var latestPending = Model.PendingRequests.FirstOrDefault()?.requested_at;
+
+    string StatusClass(string? status)
+    {
+        var value = (status ?? string.Empty).Trim().ToLowerInvariant();
+        return value switch
+        {
+            "approved" => "request-status request-status-approved",
+            "rejected" => "request-status request-status-rejected",
+            "cancelled" => "request-status request-status-cancelled",
+            _ => "request-status request-status-pending"
+        };
+    }
 }
+
+<style>
+    .request-portal {
+        display: grid;
+        gap: 1rem;
+        max-width: 1320px;
+        margin: 0 auto;
+    }
+
+    .request-banner,
+    .request-stat-card,
+    .request-panel,
+    .request-history-card {
+        border: 1px solid #eadce2;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #ffffff, #fff9fb);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .request-banner {
+        position: relative;
+        overflow: hidden;
+        padding: 1.4rem;
+        border-radius: 26px;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #8f2d56 58%, #ffd166);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .request-banner::before,
+    .request-banner::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        pointer-events: none;
+        opacity: .18;
+    }
+
+    .request-banner::before {
+        width: 200px;
+        height: 200px;
+        top: -65px;
+        right: -45px;
+        background: rgba(255, 255, 255, .18);
+    }
+
+    .request-banner::after {
+        width: 150px;
+        height: 150px;
+        bottom: -60px;
+        left: -35px;
+        background: rgba(255, 255, 255, .12);
+    }
+
+    .request-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .request-banner-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 1rem;
+    }
+
+    .request-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #e6cdd7;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #4f3041;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .request-back-link:hover {
+        color: #6b2847;
+        border-color: #d7a7ba;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .request-back-link::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #f6dfe9;
+        color: #7b264b;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .request-banner-pill {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .34rem .74rem;
+        background: rgba(255, 255, 255, .14);
+        border: 1px solid rgba(255, 255, 255, .22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .request-banner h3 {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.6rem, 3vw, 2.35rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .request-banner p {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .request-banner-note {
+        display: inline-flex;
+        margin-top: .9rem;
+        padding: .55rem .8rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .16);
+        color: rgba(255, 255, 255, .9);
+        font-size: .9rem;
+        font-weight: 600;
+    }
+
+    .request-banner-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+        min-width: 220px;
+    }
+
+    .request-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .request-stat-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .request-stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #8f2d56, #ffd166);
+    }
+
+    .request-stat-label {
+        color: #7a6673;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+    }
+
+    .request-stat-value {
+        margin-top: .35rem;
+        color: #2f1724;
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .request-stat-note {
+        margin-top: .3rem;
+        color: #917d89;
+        font-size: .88rem;
+    }
+
+    .request-alert {
+        border-radius: 18px;
+        padding: .9rem 1rem;
+        border: 1px solid #eadce2;
+        background: #f9edf2;
+        color: #7b264b;
+        font-weight: 600;
+    }
+
+    .request-section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 1rem;
+        margin-bottom: .9rem;
+    }
+
+    .request-section-head h4 {
+        margin: 0;
+        color: #3c2030;
+        font-size: 1.08rem;
+        font-weight: 700;
+    }
+
+    .request-section-head p {
+        margin: .2rem 0 0;
+        color: #7a6673;
+        line-height: 1.65;
+    }
+
+    .request-count-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        border-radius: 14px;
+        padding: .46rem .86rem;
+        background: linear-gradient(180deg, #dbeafe, #eff6ff);
+        border: 1px solid #bfdbfe;
+        color: #1d4ed8;
+        font-weight: 700;
+        font-size: .88rem;
+        box-shadow: 0 8px 18px rgba(29, 78, 216, 0.08);
+    }
+
+    .request-panels {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .request-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 1.05rem;
+    }
+
+    .request-panel::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, #8f2d56, rgba(245, 158, 11, .9));
+    }
+
+    .request-panel-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .request-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .55rem;
+        margin-bottom: .65rem;
+    }
+
+    .request-meta-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        border-radius: 999px;
+        padding: .4rem .72rem;
+        background: #fbf2f6;
+        border: 1px solid #eadce2;
+        color: #654a5a;
+        font-size: .83rem;
+        font-weight: 700;
+    }
+
+    .request-company {
+        display: grid;
+        gap: .8rem;
+    }
+
+    .request-company h5 {
+        margin: 0;
+        color: #3c2030;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .request-address {
+        margin: 0;
+        color: #765f6c;
+        line-height: 1.7;
+        white-space: pre-line;
+    }
+
+    .request-contact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: .75rem;
+    }
+
+    .request-contact-card {
+        border-radius: 16px;
+        border: 1px solid #eadce2;
+        background: #fdf5f8;
+        padding: .8rem;
+    }
+
+    .request-contact-label {
+        color: #7a6673;
+        font-size: .76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .request-contact-value {
+        margin-top: .28rem;
+        color: #3c2030;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .request-review-box {
+        border-radius: 18px;
+        border: 1px solid #eadce2;
+        background: linear-gradient(180deg, #fff9fb, #fbf4f7);
+        padding: 1rem;
+    }
+
+    .request-review-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: .75rem;
+        margin-bottom: .8rem;
+    }
+
+    .request-review-head h6 {
+        margin: 0;
+        color: #3c2030;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .request-review-head p {
+        margin: .2rem 0 0;
+        color: #7a6673;
+        font-size: .9rem;
+        line-height: 1.6;
+    }
+
+    .request-review-form {
+        display: grid;
+        gap: .75rem;
+    }
+
+    .request-review-form .form-label {
+        font-size: .82rem;
+        font-weight: 700;
+        color: #765f6c;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+    }
+
+    .request-review-form .form-select,
+    .request-review-form .form-control {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #ddcbd4;
+        background: #fff;
+    }
+
+    .request-review-form .form-control {
+        min-height: 92px;
+        resize: vertical;
+    }
+
+    .request-save-btn {
+        border: 0;
+        border-radius: 14px;
+        padding: .78rem 1rem;
+        background: linear-gradient(90deg, #8f2d56, #b34873);
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 12px 22px rgba(143, 45, 86, 0.18);
+    }
+
+    .request-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: .38rem .72rem;
+        font-size: .78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        border: 1px solid transparent;
+    }
+
+    .request-status-pending {
+        background: #fff3de;
+        color: #9a6a16;
+        border-color: #e9c88d;
+    }
+
+    .request-status-approved {
+        background: #f8e8ef;
+        color: #7b264b;
+        border-color: #e6cdd7;
+    }
+
+    .request-status-rejected {
+        background: #fdecec;
+        color: #a12727;
+        border-color: #efc1c1;
+    }
+
+    .request-status-cancelled {
+        background: #f7e7ee;
+        color: #765f6c;
+        border-color: #e4d6dd;
+    }
+
+    .request-empty {
+        border: 1px dashed #dcc9d2;
+        border-radius: 20px;
+        padding: 1.2rem;
+        background: linear-gradient(180deg, #fff9fb, #fdf5f8);
+        color: #7a6673;
+    }
+
+    .request-history-card {
+        padding: 1rem;
+    }
+
+    .request-history-table {
+        margin: 0;
+        min-width: 960px;
+    }
+
+    .request-history-table thead th {
+        border-bottom: 0;
+        background: #faf1f5;
+        color: #6f5a67;
+        font-size: .8rem;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        white-space: nowrap;
+    }
+
+    .request-history-table tbody tr:hover {
+        background: #fff9fb;
+    }
+
+    .request-history-table td {
+        vertical-align: middle;
+    }
+
+    .request-history-company {
+        min-width: 180px;
+    }
+
+    .request-history-company strong {
+        display: block;
+        color: #3c2030;
+    }
+
+    .request-history-company span,
+    .request-history-muted {
+        color: #7a6673;
+        font-size: .9rem;
+    }
+
+    .request-review-meta {
+        display: grid;
+        gap: .2rem;
+    }
+
+    @@media (max-width: 1199.98px) {
+        .request-stat-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .request-panel-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .request-banner-top,
+        .request-section-head {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .request-stat-grid,
+        .request-contact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .request-panel,
+        .request-history-card,
+        .request-stat-card {
+            border-radius: 18px;
+        }
+
+        .request-review-box {
+            padding: .9rem;
+        }
+    }
+</style>
 
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
-<partial name="_CommitteeBackButton" />
+    <partial name="_CommitteeHeader" />
 
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="alert alert-success">@Model.StatusMessage</div>
-}
+    <div class="request-portal">
+        <section class="request-banner">
+            <div class="request-banner-top">
+                <div>
+                    <div class="request-banner-pill">Company Request</div>
+                    <h3>Review student-submitted companies with clearer context.</h3>
+                    <p>Check company details, confirm whether the request is suitable for the internship portal, and record a clean decision for future committee reference.</p>
+                    <div class="request-banner-note">Pending requests stay grouped below so the review flow remains quick and visible.</div>
+                </div>
 
-<h5 class="mb-2">Pending Requests</h5>
-@if (Model.PendingRequests.Count == 0)
-{
-    <div class="alert alert-secondary">No pending requests.</div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-sm table-bordered align-middle">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Company</th>
-                    <th>Address</th>
-                    <th>Contact</th>
-                    <th>Status</th>
-                    <th>Remark</th>
-                    <th>Requested At</th>
-                    <th>Reviewed</th>
-                    <th style="width: 360px;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.PendingRequests)
-                {
-                    <tr>
-                        <td>@r.request_id</td>
-                        <td>@r.company_name</td>
-                        <td>@r.address1</td>
-                        <td>
-                            <div>@(string.IsNullOrWhiteSpace(r.contact_name) ? "-" : r.contact_name)</div>
-                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_email) ? "-" : r.contact_email)</div>
-                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_phone) ? "-" : r.contact_phone)</div>
-                        </td>
-                        <td><span class="badge text-bg-light border">@r.status</span></td>
-                        <td>@(string.IsNullOrWhiteSpace(r.decision_remark) ? "-" : r.decision_remark)</td>
-                        <td>@r.requested_at.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>
-                            @if (r.reviewed_at.HasValue)
-                            {
-                                <div>@r.reviewed_at.Value.ToString("yyyy-MM-dd HH:mm")</div>
-                                <div class="small text-muted">By: @r.reviewed_by</div>
-                            }
-                            else
-                            {
-                                <span>-</span>
-                            }
-                        </td>
-                        <td>
-                            <form method="post" asp-page-handler="Decide" class="d-flex flex-column gap-1">
-                                <input type="hidden" name="Input.request_id" value="@r.request_id" />
-                                <select name="Input.status" class="form-select form-select-sm">
-                                    <option value="pending" selected="@(r.status == "pending")">pending</option>
-                                    <option value="approved" selected="@(r.status == "approved")">approved</option>
-                                    <option value="rejected" selected="@(r.status == "rejected")">rejected</option>
-                                    <option value="cancelled" selected="@(r.status == "cancelled")">cancelled</option>
-                                </select>
-                                <input name="Input.decision_remark" class="form-control form-control-sm" placeholder="Decision remark" value="@r.decision_remark" />
-                                <button type="submit" class="btn btn-sm btn-primary">Save Decision</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                <div class="request-banner-actions">
+                    <a href="/Committee/Dashboard" class="request-back-link">Back to Dashboard</a>
+                </div>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="request-alert">@Model.StatusMessage</div>
+        }
+
+        <section class="request-stat-grid">
+            <article class="request-stat-card">
+                <div class="request-stat-label">Pending</div>
+                <div class="request-stat-value">@Model.PendingRequests.Count</div>
+                <div class="request-stat-note">Requests waiting for committee action</div>
+            </article>
+            <article class="request-stat-card">
+                <div class="request-stat-label">Approved</div>
+                <div class="request-stat-value">@approvedCount</div>
+                <div class="request-stat-note">Requests converted into accepted company records</div>
+            </article>
+            <article class="request-stat-card">
+                <div class="request-stat-label">Rejected</div>
+                <div class="request-stat-value">@rejectedCount</div>
+                <div class="request-stat-note">Requests declined after review</div>
+            </article>
+            <article class="request-stat-card">
+                <div class="request-stat-label">Latest Pending</div>
+                <div class="request-stat-value">@(latestPending?.ToString("dd MMM") ?? "-")</div>
+                <div class="request-stat-note">@(latestPending?.ToString("yyyy-MM-dd HH:mm") ?? "No pending requests")</div>
+            </article>
+        </section>
+
+        <section>
+            <div class="request-section-head">
+                <div>
+                    <h4>Pending Requests</h4>
+                    <p>Handle active submissions with a cleaner card-based review flow.</p>
+                </div>
+                <div class="request-count-chip">@Model.PendingRequests.Count open request@(Model.PendingRequests.Count == 1 ? "" : "s")</div>
+            </div>
+
+            @if (Model.PendingRequests.Count == 0)
+            {
+                <div class="request-empty">No pending requests. New submissions will appear here when students send them for review.</div>
+            }
+            else
+            {
+                <div class="request-panels">
+                    @foreach (var r in Model.PendingRequests)
+                    {
+                        <article class="request-panel">
+                            <div class="request-panel-grid">
+                                <div class="request-company">
+                                    <div class="request-meta">
+                                        <span class="request-meta-chip">Request #@r.request_id</span>
+                                        <span class="@StatusClass(r.status)">@r.status</span>
+                                        <span class="request-meta-chip">Requested @r.requested_at.ToString("yyyy-MM-dd HH:mm")</span>
+                                    </div>
+
+                                    <div>
+                                        <h5>@r.company_name</h5>
+                                        <p class="request-address">@(string.IsNullOrWhiteSpace(r.address1) ? "-" : r.address1)</p>
+                                    </div>
+
+                                    <div class="request-contact-grid">
+                                        <div class="request-contact-card">
+                                            <div class="request-contact-label">Student / Contact Name</div>
+                                            <div class="request-contact-value">@(string.IsNullOrWhiteSpace(r.contact_name) ? "-" : r.contact_name)</div>
+                                        </div>
+                                        <div class="request-contact-card">
+                                            <div class="request-contact-label">Contact Email</div>
+                                            <div class="request-contact-value">@(string.IsNullOrWhiteSpace(r.contact_email) ? "-" : r.contact_email)</div>
+                                        </div>
+                                        <div class="request-contact-card">
+                                            <div class="request-contact-label">Contact Phone</div>
+                                            <div class="request-contact-value">@(string.IsNullOrWhiteSpace(r.contact_phone) ? "-" : r.contact_phone)</div>
+                                        </div>
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(r.decision_remark) || r.reviewed_at.HasValue)
+                                    {
+                                        <div class="request-contact-card">
+                                            <div class="request-contact-label">Latest Review Record</div>
+                                            <div class="request-contact-value">
+                                                @(string.IsNullOrWhiteSpace(r.decision_remark) ? "No remark recorded." : r.decision_remark)
+                                            </div>
+                                            @if (r.reviewed_at.HasValue)
+                                            {
+                                                <div class="request-history-muted mt-2">Reviewed @r.reviewed_at.Value.ToString("yyyy-MM-dd HH:mm") by @r.reviewed_by</div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+
+                                <aside class="request-review-box">
+                                    <div class="request-review-head">
+                                        <div>
+                                            <h6>Decision Panel</h6>
+                                            <p>Update the status and leave a short note if the request needs context for future reference.</p>
+                                        </div>
+                                        <span class="@StatusClass(r.status)">@r.status</span>
+                                    </div>
+
+                                    <form method="post" asp-page-handler="Decide" class="request-review-form">
+                                        <input type="hidden" name="Input.request_id" value="@r.request_id" />
+
+                                        <div>
+                                            <label class="form-label" for="status-@r.request_id">Status</label>
+                                            <select id="status-@r.request_id" name="Input.status" class="form-select">
+                                                <option value="pending" selected="@(r.status == "pending")">Pending</option>
+                                                <option value="approved" selected="@(r.status == "approved")">Approved</option>
+                                                <option value="rejected" selected="@(r.status == "rejected")">Rejected</option>
+                                                <option value="cancelled" selected="@(r.status == "cancelled")">Cancelled</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="form-label" for="remark-@r.request_id">Decision Remark</label>
+                                            <textarea id="remark-@r.request_id" name="Input.decision_remark" class="form-control" placeholder="Optional note for committee records">@r.decision_remark</textarea>
+                                        </div>
+
+                                        <button type="submit" class="request-save-btn">Save Decision</button>
+                                    </form>
+                                </aside>
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+        </section>
+
+        <section>
+            <div class="request-section-head">
+                <div>
+                    <h4>Decision History</h4>
+                    <p>Review previously processed requests with their recorded outcomes.</p>
+                </div>
+                <div class="request-count-chip">@Model.HistoryRequests.Count reviewed request@(Model.HistoryRequests.Count == 1 ? "" : "s")</div>
+            </div>
+
+            @if (Model.HistoryRequests.Count == 0)
+            {
+                <div class="request-empty">No history yet. Approved, rejected, or cancelled requests will appear here after they are processed.</div>
+            }
+            else
+            {
+                <div class="request-history-card">
+                    <div class="table-responsive">
+                        <table class="table request-history-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Company</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
+                                    <th>Remark</th>
+                                    <th>Requested At</th>
+                                    <th>Reviewed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var r in Model.HistoryRequests)
+                                {
+                                    <tr>
+                                        <td>#@r.request_id</td>
+                                        <td class="request-history-company">
+                                            <strong>@r.company_name</strong>
+                                            <span>@(string.IsNullOrWhiteSpace(r.address1) ? "-" : r.address1)</span>
+                                        </td>
+                                        <td>
+                                            <div>@(string.IsNullOrWhiteSpace(r.contact_name) ? "-" : r.contact_name)</div>
+                                            <div class="request-history-muted">@(string.IsNullOrWhiteSpace(r.contact_email) ? "-" : r.contact_email)</div>
+                                            <div class="request-history-muted">@(string.IsNullOrWhiteSpace(r.contact_phone) ? "-" : r.contact_phone)</div>
+                                        </td>
+                                        <td><span class="@StatusClass(r.status)">@r.status</span></td>
+                                        <td class="request-history-muted">@(string.IsNullOrWhiteSpace(r.decision_remark) ? "-" : r.decision_remark)</td>
+                                        <td class="request-history-muted">@r.requested_at.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>
+                                            @if (r.reviewed_at.HasValue)
+                                            {
+                                                <div class="request-review-meta">
+                                                    <span>@r.reviewed_at.Value.ToString("yyyy-MM-dd HH:mm")</span>
+                                                    <span class="request-history-muted">By: @r.reviewed_by</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <span class="request-history-muted">-</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </section>
     </div>
-}
-
-<h5 class="mt-4 mb-2">History</h5>
-@if (Model.HistoryRequests.Count == 0)
-{
-    <div class="alert alert-secondary mb-0">No history yet.</div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table table-sm table-bordered align-middle">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Company</th>
-                    <th>Address</th>
-                    <th>Contact</th>
-                    <th>Status</th>
-                    <th>Remark</th>
-                    <th>Requested At</th>
-                    <th>Reviewed</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.HistoryRequests)
-                {
-                    <tr>
-                        <td>@r.request_id</td>
-                        <td>@r.company_name</td>
-                        <td>@r.address1</td>
-                        <td>
-                            <div>@(string.IsNullOrWhiteSpace(r.contact_name) ? "-" : r.contact_name)</div>
-                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_email) ? "-" : r.contact_email)</div>
-                            <div class="small text-muted">@(string.IsNullOrWhiteSpace(r.contact_phone) ? "-" : r.contact_phone)</div>
-                        </td>
-                        <td><span class="badge text-bg-light border">@r.status</span></td>
-                        <td>@(string.IsNullOrWhiteSpace(r.decision_remark) ? "-" : r.decision_remark)</td>
-                        <td>@r.requested_at.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>
-                            @if (r.reviewed_at.HasValue)
-                            {
-                                <div>@r.reviewed_at.Value.ToString("yyyy-MM-dd HH:mm")</div>
-                                <div class="small text-muted">By: @r.reviewed_by</div>
-                            }
-                            else
-                            {
-                                <span>-</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
 </div>
+

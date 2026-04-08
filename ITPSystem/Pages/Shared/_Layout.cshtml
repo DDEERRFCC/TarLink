@@ -9,6 +9,272 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ITPSystem.styles.css" asp-append-version="true" />
     <style>
+        .site-header {
+            padding: 0;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.82)),
+                radial-gradient(circle at top left, rgba(255, 209, 102, 0.14), transparent 26%),
+                radial-gradient(circle at top right, rgba(15, 123, 108, 0.1), transparent 24%);
+            border-bottom: 1px solid rgba(19, 34, 56, 0.08);
+        }
+
+        .site-nav-shell {
+            background: transparent;
+            border: 0;
+            box-shadow: none;
+            border-radius: 0;
+            padding: .2rem 0;
+        }
+
+        .site-brand-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: .8rem;
+        }
+
+        .site-brand-mark {
+            height: 72px;
+            width: auto;
+        }
+
+        .site-nav-list {
+            align-items: center;
+            gap: .45rem;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .site-nav-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 98px;
+            padding: .4rem .85rem !important;
+            border-radius: 999px;
+            color: #22384f !important;
+            font-weight: 700;
+            letter-spacing: .01em;
+            transition: transform .18s ease, background-color .18s ease, color .18s ease;
+        }
+
+        .site-nav-link:hover {
+            background: rgba(15, 123, 108, 0.06);
+            color: #0f7b6c !important;
+            transform: translateY(-1px);
+        }
+
+        .site-nav-link.is-active {
+            background: rgba(19, 34, 56, 0.08);
+            color: #132238 !important;
+        }
+
+        .site-nav-link.is-active:hover {
+            color: #132238 !important;
+            background: rgba(19, 34, 56, 0.08);
+        }
+
+        .site-nav-toggler {
+            border: 1px solid rgba(19, 34, 56, 0.12);
+            border-radius: 16px;
+            padding: .55rem .7rem;
+        }
+
+        .site-footer {
+            margin-top: 2.8rem;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            color: #28415f;
+            border-top: 1px solid rgba(19, 34, 56, 0.08);
+        }
+
+        .site-footer::before,
+        .site-footer::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .site-footer::before {
+            background:
+                linear-gradient(120deg, transparent 0 63%, rgba(189, 203, 224, 0.18) 63.3%, transparent 63.7%),
+                linear-gradient(34deg, transparent 0 78%, rgba(218, 225, 236, 0.16) 78.3%, transparent 78.7%);
+            opacity: .65;
+        }
+
+        .site-footer::after {
+            inset: auto 0 52px 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(137, 152, 174, 0.2), transparent);
+        }
+
+        .site-footer-body {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(280px, 1.35fr) minmax(170px, .7fr) minmax(170px, .7fr);
+            gap: 2.6rem;
+            padding: 3.2rem 0 2.4rem;
+        }
+
+        .site-footer-brand {
+            display: grid;
+            gap: 1.2rem;
+            max-width: 380px;
+        }
+
+        .site-footer-brandline {
+            display: inline-flex;
+            align-items: center;
+            gap: .95rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: #213b5d;
+            font-size: 1.55rem;
+        }
+
+        .site-footer-mark {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .site-footer-copy {
+            color: #55708f;
+            line-height: 1.85;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .site-footer-social {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+        }
+
+        .site-footer-social a,
+        .site-footer-social span {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(113, 165, 227, 0.34);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #34557f;
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.68);
+            transition: transform .18s ease, background-color .18s ease, border-color .18s ease;
+        }
+
+        .site-footer-social svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            display: block;
+        }
+
+        .site-footer-social a:hover {
+            background: rgba(255, 239, 245, 0.96);
+            border-color: rgba(233, 108, 150, 0.45);
+            color: #b24870;
+            transform: translateY(-1px);
+        }
+
+        .site-footer-toplink {
+            display: inline-flex;
+            align-items: center;
+            gap: .7rem;
+            width: fit-content;
+            padding: .82rem 1.15rem;
+            border: 1px solid rgba(190, 220, 255, 0.42);
+            border-radius: 18px;
+            color: #35537d;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: .78rem;
+            background: linear-gradient(135deg, rgba(178, 219, 255, 0.28), rgba(248, 181, 204, 0.24));
+            box-shadow: 0 14px 26px rgba(97, 134, 186, 0.18);
+            transition: transform .18s ease, border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+        }
+
+        .site-footer-toplink:hover {
+            color: #af4a71;
+            border-color: rgba(248, 181, 204, 0.66);
+            background: linear-gradient(135deg, rgba(178, 219, 255, 0.36), rgba(248, 181, 204, 0.34));
+            box-shadow: 0 18px 30px rgba(114, 140, 191, 0.24);
+            transform: translateY(-2px);
+        }
+
+        .site-footer-topicon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(169, 212, 255, 0.5), rgba(247, 179, 200, 0.5));
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .site-footer-group h4 {
+            margin: .2rem 0 1.15rem;
+            color: #2d486e;
+            font-size: .98rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .site-footer-nav {
+            display: grid;
+            gap: .9rem;
+        }
+
+        .site-footer-nav a,
+        .site-footer-nav span {
+            color: #577292;
+            text-decoration: none;
+            line-height: 1.55;
+        }
+
+        .site-footer-nav a:hover {
+            color: #b24870;
+        }
+
+        .site-footer-underline {
+            text-decoration: underline;
+            text-underline-offset: .18em;
+        }
+
+        .site-footer-bar {
+            position: relative;
+            z-index: 1;
+            background: #ffffff;
+            color: #6b7c8f;
+            text-align: center;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+            padding: .55rem .8rem;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
+            border-top: 1px solid rgba(19, 34, 56, 0.08);
+        }
+
         .global-ai-fab {
             position: fixed;
             right: 1.4rem;
@@ -194,32 +460,60 @@
                 height: min(70vh, calc(100vh - 6.6rem));
             }
         }
+
+        @@media (max-width: 991.98px) {
+            .site-brand-mark {
+                height: 60px;
+            }
+
+            .site-nav-list {
+                padding-top: .35rem;
+            }
+
+            .site-nav-link {
+                width: 100%;
+            }
+
+            .site-footer-body {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+                padding: 2.1rem 0 1.8rem;
+            }
+        }
     </style>
 </head>
 <body class="page-transition-body">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
+    @{
+        var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
+        string NavClass(string pagePath) =>
+            string.Equals(currentPage, pagePath, StringComparison.OrdinalIgnoreCase)
+                ? "nav-link site-nav-link is-active"
+                : "nav-link site-nav-link";
+    }
+
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg navbar-light mb-0">
+            <div class="container site-nav-shell">
 
                 <!-- Logo + System Name -->
-                <a class="navbar-brand d-flex align-items-center gap-2" asp-area="" asp-page="/Index">
-                    <img src="~/images/itp-logo.png" alt="ITP Logo" style="height:80px; width:auto;" />
+                <a class="navbar-brand site-brand-wrap me-0" asp-area="" asp-page="/Index">
+                    <img src="~/images/itp-logo.png" alt="ITP Logo" class="site-brand-mark" />
                 </a>
 
                 <!-- Toggler / Mobile Button -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                <button class="navbar-toggler site-nav-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                         aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <!-- Navbar Links -->
                 <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav ms-auto"> <!-- ms-auto pushes links to the right -->
+                    <ul class="navbar-nav ms-auto site-nav-list">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="@NavClass("/Index")" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="@NavClass("/Privacy")" asp-area="" asp-page="/Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
@@ -270,9 +564,62 @@
 
     @await RenderSectionAsync("FloatingUi", required: false)
 
-    <footer class="border-top footer text-muted">
+    <footer class="site-footer">
         <div class="container">
-            &copy; 2026 - ITPSystem - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <div class="site-footer-body">
+                <div class="site-footer-brand">
+                    <div class="site-footer-brandline">
+                        <img src="~/images/itp-logo.png" alt="TAR UMT logo" class="site-footer-mark" />
+                        <span>ITPSystem</span>
+                    </div>
+                    <div class="site-footer-social">
+                        <a href="https://www.facebook.com/tarumtkl/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M13.5 22v-8.1h2.7l.4-3.2h-3.1V8.65c0-.93.26-1.56 1.58-1.56H16.6V4.23c-.27-.04-1.18-.11-2.24-.11-2.22 0-3.74 1.36-3.74 3.85v2.74H8.1v3.2h2.52V22h2.88Z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/tarumt.official/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M7.75 3h8.5A4.75 4.75 0 0 1 21 7.75v8.5A4.75 4.75 0 0 1 16.25 21h-8.5A4.75 4.75 0 0 1 3 16.25v-8.5A4.75 4.75 0 0 1 7.75 3Zm0 1.8A2.95 2.95 0 0 0 4.8 7.75v8.5a2.95 2.95 0 0 0 2.95 2.95h8.5a2.95 2.95 0 0 0 2.95-2.95v-8.5a2.95 2.95 0 0 0-2.95-2.95h-8.5Zm8.95 1.35a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 7.6A4.4 4.4 0 1 1 7.6 12 4.4 4.4 0 0 1 12 7.6Zm0 1.8A2.6 2.6 0 1 0 14.6 12 2.6 2.6 0 0 0 12 9.4Z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.youtube.com/channel/UCqjsPpVnwjCRT5mgAgFo1ng" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M21.6 7.2a2.98 2.98 0 0 0-2.1-2.1C17.65 4.6 12 4.6 12 4.6s-5.65 0-7.5.5A2.98 2.98 0 0 0 2.4 7.2C1.9 9.05 1.9 12 1.9 12s0 2.95.5 4.8a2.98 2.98 0 0 0 2.1 2.1c1.85.5 7.5.5 7.5.5s5.65 0 7.5-.5a2.98 2.98 0 0 0 2.1-2.1c.5-1.85.5-4.8.5-4.8s0-2.95-.5-4.8ZM10.2 15.3V8.7l5.7 3.3-5.7 3.3Z" />
+                            </svg>
+                        </a>
+                        <a href="https://en.wikipedia.org/wiki/Tunku_Abdul_Rahman_University_of_Management_and_Technology" target="_blank" rel="noopener noreferrer" aria-label="Wikipedia">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M5.2 6h4.25v.58l-1.1.2 2.2 6.55 2.16-5.33-.53-1.22-1.05-.2V6h4.03v.58l-1.02.18 2.2 6.47 2.06-6.44-1.23-.2V6H20v.58l-1.05.15-3.33 9.85h-.63l-2.47-7.05-2.9 7.05H9l-3.4-9.8-1.02-.2V6Z" />
+                            </svg>
+                        </a>
+                    </div>
+                    <a href="#page-content" class="site-footer-toplink">
+                        <span class="site-footer-topicon">↑</span>
+                        <span>Back To Top</span>
+                    </a>
+                </div>
+
+                <div class="site-footer-group">
+                    <h4>Site Map</h4>
+                    <div class="site-footer-nav">
+                        <a asp-area="" asp-page="/Index" class="site-footer-underline">Homepage</a>
+                        <span>Student Portal</span>
+                        <span>Supervisor Portal</span>
+                        <span>Committee Portal</span>
+                    </div>
+                </div>
+
+                <div class="site-footer-group">
+                    <h4>Legal</h4>
+                    <div class="site-footer-nav">
+                        <a asp-area="" asp-page="/Privacy">Privacy Policy</a>
+                        <span>Terms of Service</span>
+                        <span>Usage Guidelines</span>
+                    </div>
+                </div>
+            </div>
+            <div class="site-footer-bar">Copyright © 2026 ITPSystem. All Rights Reserved.</div>
         </div>
     </footer>
 

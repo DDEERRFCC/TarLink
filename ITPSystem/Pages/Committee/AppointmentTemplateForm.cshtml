@@ -1,0 +1,223 @@
+@page
+@model CommitteeAppointmentTemplateFormModel
+@{
+    ViewData["CommitteePageTitle"] = Model.Input.TemplateId.HasValue ? "Edit Template" : "Add New Template";
+}
+
+<style>
+    .tpl-form-page { display:grid; gap:1rem; max-width:1280px; margin:0 auto; }
+    .tpl-form-banner { position:relative; overflow:hidden; border-radius:24px; padding:1.35rem; color:#fff; background:linear-gradient(135deg,#132238,#8f2d56 58%,#b34873); box-shadow:0 18px 36px rgba(15,23,42,.14); }
+    .tpl-form-banner::after { content:""; position:absolute; right:-42px; top:-50px; width:180px; height:180px; border-radius:999px; background:rgba(255,255,255,.12); }
+    .tpl-form-banner > * { position:relative; z-index:1; }
+    .tpl-form-top { display:flex; justify-content:space-between; align-items:start; gap:1rem; }
+    .tpl-form-kicker { display:inline-flex; padding:.34rem .72rem; border-radius:999px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .tpl-form-title { margin:.55rem 0 .35rem; font-size:clamp(1.55rem,3vw,2.2rem); font-family:Georgia,"Times New Roman",serif; }
+    .tpl-form-copy { margin:0; max-width:72ch; color:rgba(255,255,255,.88); line-height:1.75; }
+    .tpl-form-back { display:inline-flex; align-items:center; gap:.55rem; text-decoration:none; border-radius:999px; padding:.78rem 1rem; border:1px solid #e6cdd7; background:linear-gradient(180deg,#fff,#f5fbff); color:#4f3041; font-weight:700; white-space:nowrap; box-shadow:0 10px 22px rgba(15,23,42,.06); }
+    .tpl-form-back::before { content:"<"; display:inline-flex; align-items:center; justify-content:center; width:1.7rem; height:1.7rem; border-radius:999px; background:#f6dfe9; color:#7b264b; font-size:.9rem; }
+    .tpl-form-card { border:1px solid #eadce2; border-radius:22px; background:linear-gradient(180deg,#fff,#fff9fb); box-shadow:0 12px 26px rgba(15,23,42,.06); padding:1rem; }
+    .tpl-form-section-title { margin:0; color:#132238; font-size:1.05rem; font-weight:700; }
+    .tpl-form-section-copy { margin:.35rem 0 0; color:#7a6673; line-height:1.7; font-size:.92rem; }
+    .tpl-form-shell { margin-top:1rem; display:grid; gap:1rem; }
+    .tpl-form-grid, .tpl-file-grid { display:grid; gap:.9rem; }
+    .tpl-form-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .tpl-file-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .tpl-field, .tpl-file { display:grid; gap:.45rem; }
+    .tpl-field.full { grid-column:1 / -1; }
+    .tpl-field label, .tpl-file label { color:#36506a; font-size:.82rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+    .tpl-field .form-control, .tpl-field .form-select, .tpl-file .form-control { min-height:48px; border-radius:14px; border-color:#d1ddea; box-shadow:none; }
+    .tpl-field textarea.form-control { min-height:170px; }
+    .tpl-file { border:1px dashed #9fd8cf; border-radius:18px; background:linear-gradient(180deg,#f8fffd,#fff); padding:.95rem; }
+    .tpl-note { color:#7a6673; font-size:.88rem; }
+    .tpl-link { color:#8f2d56; font-weight:700; text-decoration:underline; word-break:break-all; }
+    .tpl-file-size { margin-top:.25rem; color:#7a6673; font-size:.82rem; }
+    .tpl-selected-size { margin-top:.25rem; color:#35516a; font-size:.82rem; font-weight:700; }
+    .tpl-form-actions { display:flex; flex-wrap:wrap; gap:.8rem; align-items:center; }
+    .tpl-btn, .tpl-btn-lite { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:.8rem 1rem; border-radius:14px; text-decoration:none; font-weight:700; }
+    .tpl-btn { min-width:170px; border:none; color:#fff; background:linear-gradient(90deg,#8f2d56,#b34873); }
+    .tpl-btn-lite { border:1px solid #dcc9d2; background:#fff; color:#35516a; }
+    @@media (max-width: 991.98px) {
+        .tpl-form-grid, .tpl-file-grid { grid-template-columns:1fr; }
+        .tpl-form-top, .tpl-form-actions { flex-direction:column; align-items:stretch; }
+        .tpl-form-back, .tpl-btn, .tpl-btn-lite { width:100%; }
+    }
+</style>
+
+<div class="committee-page">
+    <div class="tpl-form-page">
+        <section class="tpl-form-banner">
+            <div class="tpl-form-top">
+                <div>
+                    <div class="tpl-form-kicker">Template Upload</div>
+                    <h3 class="tpl-form-title">@(Model.Input.TemplateId.HasValue ? "Edit the saved template bundle." : "Upload a new template bundle for a cohort.")</h3>
+                    <p class="tpl-form-copy">Manage the document files and optional notes on a dedicated page, then return to the template directory once the set is saved.</p>
+                </div>
+                <a href="/Committee/AppointmentTemplates" class="tpl-form-back">Back to Template Upload</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger mb-0">@Model.ErrorMessage</div>
+        }
+
+        <section class="tpl-form-card">
+            <h3 class="tpl-form-section-title">@(Model.Input.TemplateId.HasValue ? "Edit Template Set" : "Upload Template Set")</h3>
+            <p class="tpl-form-section-copy">Save one template bundle for a cohort, then return later to replace files or update the notes.</p>
+
+            <form method="post" enctype="multipart/form-data" class="tpl-form-shell">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="Input.TemplateId" type="hidden" />
+                <input asp-for="Input.ExistingCompanyAcceptanceLetterPath" type="hidden" />
+                <input asp-for="Input.ExistingIndemnityLetterPath" type="hidden" />
+                <input asp-for="Input.ExistingParentAcknowledgementFormPath" type="hidden" />
+                <input asp-for="Input.ExistingCompanySupervisorEvaluationFormPath" type="hidden" />
+                <input asp-for="Input.ExistingProgressReportTemplatePath" type="hidden" />
+                <input asp-for="Input.ExistingFinalReportTemplatePath" type="hidden" />
+                <input asp-for="Input.ExistingStudentSupportLetterPath" type="hidden" />
+                <input asp-for="Input.ExistingAppointmentConfirmationLetterPath" type="hidden" />
+                <input asp-for="Input.ExistingWarningLetterPath" type="hidden" />
+
+                <div class="tpl-form-grid">
+                    <div class="tpl-field">
+                        <label asp-for="Input.CohortId">Cohort</label>
+                        <select asp-for="Input.CohortId" class="form-select">
+                            <option value="">Select a cohort</option>
+                            @foreach (var cohort in Model.CohortOptions)
+                            {
+                                <option value="@cohort.Id">@cohort.Label</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Input.CohortId" class="text-danger"></span>
+                    </div>
+                    <div class="tpl-field">
+                        <label asp-for="Input.TemplateName">Template Name</label>
+                        <input asp-for="Input.TemplateName" class="form-control" placeholder="Example: Degree Cohort Standard Pack" />
+                        <span asp-validation-for="Input.TemplateName" class="text-danger"></span>
+                    </div>
+                    <div class="tpl-field full">
+                        <label asp-for="Input.Content">Content / Notes</label>
+                        <textarea asp-for="Input.Content" class="form-control" placeholder="Add optional instructions, placeholders, or internal notes for this template set."></textarea>
+                    </div>
+                </div>
+
+                <div class="tpl-file-grid">
+                    <div class="tpl-file">
+                        <label asp-for="CompanyAcceptanceLetterFile">Company Acceptance Letter</label>
+                        <input asp-for="CompanyAcceptanceLetterFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="CompanyAcceptanceLetterFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingCompanyAcceptanceLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingCompanyAcceptanceLetterPath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingCompanyAcceptanceLetterPath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="IndemnityLetterFile">Indemnity Letter</label>
+                        <input asp-for="IndemnityLetterFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="IndemnityLetterFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingIndemnityLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingIndemnityLetterPath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingIndemnityLetterPath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="ParentAcknowledgementFormFile">Parent Acknowledgement Form</label>
+                        <input asp-for="ParentAcknowledgementFormFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="ParentAcknowledgementFormFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingParentAcknowledgementFormPath)) { <a class="tpl-link" href="@Model.Input.ExistingParentAcknowledgementFormPath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingParentAcknowledgementFormPath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="CompanySupervisorEvaluationFormFile">Company Supervisor Evaluation Form</label>
+                        <input asp-for="CompanySupervisorEvaluationFormFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="CompanySupervisorEvaluationFormFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingCompanySupervisorEvaluationFormPath)) { <a class="tpl-link" href="@Model.Input.ExistingCompanySupervisorEvaluationFormPath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingCompanySupervisorEvaluationFormPath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="ProgressReportTemplateFile">Progress Report Template</label>
+                        <input asp-for="ProgressReportTemplateFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="ProgressReportTemplateFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingProgressReportTemplatePath)) { <a class="tpl-link" href="@Model.Input.ExistingProgressReportTemplatePath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingProgressReportTemplatePath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="FinalReportTemplateFile">Final Report Template</label>
+                        <input asp-for="FinalReportTemplateFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="FinalReportTemplateFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingFinalReportTemplatePath)) { <a class="tpl-link" href="@Model.Input.ExistingFinalReportTemplatePath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingFinalReportTemplatePath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="StudentSupportLetterFile">Student Support Letter</label>
+                        <input asp-for="StudentSupportLetterFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="StudentSupportLetterFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingStudentSupportLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingStudentSupportLetterPath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingStudentSupportLetterPath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="AppointmentConfirmationLetterFile">Appointment Confirmation Letter</label>
+                        <input asp-for="AppointmentConfirmationLetterFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="AppointmentConfirmationLetterFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingAppointmentConfirmationLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingAppointmentConfirmationLetterPath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingAppointmentConfirmationLetterPath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                    <div class="tpl-file">
+                        <label asp-for="WarningLetterFile">Warning Letter</label>
+                        <input asp-for="WarningLetterFile" type="file" class="form-control tpl-upload-input" />
+                        <div class="tpl-selected-size" data-size-for="WarningLetterFile">Selected size: -</div>
+                        <div class="tpl-note">Current:
+                            @if (!string.IsNullOrWhiteSpace(Model.Input.ExistingWarningLetterPath)) { <a class="tpl-link" href="@Model.Input.ExistingWarningLetterPath" target="_blank">Open file</a><div class="tpl-file-size">Size: @Model.GetFileSizeLabel(Model.Input.ExistingWarningLetterPath)</div> } else { <span>None</span> }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tpl-form-actions">
+                    <button type="submit" class="tpl-btn">@(Model.Input.TemplateId.HasValue ? "Save Template Changes" : "Upload Template Set")</button>
+                    <a href="/Committee/AppointmentTemplateForm" class="tpl-btn-lite">Clear Form</a>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            function formatFileSize(bytes) {
+                var kb = 1024;
+                var mb = kb * 1024;
+
+                if (bytes >= mb) {
+                    return (bytes / mb).toFixed(bytes % mb === 0 ? 0 : 2).replace(/\.00$/, "") + " MB";
+                }
+
+                if (bytes >= kb) {
+                    return (bytes / kb).toFixed(bytes % kb === 0 ? 0 : 2).replace(/\.00$/, "") + " KB";
+                }
+
+                return bytes + " B";
+            }
+
+            document.querySelectorAll(".tpl-upload-input").forEach(function (input) {
+                input.addEventListener("change", function () {
+                    var target = document.querySelector('[data-size-for="' + input.id + '"]');
+                    if (!target) {
+                        return;
+                    }
+
+                    if (input.files && input.files.length > 0) {
+                        target.textContent = "Selected size: " + formatFileSize(input.files[0].size);
+                    } else {
+                        target.textContent = "Selected size: -";
+                    }
+                });
+            });
+        })();
+    </script>
+}

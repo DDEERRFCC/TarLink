@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model CommitteeStudentDetailsModel
 @{
     ViewData["CommitteePageTitle"] = Model.IsCreateMode ? "Add Student" : "Student Details";
@@ -22,7 +22,7 @@
         border-radius: 24px;
         padding: 1.35rem;
         color: #fff;
-        background: linear-gradient(135deg, #132238, #0f766e 58%, #14b8a6);
+        background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873);
         box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
     }
 
@@ -82,17 +82,17 @@
         text-decoration: none;
         border-radius: 999px;
         padding: .78rem 1rem;
-        border: 1px solid #cfe0ed;
+        border: 1px solid #e6cdd7;
         background: linear-gradient(180deg, #ffffff, #f5fbff);
-        color: #12344b;
+        color: #4f3041;
         font-weight: 700;
         box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
         transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
     }
 
     .student-details-back-btn:hover {
-        color: #0f3f54;
-        border-color: #9fcae4;
+        color: #6b2847;
+        border-color: #d7a7ba;
         box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
         transform: translateY(-1px);
     }
@@ -105,8 +105,8 @@
         width: 1.7rem;
         height: 1.7rem;
         border-radius: 999px;
-        background: #e0f2fe;
-        color: #0c4a6e;
+        background: #f6dfe9;
+        color: #7b264b;
         font-size: .9rem;
         line-height: 1;
     }
@@ -120,9 +120,9 @@
     .student-details-meta-card,
     .student-details-section,
     .student-details-danger {
-        border: 1px solid #d8e5f1;
+        border: 1px solid #eadce2;
         border-radius: 22px;
-        background: linear-gradient(180deg, #ffffff, #fbfdff);
+        background: linear-gradient(180deg, #ffffff, #fff9fb);
         box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
 
@@ -137,11 +137,11 @@
         position: absolute;
         inset: 0 0 auto 0;
         height: 5px;
-        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        background: linear-gradient(90deg, #8f2d56, #b34873);
     }
 
     .student-details-meta-label {
-        color: #607284;
+        color: #7a6673;
         font-size: .8rem;
         font-weight: 700;
         letter-spacing: .06em;
@@ -150,7 +150,7 @@
 
     .student-details-meta-value {
         margin-top: .35rem;
-        color: #0f172a;
+        color: #2f1724;
         font-size: 1.2rem;
         font-weight: 700;
         line-height: 1.2;
@@ -170,7 +170,7 @@
 
     .student-details-section-copy {
         margin: .35rem 0 0;
-        color: #607284;
+        color: #7a6673;
         line-height: 1.7;
         font-size: .92rem;
     }
@@ -238,7 +238,7 @@
     }
 
     .student-details-picker-item:hover {
-        background: #f6fafc;
+        background: #faf1f5;
     }
 
     .student-details-picker-empty {
@@ -248,7 +248,7 @@
     .student-details-fields .form-control:focus,
     .student-details-fields .form-select:focus,
     .student-details-fields textarea:focus {
-        border-color: #14b8a6;
+        border-color: #b34873;
         box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14);
     }
 
@@ -260,7 +260,7 @@
     }
 
     .student-details-doc-card {
-        border: 1px solid #d8e5f1;
+        border: 1px solid #eadce2;
         border-radius: 18px;
         background: #fff;
         padding: 1rem;
@@ -275,7 +275,7 @@
 
     .student-details-doc-file {
         margin-top: .65rem;
-        color: #607284;
+        color: #7a6673;
         font-size: .88rem;
         overflow-wrap: anywhere;
     }
@@ -304,20 +304,20 @@
     .student-details-primary-btn {
         border: none;
         color: #fff;
-        background: linear-gradient(90deg, #0f766e, #14b8a6);
+        background: linear-gradient(90deg, #8f2d56, #b34873);
     }
 
     .student-details-secondary-btn,
     .student-details-doc-btn {
         border: 1px solid #d1ddea;
         background: #fff;
-        color: #12344b;
+        color: #4f3041;
     }
 
     .student-details-doc-btn.primary {
-        background: #eff6ff;
+        background: #f8e8ef;
         border-color: #bfdbfe;
-        color: #1d4ed8;
+        color: #6f2847;
     }
 
     .student-details-action-row {
@@ -348,8 +348,8 @@
 
     .student-details-delete-btn {
         border: 1px solid #fecdd3;
-        background: #fff1f2;
-        color: #be123c;
+        background: #fdecef;
+        color: #9f305d;
     }
 
     @@media (max-width: 991.98px) {
@@ -486,7 +486,7 @@
 
             <section class="student-details-section">
                 <h3 class="student-details-section-title">Company and Supervisor</h3>
-                <p class="student-details-section-copy">Update the student’s placement, company address, allowance, and both company-side and university-side supervisor contacts.</p>
+                <p class="student-details-section-copy">Update the studentâ€™s placement, company address, allowance, and both company-side and university-side supervisor contacts.</p>
 
                 <div class="row g-3 student-details-fields">
                     <div class="col-md-4">
@@ -548,7 +548,7 @@
 
             <section class="student-details-section">
                 <h3 class="student-details-section-title">Contact, Skills, and Status</h3>
-                <p class="student-details-section-copy">Keep the student’s personal contact channels, internship readiness, document verification, and current application status accurate.</p>
+                <p class="student-details-section-copy">Keep the studentâ€™s personal contact channels, internship readiness, document verification, and current application status accurate.</p>
 
                 <div class="row g-3 student-details-fields">
                     <div class="col-md-4">
@@ -598,6 +598,20 @@
                             <option value="approved">approved</option>
                             <option value="rejected">rejected</option>
                             <option value="withdrawn">withdrawn</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.isActive" class="form-label">Is Active</label>
+                        <select asp-for="Input.isActive" class="form-select">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="Input.isLocked" class="form-label">Is Locked</label>
+                        <select asp-for="Input.isLocked" class="form-select">
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -878,3 +892,4 @@
         });
     </script>
 }
+

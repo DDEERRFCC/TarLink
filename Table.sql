@@ -124,6 +124,28 @@ CREATE TABLE cohort (
     faculty VARCHAR(45),
     personInCharge VARCHAR(250),
     pidEmail VARCHAR(250),
+    CONSTRAINT chk_cohort_faculty CHECK (
+        faculty IS NULL
+        OR faculty IN (
+            'Faculty of Computing and Information Technology',
+            'Faculty of Engineering and Technology',
+            'Faculty of Business and Finance',
+            'Faculty of Accountancy, Finance and Business',
+            'Faculty of Social Science and Humanities',
+            'Faculty of Built Environment'
+        )
+    ),
+    CONSTRAINT chk_cohort_campus CHECK (
+        campus IS NULL
+        OR campus IN (
+            'Kuala Lumpur Main Campus',
+            'Penang Branch Campus',
+            'Perak Branch Campus',
+            'Johor Branch Campus',
+            'Sabah Branch Campus',
+            'Sarawak Branch Campus'
+        )
+    ),
     INDEX idx_startDate (startDate),
     INDEX idx_endDate (endDate),
     INDEX idx_isActive (isActive),
@@ -482,6 +504,28 @@ CREATE TABLE announcement (
     publish_at TIMESTAMP NULL,
     expire_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_announcement_faculty CHECK (
+        faculty IS NULL
+        OR faculty IN (
+            'Faculty of Computing and Information Technology',
+            'Faculty of Engineering and Technology',
+            'Faculty of Business and Finance',
+            'Faculty of Accountancy, Finance and Business',
+            'Faculty of Social Science and Humanities',
+            'Faculty of Built Environment'
+        )
+    ),
+    CONSTRAINT chk_announcement_campus CHECK (
+        campus IS NULL
+        OR campus IN (
+            'Kuala Lumpur Main Campus',
+            'Penang Branch Campus',
+            'Perak Branch Campus',
+            'Johor Branch Campus',
+            'Sabah Branch Campus',
+            'Sarawak Branch Campus'
+        )
+    ),
     INDEX idx_announcement_created_at (created_at),
     INDEX idx_announcement_target (target_role, cohort_id, faculty, campus),
     CONSTRAINT fk_announcement_created_by FOREIGN KEY (created_by_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE,

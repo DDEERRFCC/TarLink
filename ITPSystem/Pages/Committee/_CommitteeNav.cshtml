@@ -1,4 +1,4 @@
-@{
+﻿@{
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
     string NavClass(string pagePath) =>
         string.Equals(currentPage, pagePath, StringComparison.OrdinalIgnoreCase)
@@ -9,9 +9,9 @@
 <style>
     .committee-nav-wrap {
         margin: 0 0 1rem;
-        border: 1px solid #d8e5f1;
+        border: 1px solid #eadce2;
         border-radius: 18px;
-        background: linear-gradient(180deg, #f8fbff, #fdfefe);
+        background: linear-gradient(180deg, #fdf6f9, #fdfefe);
         padding: .9rem;
         box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
@@ -19,7 +19,7 @@
     .committee-nav-title {
         font-size: .95rem;
         font-weight: 700;
-        color: #44576d;
+        color: #6a5461;
         text-transform: uppercase;
         letter-spacing: .08em;
         margin: 0 0 .7rem;
@@ -31,7 +31,7 @@
     }
 
     .committee-nav-section {
-        border: 1px solid #e1ebf4;
+        border: 1px solid #eee3e7;
         border-radius: 14px;
         background: rgba(255, 255, 255, .85);
         padding: .7rem;
@@ -39,7 +39,7 @@
 
     .committee-nav-section-title {
         margin: 0 0 .55rem;
-        color: #607284;
+        color: #7a6673;
         font-size: .78rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -56,8 +56,8 @@
         text-decoration: none;
         font-size: .95rem;
         font-weight: 700;
-        color: #0f3f54;
-        border: 1px solid #d6e5f1;
+        color: #6b2847;
+        border: 1px solid #e8d6de;
         background: #fff;
         border-radius: 12px;
         padding: .62rem .8rem;
@@ -65,15 +65,15 @@
     }
 
     .committee-nav-link:hover {
-        border-color: #9fcae4;
-        background: #eef7ff;
-        color: #0b2f40;
+        border-color: #d7a7ba;
+        background: #fdf0f5;
+        color: #4a2237;
         transform: translateX(2px);
     }
 
     .committee-nav-link.active {
-        background: linear-gradient(90deg, #0f766e, #0ea5a1);
-        border-color: #0f766e;
+        background: linear-gradient(90deg, #8f2d56, #b34873);
+        border-color: #8f2d56;
         color: #fff;
     }
 </style>
@@ -86,6 +86,8 @@
             <div class="committee-nav-list">
                 <a class="@NavClass("/Committee/Dashboard")" asp-page="/Committee/Dashboard">Dashboard</a>
                 <a class="@NavClass("/Committee/SummaryReports")" asp-page="/Committee/SummaryReports">Summary Reports</a>
+                <a class="@NavClass("/Committee/Announcements")" asp-page="/Committee/Announcements">Announcements</a>
+                <a class="@NavClass("/Committee/Notifications")" asp-page="/Committee/Notifications">Notifications</a>
             </div>
         </section>
 
@@ -127,3 +129,4 @@
         </section>
     </div>
 </div>
+

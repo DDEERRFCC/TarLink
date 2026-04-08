@@ -2,11 +2,32 @@ using ITPSystem.Data;
 using ITPSystem.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 public class CommitteeCohortsModel : CommitteePageModelBase
 {
+    private static readonly string[] AllowedFaculties =
+    {
+        "Faculty of Computing and Information Technology",
+        "Faculty of Engineering and Technology",
+        "Faculty of Business and Finance",
+        "Faculty of Accountancy, Finance and Business",
+        "Faculty of Social Science and Humanities",
+        "Faculty of Built Environment"
+    };
+
+    private static readonly string[] AllowedCampuses =
+    {
+        "Kuala Lumpur Main Campus",
+        "Penang Branch Campus",
+        "Perak Branch Campus",
+        "Johor Branch Campus",
+        "Sabah Branch Campus",
+        "Sarawak Branch Campus"
+    };
+
     private readonly ApplicationDbContext _db;
     private readonly IWebHostEnvironment _env;
 
@@ -17,6 +38,12 @@ public class CommitteeCohortsModel : CommitteePageModelBase
     }
 
     public List<Cohort> Cohorts { get; private set; } = new();
+    public IReadOnlyList<SelectListItem> FacultyOptions { get; } = AllowedFaculties
+        .Select(x => new SelectListItem(x, x))
+        .ToList();
+    public IReadOnlyList<SelectListItem> CampusOptions { get; } = AllowedCampuses
+        .Select(x => new SelectListItem(x, x))
+        .ToList();
 
     [BindProperty]
     public CohortInputModel Input { get; set; } = new();
@@ -168,6 +195,8 @@ public class CommitteeCohortsModel : CommitteePageModelBase
         ApplyInput(cohort);
         _db.SaveChanges();
 
+        SyncCohortStudentLocks(cohort.cohort_id, cohort.isActive);
+
         if (!isEdit)
         {
             EnsureCohortStorageFolders(cohort);
@@ -237,6 +266,18 @@ public class CommitteeCohortsModel : CommitteePageModelBase
         {
             ModelState.AddModelError(nameof(Input.ExamEndDate), "Exam end date must be on or after exam start date.");
         }
+
+        if (!string.IsNullOrWhiteSpace(Input.Campus) &&
+            !AllowedCampuses.Contains(Input.Campus.Trim(), StringComparer.Ordinal))
+        {
+            ModelState.AddModelError(nameof(Input.Campus), "Invalid campus value.");
+        }
+
+        if (!string.IsNullOrWhiteSpace(Input.Faculty) &&
+            !AllowedFaculties.Contains(Input.Faculty.Trim(), StringComparer.Ordinal))
+        {
+            ModelState.AddModelError(nameof(Input.Faculty), "Invalid faculty value.");
+        }
     }
 
     private CohortInputModel MapToInput(Cohort cohort)
@@ -304,6 +345,51 @@ public class CommitteeCohortsModel : CommitteePageModelBase
     private static string? Clean(string? value)
     {
         return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    private void SyncCohortStudentLocks(int cohortId, bool isActive)
+    {
+        var apps = _db.StudentApplications.AsNoTracking()
+            .Where(s => s.cohortId == cohortId)
+            .Select(s => new { s.application_id, s.studentEmail, s.number_ic })
+            .ToList();
+
+        if (apps.Count == 0)
+        {
+            return;
+        }
+
+        var appIds = apps.Select(a => a.application_id).ToHashSet();
+        var emails = apps
+            .Select(a => a.studentEmail)
+            .Where(e => !string.IsNullOrWhiteSpace(e))
+            .Select(e => e!.Trim())
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var icNumbers = apps
+            .Select(a => a.number_ic)
+            .Where(ic => !string.IsNullOrWhiteSpace(ic))
+            .Select(ic => ic!.Trim())
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        var users = _db.SysUsers
+            .Where(u => u.role == "student" && (
+                (u.application_id.HasValue && appIds.Contains(u.application_id.Value)) ||
+                (!string.IsNullOrWhiteSpace(u.email) && emails.Contains(u.email)) ||
+                (!string.IsNullOrWhiteSpace(u.ic_number) && icNumbers.Contains(u.ic_number))
+            ))
+            .ToList();
+
+        if (users.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var user in users)
+        {
+            user.is_locked = !isActive;
+        }
+
+        _db.SaveChanges();
     }
 
     private void EnsureCohortStorageFolders(Cohort cohort)

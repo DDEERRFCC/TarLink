@@ -112,6 +112,12 @@ namespace ITPSystem.Pages.Supervisor
                         ModelState.AddModelError(string.Empty, $"Score for {def.Item} must be between 0 and {def.MaxScore}.");
                         continue;
                     }
+                    
+                    if (item.Score.Value != Math.Truncate(item.Score.Value))
+                    {
+                        ModelState.AddModelError(string.Empty, $"Score for {def.Item} must be a whole number.");
+                        continue;
+                    }
 
                     if (item.MaxScore != def.MaxScore)
                     {

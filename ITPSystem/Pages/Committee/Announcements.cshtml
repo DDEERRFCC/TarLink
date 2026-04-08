@@ -1,0 +1,191 @@
+@page
+@model CommitteeAnnouncementsModel
+@{
+    ViewData["CommitteePageTitle"] = "Announcements";
+    var now = DateTime.Now;
+}
+
+<style>
+    .committee-comms-stack { display: grid; gap: 1rem; max-width: 1280px; margin: 0 auto; }
+    .committee-comms-banner, .committee-comms-card, .committee-comms-stat { border: 1px solid #eadce2; border-radius: 20px; background: linear-gradient(180deg, #ffffff, #fff9fb); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); }
+    .committee-comms-banner { position: relative; overflow: hidden; padding: 1.35rem; border-radius: 24px; color: #fff; background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
+    .committee-comms-banner::after { content: ""; position: absolute; right: -42px; top: -50px; width: 180px; height: 180px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+    .committee-comms-banner > * { position: relative; z-index: 1; }
+    .committee-comms-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .committee-comms-pill, .committee-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: .34rem .72rem; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .committee-comms-pill { background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .22); }
+    .committee-comms-back { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid rgba(255, 255, 255, .28); background: rgba(255, 255, 255, .12); color: #fff; font-weight: 700; }
+    .committee-comms-back:hover { color: #fff; background: rgba(255, 255, 255, .18); }
+    .committee-comms-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+    .committee-comms-stat { position: relative; overflow: hidden; padding: 1rem 1.05rem; }
+    .committee-comms-stat::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: linear-gradient(90deg, #8f2d56, #b34873); }
+    .committee-comms-label { color: #7a6673; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .committee-comms-value { margin-top: .35rem; color: #2f1724; font-size: 1.75rem; font-weight: 700; line-height: 1.1; }
+    .committee-comms-note { margin-top: .3rem; color: #917d89; font-size: .88rem; }
+    .committee-comms-card { padding: 1rem; }
+    .committee-comms-card h4 { margin: 0; color: #3c2030; font-size: 1.08rem; font-weight: 700; }
+    .committee-comms-card p { margin: .25rem 0 0; color: #7a6673; line-height: 1.65; }
+    .committee-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .committee-form-grid .committee-form-full { grid-column: 1 / -1; }
+    .committee-form-grid .form-label { font-size: .82rem; font-weight: 700; color: #765f6c; text-transform: uppercase; letter-spacing: .05em; }
+    .committee-form-grid .form-control, .committee-form-grid .form-select { min-height: 46px; border-radius: 14px; border-color: #ddcbd4; }
+    .committee-form-grid textarea.form-control { min-height: 140px; }
+    .committee-form-actions { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1rem; }
+    .committee-form-actions .btn { border-radius: 14px; font-weight: 700; min-width: 140px; }
+    .committee-table thead th { background: #faf1f5; color: #7a6673; font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+    .committee-chip.is-live { background: #d1fae5; color: #065f46; }
+    .committee-chip.is-draft { background: #e5e7eb; color: #374151; }
+    .committee-chip.is-scheduled { background: #dbeafe; color: #1d4ed8; }
+    .committee-chip.is-expired { background: #fee2e2; color: #991b1b; }
+    .committee-meta { color: #7a6673; font-size: .88rem; line-height: 1.6; }
+    .committee-title { color: #102133; font-weight: 700; }
+    @@media (max-width: 991.98px) { .committee-comms-grid, .committee-form-grid { grid-template-columns: 1fr; } .committee-comms-top, .committee-form-actions { flex-direction: column; align-items: stretch; } .committee-form-actions .btn, .committee-comms-back { width: 100%; } }
+</style>
+
+<div class="committee-page">
+    <div class="committee-comms-stack">
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mb-0">@Model.StatusMessage</div>
+        }
+
+        <section class="committee-comms-banner">
+            <div class="committee-comms-top">
+                <div class="committee-comms-pill">Announcement Portal</div>
+                <a asp-page="/Committee/Dashboard" class="committee-comms-back">Back to Dashboard</a>
+            </div>
+            <h3 class="mt-3 mb-2">Control announcement publishing for the internship portal.</h3>
+            <p>Create targeted notices, schedule publish windows, and stop outdated messages from showing after the deadline.</p>
+        </section>
+
+        <section class="committee-comms-grid">
+            <article class="committee-comms-stat"><div class="committee-comms-label">Total</div><div class="committee-comms-value">@Model.TotalAnnouncements</div><div class="committee-comms-note">All announcement records in the system.</div></article>
+            <article class="committee-comms-stat"><div class="committee-comms-label">Published</div><div class="committee-comms-value">@Model.PublishedAnnouncements</div><div class="committee-comms-note">Currently marked as published.</div></article>
+            <article class="committee-comms-stat"><div class="committee-comms-label">Scheduled</div><div class="committee-comms-value">@Model.ScheduledAnnouncements</div><div class="committee-comms-note">Waiting for publish time.</div></article>
+            <article class="committee-comms-stat"><div class="committee-comms-label">Expired</div><div class="committee-comms-value">@Model.ExpiredAnnouncements</div><div class="committee-comms-note">Past their expiry date.</div></article>
+        </section>
+
+        <section class="committee-comms-card">
+            <h4>Create Announcement</h4>
+            <p>Target the whole portal or narrow the message to a cohort, faculty, or campus before publishing.</p>
+
+            <form method="post" asp-page-handler="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
+                <div class="committee-form-grid">
+                    <div class="committee-form-full">
+                        <label asp-for="Input.Title" class="form-label">Title</label>
+                        <input asp-for="Input.Title" class="form-control" />
+                        <span asp-validation-for="Input.Title" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Input.TargetRole" class="form-label">Target Role</label>
+                        <select asp-for="Input.TargetRole" class="form-select">
+                            <option value="all">All</option>
+                            <option value="student">Student</option>
+                            <option value="supervisor">Supervisor</option>
+                            <option value="committee">Committee</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.CohortId" class="form-label">Cohort</label>
+                        <select asp-for="Input.CohortId" class="form-select">
+                            <option value="">All cohorts</option>
+                            @foreach (var cohort in Model.Cohorts)
+                            {
+                                <option value="@cohort.cohort_id">@cohort.description</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.Faculty" class="form-label">Faculty</label>
+                        <select asp-for="Input.Faculty" class="form-select">
+                            <option value="">All faculties</option>
+                            @foreach (var faculty in Model.Faculties)
+                            {
+                                <option value="@faculty">@faculty</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.Campus" class="form-label">Campus</label>
+                        <select asp-for="Input.Campus" class="form-select">
+                            <option value="">All campuses</option>
+                            @foreach (var campus in Model.Campuses)
+                            {
+                                <option value="@campus">@campus</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.PublishAt" class="form-label">Publish At</label>
+                        <input asp-for="Input.PublishAt" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="Input.PublishAt" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Input.ExpireAt" class="form-label">Expire At</label>
+                        <input asp-for="Input.ExpireAt" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="Input.ExpireAt" class="text-danger"></span>
+                    </div>
+                    <div class="committee-form-full">
+                        <label asp-for="Input.Message" class="form-label">Message</label>
+                        <textarea asp-for="Input.Message" class="form-control"></textarea>
+                        <span asp-validation-for="Input.Message" class="text-danger"></span>
+                    </div>
+                    <div class="committee-form-full">
+                        <div class="form-check form-switch">
+                            <input asp-for="Input.IsPublished" class="form-check-input" />
+                            <label asp-for="Input.IsPublished" class="form-check-label">Publish this announcement</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="committee-form-actions">
+                    <button type="submit" class="btn btn-primary">Save Announcement</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="committee-comms-card">
+            <h4>Announcement History</h4>
+            <p>Review what is live, scheduled, expired, or still kept as an unpublished draft.</p>
+            <div class="table-responsive mt-3">
+                <table class="table align-middle committee-table mb-0">
+                    <thead>
+                        <tr><th>Title</th><th>Audience</th><th>Window</th><th>Status</th><th class="text-end">Action</th></tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Announcements.Count == 0)
+                        {
+                            <tr><td colspan="5" class="text-center text-muted py-4">No announcements created yet.</td></tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in Model.Announcements)
+                            {
+                                var statusClass = !item.is_published ? "is-draft" : item.expire_at.HasValue && item.expire_at.Value < now ? "is-expired" : item.publish_at.HasValue && item.publish_at.Value > now ? "is-scheduled" : "is-live";
+                                var statusText = !item.is_published ? "Draft" : item.expire_at.HasValue && item.expire_at.Value < now ? "Expired" : item.publish_at.HasValue && item.publish_at.Value > now ? "Scheduled" : "Live";
+                                <tr>
+                                    <td><div class="committee-title">@item.title</div><div class="committee-meta">@item.message</div></td>
+                                    <td class="committee-meta"><div>Role: @item.target_role</div><div>Cohort: @(item.cohort_id?.ToString() ?? "All")</div><div>Faculty: @(item.faculty ?? "All")</div><div>Campus: @(item.campus ?? "All")</div></td>
+                                    <td class="committee-meta"><div>Publish: @(item.publish_at?.ToString("yyyy-MM-dd HH:mm") ?? "Immediately")</div><div>Expire: @(item.expire_at?.ToString("yyyy-MM-dd HH:mm") ?? "No expiry")</div></td>
+                                    <td><span class="committee-chip @statusClass">@statusText</span></td>
+                                    <td class="text-end">
+                                        <form method="post" asp-page-handler="TogglePublish" class="d-inline">
+                                            <input type="hidden" name="announcementId" value="@item.announcement_id" />
+                                            <button type="submit" class="btn btn-outline-primary btn-sm">@(item.is_published ? "Unpublish" : "Publish")</button>
+                                        </form>
+                                        <form method="post" asp-page-handler="Delete" class="d-inline">
+                                            <input type="hidden" name="announcementId" value="@item.announcement_id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete this announcement?');">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />

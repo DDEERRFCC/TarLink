@@ -4,81 +4,622 @@
     ViewData["Title"] = "Own Company Request";
 }
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
-        <div>
-            <h2 class="mb-1">I Wish To Apply To A Company Of My Own Choice</h2>
-            <p class="text-muted mb-0">Submit your company details for ITP committee review.</p>
-        </div>
-        <a asp-page="/Student/Dashboard" class="btn btn-outline-secondary btn-sm">Back to Dashboard</a>
-    </div>
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-    @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-    {
-        <div class="alert alert-success">@Model.StatusMessage</div>
+    :root {
+        --request-bg-1: #f6efe3;
+        --request-bg-2: #ecf5f4;
+        --request-bg-3: #fbfcfd;
+        --request-text: #182536;
+        --request-muted: #617082;
+        --request-card: rgba(255, 255, 255, 0.9);
+        --request-border: rgba(24, 37, 54, 0.08);
+        --request-primary: #0f7b6c;
+        --request-primary-dark: #0d5f63;
+        --request-accent: #d97706;
+        --request-warning: #fff4db;
     }
 
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <div class="fw-semibold mb-1">Please fix the following:</div>
-            <ul class="mb-0">
-                @foreach (var entry in ViewData.ModelState.Values)
+    .request-page {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 9% 10%, rgba(217, 119, 6, 0.14), transparent 24%),
+            radial-gradient(circle at 88% 14%, rgba(15, 123, 108, 0.15), transparent 22%),
+            linear-gradient(160deg, var(--request-bg-1), var(--request-bg-2) 54%, var(--request-bg-3));
+        padding: 1.9rem 0 2.8rem;
+    }
+
+    .request-shell {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .request-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        padding: 1.8rem;
+        color: #fffaf2;
+        background: linear-gradient(130deg, #132238, #0f7b6c 58%, #d97706);
+        box-shadow: 0 22px 50px rgba(19, 34, 56, 0.18);
+        animation: request-fade-up .5s ease-out;
+    }
+
+    .request-hero::before,
+    .request-hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        pointer-events: none;
+        opacity: .22;
+    }
+
+    .request-hero::before {
+        width: 240px;
+        height: 240px;
+        top: -88px;
+        right: -55px;
+        background: rgba(255, 255, 255, 0.14);
+    }
+
+    .request-hero::after {
+        width: 180px;
+        height: 180px;
+        left: -45px;
+        bottom: -70px;
+        background: rgba(255, 255, 255, 0.12);
+    }
+
+    .request-hero-layout {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(260px, .75fr);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .request-pill {
+        display: inline-flex;
+        padding: .42rem .82rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .14);
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .request-hero h1 {
+        margin: .8rem 0 .45rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1;
+        letter-spacing: -.03em;
+    }
+
+    .request-hero p {
+        max-width: 58ch;
+        margin: 0;
+        color: rgba(255, 250, 242, 0.88);
+        line-height: 1.8;
+    }
+
+    .request-hero-actions {
+        display: grid;
+        gap: .8rem;
+        justify-items: end;
+    }
+
+    .request-back-btn,
+    .request-ghost-stat {
+        border-radius: 16px;
+        text-decoration: none;
+    }
+
+    .request-back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .82rem 1.05rem;
+        background: rgba(255, 255, 255, .15);
+        color: #fffaf2;
+        font-weight: 700;
+        border: 1px solid rgba(255, 255, 255, .2);
+    }
+
+    .request-ghost-stat {
+        width: 100%;
+        max-width: 240px;
+        padding: 1rem;
+        background: rgba(255, 255, 255, .12);
+        border: 1px solid rgba(255, 255, 255, .16);
+        color: #fffdf8;
+    }
+
+    .request-ghost-stat strong {
+        display: block;
+        margin-bottom: .25rem;
+        font-size: 1rem;
+    }
+
+    .request-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(290px, .75fr);
+        gap: 1.1rem;
+        margin-top: 1.2rem;
+    }
+
+    .request-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--request-border);
+        border-radius: 24px;
+        background: var(--request-card);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 16px 34px rgba(20, 40, 70, 0.08);
+        padding: 1.2rem;
+        animation: request-fade-up .55s ease-out;
+    }
+
+    .request-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--request-primary), rgba(217, 119, 6, .8));
+    }
+
+    .request-card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: .75rem;
+    }
+
+    .request-kicker {
+        display: inline-flex;
+        margin-bottom: .35rem;
+        padding: .28rem .62rem;
+        border-radius: 999px;
+        background: rgba(15, 123, 108, .08);
+        color: var(--request-primary-dark);
+        font-size: .74rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .request-title {
+        margin: 0 0 .15rem;
+        color: var(--request-text);
+        font-size: 1.08rem;
+        font-weight: 700;
+    }
+
+    .request-copy {
+        margin: 0;
+        color: var(--request-muted);
+        line-height: 1.7;
+    }
+
+    .request-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .95rem;
+        margin-top: .95rem;
+    }
+
+    .request-field {
+        display: flex;
+        flex-direction: column;
+        gap: .38rem;
+    }
+
+    .request-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .request-label {
+        color: #314154;
+        font-size: .88rem;
+        font-weight: 700;
+    }
+
+    .request-input,
+    .request-textarea {
+        width: 100%;
+        border-radius: 16px;
+        border: 1px solid #cfdae5;
+        background: rgba(255, 255, 255, 0.95);
+        padding: .82rem .95rem;
+        color: var(--request-text);
+        transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    .request-input:focus,
+    .request-textarea:focus {
+        outline: none;
+        border-color: rgba(15, 123, 108, .55);
+        box-shadow: 0 0 0 .2rem rgba(15, 123, 108, .12);
+        transform: translateY(-1px);
+    }
+
+    .request-input[readonly] {
+        background: #f6f9fb;
+        color: #556376;
+    }
+
+    .request-textarea {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .request-help {
+        color: #708095;
+        font-size: .83rem;
+        margin: 0;
+    }
+
+    .request-check {
+        display: flex;
+        gap: .8rem;
+        align-items: flex-start;
+        padding: 1rem;
+        border-radius: 18px;
+        border: 1px solid #ead9bb;
+        background: linear-gradient(180deg, #fffaf0, #fff4dd);
+    }
+
+    .request-check input {
+        margin-top: .2rem;
+        transform: scale(1.15);
+        accent-color: var(--request-primary);
+    }
+
+    .request-check label {
+        color: #433521;
+        line-height: 1.65;
+        font-weight: 500;
+    }
+
+    .request-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: 1.1rem;
+    }
+
+    .request-primary-btn,
+    .request-secondary-btn {
+        border-radius: 14px;
+        padding: .82rem 1.2rem;
+        font-weight: 700;
+        text-decoration: none;
+        border: 0;
+    }
+
+    .request-primary-btn {
+        color: #fff;
+        background: linear-gradient(90deg, var(--request-primary-dark), var(--request-primary), #19a38f);
+        box-shadow: 0 14px 24px rgba(15, 123, 108, .2);
+    }
+
+    .request-secondary-btn {
+        color: #173044;
+        background: #f6f9fc;
+        border: 1px solid #d6e1ea;
+    }
+
+    .request-note-list,
+    .request-step-list {
+        display: grid;
+        gap: .75rem;
+        margin: .95rem 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .request-note-item,
+    .request-step-item {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: .8rem;
+        align-items: start;
+    }
+
+    .request-note-icon,
+    .request-step-number {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .request-note-icon {
+        background: #eef7f6;
+        color: var(--request-primary-dark);
+    }
+
+    .request-step-number {
+        background: var(--request-warning);
+        color: #9a5a08;
+    }
+
+    .request-note-item strong,
+    .request-step-item strong {
+        display: block;
+        color: var(--request-text);
+        margin-bottom: .1rem;
+    }
+
+    .request-note-item span,
+    .request-step-item span {
+        color: var(--request-muted);
+        line-height: 1.65;
+    }
+
+    .request-side-panel {
+        display: grid;
+        gap: 1rem;
+        align-content: start;
+    }
+
+    .request-alert {
+        border-radius: 18px;
+        border: 1px solid transparent;
+        padding: .95rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .request-alert-success {
+        background: #edf9f5;
+        border-color: #bde4d6;
+        color: #0d5f63;
+    }
+
+    .request-alert-danger {
+        background: #fff1f0;
+        border-color: #efc3bf;
+        color: #8f2d24;
+    }
+
+    .request-alert ul {
+        margin-bottom: 0;
+        padding-left: 1.1rem;
+    }
+
+    .text-danger {
+        font-size: .82rem;
+    }
+
+    @@keyframes request-fade-up {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 991.98px) {
+        .request-hero-layout,
+        .request-main {
+            grid-template-columns: 1fr;
+        }
+
+        .request-hero-actions {
+            justify-items: start;
+        }
+    }
+
+    @@media (max-width: 767.98px) {
+        .request-page {
+            padding-top: 1.25rem;
+        }
+
+        .request-hero,
+        .request-card {
+            border-radius: 22px;
+            padding: 1rem;
+        }
+
+        .request-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .request-actions {
+            flex-direction: column;
+        }
+
+        .request-primary-btn,
+        .request-secondary-btn,
+        .request-back-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="request-page">
+    <div class="request-shell">
+        <section class="request-hero">
+            <div class="request-hero-layout">
+                <div>
+                    <div class="request-pill">Student Portal</div>
+                    <h1>Company Request</h1>
+                    <p>
+                        Propose a company of your own choice for internship review. Share accurate company details so the ITP committee can assess the request smoothly and decide faster.
+                    </p>
+                </div>
+
+                <div class="request-hero-actions">
+                    <a asp-page="/Student/Dashboard" class="request-back-btn">Back to Dashboard</a>
+                    <div class="request-ghost-stat">
+                        <strong>Before you submit</strong>
+                        Make sure the company is genuinely interested, the address is complete, and your declaration below is true.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="request-main">
+            <section>
+                @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
                 {
-                    foreach (var error in entry.Errors)
-                    {
-                        <li>@error.ErrorMessage</li>
-                    }
+                    <div class="request-alert request-alert-success">@Model.StatusMessage</div>
                 }
-            </ul>
-        </div>
-    }
 
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h5 class="card-title">Notes</h5>
-            <ul>
-                <li>It is students responsibility to request the company to register at CareeR<sup>e</sup>X (<a href="https://www.tarc.edu.my/jobs/" target="_blank" rel="noopener">https://www.tarc.edu.my/jobs/</a>).</li>
-                <li>ITP committee will only approve the company after recieved the application AND the company has fulfilled the university requiredments.</li>
-                <li>You do not have any relationship with the managers / supervisors / leaders / owners of the company.</li>
-            </ul>
-
-            <form method="post">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label asp-for="Input.StudentEmail" class="form-label">Student Email</label>
-                        <input asp-for="Input.StudentEmail" class="form-control" readonly />
-                        <span asp-validation-for="Input.StudentEmail" class="text-danger"></span>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="request-alert request-alert-danger">
+                        <div class="fw-semibold mb-2">Please fix the following before submitting:</div>
+                        <ul>
+                            @foreach (var entry in ViewData.ModelState.Values)
+                            {
+                                foreach (var error in entry.Errors)
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            }
+                        </ul>
                     </div>
+                }
 
-                    <div class="col-md-6">
-                        <label asp-for="Input.CompanyName" class="form-label">Company Name</label>
-                        <input asp-for="Input.CompanyName" class="form-control" />
-                        <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-12">
-                        <label asp-for="Input.CompanyAddress" class="form-label">Company Address</label>
-                        <textarea asp-for="Input.CompanyAddress" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="Input.CompanyAddress" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check">
-                            <input asp-for="Input.ConfirmNoRelationship" class="form-check-input" />
-                            <label asp-for="Input.ConfirmNoRelationship" class="form-check-label">
-                                I confirm that I do not have any relationship with the managers / supervisors / leaders / owners of the company.
-                            </label>
+                <section class="request-card">
+                    <div class="request-card-head">
+                        <div>
+                            <div class="request-kicker">Request Form</div>
+                            <h2 class="request-title">Share company details</h2>
+                            <p class="request-copy">These details will be saved and used for committee review of your own-company request.</p>
                         </div>
-                        <span asp-validation-for="Input.ConfirmNoRelationship" class="text-danger"></span>
                     </div>
-                </div>
 
-                <div class="mt-3 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">Submit Details</button>
-                    <a asp-page="/Student/OwnCompanyRequest" class="btn btn-outline-secondary">Reset</a>
-                </div>
-            </form>
+                    <form method="post">
+                        <div class="request-form-grid">
+                            <div class="request-field">
+                                <label asp-for="Input.StudentEmail" class="request-label">Student Email</label>
+                                <input asp-for="Input.StudentEmail" class="request-input" readonly />
+                                <p class="request-help">This email is used as the contact record for your request.</p>
+                                <span asp-validation-for="Input.StudentEmail" class="text-danger"></span>
+                            </div>
+
+                            <div class="request-field">
+                                <label asp-for="Input.CompanyName" class="request-label">Company Name</label>
+                                <input asp-for="Input.CompanyName" class="request-input" placeholder="Example: ABC Digital Solutions Sdn Bhd" />
+                                <p class="request-help">Use the official company name to avoid review delays.</p>
+                                <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+                            </div>
+
+                            <div class="request-field request-field-full">
+                                <label asp-for="Input.CompanyAddress" class="request-label">Company Address</label>
+                                <textarea asp-for="Input.CompanyAddress" class="request-textarea" placeholder="Enter the full company address, including street, postcode, city, and state."></textarea>
+                                <p class="request-help">A complete address helps the committee verify the company more quickly.</p>
+                                <span asp-validation-for="Input.CompanyAddress" class="text-danger"></span>
+                            </div>
+
+                            <div class="request-field request-field-full">
+                                <div class="request-check">
+                                    <input asp-for="Input.ConfirmNoRelationship" />
+                                    <label asp-for="Input.ConfirmNoRelationship">
+                                        I confirm that I do not have any relationship with the managers, supervisors, leaders, or owners of this company that could create a conflict of interest.
+                                    </label>
+                                </div>
+                                <span asp-validation-for="Input.ConfirmNoRelationship" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="request-actions">
+                            <button type="submit" class="request-primary-btn">Submit Company Request</button>
+                            <a asp-page="/Student/OwnCompanyRequest" class="request-secondary-btn">Reset Form</a>
+                        </div>
+                    </form>
+                </section>
+            </section>
+
+            <aside class="request-side-panel">
+                <section class="request-card">
+                    <div class="request-card-head">
+                        <div>
+                            <div class="request-kicker">Important Notes</div>
+                            <h2 class="request-title">What the committee expects</h2>
+                            <p class="request-copy">A few checks now can save back-and-forth later.</p>
+                        </div>
+                    </div>
+
+                    <ul class="request-note-list">
+                        <li class="request-note-item">
+                            <div class="request-note-icon">1</div>
+                            <div>
+                                <strong>Ask the company to register</strong>
+                                <span>
+                                    It is the student's responsibility to request the company to register at
+                                    <a href="https://www.tarc.edu.my/jobs/" target="_blank" rel="noopener">CareeR<sup>e</sup>X</a>.
+                                </span>
+                            </div>
+                        </li>
+                        <li class="request-note-item">
+                            <div class="request-note-icon">2</div>
+                            <div>
+                                <strong>Approval is conditional</strong>
+                                <span>The ITP committee can only approve the request after receiving the application and confirming that the company meets university requirements.</span>
+                            </div>
+                        </li>
+                        <li class="request-note-item">
+                            <div class="request-note-icon">3</div>
+                            <div>
+                                <strong>Declaration matters</strong>
+                                <span>Your no-relationship confirmation is part of the review process and should be answered truthfully.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="request-card">
+                    <div class="request-card-head">
+                        <div>
+                            <div class="request-kicker">Review Flow</div>
+                            <h2 class="request-title">What happens next</h2>
+                            <p class="request-copy">A simple overview of the request journey.</p>
+                        </div>
+                    </div>
+
+                    <ul class="request-step-list">
+                        <li class="request-step-item">
+                            <div class="request-step-number">1</div>
+                            <div>
+                                <strong>You submit the request</strong>
+                                <span>Your company name, address, and declaration are recorded for review.</span>
+                            </div>
+                        </li>
+                        <li class="request-step-item">
+                            <div class="request-step-number">2</div>
+                            <div>
+                                <strong>The committee checks the company</strong>
+                                <span>They review the request alongside the university's internship requirements.</span>
+                            </div>
+                        </li>
+                        <li class="request-step-item">
+                            <div class="request-step-number">3</div>
+                            <div>
+                                <strong>The status is decided</strong>
+                                <span>Your request may be approved, kept pending for follow-up, or rejected if requirements are not met.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
         </div>
     </div>
 </div>

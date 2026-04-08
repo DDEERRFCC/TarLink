@@ -870,6 +870,87 @@
         padding: .16rem .45rem;
     }
 
+    .itp-bell-section {
+        margin-top: .9rem;
+    }
+
+    .itp-bell-section:first-child {
+        margin-top: 0;
+    }
+
+    .itp-bell-section-title {
+        margin: 0 0 .55rem;
+        color: #102a43;
+        font-size: .9rem;
+        font-weight: 700;
+    }
+
+    .itp-bell-empty {
+        margin: 0;
+        color: #64748b;
+        font-size: .9rem;
+    }
+
+    .itp-notification-list {
+        display: grid;
+        gap: .55rem;
+    }
+
+    .itp-notification-item {
+        border: 1px solid #d7e2ee;
+        border-radius: 10px;
+        background: #fbfdff;
+        padding: .7rem .75rem;
+    }
+
+    .itp-notification-item.unread {
+        background: #fff8ea;
+        border-color: #f2cf8f;
+    }
+
+    .itp-notification-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: .75rem;
+        margin-bottom: .28rem;
+    }
+
+    .itp-notification-title {
+        color: #1f2937;
+        font-weight: 700;
+        line-height: 1.45;
+    }
+
+    .itp-notification-message {
+        color: #475569;
+        white-space: pre-wrap;
+        line-height: 1.6;
+        margin-top: .2rem;
+    }
+
+    .itp-notification-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .4rem;
+        align-items: center;
+        margin-top: .4rem;
+    }
+
+    .itp-notification-type {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: .12rem .48rem;
+        font-size: .74rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: #0f5b78;
+        background: #e0f2fe;
+        border: 1px solid #bae6fd;
+    }
+
     .itp-badge-ok, .itp-badge-missing {
         display: inline-block;
         font-size: .75rem;
@@ -994,7 +1075,7 @@
 
                 <div class="itp-actions">
                     <a class="itp-action" asp-page="/Student/UploadResume">Upload Resume / CV</a>
-                    @if (string.Equals(Model.Status?.Trim(), "Approved", StringComparison.OrdinalIgnoreCase))
+                    @if (Model.CanViewProgressReport)
                     {
                         <a class="itp-action" asp-page="/Student/MyProgressReport">My Progress Report</a>
                     }
@@ -1008,24 +1089,27 @@
                         <h3 class="itp-title">Upcoming Deadlines</h3>
                     </div>
                 </div>
-                @if (Model.ReportDeadlines.Count == 0)
+                @if (Model.CanViewProgressReport)
                 {
-                    <p class="itp-muted mb-0">No report due dates configured for your cohort yet.</p>
-                }
-                else
-                {
-                    <div class="itp-deadlines-scroll">
-                        @foreach (var deadline in Model.ReportDeadlines)
-                        {
-                            <div class="itp-deadline @(deadline.IsOverdue ? "itp-deadline-overdue" : string.Empty)">
-                                <div>
-                                    <div style="font-weight:600;color:#1f2937;">@deadline.Title</div>
-                                    <small class="@(deadline.IsOverdue ? "text-danger" : "itp-muted")">@deadline.Note</small>
+                    @if (Model.ReportDeadlines.Count == 0)
+                    {
+                        <p class="itp-muted mb-0">None</p>
+                    }
+                    else
+                    {
+                        <div class="itp-deadlines-scroll">
+                            @foreach (var deadline in Model.ReportDeadlines)
+                            {
+                                <div class="itp-deadline @(deadline.IsOverdue ? "itp-deadline-overdue" : string.Empty)">
+                                    <div>
+                                        <div style="font-weight:600;color:#1f2937;">@deadline.Title</div>
+                                        <small class="@(deadline.IsOverdue ? "text-danger" : "itp-muted")">@deadline.Note</small>
+                                    </div>
+                                    <span class="itp-date @(deadline.IsOverdue ? "itp-date-overdue" : string.Empty)">@deadline.Date.ToString("MMM dd")</span>
                                 </div>
-                                <span class="itp-date @(deadline.IsOverdue ? "itp-date-overdue" : string.Empty)">@deadline.Date.ToString("MMM dd")</span>
-                            </div>
-                        }
-                    </div>
+                            }
+                        </div>
+                    }
                 }
             </section>
 
@@ -1252,10 +1336,10 @@
 @Html.AntiForgeryToken()
 
 @section FloatingUi {
-<button type="button" id="announcementBell" class="itp-bell-fab" aria-label="Open announcements" aria-expanded="false" aria-controls="announcementPanel">
-    @if (Model.Announcements.Count > 0)
+<button type="button" id="announcementBell" class="itp-bell-fab" aria-label="Open updates" aria-expanded="false" aria-controls="announcementPanel">
+    @if (Model.BellItemCount > 0)
     {
-        <span class="itp-message-badge">@Model.Announcements.Count</span>
+        <span class="itp-message-badge">@Model.BellItemCount</span>
     }
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M12 4.5a4 4 0 0 0-4 4v2.1c0 .7-.2 1.38-.58 1.97L6 14.5h12l-1.42-1.93A3.5 3.5 0 0 1 16 10.6V8.5a4 4 0 0 0-4-4Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1266,31 +1350,67 @@
 <section id="announcementPanel" class="itp-bell-panel" aria-hidden="true">
     <div class="itp-bell-head">
         <div>
-            <h3 class="itp-message-title">Announcements</h3>
-            <p class="itp-muted mb-0">Important updates from the ITP committee.</p>
+            <h3 class="itp-message-title">Updates</h3>
+            <p class="itp-muted mb-0">Announcements and personal notifications.</p>
         </div>
-        <button type="button" id="announcementPanelClose" class="itp-bell-close" aria-label="Close announcements">&times;</button>
+        <button type="button" id="announcementPanelClose" class="itp-bell-close" aria-label="Close updates">&times;</button>
     </div>
     <div class="itp-bell-body">
-        @if (Model.Announcements.Count == 0)
-        {
-            <p class="mb-0" style="color:#64748b;">No announcements at the moment.</p>
-        }
-        else
-        {
-            <div class="itp-announce-list">
-                @foreach (var item in Model.Announcements)
-                {
-                    <details class="itp-announce-item">
-                        <summary class="itp-announce-title">
-                            <span>@item.title</span>
-                            <span class="itp-announce-date">@((item.publish_at ?? item.created_at).ToString("yyyy-MM-dd"))</span>
-                        </summary>
-                        <div class="itp-announce-message">@item.message</div>
-                    </details>
-                }
-            </div>
-        }
+        <div class="itp-bell-section">
+            <h4 class="itp-bell-section-title">Announcements</h4>
+            @if (Model.Announcements.Count == 0)
+            {
+                <p class="itp-bell-empty">No announcements at the moment.</p>
+            }
+            else
+            {
+                <div class="itp-announce-list">
+                    @foreach (var item in Model.Announcements)
+                    {
+                        <details class="itp-announce-item">
+                            <summary class="itp-announce-title">
+                                <span>@item.title</span>
+                                <span class="itp-announce-date">@((item.publish_at ?? item.created_at).ToString("yyyy-MM-dd"))</span>
+                            </summary>
+                            <div class="itp-announce-message">@item.message</div>
+                        </details>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="itp-bell-section">
+            <h4 class="itp-bell-section-title">Notifications</h4>
+            @if (Model.RecentNotifications.Count == 0)
+            {
+                <p class="itp-bell-empty">No notifications yet.</p>
+            }
+            else
+            {
+                <div class="itp-notification-list">
+                    @foreach (var item in Model.RecentNotifications)
+                    {
+                        <article class="itp-notification-item @(item.is_read ? string.Empty : "unread")">
+                            <div class="itp-notification-top">
+                                <div class="itp-notification-title">@item.title</div>
+                                <span class="itp-announce-date">@item.created_at.ToString("yyyy-MM-dd")</span>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(item.message))
+                            {
+                                <div class="itp-notification-message">@item.message</div>
+                            }
+                            <div class="itp-notification-meta">
+                                <span class="itp-notification-type">@item.type</span>
+                                @if (!item.is_read)
+                                {
+                                    <span class="itp-badge-missing">Unread</span>
+                                }
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+        </div>
     </div>
 </section>
 

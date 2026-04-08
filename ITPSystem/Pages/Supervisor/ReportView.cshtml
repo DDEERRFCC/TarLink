@@ -1,23 +1,56 @@
 @page
 @model ITPSystem.Pages.Supervisor.ReportViewModel
 <style>
-    .sv-shell {
-        background: linear-gradient(160deg, #f0fdf4, #dcfce7 55%, #bbf7d0);
-        border: 1px solid #86efac;
-        border-radius: 14px;
-        padding: 1rem;
-        box-shadow: 0 10px 22px rgba(20, 83, 45, .08);
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+        --itp-bg-1: #f5efe4;
+        --itp-bg-2: #edf4f4;
+        --itp-bg-3: #f9fbfc;
+        --itp-text: #182536;
+        --itp-muted: #617082;
+        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-border: rgba(24, 37, 54, 0.09);
     }
-    .sv-title { color: #14532d; }
-    .sv-card { border-radius: 12px; border: 1px solid #86efac; }
-    .sv-muted { color: #14532d; opacity: .7; }
+
+    .sv-portal {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 8% 8%, rgba(217, 119, 6, 0.18) 0%, transparent 25%),
+            radial-gradient(circle at 88% 14%, rgba(15, 123, 108, 0.16) 0%, transparent 23%),
+            linear-gradient(160deg, var(--itp-bg-1), var(--itp-bg-2) 52%, var(--itp-bg-3));
+        padding: 2rem 0 2.5rem;
+    }
+
+    .itp-shell {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .sv-shell {
+        background: var(--itp-card);
+        border: 1px solid var(--itp-border);
+        border-radius: 22px;
+        padding: 1.2rem;
+        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
+        backdrop-filter: blur(10px);
+    }
+    .sv-title { color: var(--itp-text); font-weight: 700; }
+    .sv-card { border-radius: 18px; border: 1px solid var(--itp-border); }
+    .sv-muted { color: var(--itp-muted); }
 </style>
+<div class="sv-portal">
+<div class="itp-shell">
 <div class="sv-shell">
 <h2 class="sv-title">Report Content</h2>
 
 <div class="mb-3 d-flex gap-2">
     <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/ReportResults" asp-route-applicationId="@Model.applicationId">Back to Results</a>
     <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/ReportResults">View Results</a>
+</div>
+</div>
 </div>
 
 @if (Model.Report == null)
