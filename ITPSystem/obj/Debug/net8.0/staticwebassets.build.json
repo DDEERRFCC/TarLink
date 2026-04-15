@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2mdTAFZFirqdhbEOzv0Htuapjji8xMSABqlkX0IH9BA=",
+  "Hash": "rKWS4fvsgCiAvF1Mp935avRKYC3aEiIpSDeTf5ocaQ8=",
   "Source": "ITPSystem",
   "BasePath": "_content/ITPSystem",
   "Mode": "Default",
@@ -1516,6 +1516,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\Cohorts\\Cohort_Jan–Jun_2025_(Level_1)\\Ooi_Shao_Hui\\Report\\DownloadAppointmentLetter.pdf"
+    },
+    {
+      "Identity": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\uploads\\resume_20260413131436769_6f8c99a1108f40f28b436611c7c09cc7.pdf",
+      "SourceId": "ITPSystem",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\",
+      "BasePath": "_content/ITPSystem",
+      "RelativePath": "uploads/resume_20260413131436769_6f8c99a1108f40f28b436611c7c09cc7.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\resume_20260413131436769_6f8c99a1108f40f28b436611c7c09cc7.pdf"
     },
     {
       "Identity": "C:\\Users\\kimch\\OneDrive\\桌面\\烦人的东西\\Y2S3\\FYP\\TEMPLATE1_2\\TEMPLETE 1_2\\FYP Programming\\itpsystem\\wwwroot\\uploads\\templates\\cohort1\\appointment-confirmation-20260405190802508-DownloadAppointmentLetter.docx",

@@ -91,14 +91,20 @@ public class StudentDashboardModel : PageModel
 
     public class CompanyDetailInput
     {
+        [Required(ErrorMessage = "Please select a company.")]
         public int? CompanyId { get; set; }
+
+        [Required(ErrorMessage = "Please select an address.")]
         public string? Address { get; set; }
 
+        [Required(ErrorMessage = "Please enter monthly allowance.")]
         [Range(0, 1000000, ErrorMessage = "Monthly Allowance must be 0 or above.")]
         public decimal? MonthlyAllowance { get; set; }
 
+        [Required(ErrorMessage = "Please select a company supervisor.")]
         public string? CompanySupervisorName { get; set; }
 
+        [Required(ErrorMessage = "Please provide the company supervisor email.")]
         [EmailAddress(ErrorMessage = "Please enter a valid Company Supervisor Email.")]
         public string? CompanySupervisorEmail { get; set; }
 
@@ -192,6 +198,9 @@ public class StudentDashboardModel : PageModel
         ValidateUpload(Input.FormAcknowledgementFile, "Parent Ack. Form");
         ValidateUpload(Input.LetterOfIndemnityFile, "Letter of Indemnity");
         ValidateUpload(Input.HiredEvidenceFile, "Hired evidence");
+        RequireUploadOrExistingFile(Input.FormAcceptanceFile, student.formAcceptance, "Com. Acceptance Form");
+        RequireUploadOrExistingFile(Input.FormAcknowledgementFile, student.formAcknowledgement, "Parent Ack. Form");
+        RequireUploadOrExistingFile(Input.LetterOfIndemnityFile, student.letterIdentity, "Letter of Indemnity");
 
         if (!ModelState.IsValid || selectedCompany == null)
         {
@@ -220,6 +229,37 @@ public class StudentDashboardModel : PageModel
             ? "Company details submitted successfully. Status is now pending and notification email was sent to supervisor."
             : "Company details submitted successfully. Status is now pending.";
         return RedirectToPage();
+    }
+
+    public IActionResult OnPostMarkNotificationsRead()
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (!string.Equals(role, "student", StringComparison.OrdinalIgnoreCase))
+        {
+            return new JsonResult(new { success = false });
+        }
+
+        var userIdText = HttpContext.Session.GetString("UserID");
+        if (!int.TryParse(userIdText, out var userId))
+        {
+            return new JsonResult(new { success = false });
+        }
+
+        var unreadNotifications = _db.Notifications
+            .Where(n => n.to_user_id == userId && !n.is_read)
+            .ToList();
+
+        if (unreadNotifications.Count > 0)
+        {
+            foreach (var item in unreadNotifications)
+            {
+                item.is_read = true;
+            }
+
+            _db.SaveChanges();
+        }
+
+        return new JsonResult(new { success = true });
     }
 
     public async Task<IActionResult> OnPostAskAssistantAsync([FromForm] string question, CancellationToken cancellationToken)
@@ -706,6 +746,16 @@ public class StudentDashboardModel : PageModel
         {
             ModelState.AddModelError("", $"{label}: file must not exceed 10MB.");
         }
+    }
+
+    private void RequireUploadOrExistingFile(IFormFile? file, string? existingFileName, string fieldLabel)
+    {
+        if (file != null || !string.IsNullOrWhiteSpace(existingFileName))
+        {
+            return;
+        }
+
+        ModelState.AddModelError(string.Empty, $"{fieldLabel} is required.");
     }
 
     private string? SaveUploadedFile(IFormFile? file, string prefix, string? existingFileName, StudentApplication student)

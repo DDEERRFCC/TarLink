@@ -151,7 +151,7 @@
         border-radius: 999px;
         background: rgba(15, 123, 108, .08);
         color: var(--itp-primary-dark);
-        font-size: .74rem;
+        font-size: .82rem;
         font-weight: 700;
         letter-spacing: .08em;
         text-transform: uppercase;
@@ -1060,8 +1060,7 @@
             <section class="itp-card">
                 <div class="itp-card-head">
                     <div>
-                        <div class="itp-card-kicker">Status</div>
-                        <h3 class="itp-title">Internship Status</h3>
+                        <div class="itp-card-kicker">Internship Status</div>
                     </div>
                 </div>
                 <p class="itp-muted">@Model.InternshipStatusText</p>
@@ -1085,8 +1084,7 @@
             <section class="itp-card">
                 <div class="itp-card-head">
                     <div>
-                        <div class="itp-card-kicker">Schedule</div>
-                        <h3 class="itp-title">Upcoming Deadlines</h3>
+                        <div class="itp-card-kicker">Upcoming Deadlines</div>
                     </div>
                 </div>
                 @if (Model.CanViewProgressReport)
@@ -1116,8 +1114,7 @@
             <section class="itp-card itp-docs">
                 <div class="itp-card-head">
                     <div>
-                        <div class="itp-card-kicker">Overview</div>
-                        <h3 class="itp-title">Internship Info</h3>
+                        <div class="itp-card-kicker">Internship Info</div>
                     </div>
                 </div>
                 <div class="itp-meta-grid">
@@ -1158,8 +1155,7 @@
             <section class="itp-card itp-docs">
                 <div class="itp-card-head">
                     <div>
-                        <div class="itp-card-kicker">Resources</div>
-                        <h3 class="itp-title">My Documents</h3>
+                        <div class="itp-card-kicker">My Documents</div>
                     </div>
                 </div>
                 <p class="itp-muted">View and download all required ITP documents directly from your dashboard.</p>
@@ -1224,8 +1220,7 @@
             <section class="itp-card itp-wide">
                 <div class="itp-card-head">
                     <div>
-                        <div class="itp-card-kicker">Submission</div>
-                        <h3 class="itp-title">Company Detail</h3>
+                        <div class="itp-card-kicker">Company Detail</div>
                     </div>
                 </div>
                 <p class="itp-muted mb-3">Select a company first, then choose one of its available branch addresses with city, state, postcode, and country.</p>
@@ -1247,6 +1242,7 @@
                                 <div id="companyListBox" class="itp-company-list"></div>
                             </div>
                             <input type="hidden" asp-for="Input.CompanyId" id="companyIdInput" />
+                            <span asp-validation-for="Input.CompanyId" class="text-danger"></span>
                             <small class="itp-help">Type or choose from suggested company names.</small>
                         </div>
 
@@ -1259,6 +1255,7 @@
                                     disabled="@companyDetailLocked">
                                 <option value="">-- Select Address --</option>
                             </select>
+                            <span asp-validation-for="Input.Address" class="text-danger"></span>
                             <small class="itp-help">Address options show the full branch location for the selected company.</small>
                             <div class="mt-2">
                                 <a asp-page="/Student/OwnCompanyRequest">I wish to apply to a company of my own choice.</a>
@@ -1268,6 +1265,7 @@
                         <div class="itp-field">
                             <label class="itp-label" asp-for="Input.MonthlyAllowance">Monthly Allowance</label>
                             <input class="itp-input" asp-for="Input.MonthlyAllowance" type="number" min="0" step="0.01" readonly="@companyDetailLocked" />
+                            <span asp-validation-for="Input.MonthlyAllowance" class="text-danger"></span>
                         </div>
 
                         <div class="itp-field">
@@ -1279,11 +1277,13 @@
                                     disabled="@companyDetailLocked">
                                 <option value="">-- Select Company Supervisor --</option>
                             </select>
+                            <span asp-validation-for="Input.CompanySupervisorName" class="text-danger"></span>
                         </div>
 
                         <div class="itp-field itp-field-full">
                             <label class="itp-label" asp-for="Input.CompanySupervisorEmail">Com. Supervisor Email</label>
                             <input class="itp-input" asp-for="Input.CompanySupervisorEmail" id="companySupervisorEmailInput" type="email" readonly />
+                            <span asp-validation-for="Input.CompanySupervisorEmail" class="text-danger"></span>
                             <small class="itp-help">This email fills automatically when you choose a supervisor.</small>
                         </div>
 
@@ -1339,7 +1339,7 @@
 <button type="button" id="announcementBell" class="itp-bell-fab" aria-label="Open updates" aria-expanded="false" aria-controls="announcementPanel">
     @if (Model.BellItemCount > 0)
     {
-        <span class="itp-message-badge">@Model.BellItemCount</span>
+        <span class="itp-message-badge" id="announcementBellBadge">@Model.BellItemCount</span>
     }
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M12 4.5a4 4 0 0 0-4 4v2.1c0 .7-.2 1.38-.58 1.97L6 14.5h12l-1.42-1.93A3.5 3.5 0 0 1 16 10.6V8.5a4 4 0 0 0-4-4Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1420,6 +1420,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         const antiforgeryTokenInput = document.querySelector("input[name='__RequestVerificationToken']");
         const announcementBell = document.getElementById("announcementBell");
+        const announcementBellBadge = document.getElementById("announcementBellBadge");
         const announcementPanel = document.getElementById("announcementPanel");
         const announcementPanelClose = document.getElementById("announcementPanelClose");
         const companyOptions = @Html.Raw(companyOptionsJson);
@@ -1431,6 +1432,48 @@
         const companySupervisorEmailInput = document.getElementById("companySupervisorEmailInput");
         const companyDetailLocked = companyNameInput?.hasAttribute("readonly") || false;
 
+        const markNotificationsRead = async () => {
+            if (!antiforgeryTokenInput) {
+                return;
+            }
+
+            const unreadItems = Array.from(document.querySelectorAll(".itp-notification-item.unread"));
+            if (unreadItems.length === 0) {
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("__RequestVerificationToken", antiforgeryTokenInput.value);
+
+            try {
+                const response = await fetch("@Url.Page("/Student/Dashboard", "MarkNotificationsRead")", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                for (const item of unreadItems) {
+                    item.classList.remove("unread");
+                    const unreadBadge = item.querySelector(".itp-badge-missing");
+                    unreadBadge?.remove();
+                }
+
+                if (announcementBellBadge) {
+                    const currentCount = Number.parseInt(announcementBellBadge.textContent || "0", 10);
+                    const nextCount = Math.max(0, currentCount - unreadItems.length);
+                    if (nextCount > 0) {
+                        announcementBellBadge.textContent = String(nextCount);
+                    } else {
+                        announcementBellBadge.remove();
+                    }
+                }
+            } catch {
+            }
+        };
+
         const setAnnouncementPanelState = (isOpen) => {
             if (!announcementBell || !announcementPanel) {
                 return;
@@ -1439,6 +1482,10 @@
             announcementPanel.classList.toggle("show", isOpen);
             announcementBell.setAttribute("aria-expanded", isOpen ? "true" : "false");
             announcementPanel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+
+            if (isOpen) {
+                void markNotificationsRead();
+            }
         };
 
         if (announcementBell && announcementPanel) {

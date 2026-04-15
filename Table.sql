@@ -121,7 +121,7 @@ CREATE TABLE cohort (
     reportMonth5 VARCHAR(45),
     reportMonth6 VARCHAR(45),
     campus VARCHAR(45),
-    faculty VARCHAR(45),
+    faculty VARCHAR(100),
     personInCharge VARCHAR(250),
     pidEmail VARCHAR(250),
     CONSTRAINT chk_cohort_faculty CHECK (

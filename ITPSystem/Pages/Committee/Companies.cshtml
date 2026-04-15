@@ -2,6 +2,10 @@
 @model CommitteeCompaniesModel
 @{
     ViewData["CommitteePageTitle"] = "Company";
+    var hasActiveFilters = !string.IsNullOrWhiteSpace(Model.Search)
+        || !string.IsNullOrWhiteSpace(Model.StatusFilter)
+        || !string.IsNullOrWhiteSpace(Model.VisibilityFilter)
+        || !string.IsNullOrWhiteSpace(Model.VacancyLevelFilter);
 }
 
 <style>
@@ -126,18 +130,13 @@
     }
 
     .company-toolbar .btn {
-        border-radius: 14px;
-        padding-inline: 1rem;
-        font-weight: 700;
-    }
-
-    .company-hero-note {
         display: inline-flex;
         align-items: center;
-        gap: .45rem;
-        margin-top: .9rem;
-        color: rgba(255, 255, 255, 0.86);
-        font-size: .92rem;
+        justify-content: center;
+        min-width: 140px;
+        padding: 0.82rem 1rem;
+        border-radius: 14px;
+        font-weight: 700;
     }
 
     .company-stat-grid {
@@ -207,6 +206,45 @@
         margin: .2rem 0 0;
         color: #7a6673;
         line-height: 1.65;
+    }
+
+    .company-filter-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .company-filter-toggle::-webkit-details-marker {
+        display: none;
+    }
+
+    .company-filter-toggle::after {
+        content: "Open";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 72px;
+        padding: .35rem .7rem;
+        border-radius: 999px;
+        background: #d1e7dd;
+        color: #0f5132;
+        font-size: .76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    details[open] .company-filter-toggle::after {
+        content: "Close";
+        background: #f3d6e2;
+        color: #7b264b;
+    }
+
+    .company-filter-content {
+        margin-top: 1rem;
     }
 
     .company-filter-grid {
@@ -490,9 +528,9 @@
             <p>Review company availability, visibility, and vacancy coverage from one page, then jump straight into adding, importing, or updating individual records.</p>
             <div class="company-toolbar">
                 <a asp-page="/Committee/AddCompany" class="btn btn-success">Add Company</a>
+                <a asp-page="/Committee/AddAddress" class="btn btn-outline-light">Add Address</a>
                 <a asp-page="/Committee/ImportCompanies" class="btn btn-outline-light">Import Company</a>
             </div>
-            <div class="company-hero-note">Showing @Model.FilteredCompanies of @Model.TotalCompanies companies in the portal.</div>
         </section>
 
         <section class="company-stat-grid">
@@ -519,49 +557,55 @@
         </section>
 
         <section class="company-surface company-filter-card">
-            <div class="company-filter-head">
-                <div>
-                    <h4>Refine Company List</h4>
-                    <p>Search by company details and narrow the page by publication state or supported vacancy level.</p>
-                </div>
-            </div>
-
-            <form method="get" class="company-filter-grid">
-                <div>
-                    <label class="form-label">Search</label>
-                    <input name="Search" value="@Model.Search" class="form-control" placeholder="Name, address, reg no, website" />
-                </div>
-                    <div>
-                        <label class="form-label">Status</label>
-                        <select name="StatusFilter" class="form-select">
-                            <option value="">All status</option>
-                            <option value="0" selected="@(Model.StatusFilter == "0")">Pending</option>
-                            <option value="1" selected="@(Model.StatusFilter == "1")">Active</option>
-                            <option value="2" selected="@(Model.StatusFilter == "2")">Inactive</option>
-                            <option value="3" selected="@(Model.StatusFilter == "3")">Suspended</option>
-                        </select>
+            <details @(hasActiveFilters ? "open" : null)>
+                <summary class="company-filter-toggle">
+                    <div class="company-filter-head">
+                        <div>
+                            <h4>Find Company</h4>
+                            <p>Search by company details and narrow the page by publication state or supported vacancy level.</p>
+                        </div>
                     </div>
-                <div>
-                    <label class="form-label">Visibility</label>
-                    <select name="VisibilityFilter" class="form-select">
-                        <option value="">All visibility</option>
-                        <option value="1" selected="@(Model.VisibilityFilter == "1")">Visible</option>
-                        <option value="0" selected="@(Model.VisibilityFilter == "0")">Hidden</option>
-                    </select>
+                </summary>
+
+                <div class="company-filter-content">
+                    <form method="get" class="company-filter-grid">
+                        <div>
+                            <label class="form-label">Search</label>
+                            <input name="Search" value="@Model.Search" class="form-control" placeholder="Name, address, reg no, website" />
+                        </div>
+                        <div>
+                            <label class="form-label">Status</label>
+                            <select name="StatusFilter" class="form-select">
+                                <option value="">All status</option>
+                                <option value="0" selected="@(Model.StatusFilter == "0")">Pending</option>
+                                <option value="1" selected="@(Model.StatusFilter == "1")">Active</option>
+                                <option value="2" selected="@(Model.StatusFilter == "2")">Inactive</option>
+                                <option value="3" selected="@(Model.StatusFilter == "3")">Suspended</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Visibility</label>
+                            <select name="VisibilityFilter" class="form-select">
+                                <option value="">All visibility</option>
+                                <option value="1" selected="@(Model.VisibilityFilter == "1")">Visible</option>
+                                <option value="0" selected="@(Model.VisibilityFilter == "0")">Hidden</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Vacancy Level</label>
+                            <select name="VacancyLevelFilter" class="form-select">
+                                <option value="">All levels</option>
+                                <option value="Diploma" selected="@(Model.VacancyLevelFilter == "Diploma")">Diploma</option>
+                                <option value="Degree" selected="@(Model.VacancyLevelFilter == "Degree")">Degree</option>
+                            </select>
+                        </div>
+                        <div class="company-filter-actions">
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                            <a asp-page="/Committee/Companies" class="btn btn-outline-secondary">Reset</a>
+                        </div>
+                    </form>
                 </div>
-                <div>
-                    <label class="form-label">Vacancy Level</label>
-                    <select name="VacancyLevelFilter" class="form-select">
-                        <option value="">All levels</option>
-                        <option value="Diploma" selected="@(Model.VacancyLevelFilter == "Diploma")">Diploma</option>
-                        <option value="Degree" selected="@(Model.VacancyLevelFilter == "Degree")">Degree</option>
-                    </select>
-                </div>
-                <div class="company-filter-actions">
-                    <button type="submit" class="btn btn-primary">Apply</button>
-                    <a asp-page="/Committee/Companies" class="btn btn-outline-secondary">Reset</a>
-                </div>
-            </form>
+            </details>
         </section>
 
         <section class="company-list-card">
@@ -600,6 +644,42 @@
                         {
                                 @foreach (var c in Model.Companies)
                                 {
+                                    string BuildFullAddress(ITPSystem.Models.CompanyBranch branch)
+                                    {
+                                        var parts = new List<string>();
+
+                                        if (!string.IsNullOrWhiteSpace(branch.address_line))
+                                        {
+                                            parts.Add(branch.address_line.Trim());
+                                        }
+
+                                        var localityParts = new List<string>();
+                                        if (!string.IsNullOrWhiteSpace(branch.postcode))
+                                        {
+                                            localityParts.Add(branch.postcode.Trim());
+                                        }
+                                        if (!string.IsNullOrWhiteSpace(branch.city))
+                                        {
+                                            localityParts.Add(branch.city.Trim());
+                                        }
+                                        if (!string.IsNullOrWhiteSpace(branch.state))
+                                        {
+                                            localityParts.Add(branch.state.Trim());
+                                        }
+
+                                        if (localityParts.Count > 0)
+                                        {
+                                            parts.Add(string.Join(", ", localityParts));
+                                        }
+
+                                        if (!string.IsNullOrWhiteSpace(branch.country))
+                                        {
+                                            parts.Add(branch.country.Trim());
+                                        }
+
+                                        return parts.Count == 0 ? "Location not provided" : string.Join(", ", parts);
+                                    }
+
                                     var orderedBranches = c.Branches
                                         .OrderByDescending(a => a.is_hq)
                                         .ThenBy(a => a.branch_id)
@@ -618,7 +698,7 @@
                                                 2 => "Address 3",
                                                 _ => $"Address {index + 1}"
                                             },
-                                            Address = branch.address_line!.Trim(),
+                                            Address = BuildFullAddress(branch),
                                             Status = branch.status ?? 0,
                                             Visibility = branch.visibility ?? 1,
                                             Vacancy = string.IsNullOrWhiteSpace(branch.vacancyLevel) ? "Not set" : branch.vacancyLevel,

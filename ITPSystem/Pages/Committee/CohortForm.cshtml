@@ -1,0 +1,109 @@
+@page
+@model CommitteeCohortFormModel
+@{
+    ViewData["CommitteePageTitle"] = Model.IsEditing ? "Edit Cohort" : "Add Cohort";
+}
+
+<style>
+    .cohort-form-page { display: grid; gap: 1rem; max-width: 1100px; margin: 0 auto; }
+    .cohort-form-banner { position: relative; overflow: hidden; border-radius: 24px; padding: 1.35rem; color: #fff; background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
+    .cohort-form-banner::after { content: ""; position: absolute; right: -42px; top: -50px; width: 180px; height: 180px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+    .cohort-form-banner > * { position: relative; z-index: 1; }
+    .cohort-form-banner-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .cohort-form-kicker { display: inline-flex; align-items: center; padding: .34rem .72rem; border-radius: 999px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .cohort-form-title { margin: .55rem 0 .35rem; font-size: clamp(1.55rem, 3vw, 2.2rem); font-family: Georgia, "Times New Roman", serif; }
+    .cohort-form-copy { margin: 0; max-width: 70ch; color: rgba(255, 255, 255, 0.88); line-height: 1.75; }
+    .cohort-form-back { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid #e6cdd7; background: linear-gradient(180deg, #ffffff, #f5fbff); color: #4f3041; font-weight: 700; white-space: nowrap; box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06); }
+    .cohort-form-back::before { content: "<"; display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: #f6dfe9; color: #7b264b; font-size: .9rem; line-height: 1; }
+    .cohort-form-card { border: 1px solid #eadce2; border-radius: 22px; background: linear-gradient(180deg, #ffffff, #fff9fb); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); padding: 1rem; }
+    .cohort-form-card .form-label { color: #36506a; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    .cohort-form-card .form-control, .cohort-form-card .form-select { min-height: 44px; border-radius: 14px; border-color: #d1ddea; box-shadow: none; }
+    .cohort-form-card .form-control:focus, .cohort-form-card .form-select:focus { border-color: #b34873; box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.14); }
+    .cohort-field-group { border: 1px solid #e5eef7; border-radius: 18px; padding: 1rem; background: #fff9fb; margin-bottom: 1rem; }
+    .cohort-field-group-title { margin: 0 0 0.85rem; color: #1f3a54; font-size: 0.95rem; font-weight: 700; }
+    .cohort-switch-box { display: flex; align-items: center; height: 100%; min-height: 44px; padding-top: 1.9rem; }
+    .cohort-action-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+    .cohort-submit-btn, .cohort-reset-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0.85rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; }
+    .cohort-submit-btn { border: none; color: #fff; background: linear-gradient(90deg, #8f2d56, #b34873); }
+    .cohort-reset-btn { border: 1px solid #dcc9d2; color: #35516a; background: #fff; }
+    @@media (max-width: 991.98px) { .cohort-form-banner-top { flex-direction: column; align-items: stretch; } }
+</style>
+
+<div class="committee-page">
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
+    }
+
+    <div class="cohort-form-page">
+        <section class="cohort-form-banner">
+            <div class="cohort-form-banner-top">
+                <div>
+                    <div class="cohort-form-kicker">Cohort Form</div>
+                    <h3 class="cohort-form-title">@(Model.IsEditing ? "Update the cohort timeline and reporting setup." : "Create a new cohort on its own dedicated page.")</h3>
+                    <p class="cohort-form-copy">@(Model.IsEditing ? "Review the cohort details, then save your changes to keep deadlines and active intake settings aligned." : "Fill in the intake details, deadlines, and reporting schedule here without leaving the cohort management workflow.")</p>
+                </div>
+                <a href="/Committee/Cohorts" class="cohort-form-back">Back to Cohorts</a>
+            </div>
+        </section>
+
+        <section class="cohort-form-card">
+            <form method="post" asp-page-handler="Save">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Input.CohortId" />
+
+                <div class="cohort-field-group">
+                    <h4 class="cohort-field-group-title">Basic Information</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label asp-for="Input.Description" class="form-label">Description</label><input asp-for="Input.Description" class="form-control" /><span asp-validation-for="Input.Description" class="text-danger small"></span></div>
+                        <div class="col-md-3"><label asp-for="Input.Level" class="form-label">Level</label><select asp-for="Input.Level" class="form-select"><option value="">-- Select --</option><option value="1">Diploma</option><option value="2">Degree</option></select><span asp-validation-for="Input.Level" class="text-danger small"></span></div>
+                        <div class="col-md-3 cohort-switch-box"><div class="form-check form-switch mb-0"><input asp-for="Input.IsActive" class="form-check-input" /><label asp-for="Input.IsActive" class="form-check-label">Active Cohort</label></div></div>
+                        <div class="col-md-4"><label asp-for="Input.Campus" class="form-label">Campus</label><select asp-for="Input.Campus" asp-items="Model.CampusOptions" class="form-select"><option value="">-- Select Campus --</option></select><span asp-validation-for="Input.Campus" class="text-danger small"></span></div>
+                        <div class="col-md-4"><label asp-for="Input.Faculty" class="form-label">Faculty</label><select asp-for="Input.Faculty" asp-items="Model.FacultyOptions" class="form-select"><option value="">-- Select Faculty --</option></select><span asp-validation-for="Input.Faculty" class="text-danger small"></span></div>
+                        <div class="col-md-4"><label asp-for="Input.CompanyEvaluationDate" class="form-label">Company Evaluation Date</label><input asp-for="Input.CompanyEvaluationDate" type="date" class="form-control" /><span asp-validation-for="Input.CompanyEvaluationDate" class="text-danger small"></span></div>
+                        <div class="col-md-6"><label asp-for="Input.PersonInCharge" class="form-label">Person In Charge</label><input asp-for="Input.PersonInCharge" class="form-control" /><span asp-validation-for="Input.PersonInCharge" class="text-danger small"></span></div>
+                        <div class="col-md-6"><label asp-for="Input.PidEmail" class="form-label">PIC Email</label><input asp-for="Input.PidEmail" type="email" class="form-control" /><span asp-validation-for="Input.PidEmail" class="text-danger small"></span></div>
+                    </div>
+                </div>
+
+                <div class="cohort-field-group">
+                    <h4 class="cohort-field-group-title">Timeline</h4>
+                    <div class="row g-3">
+                        <div class="col-md-3"><label asp-for="Input.StartDate" class="form-label">Start Date</label><input asp-for="Input.StartDate" type="date" class="form-control" /><span asp-validation-for="Input.StartDate" class="text-danger small"></span></div>
+                        <div class="col-md-3"><label asp-for="Input.EndDate" class="form-label">End Date</label><input asp-for="Input.EndDate" type="date" class="form-control" /><span asp-validation-for="Input.EndDate" class="text-danger small"></span></div>
+                        <div class="col-md-3"><label asp-for="Input.ExamStartDate" class="form-label">Exam Start Date</label><input asp-for="Input.ExamStartDate" type="date" class="form-control" /><span asp-validation-for="Input.ExamStartDate" class="text-danger small"></span></div>
+                        <div class="col-md-3"><label asp-for="Input.ExamEndDate" class="form-label">Exam End Date</label><input asp-for="Input.ExamEndDate" type="date" class="form-control" /><span asp-validation-for="Input.ExamEndDate" class="text-danger small"></span></div>
+                    </div>
+                </div>
+
+                <div class="cohort-field-group">
+                    <h4 class="cohort-field-group-title">Progress Report Schedule</h4>
+                    <div class="row g-3">
+                        <div class="col-md-4"><label asp-for="Input.ReportMonth1" class="form-label">Report 1 Month</label><input asp-for="Input.ReportMonth1" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.Report1DueDate" class="form-label">Report 1 Due Date</label><input asp-for="Input.Report1DueDate" type="date" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.ReportMonth2" class="form-label">Report 2 Month</label><input asp-for="Input.ReportMonth2" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.Report2DueDate" class="form-label">Report 2 Due Date</label><input asp-for="Input.Report2DueDate" type="date" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.ReportMonth3" class="form-label">Report 3 Month</label><input asp-for="Input.ReportMonth3" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.Report3DueDate" class="form-label">Report 3 Due Date</label><input asp-for="Input.Report3DueDate" type="date" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.ReportMonth4" class="form-label">Report 4 Month</label><input asp-for="Input.ReportMonth4" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.Report4DueDate" class="form-label">Report 4 Due Date</label><input asp-for="Input.Report4DueDate" type="date" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.ReportMonth5" class="form-label">Report 5 Month</label><input asp-for="Input.ReportMonth5" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.Report5DueDate" class="form-label">Report 5 Due Date</label><input asp-for="Input.Report5DueDate" type="date" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.ReportMonth6" class="form-label">Report 6 Month</label><input asp-for="Input.ReportMonth6" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.Report6DueDate" class="form-label">Report 6 Due Date</label><input asp-for="Input.Report6DueDate" type="date" class="form-control" /></div>
+                        <div class="col-md-4"><label asp-for="Input.FinalReportDueDate" class="form-label">Final Report Due Date</label><input asp-for="Input.FinalReportDueDate" type="date" class="form-control" /></div>
+                    </div>
+                </div>
+
+                <div class="cohort-action-row">
+                    <button type="submit" class="cohort-submit-btn">@(Model.IsEditing ? "Update Cohort" : "Create Cohort")</button>
+                    <a asp-page="@(Model.IsEditing ? "/Committee/CohortForm" : "/Committee/Cohorts")" asp-route-editId="@(Model.IsEditing ? Model.Input.CohortId : null)" class="cohort-reset-btn">@(Model.IsEditing ? "Reset Changes" : "Cancel")</a>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

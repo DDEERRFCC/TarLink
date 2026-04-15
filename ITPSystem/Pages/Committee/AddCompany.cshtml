@@ -4,79 +4,138 @@
     ViewData["CommitteePageTitle"] = "Add Company";
 }
 
+<style>
+    .add-company-page { display: grid; gap: 1rem; max-width: 1240px; margin: 0 auto; }
+    .add-company-banner { position: relative; overflow: hidden; border-radius: 24px; padding: 1.35rem; color: #fff; background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
+    .add-company-banner::after { content: ""; position: absolute; right: -42px; top: -50px; width: 180px; height: 180px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+    .add-company-banner > * { position: relative; z-index: 1; }
+    .add-company-banner-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .add-company-kicker { display: inline-flex; align-items: center; padding: .34rem .72rem; border-radius: 999px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .add-company-title { margin: .55rem 0 .35rem; font-size: clamp(1.55rem, 3vw, 2.2rem); font-family: Georgia, "Times New Roman", serif; }
+    .add-company-copy { margin: 0; max-width: 70ch; color: rgba(255, 255, 255, 0.88); line-height: 1.75; }
+    .add-company-back-btn { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid #e6cdd7; background: linear-gradient(180deg, #ffffff, #f5fbff); color: #4f3041; font-weight: 700; box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06); }
+    .add-company-back-btn::before { content: "<"; display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: #f6dfe9; color: #7b264b; font-size: .9rem; line-height: 1; }
+    .add-company-banner-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+    .add-company-secondary-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 140px; padding: .82rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; color: #fff; background: transparent; border: 1px solid rgba(255, 255, 255, 0.32); }
+    .add-company-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; }
+    .add-company-form-card { border: 1px solid #eadce2; border-radius: 22px; background: linear-gradient(180deg, #ffffff, #fff9fb); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); padding: 1rem; }
+    .add-company-section-title { margin: 0; color: #132238; font-size: 1.05rem; font-weight: 700; }
+    .add-company-section-copy { margin: .35rem 0 0; color: #7a6673; line-height: 1.7; font-size: .92rem; }
+    .add-company-form-layout { display: grid; gap: 1rem; }
+    .add-company-split-card { border: 1px solid #eadce2; border-radius: 20px; background: linear-gradient(180deg, #ffffff, #fff9fb); box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05); padding: 1rem; }
+    .add-company-card-head { margin-bottom: 1rem; }
+    .add-company-field-group { border: 1px solid #e5eef7; border-radius: 18px; padding: 1rem; background: #fff9fb; }
+    .add-company-field-group-title { margin: 0 0 .85rem; color: #1f3a54; font-size: .95rem; font-weight: 700; }
+    .add-company-form-card .form-label { color: #36506a; font-size: .82rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    .add-company-form-card .form-control, .add-company-form-card .form-select { min-height: 44px; border-radius: 14px; border-color: #d1ddea; box-shadow: none; }
+    .add-company-form-card .form-control:focus, .add-company-form-card .form-select:focus { border-color: #b34873; box-shadow: 0 0 0 .2rem rgba(20, 184, 166, 0.14); }
+    .add-company-action-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+    .add-company-submit-btn, .add-company-cancel-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: .85rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; }
+    .add-company-submit-btn { border: none; color: #fff; background: linear-gradient(90deg, #8f2d56, #b34873); }
+    .add-company-cancel-btn { color: #35516a; background: #fff; border: 1px solid #dcc9d2; }
+    .add-company-chip-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .add-company-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: .3rem .72rem; background: #f8e8ef; color: #8f2d56; font-size: .8rem; font-weight: 700; }
+    .add-company-note-list { margin: 1rem 0 0; padding-left: 1.1rem; color: #7a6673; }
+    .add-company-note-list li { margin-bottom: .45rem; line-height: 1.65; }
+    @@media (max-width: 991.98px) { .add-company-grid { grid-template-columns: 1fr; } .add-company-banner-top { flex-direction: column; align-items: stretch; } .add-company-banner-actions, .add-company-action-row { flex-direction: column; } .add-company-back-btn, .add-company-secondary-btn, .add-company-submit-btn, .add-company-cancel-btn { width: 100%; } }
+</style>
+
 <div class="committee-page">
-<partial name="_CommitteeHeader" />
+    <div class="add-company-page">
+        <section class="add-company-banner">
+            <div class="add-company-banner-top">
+                <div>
+                    <div class="add-company-kicker">Add Company</div>
+                    <h3 class="add-company-title">Create a new company profile before adding any branch records.</h3>
+                    <p class="add-company-copy">This page is now only for the main company record. Use the separate `Add Address` page when you want to attach a branch to an existing company.</p>
+                </div>
+                <a href="/Committee/Companies" class="add-company-back-btn">Back to Company List</a>
+            </div>
+            <div class="add-company-banner-actions">
+                <a href="/Committee/AddAddress" class="add-company-secondary-btn">Go to Add Address</a>
+                <a href="/Committee/ImportCompanies" class="add-company-secondary-btn">Import Companies</a>
+            </div>
+        </section>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">Add Company</h5>
-    <a asp-page="/Committee/Companies" class="btn btn-sm btn-outline-secondary">Back to Company List</a>
-</div>
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mb-0">@Model.StatusMessage</div>
+        }
 
-<div class="card">
-    <div class="card-body">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-            <div class="row g-2">
-                <div class="col-md-4">
-                    <label asp-for="Input.name" class="form-label">Name</label>
-                    <input asp-for="Input.name" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Input.address1" class="form-label">Main Office Address</label>
-                    <input asp-for="Input.address1" class="form-control form-control-sm" placeholder="Headquarters or primary office" />
-                </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.address2" class="form-label">Subsidiary / Branch 1</label>
-                    <input asp-for="Input.address2" class="form-control form-control-sm" placeholder="Optional secondary location" />
-                </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.address3" class="form-label">Subsidiary / Branch 2</label>
-                    <input asp-for="Input.address3" class="form-control form-control-sm" placeholder="Optional third location" />
-                </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.regNo" class="form-label">Reg No</label>
-                    <input asp-for="Input.regNo" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-2">
-                    <label asp-for="Input.vacancyLevel" class="form-label">Vacancy Level</label>
-                    <select asp-for="Input.vacancyLevel" class="form-select form-select-sm">
-                        <option value="">-- Select --</option>
-                        <option value="Diploma">Diploma</option>
-                        <option value="Degree">Degree</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.website" class="form-label">Website</label>
-                    <input asp-for="Input.website" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-3">
-                    <label asp-for="Input.remark" class="form-label">Remark</label>
-                    <input asp-for="Input.remark" class="form-control form-control-sm" />
-                </div>
-                <div class="col-md-1">
-                    <label asp-for="Input.status" class="form-label">Status</label>
-                    <select asp-for="Input.status" class="form-select form-select-sm">
-                        <option value="0">Pending</option>
-                        <option value="1">Active</option>
-                        <option value="2">Inactive</option>
-                        <option value="3">Suspended</option>
-                    </select>
-                </div>
-                <div class="col-md-1">
-                    <label asp-for="Input.visibility" class="form-label">Visibility</label>
-                    <select asp-for="Input.visibility" class="form-select form-select-sm">
-                        <option value="1">Visible</option>
-                        <option value="0">Hidden</option>
-                    </select>
-                </div>
-                <div class="col-md-12 mt-2">
-                    <button type="submit" class="btn btn-success">Add Company</button>
-                    <a asp-page="/Committee/Companies" class="btn btn-outline-secondary">Cancel</a>
+        <section class="add-company-grid">
+            <div class="add-company-form-card">
+                <div class="add-company-form-layout">
+                    <section class="add-company-split-card">
+                        <div class="add-company-card-head">
+                            <div>
+                                <h3 class="add-company-section-title">1. Create Company</h3>
+                                <p class="add-company-section-copy">This creates the main `company` table record only.</p>
+                            </div>
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data" asp-page-handler="CreateCompany">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                            <div class="add-company-field-group">
+                                <h4 class="add-company-field-group-title">Company Table Fields</h4>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="CompanyInput.name" class="form-label">Company Name</label>
+                                        <input asp-for="CompanyInput.name" class="form-control" />
+                                        <span asp-validation-for="CompanyInput.name" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="CompanyInput.regNo" class="form-label">Registration Number</label>
+                                        <input asp-for="CompanyInput.regNo" class="form-control" />
+                                        <span asp-validation-for="CompanyInput.regNo" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="CompanyInput.website" class="form-label">Website</label>
+                                        <input asp-for="CompanyInput.website" class="form-control" />
+                                        <span asp-validation-for="CompanyInput.website" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="CompanyInput.industryInvolved" class="form-label">Industry Involved</label>
+                                        <input asp-for="CompanyInput.industryInvolved" class="form-control" />
+                                        <span asp-validation-for="CompanyInput.industryInvolved" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="CompanyInput.productsAndServices" class="form-label">Products And Services</label>
+                                        <input asp-for="CompanyInput.productsAndServices" class="form-control" />
+                                        <span asp-validation-for="CompanyInput.productsAndServices" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="CompanyInput.companyBackground" class="form-label">Company Background</label>
+                                        <textarea asp-for="CompanyInput.companyBackground" class="form-control" rows="4"></textarea>
+                                        <span asp-validation-for="CompanyInput.companyBackground" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="CompanyInput.remark" class="form-label">Remark</label>
+                                        <textarea asp-for="CompanyInput.remark" class="form-control" rows="4"></textarea>
+                                        <span asp-validation-for="CompanyInput.remark" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="CompanyInput.logoFile" class="form-label">Logo</label>
+                                        <input asp-for="CompanyInput.logoFile" type="file" class="form-control" accept="image/*" />
+                                        <span asp-validation-for="CompanyInput.logoFile" class="text-danger small"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="CompanyInput.ssmCertFile" class="form-label">SSM Certificate</label>
+                                        <input asp-for="CompanyInput.ssmCertFile" type="file" class="form-control" />
+                                        <span asp-validation-for="CompanyInput.ssmCertFile" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="add-company-action-row">
+                                <button type="submit" class="add-company-submit-btn">Create Company</button>
+                                <a href="/Committee/Companies" class="add-company-cancel-btn">Cancel</a>
+                            </div>
+                        </form>
+                    </section>
                 </div>
             </div>
-        </form>
+        </section>
     </div>
-</div>
 </div>
 
 @section Scripts {

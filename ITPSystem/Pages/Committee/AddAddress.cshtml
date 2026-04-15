@@ -1,0 +1,119 @@
+@page
+@model CommitteeAddAddressModel
+@{
+    ViewData["CommitteePageTitle"] = "Add Address";
+}
+
+<style>
+    .add-address-page { display: grid; gap: 1rem; max-width: 1240px; margin: 0 auto; }
+    .add-address-banner { position: relative; overflow: hidden; border-radius: 24px; padding: 1.35rem; color: #fff; background: linear-gradient(135deg, #16324f, #146c82 58%, #2f938f); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
+    .add-address-banner::after { content: ""; position: absolute; right: -42px; top: -50px; width: 180px; height: 180px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+    .add-address-banner > * { position: relative; z-index: 1; }
+    .add-address-banner-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .add-address-kicker { display: inline-flex; align-items: center; padding: .34rem .72rem; border-radius: 999px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .add-address-title { margin: .55rem 0 .35rem; font-size: clamp(1.55rem, 3vw, 2.2rem); font-family: Georgia, "Times New Roman", serif; }
+    .add-address-copy { margin: 0; max-width: 70ch; color: rgba(255, 255, 255, 0.88); line-height: 1.75; }
+    .add-address-back-btn { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid #cde2df; background: linear-gradient(180deg, #ffffff, #f4fbfa); color: #214a50; font-weight: 700; box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06); }
+    .add-address-back-btn::before { content: "<"; display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: #daf1ee; color: #146c82; font-size: .9rem; line-height: 1; }
+    .add-address-banner-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+    .add-address-secondary-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 140px; padding: .82rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; color: #fff; background: transparent; border: 1px solid rgba(255, 255, 255, 0.32); }
+    .add-address-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; align-items: start; }
+    .add-address-form-card { border: 1px solid #d7e8e6; border-radius: 22px; background: linear-gradient(180deg, #ffffff, #f7fdfc); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); padding: 1rem; }
+    .add-address-section-title { margin: 0; color: #16324f; font-size: 1.05rem; font-weight: 700; }
+    .add-address-section-copy { margin: .35rem 0 0; color: #5f7d81; line-height: 1.7; font-size: .92rem; }
+    .add-address-split-card { border: 1px solid #d7e8e6; border-radius: 20px; background: linear-gradient(180deg, #ffffff, #f7fdfc); box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05); padding: 1rem; }
+    .add-address-card-head { margin-bottom: 1rem; }
+    .add-address-field-group { border: 1px solid #dbeaf0; border-radius: 18px; padding: 1rem; background: #fbfefe; }
+    .add-address-field-group-title { margin: 0 0 .85rem; color: #1f4f59; font-size: .95rem; font-weight: 700; }
+    .add-address-form-card .form-label { color: #355c63; font-size: .82rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    .add-address-form-card .form-control, .add-address-form-card .form-select { min-height: 44px; border-radius: 14px; border-color: #c9dce0; box-shadow: none; }
+    .add-address-form-card .form-control:focus, .add-address-form-card .form-select:focus { border-color: #146c82; box-shadow: 0 0 0 .2rem rgba(20, 108, 130, 0.14); }
+    .add-address-action-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+    .add-address-submit-btn, .add-address-cancel-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: .85rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; }
+    .add-address-submit-btn { border: none; color: #fff; background: linear-gradient(90deg, #146c82, #2f938f); }
+    .add-address-cancel-btn { color: #35516a; background: #fff; border: 1px solid #c8d8da; }
+    @@media (max-width: 991.98px) { .add-address-grid { grid-template-columns: 1fr; } .add-address-banner-top { flex-direction: column; align-items: stretch; } .add-address-banner-actions, .add-address-action-row { flex-direction: column; } .add-address-back-btn, .add-address-secondary-btn, .add-address-submit-btn, .add-address-cancel-btn { width: 100%; } }
+</style>
+
+<div class="committee-page">
+    <div class="add-address-page">
+        <section class="add-address-banner">
+            <div class="add-address-banner-top">
+                <div>
+                    <div class="add-address-kicker">Add Address</div>
+                    <h3 class="add-address-title">Attach a new branch address to an existing company.</h3>
+                    <p class="add-address-copy">Select a company from the database, then save one branch address record. The first branch becomes the HQ automatically.</p>
+                </div>
+                <a href="/Committee/Companies" class="add-address-back-btn">Back to Company List</a>
+            </div>
+            <div class="add-address-banner-actions">
+                <a href="/Committee/AddCompany" class="add-address-secondary-btn">Go to Add Company</a>
+            </div>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+        {
+            <div class="alert alert-success mb-0">@Model.StatusMessage</div>
+        }
+
+        <section class="add-address-grid">
+            <div class="add-address-form-card">
+                <section class="add-address-split-card">
+                    <div class="add-address-card-head">
+                        <div>
+                            <h3 class="add-address-section-title">Add Branch Address</h3>
+                            <p class="add-address-section-copy">Choose an existing company from the database, then add one new branch address to it.</p>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="add-address-field-group">
+                            <h4 class="add-address-field-group-title">Select Current Company</h4>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label asp-for="AddressInput.companyId" class="form-label">Current Company</label>
+                                    <select asp-for="AddressInput.companyId" asp-items="Model.CompanyOptions" class="form-select">
+                                        <option value="">-- Select existing company --</option>
+                                    </select>
+                                    <span asp-validation-for="AddressInput.companyId" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="add-address-field-group">
+                            <h4 class="add-address-field-group-title">New Branch Address</h4>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label asp-for="AddressInput.addressLine" class="form-label">Address Line</label>
+                                    <input asp-for="AddressInput.addressLine" class="form-control" />
+                                    <span asp-validation-for="AddressInput.addressLine" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-3"><label asp-for="AddressInput.city" class="form-label">City</label><input asp-for="AddressInput.city" class="form-control" /></div>
+                                <div class="col-md-3"><label asp-for="AddressInput.state" class="form-label">State</label><input asp-for="AddressInput.state" class="form-control" /></div>
+                                <div class="col-md-3"><label asp-for="AddressInput.postcode" class="form-label">Postcode</label><input asp-for="AddressInput.postcode" class="form-control" /></div>
+                                <div class="col-md-3"><label asp-for="AddressInput.country" class="form-label">Country</label><input asp-for="AddressInput.country" class="form-control" /></div>
+                                <div class="col-md-3"><label asp-for="AddressInput.vacancyLevel" class="form-label">Vacancy Level</label><select asp-for="AddressInput.vacancyLevel" class="form-select"><option value="">-- Select --</option><option value="Diploma">Diploma</option><option value="Degree">Degree</option></select></div>
+                                <div class="col-md-3"><label asp-for="AddressInput.totalNoOfStaff" class="form-label">Total Staff</label><input asp-for="AddressInput.totalNoOfStaff" type="number" class="form-control" /></div>
+                                <div class="col-md-2"><label asp-for="AddressInput.status" class="form-label">Status</label><select asp-for="AddressInput.status" class="form-select"><option value="0">Pending</option><option value="1">Active</option><option value="2">Inactive</option><option value="3">Suspended</option></select></div>
+                                <div class="col-md-2"><label asp-for="AddressInput.visibility" class="form-label">Visibility</label><select asp-for="AddressInput.visibility" class="form-select"><option value="1">Visible</option><option value="0">Hidden</option></select></div>
+                                <div class="col-md-2"><label asp-for="AddressInput.lastVisit" class="form-label">Last Visit</label><input asp-for="AddressInput.lastVisit" type="date" class="form-control" /></div>
+                                <div class="col-md-2"><label asp-for="AddressInput.lastContact" class="form-label">Last Contact</label><input asp-for="AddressInput.lastContact" type="date" class="form-control" /></div>
+                            </div>
+                        </div>
+
+                        <div class="add-address-action-row">
+                            <button type="submit" class="add-address-submit-btn">Add Address</button>
+                            <a href="/Committee/Companies" class="add-address-cancel-btn">Cancel</a>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

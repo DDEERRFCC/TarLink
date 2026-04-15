@@ -1,0 +1,128 @@
+@page
+@model CommitteeCreateAnnouncementModel
+@{
+    ViewData["CommitteePageTitle"] = "Create Announcement";
+}
+
+<style>
+    .create-announcement-page { display: grid; gap: 1rem; max-width: 1280px; margin: 0 auto; }
+    .create-announcement-banner, .create-announcement-card { border: 1px solid #eadce2; border-radius: 20px; background: linear-gradient(180deg, #ffffff, #fff9fb); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); }
+    .create-announcement-banner { position: relative; overflow: hidden; padding: 1.35rem; border-radius: 24px; color: #fff; background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
+    .create-announcement-banner::after { content: ""; position: absolute; right: -42px; top: -50px; width: 180px; height: 180px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+    .create-announcement-banner > * { position: relative; z-index: 1; }
+    .create-announcement-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .create-announcement-pill { display: inline-flex; align-items: center; border-radius: 999px; padding: .34rem .72rem; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .22); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .create-announcement-back { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid #e6cdd7; background: linear-gradient(180deg, #ffffff, #f5fbff); color: #4f3041; font-weight: 700; box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06); }
+    .create-announcement-back::before { content: "<"; display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: #f6dfe9; color: #7b264b; font-size: .9rem; line-height: 1; }
+    .create-announcement-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+    .create-announcement-secondary-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 140px; padding: .82rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; color: #fff; background: transparent; border: 1px solid rgba(255, 255, 255, 0.32); }
+    .create-announcement-card { padding: 1rem; }
+    .create-announcement-card h4 { margin: 0; color: #3c2030; font-size: 1.08rem; font-weight: 700; }
+    .create-announcement-card p { margin: .25rem 0 0; color: #7a6673; line-height: 1.65; }
+    .create-announcement-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .create-announcement-form .full { grid-column: 1 / -1; }
+    .create-announcement-form .form-label { font-size: .82rem; font-weight: 700; color: #765f6c; text-transform: uppercase; letter-spacing: .05em; }
+    .create-announcement-form .form-control, .create-announcement-form .form-select { min-height: 46px; border-radius: 14px; border-color: #ddcbd4; }
+    .create-announcement-form textarea.form-control { min-height: 140px; }
+    .create-announcement-form-actions { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1rem; }
+    .create-announcement-form-actions .btn { border-radius: 14px; font-weight: 700; min-width: 140px; }
+    @@media (max-width: 991.98px) { .create-announcement-form { grid-template-columns: 1fr; } .create-announcement-top, .create-announcement-actions, .create-announcement-form-actions { flex-direction: column; align-items: stretch; } .create-announcement-back, .create-announcement-secondary-btn, .create-announcement-form-actions .btn { width: 100%; } }
+</style>
+
+<div class="committee-page">
+    <div class="create-announcement-page">
+        <section class="create-announcement-banner">
+            <div class="create-announcement-top">
+                <div class="create-announcement-pill">Announcement Portal</div>
+                <a href="/Committee/Announcements" class="create-announcement-back">Back to Announcements</a>
+            </div>
+            <h3 class="mt-3 mb-2">Create a new announcement on its own page.</h3>
+            <p>Target the whole portal or narrow the message to a cohort, faculty, or campus before publishing.</p>
+            <div class="create-announcement-actions">
+                <a asp-page="/Committee/Announcements" class="create-announcement-secondary-btn">Announcement History</a>
+            </div>
+        </section>
+
+        <section class="create-announcement-card">
+            <h4>Create Announcement</h4>
+            <p>Complete the announcement details, then save it to publish now or keep it scheduled.</p>
+
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
+                <div class="create-announcement-form">
+                    <div class="full">
+                        <label asp-for="Input.Title" class="form-label">Title</label>
+                        <input asp-for="Input.Title" class="form-control" />
+                        <span asp-validation-for="Input.Title" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Input.TargetRole" class="form-label">Target Role</label>
+                        <select asp-for="Input.TargetRole" class="form-select">
+                            <option value="all">All</option>
+                            <option value="student">Student</option>
+                            <option value="supervisor">Supervisor</option>
+                            <option value="committee">Committee</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.CohortId" class="form-label">Cohort</label>
+                        <select asp-for="Input.CohortId" class="form-select">
+                            <option value="">All cohorts</option>
+                            @foreach (var cohort in Model.Cohorts)
+                            {
+                                <option value="@cohort.cohort_id">@cohort.description</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.Faculty" class="form-label">Faculty</label>
+                        <select asp-for="Input.Faculty" class="form-select">
+                            <option value="">All faculties</option>
+                            @foreach (var faculty in Model.Faculties)
+                            {
+                                <option value="@faculty">@faculty</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.Campus" class="form-label">Campus</label>
+                        <select asp-for="Input.Campus" class="form-select">
+                            <option value="">All campuses</option>
+                            @foreach (var campus in Model.Campuses)
+                            {
+                                <option value="@campus">@campus</option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label asp-for="Input.PublishAt" class="form-label">Publish At</label>
+                        <input asp-for="Input.PublishAt" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="Input.PublishAt" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Input.ExpireAt" class="form-label">Expire At</label>
+                        <input asp-for="Input.ExpireAt" class="form-control" type="datetime-local" />
+                        <span asp-validation-for="Input.ExpireAt" class="text-danger"></span>
+                    </div>
+                    <div class="full">
+                        <label asp-for="Input.Message" class="form-label">Message</label>
+                        <textarea asp-for="Input.Message" class="form-control"></textarea>
+                        <span asp-validation-for="Input.Message" class="text-danger"></span>
+                    </div>
+                    <div class="full">
+                        <div class="form-check form-switch">
+                            <input asp-for="Input.IsPublished" class="form-check-input" />
+                            <label asp-for="Input.IsPublished" class="form-check-label">Publish this announcement</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="create-announcement-form-actions">
+                    <a href="/Committee/Announcements" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Announcement</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />

@@ -5,36 +5,50 @@
 }
 
 <style>
+    .committee-notify-stack {
+        --notify-border: #eadce2;
+        --notify-surface: linear-gradient(180deg, #ffffff, #fff9fb);
+        --notify-banner: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873);
+        --notify-accent: linear-gradient(90deg, #8f2d56, #b34873);
+        --notify-label: #7a6673;
+        --notify-heading: #2f1724;
+        --notify-body: #917d89;
+        --notify-input-border: #ddcbd4;
+        --notify-table-head: #faf1f5;
+    }
     .committee-notify-stack { display: grid; gap: 1rem; max-width: 1280px; margin: 0 auto; }
-    .committee-notify-banner, .committee-notify-card, .committee-notify-stat { border: 1px solid #eadce2; border-radius: 20px; background: linear-gradient(180deg, #ffffff, #fff9fb); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); }
-    .committee-notify-banner { position: relative; overflow: hidden; padding: 1.35rem; border-radius: 24px; color: #fff; background: linear-gradient(135deg, #102133, #176b87 55%, #4fa59d); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
+    .committee-notify-banner, .committee-notify-card, .committee-notify-stat { border: 1px solid var(--notify-border); border-radius: 20px; background: var(--notify-surface); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); }
+    .committee-notify-banner { position: relative; overflow: hidden; padding: 1.35rem; border-radius: 24px; color: #fff; background: var(--notify-banner); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
     .committee-notify-banner::after { content: ""; position: absolute; right: -42px; top: -50px; width: 180px; height: 180px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
     .committee-notify-banner > * { position: relative; z-index: 1; }
     .committee-notify-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
     .committee-notify-pill { display: inline-flex; align-items: center; border-radius: 999px; padding: .34rem .72rem; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .22); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-    .committee-notify-back { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid rgba(255, 255, 255, .28); background: rgba(255, 255, 255, .12); color: #fff; font-weight: 700; }
-    .committee-notify-back:hover { color: #fff; background: rgba(255, 255, 255, .18); }
+    .committee-notify-back { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid #e6cdd7; background: linear-gradient(180deg, #ffffff, #f5fbff); color: #4f3041; font-weight: 700; box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06); transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+    .committee-notify-back:hover { color: #6b2847; border-color: #d7a7ba; box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09); transform: translateY(-1px); }
+    .committee-notify-back::before { content: "<"; display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: #f6dfe9; color: #7b264b; font-size: .9rem; line-height: 1; }
     .committee-notify-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+    .committee-notify-banner-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+    .committee-notify-primary-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 140px; padding: .82rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; color: #fff; background: #198754; border: 1px solid #198754; }
     .committee-notify-stat { position: relative; overflow: hidden; padding: 1rem 1.05rem; }
-    .committee-notify-stat::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: linear-gradient(90deg, #176b87, #4fa59d); }
-    .committee-notify-label { color: #5f7280; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-    .committee-notify-value { margin-top: .35rem; color: #143247; font-size: 1.75rem; font-weight: 700; line-height: 1.1; }
-    .committee-notify-note { margin-top: .3rem; color: #71808c; font-size: .88rem; }
+    .committee-notify-stat::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: var(--notify-accent); }
+    .committee-notify-label { color: var(--notify-label); font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .committee-notify-value { margin-top: .35rem; color: var(--notify-heading); font-size: 1.75rem; font-weight: 700; line-height: 1.1; }
+    .committee-notify-note { margin-top: .3rem; color: var(--notify-body); font-size: .88rem; }
     .committee-notify-card { padding: 1rem; }
-    .committee-notify-card h4 { margin: 0; color: #143247; font-size: 1.08rem; font-weight: 700; }
-    .committee-notify-card p { margin: .25rem 0 0; color: #71808c; line-height: 1.65; }
+    .committee-notify-card h4 { margin: 0; color: var(--notify-heading); font-size: 1.08rem; font-weight: 700; }
+    .committee-notify-card p { margin: .25rem 0 0; color: var(--notify-body); line-height: 1.65; }
     .committee-notify-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
     .committee-notify-form .full { grid-column: 1 / -1; }
-    .committee-notify-form .form-label { font-size: .82rem; font-weight: 700; color: #5f7280; text-transform: uppercase; letter-spacing: .05em; }
-    .committee-notify-form .form-control, .committee-notify-form .form-select { min-height: 46px; border-radius: 14px; border-color: #cfe1ea; }
+    .committee-notify-form .form-label { font-size: .82rem; font-weight: 700; color: var(--notify-label); text-transform: uppercase; letter-spacing: .05em; }
+    .committee-notify-form .form-control, .committee-notify-form .form-select { min-height: 46px; border-radius: 14px; border-color: var(--notify-input-border); }
     .committee-notify-form textarea.form-control { min-height: 140px; }
     .committee-notify-actions { display: flex; justify-content: flex-end; margin-top: 1rem; }
     .committee-notify-actions .btn { min-width: 150px; border-radius: 14px; font-weight: 700; }
-    .committee-notify-table thead th { background: #eef8fa; color: #5f7280; font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+    .committee-notify-table thead th { background: var(--notify-table-head); color: var(--notify-label); font-size: .8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
     .committee-read { display: inline-flex; border-radius: 999px; padding: .28rem .65rem; font-size: .78rem; font-weight: 700; }
     .committee-read.is-read { background: #d1fae5; color: #065f46; }
     .committee-read.is-unread { background: #fee2e2; color: #991b1b; }
-    @@media (max-width: 991.98px) { .committee-notify-grid, .committee-notify-form { grid-template-columns: 1fr; } .committee-notify-top, .committee-notify-actions { flex-direction: column; align-items: stretch; } .committee-notify-back, .committee-notify-actions .btn { width: 100%; } }
+    @@media (max-width: 991.98px) { .committee-notify-grid, .committee-notify-form { grid-template-columns: 1fr; } .committee-notify-top, .committee-notify-actions, .committee-notify-banner-actions { flex-direction: column; align-items: stretch; } .committee-notify-back, .committee-notify-actions .btn, .committee-notify-primary-btn { width: 100%; } }
 </style>
 
 <div class="committee-page">
@@ -47,10 +61,13 @@
         <section class="committee-notify-banner">
             <div class="committee-notify-top">
                 <div class="committee-notify-pill">Notification Portal</div>
-                <a asp-page="/Committee/Dashboard" class="committee-notify-back">Back to Dashboard</a>
+                <a href="/Committee/Dashboard" class="committee-notify-back">Back to Dashboard</a>
             </div>
             <h3 class="mt-3 mb-2">Send internal notifications to the right portal users.</h3>
             <p>Broadcast updates to students, supervisors, or committee members and keep a visible delivery history inside the system.</p>
+            <div class="committee-notify-banner-actions">
+                <a asp-page="/Committee/SendNotification" class="committee-notify-primary-btn">Send Notification</a>
+            </div>
         </section>
 
         <section class="committee-notify-grid">
@@ -58,85 +75,6 @@
             <article class="committee-notify-stat"><div class="committee-notify-label">Unread</div><div class="committee-notify-value">@Model.UnreadNotifications</div><div class="committee-notify-note">Still unread by recipients.</div></article>
             <article class="committee-notify-stat"><div class="committee-notify-label">Student Users</div><div class="committee-notify-value">@Model.StudentRecipients</div><div class="committee-notify-note">Active student accounts available for targeting.</div></article>
             <article class="committee-notify-stat"><div class="committee-notify-label">Supervisor Users</div><div class="committee-notify-value">@Model.SupervisorRecipients</div><div class="committee-notify-note">Active supervisor accounts available for targeting.</div></article>
-        </section>
-
-        <section class="committee-notify-card">
-            <h4>Send Notification</h4>
-            <p>Choose who should receive the message, then narrow the audience with academic filters when needed.</p>
-
-            <form method="post" asp-page-handler="Send">
-                <div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
-                <div class="committee-notify-form">
-                    <div>
-                        <label asp-for="Input.TargetRole" class="form-label">Target Role</label>
-                        <select asp-for="Input.TargetRole" class="form-select">
-                            <option value="student">Student</option>
-                            <option value="supervisor">Supervisor</option>
-                            <option value="committee">Committee</option>
-                            <option value="all">All</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label asp-for="Input.Type" class="form-label">Type</label>
-                        <input asp-for="Input.Type" class="form-control" placeholder="committee, reminder, report, review" />
-                        <span asp-validation-for="Input.Type" class="text-danger"></span>
-                    </div>
-                    <div class="full">
-                        <label asp-for="Input.Title" class="form-label">Title</label>
-                        <input asp-for="Input.Title" class="form-control" />
-                        <span asp-validation-for="Input.Title" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label asp-for="Input.CohortId" class="form-label">Cohort</label>
-                        <select asp-for="Input.CohortId" class="form-select">
-                            <option value="">All cohorts</option>
-                            @foreach (var cohort in Model.Cohorts)
-                            {
-                                <option value="@cohort.cohort_id">@cohort.description</option>
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <label asp-for="Input.StudentStatus" class="form-label">Student Status</label>
-                        <select asp-for="Input.StudentStatus" class="form-select">
-                            <option value="">All statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="withdrawn">Withdrawn</option>
-                            <option value="none">None</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label asp-for="Input.Faculty" class="form-label">Faculty</label>
-                        <select asp-for="Input.Faculty" class="form-select">
-                            <option value="">All faculties</option>
-                            @foreach (var faculty in Model.Faculties)
-                            {
-                                <option value="@faculty">@faculty</option>
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <label asp-for="Input.Campus" class="form-label">Campus</label>
-                        <select asp-for="Input.Campus" class="form-select">
-                            <option value="">All campuses</option>
-                            @foreach (var campus in Model.Campuses)
-                            {
-                                <option value="@campus">@campus</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="full">
-                        <label asp-for="Input.Message" class="form-label">Message</label>
-                        <textarea asp-for="Input.Message" class="form-control"></textarea>
-                        <span asp-validation-for="Input.Message" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="committee-notify-actions">
-                    <button type="submit" class="btn btn-primary">Send Notification</button>
-                </div>
-            </form>
         </section>
 
         <section class="committee-notify-card">
