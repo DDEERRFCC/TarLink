@@ -574,17 +574,9 @@
                             <option value="false">No</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label asp-for="Input.programmingKnowledge" class="form-label">Programming Knowledge</label>
-                        <input asp-for="Input.programmingKnowledge" class="form-control" />
-                    </div>
-                    <div class="col-md-2">
-                        <label asp-for="Input.databaseKnowledge" class="form-label">Database Knowledge</label>
-                        <input asp-for="Input.databaseKnowledge" class="form-control" />
-                    </div>
-                    <div class="col-md-2">
-                        <label asp-for="Input.networkingKnowledge" class="form-label">Networking Knowledge</label>
-                        <input asp-for="Input.networkingKnowledge" class="form-control" />
+                    <div class="col-md-7">
+                        <label asp-for="Input.Knowledge" class="form-label">Knowledge</label>
+                        <input asp-for="Input.Knowledge" class="form-control" maxlength="255" />
                     </div>
                     <div class="col-md-2">
                         <label asp-for="Input.templateVersion" class="form-label">Template Version</label>

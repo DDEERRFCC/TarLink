@@ -72,7 +72,7 @@ public class CommitteeCompanyRequestsModel : CommitteePageModelBase
 
         request.status = NormalizeStatus(Input.status);
         request.decision_remark = string.IsNullOrWhiteSpace(Input.decision_remark) ? null : Input.decision_remark.Trim();
-        request.reviewed_by = userId.Value;
+        request.reviewed_by = userId.Value > 0 ? userId.Value : null;
         request.reviewed_at = DateTime.Now;
         request.updated_at = DateTime.Now;
 

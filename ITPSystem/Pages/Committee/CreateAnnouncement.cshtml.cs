@@ -119,15 +119,15 @@ public class CommitteeCreateAnnouncementModel : CommitteePageModelBase
         }
 
         var role = HttpContext.Session.GetString("UserRole");
-        var rawUserId = HttpContext.Session.GetString("UserID");
-        if (!string.Equals(role, "committee", StringComparison.OrdinalIgnoreCase) || !int.TryParse(rawUserId, out var userId))
+        var staffId = HttpContext.Session.GetString("SupervisorStaffId");
+        if (!string.Equals(role, "committee", StringComparison.OrdinalIgnoreCase) || string.IsNullOrWhiteSpace(staffId))
         {
             return RedirectToPage("/Login/CommitteeLogin");
         }
 
         var announcement = new Announcement
         {
-            created_by_user_id = userId,
+            created_by_staff_id = staffId,
             title = Input.Title,
             message = Input.Message,
             target_role = Input.TargetRole,

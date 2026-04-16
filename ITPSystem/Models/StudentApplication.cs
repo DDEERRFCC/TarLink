@@ -100,14 +100,8 @@ namespace ITPSystem.Models
         public string? healthRemark { get; set; }
 
         // ===== Technical Knowledge =====
-        [StringLength(50)]
-        public string? programmingKnowledge { get; set; }
-
-        [StringLength(50)]
-        public string? databaseKnowledge { get; set; }
-
-        [StringLength(50)]
-        public string? networkingKnowledge { get; set; }
+        [StringLength(255)]
+        public string? Knowledge { get; set; }
 
         public byte? templateVersion { get; set; } = 1;
 

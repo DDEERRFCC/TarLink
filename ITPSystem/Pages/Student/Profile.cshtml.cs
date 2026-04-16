@@ -49,14 +49,8 @@ public class StudentProfileModel : PageModel
 
         public string? healthRemark { get; set; }
 
-        [StringLength(50)]
-        public string? programmingKnowledge { get; set; }
-
-        [StringLength(50)]
-        public string? databaseKnowledge { get; set; }
-
-        [StringLength(50)]
-        public string? networkingKnowledge { get; set; }
+        [StringLength(255)]
+        public string? Knowledge { get; set; }
     }
 
     public IActionResult OnGet()
@@ -97,9 +91,7 @@ public class StudentProfileModel : PageModel
             permanentContact = Student.permanentContact,
             ownTransport = Student.ownTransport,
             healthRemark = Student.healthRemark,
-            programmingKnowledge = Student.programmingKnowledge,
-            databaseKnowledge = Student.databaseKnowledge,
-            networkingKnowledge = Student.networkingKnowledge
+            Knowledge = Student.Knowledge
         };
 
         return Page();
@@ -146,9 +138,7 @@ public class StudentProfileModel : PageModel
         Student.permanentContact = string.IsNullOrWhiteSpace(Input.permanentContact) ? null : Input.permanentContact.Trim();
         Student.ownTransport = Input.ownTransport;
         Student.healthRemark = string.IsNullOrWhiteSpace(Input.healthRemark) ? null : Input.healthRemark.Trim();
-        Student.programmingKnowledge = string.IsNullOrWhiteSpace(Input.programmingKnowledge) ? null : Input.programmingKnowledge.Trim();
-        Student.databaseKnowledge = string.IsNullOrWhiteSpace(Input.databaseKnowledge) ? null : Input.databaseKnowledge.Trim();
-        Student.networkingKnowledge = string.IsNullOrWhiteSpace(Input.networkingKnowledge) ? null : Input.networkingKnowledge.Trim();
+        Student.Knowledge = string.IsNullOrWhiteSpace(Input.Knowledge) ? null : Input.Knowledge.Trim();
         Student.updated_at = DateTime.Now;
 
         try

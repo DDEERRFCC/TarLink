@@ -270,18 +270,18 @@ VALUES -- Committee (no IC, password set to a placeholder since rule applies to 
         '2026-01-20 16:00:00',
         NULL
     );
--- Pick a creator (committee user if available, else any user)
-SET @creator_id = COALESCE(
+-- Pick a creator (committee-enabled university supervisor if available, else any university supervisor)
+SET @creator_staff_id = COALESCE(
         (
-            SELECT user_id
-            FROM sysuser
-            WHERE role = 'committee'
-            ORDER BY user_id
+            SELECT staffId
+            FROM ucsupervisor
+            WHERE isCommittee = 1
+            ORDER BY staffId
             LIMIT 1
         ), (
-            SELECT user_id
-            FROM sysuser
-            ORDER BY user_id
+            SELECT staffId
+            FROM ucsupervisor
+            ORDER BY staffId
             LIMIT 1
         )
     );
@@ -295,7 +295,7 @@ SET @active_cohort_id = (
     );
 -- Insert 5 announcements
 INSERT INTO announcement (
-        created_by_user_id,
+        created_by_staff_id,
         title,
         message,
         target_role,
@@ -307,7 +307,7 @@ INSERT INTO announcement (
         expire_at
     )
 VALUES (
-        @creator_id,
+        @creator_staff_id,
         'System Notice: Portal Maintenance',
         'The internship portal will undergo maintenance this weekend. Some services may be unavailable during this period. Please plan your submissions earlier to avoid disruption.',
         'all',
@@ -319,7 +319,7 @@ VALUES (
         DATE_ADD(NOW(), INTERVAL 7 DAY)
     ),
     (
-        @creator_id,
+        @creator_staff_id,
         'Reminder: Progress Report Submission',
         'This is a reminder to submit your monthly progress report before the due date. Late submissions may affect your status and evaluation.',
         'student',
@@ -331,7 +331,7 @@ VALUES (
         DATE_ADD(NOW(), INTERVAL 14 DAY)
     ),
     (
-        @creator_id,
+        @creator_staff_id,
         'Internship Briefing Session',
         'A briefing session will be held for students to explain the internship process, document requirements, and evaluation method. Please check your timetable and attend.',
         'student',
@@ -343,7 +343,7 @@ VALUES (
         DATE_ADD(NOW(), INTERVAL 30 DAY)
     ),
     (
-        @creator_id,
+        @creator_staff_id,
         'Supervisor Notice: Student Evaluation Window',
         'The student evaluation window is now open. Please complete the assessment marks and comments before the closing date.',
         'supervisor',
@@ -355,7 +355,7 @@ VALUES (
         DATE_ADD(NOW(), INTERVAL 21 DAY)
     ),
     (
-        @creator_id,
+        @creator_staff_id,
         'Document Verification Update',
         'Committee will review submitted documents (acceptance form, acknowledgement, and supporting evidence). Please ensure your uploads are clear and complete.',
         'all',
@@ -426,7 +426,7 @@ VALUES (
         'approved',
         'Approved after placement confirmation.',
         4,
-        2,
+        3,
         'BEQS',
         2,
         3.45,
@@ -620,7 +620,7 @@ VALUES (
         'final',
         NULL,
         '2026-06-30',
-        0,
+        1,
         'Final report not submitted',
         NULL
     ),
@@ -1593,4 +1593,105 @@ VALUES (
         'student',
         TRUE,
         FALSE
+    );
+
+
+INSERT INTO notification (
+        from_user_id,
+        to_user_id,
+        type,
+        title,
+        message,
+        is_read,
+        created_at
+    )
+VALUES (
+        2,
+        1,
+        'student_submission',
+        'Progress Report Submitted',
+        'Student A23BE0123 (Nur Aisyah Binti Hassan) has submitted their progress report for Report #1.',
+        0,
+        '2026-03-01 09:15:00'
+    ),
+    (
+        2,
+        1,
+        'student_submission',
+        'Progress Report Submitted',
+        'Student A23BE0456 (Muhammad Izzat Bin Razak) has submitted their progress report for Report #2.',
+        1,
+        '2026-03-05 14:30:00'
+    ),
+    (
+        1,
+        1,
+        'system_alert',
+        'Internship Application Pending Review',
+        'There is 1 pending internship application awaiting your review and approval.',
+        0,
+        '2026-03-08 10:00:00'
+    ),
+    (
+        1,
+        1,
+        'company_update',
+        'Company Evaluation Completed',
+        'Company evaluation for Alpha Build Sdn Bhd by student A23BE0123 has been completed.',
+        1,
+        '2026-03-12 16:45:00'
+    ),
+    (
+        1,
+        1,
+        'system_reminder',
+        'Report Deadline Approaching',
+        'Progress Report #3 deadline is approaching on 2026-04-07. Please remind students to submit on time.',
+        0,
+        '2026-03-25 08:00:00'
+    ),
+    (
+        1,
+        1,
+        'document_review',
+        'Document Verification Required',
+        'Student A23BE0456 has uploaded supporting documents for verification. Please review.',
+        0,
+        '2026-03-28 11:20:00'
+    ),
+    (
+        1,
+        1,
+        'assignment_task',
+        'New Student Assignment',
+        'You have been assigned to supervise 2 new students for the Feb–Jul 2026 cohort.',
+        1,
+        '2026-02-15 13:00:00'
+    ),
+    (
+        1,
+        1,
+        'student_concern',
+        'Student Issue Report',
+        'Student A23BE0123 has reported a concern regarding workplace support. Please address.',
+        0,
+        '2026-03-20 15:30:00'
+    ),
+    (
+        1,
+        1,
+        'system_alert',
+        'Evaluation Window Now Open',
+        'The student evaluation window is now open. Begin assessing student performance.',
+        1,
+        '2026-03-10 09:00:00'
+    ),
+    (
+        1,
+        1,
+        'student_submission',
+        'Final Report Submitted',
+        'Student A23BE0456 has submitted their final internship report.',
+        0,
+        '2026-06-25 17:45:00'
     );

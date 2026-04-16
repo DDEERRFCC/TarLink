@@ -102,9 +102,8 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         public string? permanentContact { get; set; }
         public bool ownTransport { get; set; }
         public string? healthRemark { get; set; }
-        public string? programmingKnowledge { get; set; }
-        public string? databaseKnowledge { get; set; }
-        public string? networkingKnowledge { get; set; }
+        [StringLength(255)]
+        public string? Knowledge { get; set; }
         public byte? templateVersion { get; set; }
 
         [Required]
@@ -258,9 +257,7 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
         student.permanentContact = TrimOrNull(Input.permanentContact);
         student.ownTransport = Input.ownTransport;
         student.healthRemark = TrimOrNull(Input.healthRemark);
-        student.programmingKnowledge = TrimOrNull(Input.programmingKnowledge);
-        student.databaseKnowledge = TrimOrNull(Input.databaseKnowledge);
-        student.networkingKnowledge = TrimOrNull(Input.networkingKnowledge);
+        student.Knowledge = TrimOrNull(Input.Knowledge);
         student.templateVersion = Input.templateVersion;
         student.applyStatus = NormalizeStatus(Input.applyStatus);
         student.remark = TrimOrNull(Input.remark);
@@ -455,9 +452,7 @@ public class CommitteeStudentDetailsModel : CommitteePageModelBase
             permanentContact = student.permanentContact,
             ownTransport = student.ownTransport,
             healthRemark = student.healthRemark,
-            programmingKnowledge = student.programmingKnowledge,
-            databaseKnowledge = student.databaseKnowledge,
-            networkingKnowledge = student.networkingKnowledge,
+            Knowledge = student.Knowledge,
             templateVersion = student.templateVersion,
             applyStatus = NormalizeStatus(student.applyStatus),
             isActive = true,

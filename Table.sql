@@ -237,9 +237,7 @@ CREATE TABLE studentapplication (
     permanentAddress TEXT,
     permanentContact VARCHAR(45),
     healthRemark TEXT,
-    programmingKnowledge VARCHAR(50),
-    databaseKnowledge VARCHAR(50),
-    networkingKnowledge VARCHAR(50),
+    Knowledge VARCHAR(255),
     templateVersion TINYINT DEFAULT 1,
     formAcceptance VARCHAR(255),
     formAcknowledgement VARCHAR(255),
@@ -490,8 +488,8 @@ CREATE TABLE documentreview (
 );
 CREATE TABLE announcement (
     announcement_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    created_by_user_id INT NOT NULL,
-    -- who posted (committee / admin)
+    created_by_staff_id VARCHAR(16) NOT NULL,
+    -- who posted (committee supervisor)
     title VARCHAR(255) NOT NULL,
     message LONGTEXT NOT NULL,
     -- targeting (use NULL = no filter / all)
@@ -528,7 +526,7 @@ CREATE TABLE announcement (
     ),
     INDEX idx_announcement_created_at (created_at),
     INDEX idx_announcement_target (target_role, cohort_id, faculty, campus),
-    CONSTRAINT fk_announcement_created_by FOREIGN KEY (created_by_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_announcement_created_by FOREIGN KEY (created_by_staff_id) REFERENCES ucsupervisor(staffId) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_announcement_cohort FOREIGN KEY (cohort_id) REFERENCES cohort(cohort_id) ON DELETE
     SET NULL ON UPDATE CASCADE
 );

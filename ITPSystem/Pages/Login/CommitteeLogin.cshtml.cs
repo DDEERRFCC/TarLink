@@ -31,43 +31,35 @@ public class CommitteeLoginModel : PageModel
         }
 
         var loginInput = Email.Trim();
-        var user = _db.SysUsers.FirstOrDefault(u =>
-            (u.email == loginInput || u.username == loginInput) &&
+        var supervisor = _db.UcSupervisors.FirstOrDefault(u =>
+            (u.email == loginInput || u.staffId == loginInput) &&
             u.password == Password);
 
-        if (user == null)
+        if (supervisor == null)
         {
             ErrorMessage = "Invalid Email/Username or Password.";
             return Page();
         }
 
-        if (!string.Equals(user.role, "committee", StringComparison.OrdinalIgnoreCase))
+        if (!supervisor.isCommittee)
         {
-            ErrorMessage = "This account is not a committee account. Please use the correct login page.";
+            ErrorMessage = "This supervisor account is not enabled as a committee member.";
             return Page();
         }
 
-        if (!user.is_active)
+        if (!supervisor.isActive)
         {
             ErrorMessage = "Your account is inactive. Please contact admin.";
             return Page();
         }
 
-        if (user.is_locked)
-        {
-            ErrorMessage = "Your account is locked. Please contact admin.";
-            return Page();
-        }
-
-        HttpContext.Session.SetString("UserRole", user.role ?? "");
-        HttpContext.Session.SetString("UserID", user.user_id.ToString());
-        HttpContext.Session.SetString("UserName", user.username ?? user.email ?? "");
-        HttpContext.Session.SetString("UserEmail", user.email ?? "");
+        HttpContext.Session.SetString("UserRole", "committee");
+        HttpContext.Session.SetString("UserID", "0");
+        HttpContext.Session.SetString("UserName", supervisor.name);
+        HttpContext.Session.SetString("UserEmail", supervisor.email ?? "");
+        HttpContext.Session.SetString("SupervisorStaffId", supervisor.staffId);
 
         SuccessMessage = "Login successful.";
-        user.last_login_at = DateTime.Now;
-        user.login_attempts = 0;
-        _db.SaveChanges();
 
         return RedirectToPage("/Committee/Dashboard");
     }

@@ -15,7 +15,7 @@ namespace ITPSystem.Pages.Supervisor
             _db = db;
         }
 
-        public SysUser? Supervisor { get; set; }
+        public UcSupervisor? Supervisor { get; set; }
         public string DisplayName { get; set; } = string.Empty;
 
         public int AssignedStudents { get; set; }
@@ -44,13 +44,13 @@ namespace ITPSystem.Pages.Supervisor
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            Supervisor = _db.SysUsers.AsNoTracking().FirstOrDefault(u => u.user_id == userId);
+            Supervisor = _db.UcSupervisors.AsNoTracking().FirstOrDefault(u => u.email == userEmail);
             if (Supervisor == null)
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            DisplayName = string.IsNullOrWhiteSpace(Supervisor.username) ? Supervisor.email : Supervisor.username;
+            DisplayName = Supervisor.name;
 
             AssignedStudentList = _db.StudentApplications.AsNoTracking()
                 .Where(s => s.ucSupervisorEmail == userEmail || s.comSupervisorEmail == userEmail)
@@ -75,13 +75,16 @@ namespace ITPSystem.Pages.Supervisor
                 DocumentReviewsRejected = _db.DocumentReviews.Count(r => applicationIds.Contains(r.application_id) && r.status == "rejected");
             }
 
-            UnreadNotifications = _db.Notifications.Count(n => n.to_user_id == userId && !n.is_read);
-            TotalNotifications = _db.Notifications.Count(n => n.to_user_id == userId);
-            RecentNotifications = _db.Notifications.AsNoTracking()
-                .Where(n => n.to_user_id == userId)
-                .OrderByDescending(n => n.created_at)
-                .Take(5)
-                .ToList();
+            if (userId > 0)
+            {
+                UnreadNotifications = _db.Notifications.Count(n => n.to_user_id == userId && !n.is_read);
+                TotalNotifications = _db.Notifications.Count(n => n.to_user_id == userId);
+                RecentNotifications = _db.Notifications.AsNoTracking()
+                    .Where(n => n.to_user_id == userId)
+                    .OrderByDescending(n => n.created_at)
+                    .Take(5)
+                    .ToList();
+            }
 
             return Page();
         }
@@ -93,9 +96,8 @@ namespace ITPSystem.Pages.Supervisor
             var rawUserId = HttpContext.Session.GetString("UserID");
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
 
-            return role == "supervisor"
-                && int.TryParse(rawUserId, out userId)
-                && !string.IsNullOrWhiteSpace(userEmail);
+            int.TryParse(rawUserId, out userId);
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(userEmail);
         }
     }
 }

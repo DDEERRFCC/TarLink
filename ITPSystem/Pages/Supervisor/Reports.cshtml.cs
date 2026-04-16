@@ -86,7 +86,9 @@ namespace ITPSystem.Pages.Supervisor
 
             if (report.applicantId > 0)
             {
-                var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == report.applicantId);
+                var studentUser = supervisorId > 0
+                    ? _db.SysUsers.FirstOrDefault(u => u.application_id == report.applicantId)
+                    : null;
                 if (studentUser != null)
                 {
                     _db.Notifications.Add(new Notification
@@ -150,7 +152,8 @@ namespace ITPSystem.Pages.Supervisor
             userId = 0;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
             var rawUserId = HttpContext.Session.GetString("UserID");
-            return role == "supervisor" && int.TryParse(rawUserId, out userId);
+            int.TryParse(rawUserId, out userId);
+            return role == "supervisor";
         }
 
         public class ReportViewItem

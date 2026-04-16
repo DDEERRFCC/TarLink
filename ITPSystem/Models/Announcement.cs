@@ -9,7 +9,8 @@ namespace ITPSystem.Models
         [Key]
         public long announcement_id { get; set; }
 
-        public int created_by_user_id { get; set; }
+        [StringLength(16)]
+        public string created_by_staff_id { get; set; } = string.Empty;
 
         [Required]
         [StringLength(255)]

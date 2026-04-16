@@ -133,6 +133,13 @@
         border: 1px solid rgba(255, 255, 255, 0.32);
     }
 
+    .uni-supervisor-banner-link.primary {
+        min-width: 140px;
+        color: #fff;
+        background: #198754;
+        border-color: #198754;
+    }
+
     .uni-supervisor-stat-grid,
     .uni-supervisor-body-grid {
         display: grid;
@@ -146,6 +153,10 @@
     .uni-supervisor-body-grid {
         grid-template-columns: minmax(360px, .92fr) minmax(0, 1.08fr);
         align-items: start;
+    }
+
+    .uni-supervisor-body-grid.directory-only {
+        grid-template-columns: 1fr;
     }
 
     .uni-supervisor-stat-card,
@@ -445,6 +456,7 @@
                 <a href="/Committee/Dashboard" class="uni-supervisor-back-btn">Back to Dashboard</a>
             </div>
             <div class="uni-supervisor-banner-actions">
+                <a asp-page="/Committee/AddSupervisor" class="uni-supervisor-banner-link primary">Add New Supervisor</a>
                 <a asp-page="/Committee/CommitteeMembers" class="uni-supervisor-banner-link">Open Committee Member</a>
                 <a asp-page="/Committee/StudentAccess" class="uni-supervisor-banner-link">Open Student Access</a>
             </div>
@@ -478,145 +490,7 @@
             </article>
         </section>
 
-        <section class="uni-supervisor-body-grid">
-            <article class="uni-supervisor-form-card @(Model.ShowEditForm ? "editing" : string.Empty)">
-                <h3 class="uni-supervisor-section-title">@(Model.ShowEditForm ? "Edit Supervisor" : "Create New University Supervisor")</h3>
-                <p class="uni-supervisor-section-copy">@(Model.ShowEditForm ? "Update the selected supervisor record while keeping the related committee account in sync." : "Create a new supervisor profile and optionally enable committee access from the same setup flow.")</p>
-
-                @if (!Model.ShowEditForm)
-                {
-                    <form method="post" asp-page-handler="Create" class="uni-supervisor-form-shell row g-3">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Staff ID (Auto)</label>
-                            <input value="@Model.NextStaffId" class="form-control" disabled />
-                        </div>
-                        <div class="col-md-8">
-                            <label asp-for="CreateInput.name" class="form-label">Name</label>
-                            <input asp-for="CreateInput.name" class="form-control" />
-                            <span asp-validation-for="CreateInput.name" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="CreateInput.email" class="form-label">Email</label>
-                            <input asp-for="CreateInput.email" class="form-control" />
-                            <span asp-validation-for="CreateInput.email" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="CreateInput.contact" class="form-label">Contact</label>
-                            <input asp-for="CreateInput.contact" class="form-control" />
-                            <span asp-validation-for="CreateInput.contact" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="CreateInput.icNumber" class="form-label">IC Number</label>
-                            <input asp-for="CreateInput.icNumber" class="form-control" />
-                            <span asp-validation-for="CreateInput.icNumber" class="text-danger"></span>
-                            <div class="form-text">Password is generated from the IC number.</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="CreateInput.faculty" class="form-label">Faculty</label>
-                            <select asp-for="CreateInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
-                                <option value="">-- Select Faculty --</option>
-                            </select>
-                            <span asp-validation-for="CreateInput.faculty" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="CreateInput.campus" class="form-label">Campus</label>
-                            <select asp-for="CreateInput.campus" asp-items="Model.CampusOptions" class="form-select">
-                                <option value="">-- Select Campus --</option>
-                            </select>
-                            <span asp-validation-for="CreateInput.campus" class="text-danger"></span>
-                        </div>
-                        <div class="col-12">
-                            <label asp-for="CreateInput.remark" class="form-label">Remark</label>
-                            <input asp-for="CreateInput.remark" class="form-control" />
-                            <span asp-validation-for="CreateInput.remark" class="text-danger"></span>
-                        </div>
-                        <div class="col-12">
-                            <div class="uni-supervisor-flag-row">
-                                <label class="uni-supervisor-flag">
-                                    <input asp-for="CreateInput.isActive" class="form-check-input" />
-                                    <span>Active</span>
-                                </label>
-                                <label class="uni-supervisor-flag">
-                                    <input asp-for="CreateInput.isCommittee" class="form-check-input" />
-                                    <span>Committee Access</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="uni-supervisor-action-row">
-                                <button type="submit" class="uni-supervisor-primary-btn">Create Supervisor</button>
-                            </div>
-                        </div>
-                    </form>
-                }
-                else
-                {
-                    <form method="post" asp-page-handler="Update" class="uni-supervisor-form-shell row g-3">
-                        <input asp-for="EditInput.staffId" type="hidden" />
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">Staff ID</label>
-                            <input value="@Model.EditInput.staffId" class="form-control" disabled />
-                        </div>
-                        <div class="col-md-8">
-                            <label asp-for="EditInput.name" class="form-label">Name</label>
-                            <input asp-for="EditInput.name" class="form-control" />
-                            <span asp-validation-for="EditInput.name" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="EditInput.email" class="form-label">Email</label>
-                            <input asp-for="EditInput.email" class="form-control" />
-                            <span asp-validation-for="EditInput.email" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="EditInput.contact" class="form-label">Contact</label>
-                            <input asp-for="EditInput.contact" class="form-control" />
-                            <span asp-validation-for="EditInput.contact" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="EditInput.remark" class="form-label">Remark</label>
-                            <input asp-for="EditInput.remark" class="form-control" />
-                            <span asp-validation-for="EditInput.remark" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="EditInput.faculty" class="form-label">Faculty</label>
-                            <select asp-for="EditInput.faculty" asp-items="Model.FacultyOptions" class="form-select">
-                                <option value="">-- Select Faculty --</option>
-                            </select>
-                            <span asp-validation-for="EditInput.faculty" class="text-danger"></span>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="EditInput.campus" class="form-label">Campus</label>
-                            <select asp-for="EditInput.campus" asp-items="Model.CampusOptions" class="form-select">
-                                <option value="">-- Select Campus --</option>
-                            </select>
-                            <span asp-validation-for="EditInput.campus" class="text-danger"></span>
-                        </div>
-                        <div class="col-12">
-                            <div class="uni-supervisor-flag-row">
-                                <label class="uni-supervisor-flag">
-                                    <input asp-for="EditInput.isActive" class="form-check-input" />
-                                    <span>Active</span>
-                                </label>
-                                <label class="uni-supervisor-flag">
-                                    <input asp-for="EditInput.isCommittee" class="form-check-input" />
-                                    <span>Committee Access</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="uni-supervisor-action-row">
-                                <button type="submit" class="uni-supervisor-primary-btn">Update Supervisor</button>
-                                <a href="/Committee/UniSupervisors" class="uni-supervisor-secondary-btn">Cancel</a>
-                            </div>
-                        </div>
-                    </form>
-                }
-            </article>
-
+        <section class="uni-supervisor-body-grid directory-only">
             <article class="uni-supervisor-table-card">
                 <div class="uni-supervisor-table-head">
                     <div>
@@ -681,7 +555,7 @@
                                         <td>@supervisor.created_at.ToString("dd MMM yyyy HH:mm")</td>
                                         <td>
                                             <div class="uni-supervisor-row-actions">
-                                                <a asp-page="/Committee/UniSupervisors" asp-route-editId="@supervisor.staffId" class="uni-supervisor-table-btn">Edit</a>
+                                                <a asp-page="/Committee/EditSupervisor" asp-route-staffId="@supervisor.staffId" class="uni-supervisor-table-btn">Edit</a>
                                                 <form method="post" asp-page-handler="Delete" class="d-inline">
                                                     <input type="hidden" name="staffId" value="@supervisor.staffId" />
                                                     <button type="submit" class="uni-supervisor-table-btn delete" onclick="return confirm('Delete supervisor @supervisor.staffId?');">Delete</button>

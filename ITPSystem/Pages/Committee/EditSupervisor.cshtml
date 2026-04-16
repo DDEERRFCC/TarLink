@@ -1,0 +1,119 @@
+@page
+@model CommitteeEditSupervisorModel
+@{
+    ViewData["CommitteePageTitle"] = "Edit Supervisor";
+}
+
+<style>
+    .edit-supervisor-page { display: grid; gap: 1rem; max-width: 1100px; margin: 0 auto; }
+    .edit-supervisor-banner { position: relative; overflow: hidden; border-radius: 24px; padding: 1.35rem; color: #fff; background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873); box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14); }
+    .edit-supervisor-banner::after { content: ""; position: absolute; right: -42px; top: -50px; width: 180px; height: 180px; border-radius: 999px; background: rgba(255, 255, 255, 0.12); }
+    .edit-supervisor-banner > * { position: relative; z-index: 1; }
+    .edit-supervisor-banner-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+    .edit-supervisor-kicker { display: inline-flex; align-items: center; padding: .34rem .72rem; border-radius: 999px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .edit-supervisor-title { margin: .55rem 0 .35rem; font-size: clamp(1.55rem, 3vw, 2.2rem); font-family: Georgia, "Times New Roman", serif; }
+    .edit-supervisor-copy { margin: 0; max-width: 70ch; color: rgba(255, 255, 255, 0.88); line-height: 1.75; }
+    .edit-supervisor-back { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; border-radius: 999px; padding: .78rem 1rem; border: 1px solid #e6cdd7; background: linear-gradient(180deg, #ffffff, #f5fbff); color: #4f3041; font-weight: 700; white-space: nowrap; box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06); }
+    .edit-supervisor-back::before { content: "<"; display: inline-flex; align-items: center; justify-content: center; width: 1.7rem; height: 1.7rem; border-radius: 999px; background: #f6dfe9; color: #7b264b; font-size: .9rem; line-height: 1; }
+    .edit-supervisor-card { border: 1px solid #eadce2; border-radius: 22px; background: linear-gradient(180deg, #ffffff, #fff9fb); box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06); padding: 1rem; }
+    .edit-supervisor-card .form-label { color: #36506a; font-size: .82rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    .edit-supervisor-card .form-control, .edit-supervisor-card .form-select { min-height: 44px; border-radius: 14px; border-color: #d1ddea; box-shadow: none; }
+    .edit-supervisor-flag-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .edit-supervisor-flag { display: flex; align-items: center; gap: .55rem; min-height: 46px; padding: .75rem .95rem; border: 1px solid #eadce2; border-radius: 14px; background: #fff; }
+    .edit-supervisor-flag .form-check-input { float: none; margin: 0; }
+    .edit-supervisor-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+    .edit-supervisor-submit, .edit-supervisor-cancel { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: .85rem 1rem; border-radius: 14px; text-decoration: none; font-weight: 700; }
+    .edit-supervisor-submit { border: none; color: #fff; background: linear-gradient(90deg, #8f2d56, #b34873); }
+    .edit-supervisor-cancel { border: 1px solid #dcc9d2; color: #35516a; background: #fff; }
+    @@media (max-width: 991.98px) { .edit-supervisor-banner-top, .edit-supervisor-actions { flex-direction: column; align-items: stretch; } .edit-supervisor-back, .edit-supervisor-submit, .edit-supervisor-cancel { width: 100%; } }
+</style>
+
+<div class="committee-page">
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
+    }
+
+    <div class="edit-supervisor-page">
+        <section class="edit-supervisor-banner">
+            <div class="edit-supervisor-banner-top">
+                <div>
+                    <div class="edit-supervisor-kicker">Edit Supervisor</div>
+                    <h3 class="edit-supervisor-title">Update the selected supervisor record.</h3>
+                    <p class="edit-supervisor-copy">Maintain supervisor contact details, faculty and campus placement, active status, and committee portal access from this dedicated page.</p>
+                </div>
+                <a href="/Committee/UniSupervisors" class="edit-supervisor-back">Back to Supervisors</a>
+            </div>
+        </section>
+
+        <section class="edit-supervisor-card">
+            <form method="post" asp-page-handler="Save">
+                <input asp-for="Input.staffId" type="hidden" />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Staff ID</label>
+                        <input value="@Model.Input.staffId" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-8">
+                        <label asp-for="Input.name" class="form-label">Name</label>
+                        <input asp-for="Input.name" class="form-control" />
+                        <span asp-validation-for="Input.name" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.email" class="form-label">Email</label>
+                        <input asp-for="Input.email" class="form-control" />
+                        <span asp-validation-for="Input.email" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.contact" class="form-label">Contact</label>
+                        <input asp-for="Input.contact" class="form-control" />
+                        <span asp-validation-for="Input.contact" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.faculty" class="form-label">Faculty</label>
+                        <select asp-for="Input.faculty" asp-items="Model.FacultyOptions" class="form-select">
+                            <option value="">-- Select Faculty --</option>
+                        </select>
+                        <span asp-validation-for="Input.faculty" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Input.campus" class="form-label">Campus</label>
+                        <select asp-for="Input.campus" asp-items="Model.CampusOptions" class="form-select">
+                            <option value="">-- Select Campus --</option>
+                        </select>
+                        <span asp-validation-for="Input.campus" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Input.remark" class="form-label">Remark</label>
+                        <input asp-for="Input.remark" class="form-control" />
+                        <span asp-validation-for="Input.remark" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12">
+                        <div class="edit-supervisor-flag-row">
+                            <label class="edit-supervisor-flag">
+                                <input asp-for="Input.isActive" class="form-check-input" />
+                                <span>Active</span>
+                            </label>
+                            <label class="edit-supervisor-flag">
+                                <input asp-for="Input.isCommittee" class="form-check-input" />
+                                <span>Committee Access</span>
+                            </label>
+                        </div>
+                        <span asp-validation-for="Input.isActive" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="edit-supervisor-actions">
+                    <button type="submit" class="edit-supervisor-submit">Update Supervisor</button>
+                    <a href="/Committee/UniSupervisors" class="edit-supervisor-cancel">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

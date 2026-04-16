@@ -358,17 +358,9 @@
                             </div>
 
                             <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="signup-label">Programming</label>
-                                    <textarea asp-for="Student.programmingKnowledge" class="form-control signup-textarea"></textarea>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="signup-label">Database</label>
-                                    <textarea asp-for="Student.databaseKnowledge" class="form-control signup-textarea"></textarea>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="signup-label">Networking</label>
-                                    <textarea asp-for="Student.networkingKnowledge" class="form-control signup-textarea"></textarea>
+                                <div class="col-12">
+                                    <label class="signup-label">Knowledge</label>
+                                    <textarea asp-for="Student.Knowledge" class="form-control signup-textarea" maxlength="255"></textarea>
                                 </div>
                             </div>
                         </section>

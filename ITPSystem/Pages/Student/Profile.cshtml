@@ -424,19 +424,9 @@
                                 <textarea asp-for="Input.healthRemark" class="form-control profile-textarea"></textarea>
                             </div>
 
-                            <div class="profile-field">
-                                <label asp-for="Input.programmingKnowledge" class="profile-label">Programming</label>
-                                <input asp-for="Input.programmingKnowledge" class="form-control profile-input" />
-                            </div>
-
-                            <div class="profile-field">
-                                <label asp-for="Input.databaseKnowledge" class="profile-label">Database</label>
-                                <input asp-for="Input.databaseKnowledge" class="form-control profile-input" />
-                            </div>
-
                             <div class="profile-field profile-field-full">
-                                <label asp-for="Input.networkingKnowledge" class="profile-label">Networking</label>
-                                <input asp-for="Input.networkingKnowledge" class="form-control profile-input" />
+                                <label asp-for="Input.Knowledge" class="profile-label">Knowledge</label>
+                                <input asp-for="Input.Knowledge" class="form-control profile-input" maxlength="255" />
                             </div>
                         </div>
 

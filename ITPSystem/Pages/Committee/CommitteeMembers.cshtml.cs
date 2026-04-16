@@ -21,26 +21,7 @@ public class CommitteeMembersModel : CommitteePageModelBase
             return RedirectToPage("/Login/CommitteeLogin");
         }
 
-        var sysUsers = _db.SysUsers.AsNoTracking()
-            .Where(u => u.role == "committee")
-            .Select(u => new CommitteeMemberRow
-            {
-                staffId = _db.UcSupervisors
-                    .Where(s => s.email == u.email)
-                    .Select(s => s.staffId)
-                    .FirstOrDefault(),
-                name = _db.UcSupervisors
-                    .Where(s => s.email == u.email)
-                    .Select(s => s.name)
-                    .FirstOrDefault(),
-                username = u.username,
-                email = u.email,
-                is_active = u.is_active,
-                is_locked = u.is_locked
-            })
-            .ToList();
-
-        var supervisors = _db.UcSupervisors.AsNoTracking()
+        Members = _db.UcSupervisors.AsNoTracking()
             .Where(s => s.isCommittee)
             .Select(s => new CommitteeMemberRow
             {
@@ -51,12 +32,6 @@ public class CommitteeMembersModel : CommitteePageModelBase
                 is_active = s.isActive,
                 is_locked = null
             })
-            .ToList();
-
-        Members = sysUsers
-            .Concat(supervisors)
-            .GroupBy(m => (m.email ?? string.Empty).Trim().ToLowerInvariant())
-            .Select(g => g.First())
             .OrderBy(m => m.username)
             .ToList();
 

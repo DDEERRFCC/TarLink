@@ -31,10 +31,10 @@ namespace ITPSystem.Models
 
         public bool isCommittee { get; set; }
 
-        [StringLength(45)]
+        [StringLength(100)]
         public string? faculty { get; set; }
 
-        [StringLength(45)]
+        [StringLength(100)]
         public string? campus { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

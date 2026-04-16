@@ -1,0 +1,233 @@
+@page
+@model ITPSystem.Pages.Supervisor.SentNotificationDetailModel
+@{
+    ViewData["Title"] = "Sent Notification Details";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+        --itp-bg-1: #f5efe4;
+        --itp-bg-2: #edf4f4;
+        --itp-bg-3: #f9fbfc;
+        --itp-text: #182536;
+        --itp-muted: #617082;
+        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-border: rgba(24, 37, 54, 0.09);
+    }
+
+    .sv-portal {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background:
+            radial-gradient(circle at 8% 8%, rgba(217, 119, 6, 0.18) 0%, transparent 25%),
+            radial-gradient(circle at 88% 14%, rgba(15, 123, 108, 0.16) 0%, transparent 23%),
+            linear-gradient(160deg, var(--itp-bg-1), var(--itp-bg-2) 52%, var(--itp-bg-3));
+        padding: 2rem 0 2.5rem;
+    }
+
+    .itp-shell {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .sv-shell {
+        background: var(--itp-card);
+        border: 1px solid var(--itp-border);
+        border-radius: 22px;
+        padding: 1.2rem;
+        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
+        backdrop-filter: blur(10px);
+    }
+
+    .sv-title { color: var(--itp-text); font-weight: 700; }
+    .sv-muted { color: var(--itp-muted); }
+    .notification-detail {
+        background: #f9fbfc;
+        border: 1px solid var(--itp-border);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+    .notification-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+    }
+    .notification-message {
+        background: white;
+        border: 1px solid var(--itp-border);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+        line-height: 1.6;
+    }
+    .receivers-list {
+        background: white;
+        border: 1px solid var(--itp-border);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    .receiver-item {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .receiver-item:last-child {
+        border-bottom: none;
+    }
+    .btn-group-sm .btn {
+        margin-right: 0.5rem;
+    }
+    .edit-form {
+        display: none;
+    }
+    .edit-form.show {
+        display: block;
+    }
+</style>
+
+<div class="sv-portal">
+    <div class="itp-shell">
+        <div class="sv-shell">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="sv-title mb-0">Sent Notification Details</h2>
+                <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Notifications">Back to Notifications</a>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Message))
+            {
+                <div class="alert @(Model.IsSuccess ? "alert-success" : "alert-danger")">
+                    @Model.Message
+                </div>
+            }
+
+            @if (Model.Notification == null)
+            {
+                <div class="alert alert-danger">Notification not found.</div>
+            }
+            else
+            {
+                <div class="notification-detail">
+                    <div class="notification-header">
+                        <div>
+                            <h4 class="mb-2">@Model.Notification.title</h4>
+                            <p class="sv-muted mb-1">
+                                <strong>Sent:</strong> @Model.Notification.created_at.ToString("yyyy-MM-dd HH:mm")
+                            </p>
+                            <p class="sv-muted mb-1">
+                                <strong>Type:</strong> @Model.Notification.type
+                            </p>
+                            <p class="sv-muted mb-0">
+                                <strong>Recipients:</strong> @Model.Receivers.Count student(s)
+                            </p>
+                        </div>
+                        <div class="btn-group-sm">
+                            <button type="button" class="btn btn-outline-primary" onclick="toggleEdit()">Edit Message</button>
+                            <form method="post" asp-page-handler="Delete" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this notification?')">
+                                <input type="hidden" name="notificationId" value="@Model.notificationId" />
+                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <!-- View Mode -->
+                    <div id="viewMode">
+                        <h5>Message</h5>
+                        <div class="notification-message">
+                            @if (string.IsNullOrWhiteSpace(Model.Notification.message))
+                            {
+                                <em class="sv-muted">No message provided.</em>
+                            }
+                            else
+                            {
+                                <p>@Model.Notification.message</p>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Edit Mode -->
+                    <div id="editMode" class="edit-form">
+                        <form method="post" asp-page-handler="Update">
+                            <input type="hidden" name="notificationId" value="@Model.notificationId" />
+                            <h5>Edit Message</h5>
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" name="Title" id="title" class="form-control" value="@Model.Notification.title" required maxlength="255" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea name="NotificationMessage" id="message" class="form-control" rows="5" required>@Model.Notification.message</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary btn-sm">Update Notification</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="toggleEdit()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr />
+
+                    <h5>Recipients (@Model.Receivers.Count)</h5>
+                    <div class="receivers-list">
+                        @if (Model.Receivers.Count == 0)
+                        {
+                            <p class="sv-muted">No recipients found.</p>
+                        }
+                        @if (Model.Receivers.Count > 0)
+                        {
+                            @foreach (var receiver in Model.Receivers)
+                            {
+                                <div class="receiver-item">
+                                    <div>
+                                        <strong>@receiver.StudentName</strong> (@receiver.StudentId)
+                                        <br />
+                                        <small class="sv-muted">@receiver.StudentEmail</small>
+                                    </div>
+                                    <div>
+                                        @if (receiver.IsRead)
+                                        {
+                                            <span class="badge bg-success">Read</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Unread</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+
+                    <p>Notification content here</p>
+                </div>
+            }  <!-- closing else block -->
+
+<script>
+    function toggleEdit() {
+        const viewMode = document.getElementById('viewMode');
+        const editMode = document.getElementById('editMode');
+
+        if (editMode.classList.contains('show')) {
+            editMode.classList.remove('show');
+            viewMode.style.display = 'block';
+        } else {
+            editMode.classList.add('show');
+            viewMode.style.display = 'none';
+        }
+    }
+</script>
+
+        </div>  <!-- closing sv-shell -->
+    </div>  <!-- closing itp-shell -->
+</div>  <!-- closing sv-portal -->

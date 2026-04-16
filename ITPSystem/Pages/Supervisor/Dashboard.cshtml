@@ -294,6 +294,7 @@
                             <tr>
                                 <th>Student</th>
                                 <th>ID</th>
+                                <th>Email</th>
                                 <th>Company</th>
                                 <th>Status</th>
                                 <th>Allowance</th>
@@ -309,6 +310,7 @@
                                 <tr>
                                     <td>@s.studentName</td>
                                     <td>@s.studentID</td>
+                                    <td>@(string.IsNullOrWhiteSpace(s.studentEmail) ? "-" : s.studentEmail)</td>
                                     <td>@(string.IsNullOrWhiteSpace(s.comName) ? "-" : s.comName)</td>
                                     <td><span class="sv-chip @chip">@s.applyStatus</span></td>
                                     <td>@(s.allowance?.ToString("0.00") ?? "-")</td>

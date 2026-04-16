@@ -71,11 +71,11 @@ namespace ITPSystem.Pages.Supervisor
                     var hasFinalReport = _db.ProgressReports.AsNoTracking()
                         .Any(r => r.applicantId == appId
                                   && r.reportType == "final"
-                                  && r.status >= 1
-                                  && !string.IsNullOrWhiteSpace(r.file_path));
+                                  && !string.IsNullOrWhiteSpace(r.file_path)
+                                  && (r.status == 1 || r.status == 2 || r.status == 4));
                     if (!hasFinalReport)
                     {
-                        ModelState.AddModelError(nameof(Input.ApplicationId), "Final report not submitted yet. Assessment marks can only be submitted after final report submission.");
+                        ModelState.AddModelError(nameof(Input.ApplicationId), "Final report not submitted yet. Assessment marks can only be submitted after the final report is uploaded.");
                     }
                 }
             }
@@ -159,7 +159,9 @@ namespace ITPSystem.Pages.Supervisor
             }
             _db.SaveChanges();
 
-            var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == appId);
+            var studentUser = supervisorId > 0
+                ? _db.SysUsers.FirstOrDefault(u => u.application_id == appId)
+                : null;
             if (studentUser != null)
             {
                 _db.Notifications.Add(new Notification
@@ -299,7 +301,7 @@ namespace ITPSystem.Pages.Supervisor
                 .ToDictionary(g => g.Key, g => g.First());
 
             FinalReportSubmittedIds = finalReports
-                .Where(kvp => kvp.Value.status >= 1 && !string.IsNullOrWhiteSpace(kvp.Value.file_path))
+                .Where(kvp => IsFinalReportReadyForAssessment(kvp.Value, kvp.Key))
                 .Select(kvp => kvp.Key)
                 .ToHashSet();
 
@@ -331,7 +333,16 @@ namespace ITPSystem.Pages.Supervisor
             userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
             var rawUserId = HttpContext.Session.GetString("UserID");
-            return role == "supervisor" && int.TryParse(rawUserId, out userId) && !string.IsNullOrWhiteSpace(userEmail);
+            int.TryParse(rawUserId, out userId);
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(userEmail);
+        }
+
+        private static bool IsFinalReportReadyForAssessment(ProgressReport report, int applicationId)
+        {
+            return report.applicantId == applicationId
+                && string.Equals(report.reportType, "final", StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(report.file_path)
+                && (report.status == 1 || report.status == 2 || report.status == 4);
         }
 
         public class MarkViewItem

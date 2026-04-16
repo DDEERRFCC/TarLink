@@ -226,7 +226,8 @@ namespace ITPSystem.Pages.Supervisor
             userId = 0;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
             var rawUserId = HttpContext.Session.GetString("UserID");
-            return role == "supervisor" && int.TryParse(rawUserId, out userId);
+            int.TryParse(rawUserId, out userId);
+            return role == "supervisor";
         }
 
         private static string EscapeCsv(string? value)

@@ -5191,14 +5191,6 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\runtimes\win-x64\native\krb5_64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\runtimes\win-x64\native\krbcc64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\ITPSystem.staticwebassets.runtime.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\appsettings.Development.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\appsettings.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\Data\assistant-knowledge.json
@@ -5207,14 +5199,6 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\bin_verify\appsettings.Development.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\bin_verify\appsettings.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
@@ -5223,14 +5207,6 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify2\appsettings.Development.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify2\appsettings.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify2\bin_verify\appsettings.Development.json
@@ -5364,38 +5340,6 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify2\runtimes\win-x64\native\krb5_64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify2\runtimes\win-x64\native\krbcc64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify2\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify2\ITPSystem.staticwebassets.runtime.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify3\appsettings.Development.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify3\appsettings.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify3\bin_verify2\appsettings.Development.json
@@ -5561,70 +5505,6 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify3\runtimes\win-x64\native\krb5_64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify3\runtimes\win-x64\native\krbcc64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify3\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify2\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify3\ITPSystem.staticwebassets.runtime.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify4\appsettings.Development.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify4\appsettings.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify4\bin_verify2\appsettings.Development.json
@@ -5854,134 +5734,6 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify4\runtimes\win-x64\native\krb5_64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify4\runtimes\win-x64\native\krbcc64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin_verify4\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify2\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify2\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify3\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\appsettings.Development.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\appsettings.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\bin_verify\ITPSystem.staticwebassets.runtime.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\Data\assistant-knowledge.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\global.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\ITPSystem.deps.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\ITPSystem.runtimeconfig.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\ITPSystem.staticwebassets.endpoints.json
-C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\bin\Debug\net8.0\bin_verify4\ITPSystem.staticwebassets.runtime.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin\verify-announcement-notify\appsettings.Development.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin\verify-announcement-notify\appsettings.json
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin\verify-announcement-notify\bin_verify2\appsettings.Development.json
@@ -6340,6 +6092,249 @@ C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin\verify-announcement-notify\runtimes\win-x64\native\krb5_64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin\verify-announcement-notify\runtimes\win-x64\native\krbcc64.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\bin\verify-announcement-notify\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\appsettings.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Data\assistant-knowledge.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\global.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ITPSystem.staticwebassets.runtime.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ITPSystem.exe
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ITPSystem.deps.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ITPSystem.runtimeconfig.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ITPSystem.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ITPSystem.pdb
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ClosedXML.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ClosedXML.Parser.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\DocumentFormat.OpenXml.Framework.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ExcelNumberFormat.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Google.Protobuf.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Humanizer.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\K4os.Compression.LZ4.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\K4os.Compression.LZ4.Streams.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\K4os.Hash.xxHash.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\MySql.Data.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\RBush.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\SixLabors.Fonts.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Composition.Convention.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Composition.Hosting.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Composition.Runtime.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Composition.TypedParts.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\System.Windows.Extensions.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ZstdSharp.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\comerr64.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\gssapi64.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\k5sprt64.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\krb5_64.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\runtimes\win-x64\native\krbcc64.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.csproj.AssemblyReference.cache
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.AssemblyInfoInputs.cache
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.AssemblyInfo.cs
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.csproj.CoreCompileInputs.cache
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.RazorAssemblyInfo.cache
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.RazorAssemblyInfo.cs
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.sourcelink.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\scopedcss\bundle\ITPSystem.styles.css
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\scopedcss\projectbundle\ITPSystem.bundle.scp.css
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.csproj.Up2Date
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\refint\ITPSystem.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.pdb
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ITPSystem.genruntimeconfig.cache
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\ref\ITPSystem.dll
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\staticwebassets\msbuild.ITPSystem.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\staticwebassets\msbuild.build.ITPSystem.props
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ITPSystem.props
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ITPSystem.props
+C:\Users\User\Downloads\FYP_Programming\FYP Programming\ITPSystem\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\appsettings.Development.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\appsettings.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Data\assistant-knowledge.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\global.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ITPSystem.staticwebassets.runtime.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ITPSystem.staticwebassets.endpoints.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ITPSystem.deps.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ITPSystem.runtimeconfig.json
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ITPSystem.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ITPSystem.pdb
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\BouncyCastle.Cryptography.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ClosedXML.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ClosedXML.Parser.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\DocumentFormat.OpenXml.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\DocumentFormat.OpenXml.Framework.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ExcelNumberFormat.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Google.Protobuf.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Humanizer.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\K4os.Compression.LZ4.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\K4os.Compression.LZ4.Streams.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\K4os.Hash.xxHash.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.CodeAnalysis.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.EntityFrameworkCore.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.Extensions.DependencyModel.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Mono.TextTemplating.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\MySql.Data.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\MySqlConnector.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\RBush.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\SixLabors.Fonts.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.CodeDom.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Composition.AttributedModel.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Composition.Convention.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Composition.Hosting.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Composition.Runtime.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Composition.TypedParts.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Configuration.ConfigurationManager.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.IO.Packaging.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Security.Cryptography.ProtectedData.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Security.Permissions.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\System.Windows.Extensions.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ZstdSharp.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\runtimes\win-x64\native\comerr64.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\runtimes\win-x64\native\gssapi64.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\runtimes\win-x64\native\k5sprt64.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\runtimes\win-x64\native\krb5_64.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\runtimes\win-x64\native\krbcc64.dll
+C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\ITPSystem\obj\verify-build\runtimes\win\lib\net8.0\System.Windows.Extensions.dll
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets\msbuild.ITPSystem.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets\msbuild.build.ITPSystem.props
 C:\Users\kimch\OneDrive\桌面\烦人的东西\Y2S3\FYP\TEMPLATE1_2\TEMPLETE 1_2\FYP Programming\itpsystem\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ITPSystem.props

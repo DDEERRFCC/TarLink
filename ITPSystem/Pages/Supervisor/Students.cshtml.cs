@@ -202,7 +202,9 @@ namespace ITPSystem.Pages.Supervisor
 
             _db.SaveChanges();
 
-            var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId);
+            var studentUser = supervisorId > 0
+                ? _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId)
+                : null;
             if (studentUser != null)
             {
                 _db.Notifications.Add(new Notification
@@ -261,8 +263,8 @@ namespace ITPSystem.Pages.Supervisor
             userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
             var rawUserId = HttpContext.Session.GetString("UserID");
+            int.TryParse(rawUserId, out userId);
             return role == "supervisor"
-                && int.TryParse(rawUserId, out userId)
                 && !string.IsNullOrWhiteSpace(userEmail);
         }
     }

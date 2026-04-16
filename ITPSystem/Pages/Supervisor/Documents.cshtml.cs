@@ -130,15 +130,18 @@ namespace ITPSystem.Pages.Supervisor
                 return RedirectToPage(new { applicationId });
             }
 
-            _db.DocumentReviews.Add(new DocumentReview
+            if (supervisorId > 0)
             {
-                application_id = applicationId,
-                reviewed_by = supervisorId,
-                document_type = "application",
-                status = status,
-                remarks = remarks,
-                reviewed_at = DateTime.UtcNow
-            });
+                _db.DocumentReviews.Add(new DocumentReview
+                {
+                    application_id = applicationId,
+                    reviewed_by = supervisorId,
+                    document_type = "application",
+                    status = status,
+                    remarks = remarks,
+                    reviewed_at = DateTime.UtcNow
+                });
+            }
 
             student.applyStatus = status;
             if (!string.IsNullOrWhiteSpace(remarks))
@@ -148,7 +151,9 @@ namespace ITPSystem.Pages.Supervisor
             student.updated_at = DateTime.UtcNow;
             _db.SaveChanges();
 
-            var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId);
+            var studentUser = supervisorId > 0
+                ? _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId)
+                : null;
             if (studentUser != null)
             {
                 _db.Notifications.Add(new Notification
@@ -192,7 +197,8 @@ namespace ITPSystem.Pages.Supervisor
             userId = 0;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
             var rawUserId = HttpContext.Session.GetString("UserID");
-            return role == "supervisor" && int.TryParse(rawUserId, out userId);
+            int.TryParse(rawUserId, out userId);
+            return role == "supervisor";
         }
     }
 }

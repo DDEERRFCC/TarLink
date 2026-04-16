@@ -116,18 +116,16 @@
                     <div class="card-header sv-card-header-plain"><strong>Account Details</strong></div>
                     <div class="card-body">
                         <table class="table table-sm mb-0 sv-table sv-table-plain">
-                            <tr><th style="width: 40%;">Username</th><td>@Model.Supervisor.username</td></tr>
+                            <tr><th style="width: 40%;">Staff ID</th><td>@Model.Supervisor.staffId</td></tr>
+                            <tr><th>Name</th><td>@Model.Supervisor.name</td></tr>
                             <tr><th>Email</th><td>@Model.Supervisor.email</td></tr>
-                            <tr><th>IC Number</th><td>@(string.IsNullOrWhiteSpace(Model.Supervisor.ic_number) ? "-" : Model.Supervisor.ic_number)</td></tr>
-                            <tr><th>Role</th><td>@Model.Supervisor.role</td></tr>
-                            <tr><th>Account Active</th><td>@(Model.Supervisor.is_active ? "Yes" : "No")</td></tr>
-                            <tr><th>Account Locked</th><td>@(Model.Supervisor.is_locked ? "Yes" : "No")</td></tr>
-                            <tr><th>Login Attempts</th><td>@Model.Supervisor.login_attempts</td></tr>
-                            <tr><th>Last Login</th><td>@(Model.Supervisor.last_login_at?.ToString("dd MMM yyyy, hh:mm tt") ?? "-")</td></tr>
-                            <tr><th>Password Changed</th><td>@(Model.Supervisor.password_changed_at?.ToString("dd MMM yyyy, hh:mm tt") ?? "-")</td></tr>
-                            <tr><th>Email Verified</th><td>@(Model.Supervisor.email_verified_at?.ToString("dd MMM yyyy, hh:mm tt") ?? "-")</td></tr>
+                            <tr><th>Contact</th><td>@(string.IsNullOrWhiteSpace(Model.Supervisor.contact) ? "-" : Model.Supervisor.contact)</td></tr>
+                            <tr><th>Faculty</th><td>@(string.IsNullOrWhiteSpace(Model.Supervisor.faculty) ? "-" : Model.Supervisor.faculty)</td></tr>
+                            <tr><th>Campus</th><td>@(string.IsNullOrWhiteSpace(Model.Supervisor.campus) ? "-" : Model.Supervisor.campus)</td></tr>
+                            <tr><th>Account Active</th><td>@(Model.Supervisor.isActive ? "Yes" : "No")</td></tr>
+                            <tr><th>Committee Access</th><td>@(Model.Supervisor.isCommittee ? "Yes" : "No")</td></tr>
+                            <tr><th>Remark</th><td>@(string.IsNullOrWhiteSpace(Model.Supervisor.remark) ? "-" : Model.Supervisor.remark)</td></tr>
                             <tr><th>Created At</th><td>@Model.Supervisor.created_at.ToString("dd MMM yyyy, hh:mm tt")</td></tr>
-                            <tr><th>Updated At</th><td>@Model.Supervisor.updated_at.ToString("dd MMM yyyy, hh:mm tt")</td></tr>
                         </table>
                     </div>
                 </div>
