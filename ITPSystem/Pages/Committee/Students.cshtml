@@ -504,6 +504,15 @@
         white-space: nowrap;
     }
 
+    .student-list-action-stack {
+        display: grid;
+        gap: .45rem;
+    }
+
+    .student-list-action-secondary {
+        background: linear-gradient(90deg, #35516a, #58748d);
+    }
+
     .student-list-empty {
         padding: 3rem 1.2rem;
         text-align: center;
@@ -736,7 +745,7 @@
                         <h3 class="student-list-section-title">Student Directory</h3>
                         <p class="student-list-section-copy">A cleaner operational view of student records, company placement details, committee remarks, and review status.</p>
                     </div>
-                    <div class="student-list-table-meta">Updated records are listed alphabetically by student name.</div>
+                    <a asp-page="/Committee/AssignSupervisor" class="student-list-action student-list-action-secondary">Assign Supervisor</a>
                 </div>
 
                 <div class="student-list-table-wrap">
@@ -838,9 +847,11 @@
                                                 <span class="student-status-badge @statusClass">@(string.IsNullOrWhiteSpace(s.applyStatus) ? "Unknown" : s.applyStatus)</span>
                                             </td>
                                             <td>
-                                                <a class="student-list-action"
-                                                   asp-page="/Committee/StudentDetails"
-                                                   asp-route-applicationId="@s.application_id">View</a>
+                                                <div class="student-list-action-stack">
+                                                    <a class="student-list-action"
+                                                       asp-page="/Committee/StudentDetails"
+                                                       asp-route-applicationId="@s.application_id">View</a>
+                                                </div>
                                             </td>
                                         </tr>
                                         no++;

@@ -23,7 +23,7 @@ namespace ITPSystem.Models
 
         public DateTime dueDate { get; set; }
 
-        public byte status { get; set; } // 0=pending,1=submitted,2=approved,3=rejected
+        public byte status { get; set; } // 0=pending,1=submitted,2=approved,3=rejected,4=submitted late
         public string? remark { get; set; }
         [StringLength(500)]
         public string? file_path { get; set; }

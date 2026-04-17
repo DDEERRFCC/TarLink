@@ -1,0 +1,649 @@
+@page
+@model CommitteeAssignSupervisorModel
+@{
+    ViewData["CommitteePageTitle"] = "Assign Supervisor";
+    var programmeOptions = Model.Students
+        .Select(s => s.Programme)
+        .Where(p => !string.IsNullOrWhiteSpace(p))
+        .Distinct()
+        .OrderBy(p => p)
+        .ToList();
+    var supervisorOptionsJson = System.Text.Json.JsonSerializer.Serialize(Model.SupervisorOptions);
+}
+
+<style>
+    .assign-supervisor-shell {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .assign-supervisor-banner,
+    .assign-supervisor-card {
+        border: 1px solid #eadce2;
+        border-radius: 24px;
+        background: linear-gradient(180deg, #ffffff, #fff9fb);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .assign-supervisor-banner {
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(135deg, #132238, #8f2d56 58%, #b34873);
+    }
+
+    .assign-supervisor-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .assign-supervisor-banner-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .assign-supervisor-kicker {
+        display: inline-flex;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .assign-supervisor-title {
+        margin: .6rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.1rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .assign-supervisor-copy {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .assign-supervisor-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #e6cdd7;
+        background: linear-gradient(180deg, #ffffff, #f5fbff);
+        color: #4f3041;
+        font-weight: 700;
+        white-space: nowrap;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+        transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+
+    .assign-supervisor-back-btn:hover {
+        color: #6b2847;
+        border-color: #d7a7ba;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+    }
+
+    .assign-supervisor-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #f6dfe9;
+        color: #7b264b;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .assign-supervisor-card {
+        padding: 1.15rem;
+    }
+
+    .assign-supervisor-card-title {
+        margin: 0 0 .25rem;
+        color: #132238;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .assign-supervisor-card-copy {
+        margin: 0;
+        color: #7a6673;
+        line-height: 1.7;
+    }
+
+    .assign-supervisor-form {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .assign-supervisor-filter-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(220px, .8fr);
+        gap: .85rem;
+    }
+
+    .assign-supervisor-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: .85rem;
+        padding: .85rem 1rem;
+        border-bottom: 1px solid #eadce2;
+        background: #fff9fb;
+    }
+
+    .assign-supervisor-select-all {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        color: #36506a;
+        font-size: .9rem;
+        font-weight: 700;
+    }
+
+    .assign-supervisor-select-all input {
+        margin: 0;
+    }
+
+    .assign-supervisor-counter {
+        color: #7a6673;
+        font-size: .84rem;
+        font-weight: 700;
+    }
+
+    .assign-supervisor-field label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #36506a;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .assign-supervisor-field .form-select,
+    .assign-supervisor-field .form-control {
+        border-radius: 14px;
+        border-color: #d1ddea;
+        min-height: 44px;
+        box-shadow: none;
+    }
+
+    .assign-supervisor-field .form-select:focus,
+    .assign-supervisor-field .form-control:focus {
+        border-color: #b34873;
+        box-shadow: 0 0 0 0.2rem rgba(179, 72, 115, 0.14);
+    }
+
+    .assign-supervisor-picker {
+        position: relative;
+        width: 100%;
+    }
+
+    .assign-supervisor-picker-list {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        z-index: 20;
+        display: none;
+        max-height: 260px;
+        overflow-y: auto;
+        border: 1px solid #d1ddea;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 14px 26px rgba(15, 23, 42, 0.1);
+    }
+
+    .assign-supervisor-picker-list.show {
+        display: block;
+    }
+
+    .assign-supervisor-picker-item,
+    .assign-supervisor-picker-empty {
+        padding: .72rem .9rem;
+        font-size: .92rem;
+    }
+
+    .assign-supervisor-picker-item {
+        cursor: pointer;
+        color: #102133;
+        border-bottom: 1px solid #eef3f9;
+    }
+
+    .assign-supervisor-picker-item:last-child {
+        border-bottom: 0;
+    }
+
+    .assign-supervisor-picker-item:hover {
+        background: #faf1f5;
+    }
+
+    .assign-supervisor-picker-empty {
+        color: #64748b;
+    }
+
+    .assign-supervisor-table-wrap {
+        border: 1px solid #eadce2;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .assign-supervisor-table {
+        margin-bottom: 0;
+    }
+
+    .assign-supervisor-table thead th {
+        background: #faf1f5;
+        color: #7a6673;
+        font-size: .8rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        border-bottom: 1px solid #d7e4f1;
+        white-space: nowrap;
+    }
+
+    .assign-supervisor-table tbody td {
+        vertical-align: middle;
+        color: #132238;
+    }
+
+    .assign-supervisor-row[hidden] {
+        display: none !important;
+    }
+
+    .assign-supervisor-student strong {
+        display: block;
+        color: #3c2030;
+    }
+
+    .assign-supervisor-student span,
+    .assign-supervisor-muted {
+        color: #6f8295;
+        font-size: .82rem;
+        line-height: 1.45;
+    }
+
+    .assign-supervisor-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-top: .25rem;
+    }
+
+    .assign-supervisor-save,
+    .assign-supervisor-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 150px;
+        min-height: 44px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .assign-supervisor-save {
+        border: none;
+        color: #fff;
+        background: linear-gradient(90deg, #8f2d56, #b34873);
+    }
+
+    .assign-supervisor-save:disabled {
+        opacity: .55;
+        cursor: not-allowed;
+    }
+
+    .assign-supervisor-back {
+        border: 1px solid #dcc9d2;
+        color: #35516a;
+        background: #fff;
+    }
+
+    @@media (max-width: 767.98px) {
+        .assign-supervisor-filter-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .assign-supervisor-banner-top,
+        .assign-supervisor-toolbar,
+        .assign-supervisor-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .assign-supervisor-back-btn,
+        .assign-supervisor-save,
+        .assign-supervisor-back {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="committee-page">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger mb-3">
+            <ul class="mb-0">
+                @foreach (var entry in ViewData.ModelState.Values)
+                {
+                    foreach (var error in entry.Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <div class="assign-supervisor-shell">
+        <section class="assign-supervisor-banner">
+            <div class="assign-supervisor-banner-top">
+                <div>
+                    <div class="assign-supervisor-kicker">Assign Supervisor</div>
+                    <h3 class="assign-supervisor-title">Select multiple students, then assign one supervisor.</h3>
+                    <p class="assign-supervisor-copy">Choose the students on this page, select one university supervisor, then press confirm to assign that supervisor to all selected students.</p>
+                </div>
+                <a href="/Committee/Students" class="assign-supervisor-back-btn">Back to Student List</a>
+            </div>
+        </section>
+
+        <section class="assign-supervisor-card">
+            <h4 class="assign-supervisor-card-title">Assign Supervisor To Students</h4>
+            <p class="assign-supervisor-card-copy">Pick one supervisor and select one or more students from the list below.</p>
+
+            <form method="post" class="assign-supervisor-form">
+                <div class="assign-supervisor-field">
+                    <label asp-for="Input.UcSupervisor">UC Supervisor</label>
+                    <div class="assign-supervisor-picker">
+                        <input type="text" class="form-control" id="ucSupervisorInput" value="@Model.Input.UcSupervisor" placeholder="Type or select UC supervisor" autocomplete="off" />
+                        <div id="ucSupervisorList" class="assign-supervisor-picker-list"></div>
+                    </div>
+                    <input asp-for="Input.UcSupervisor" type="hidden" id="ucSupervisorValue" />
+                    <span asp-validation-for="Input.UcSupervisor" class="text-danger"></span>
+                </div>
+
+                <div class="assign-supervisor-field">
+                    <label asp-for="Input.UcSupervisorEmail">UC Supervisor Email</label>
+                    <input asp-for="Input.UcSupervisorEmail" class="form-control" id="ucSupervisorEmailInput" readonly />
+                </div>
+
+                <div class="assign-supervisor-field">
+                    <label asp-for="Input.UcSupervisorContact">UC Supervisor Contact</label>
+                    <input asp-for="Input.UcSupervisorContact" class="form-control" id="ucSupervisorContactInput" readonly />
+                </div>
+
+                <div class="assign-supervisor-table-wrap">
+                    <div class="assign-supervisor-toolbar">
+                        <div class="assign-supervisor-filter-grid">
+                            <div class="assign-supervisor-field mb-0">
+                                <label for="studentFilterInput">Find Student</label>
+                                <input type="text" id="studentFilterInput" class="form-control" placeholder="Search by student name, ID, programme, or supervisor" />
+                            </div>
+                            <div class="assign-supervisor-field mb-0">
+                                <label for="programmeFilterSelect">Programme</label>
+                                <select id="programmeFilterSelect" class="form-select">
+                                    <option value="">-- All Programmes --</option>
+                                    @foreach (var programme in programmeOptions)
+                                    {
+                                        <option value="@programme">@programme</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center gap-3">
+                            <label class="assign-supervisor-select-all">
+                                <input type="checkbox" id="selectAllVisibleStudents" class="form-check-input" />
+                                <span>Select All Visible</span>
+                            </label>
+                            <div class="assign-supervisor-counter" id="selectedStudentCounter">0 selected</div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table assign-supervisor-table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Name</th>
+                                    <th>Programme</th>
+                                    <th>Current Supervisor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (!Model.Students.Any())
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 assign-supervisor-muted">No students found.</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var student in Model.Students)
+                                    {
+                                        <tr class="assign-supervisor-row"
+                                            data-student-name="@student.StudentName"
+                                            data-student-id="@student.StudentId"
+                                            data-programme="@student.Programme"
+                                            data-supervisor="@student.SupervisorName">
+                                            <td>
+                                                <input type="checkbox"
+                                                       class="form-check-input assign-student-checkbox"
+                                                       name="Input.ApplicationIds"
+                                                       value="@student.ApplicationId"
+                                                       aria-label="Select @student.StudentName" />
+                                            </td>
+                                            <td class="assign-supervisor-student">
+                                                <strong>@student.StudentName</strong>
+                                                <span>@student.StudentId</span>
+                                            </td>
+                                            <td>@(string.IsNullOrWhiteSpace(student.Programme) ? "-" : student.Programme)</td>
+                                            <td>@(string.IsNullOrWhiteSpace(student.SupervisorName) ? "-" : student.SupervisorName)</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="assign-supervisor-actions">
+                    <button type="submit" class="assign-supervisor-save" id="confirmAssignButton" disabled>Confirm Assignment</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const supervisorOptions = @Html.Raw(supervisorOptionsJson);
+            const supervisorInput = document.getElementById("ucSupervisorInput");
+            const supervisorValue = document.getElementById("ucSupervisorValue");
+            const supervisorList = document.getElementById("ucSupervisorList");
+            const supervisorEmailInput = document.getElementById("ucSupervisorEmailInput");
+            const supervisorContactInput = document.getElementById("ucSupervisorContactInput");
+            const studentCheckboxes = Array.from(document.querySelectorAll(".assign-student-checkbox"));
+            const studentRows = Array.from(document.querySelectorAll(".assign-supervisor-row"));
+            const confirmButton = document.getElementById("confirmAssignButton");
+            const studentFilterInput = document.getElementById("studentFilterInput");
+            const programmeFilterSelect = document.getElementById("programmeFilterSelect");
+            const selectAllVisibleStudents = document.getElementById("selectAllVisibleStudents");
+            const selectedStudentCounter = document.getElementById("selectedStudentCounter");
+
+            const findSupervisorByName = (name) => {
+                const normalized = (name || "").trim().toLowerCase();
+                if (!normalized) {
+                    return null;
+                }
+
+                return supervisorOptions.find(s => ((s.name || s.Name || "").trim().toLowerCase()) === normalized) || null;
+            };
+
+            const syncSupervisorFields = () => {
+                if (!supervisorInput || !supervisorValue || !supervisorEmailInput || !supervisorContactInput) {
+                    return;
+                }
+
+                const matched = findSupervisorByName(supervisorInput.value);
+                supervisorValue.value = matched ? (matched.name || matched.Name || "") : "";
+                supervisorEmailInput.value = matched ? (matched.email || matched.Email || "") : "";
+                supervisorContactInput.value = matched ? (matched.contact || matched.Contact || "") : "";
+            };
+
+            const renderSupervisorList = () => {
+                if (!supervisorInput || !supervisorList) {
+                    return;
+                }
+
+                const query = (supervisorInput.value || "").trim().toLowerCase();
+                const filtered = supervisorOptions.filter(s => {
+                    const name = (s.name || s.Name || "").toLowerCase();
+                    return query.length === 0 || name.includes(query);
+                });
+
+                supervisorList.innerHTML = "";
+                if (filtered.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.className = "assign-supervisor-picker-empty";
+                    empty.textContent = "No supervisor found";
+                    supervisorList.appendChild(empty);
+                    return;
+                }
+
+                for (const supervisor of filtered.slice(0, 80)) {
+                    const name = supervisor.name || supervisor.Name || "";
+                    const item = document.createElement("div");
+                    item.className = "assign-supervisor-picker-item";
+                    item.textContent = name;
+                    item.addEventListener("click", () => {
+                        supervisorInput.value = name;
+                        syncSupervisorFields();
+                        supervisorList.classList.remove("show");
+                    });
+                    supervisorList.appendChild(item);
+                }
+            };
+
+            const syncConfirmButton = () => {
+                if (!confirmButton) {
+                    return;
+                }
+
+                confirmButton.disabled = !studentCheckboxes.some(checkbox => checkbox.checked);
+            };
+
+            const syncSelectedCounter = () => {
+                if (!selectedStudentCounter) {
+                    return;
+                }
+
+                const selectedCount = studentCheckboxes.filter(checkbox => checkbox.checked).length;
+                selectedStudentCounter.textContent = `${selectedCount} selected`;
+            };
+
+            const getVisibleCheckboxes = () =>
+                studentRows
+                    .filter(row => !row.hidden)
+                    .map(row => row.querySelector(".assign-student-checkbox"))
+                    .filter(Boolean);
+
+            const syncSelectAllState = () => {
+                if (!selectAllVisibleStudents) {
+                    return;
+                }
+
+                const visibleCheckboxes = getVisibleCheckboxes();
+                const checkedVisibleCount = visibleCheckboxes.filter(checkbox => checkbox.checked).length;
+
+                selectAllVisibleStudents.checked = visibleCheckboxes.length > 0 && checkedVisibleCount === visibleCheckboxes.length;
+                selectAllVisibleStudents.indeterminate = checkedVisibleCount > 0 && checkedVisibleCount < visibleCheckboxes.length;
+            };
+
+            const applyStudentFilters = () => {
+                const keyword = (studentFilterInput?.value || "").trim().toLowerCase();
+                const selectedProgramme = (programmeFilterSelect?.value || "").trim().toLowerCase();
+
+                studentRows.forEach(row => {
+                    const searchableText = [
+                        row.dataset.studentName || "",
+                        row.dataset.studentId || "",
+                        row.dataset.programme || "",
+                        row.dataset.supervisor || ""
+                    ].join(" ").toLowerCase();
+
+                    const rowProgramme = (row.dataset.programme || "").trim().toLowerCase();
+                    const matchesKeyword = !keyword || searchableText.includes(keyword);
+                    const matchesProgramme = !selectedProgramme || rowProgramme === selectedProgramme;
+
+                    row.hidden = !(matchesKeyword && matchesProgramme);
+                });
+
+                syncSelectAllState();
+            };
+
+            syncSupervisorFields();
+            syncConfirmButton();
+            syncSelectedCounter();
+            syncSelectAllState();
+
+            supervisorInput?.addEventListener("focus", () => {
+                renderSupervisorList();
+                supervisorList?.classList.add("show");
+            });
+            supervisorInput?.addEventListener("input", () => {
+                syncSupervisorFields();
+                renderSupervisorList();
+                supervisorList?.classList.add("show");
+            });
+            supervisorInput?.addEventListener("change", syncSupervisorFields);
+            studentFilterInput?.addEventListener("input", applyStudentFilters);
+            programmeFilterSelect?.addEventListener("change", applyStudentFilters);
+
+            selectAllVisibleStudents?.addEventListener("change", () => {
+                const visibleCheckboxes = getVisibleCheckboxes();
+                visibleCheckboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllVisibleStudents.checked;
+                });
+                syncConfirmButton();
+                syncSelectedCounter();
+                syncSelectAllState();
+            });
+
+            studentCheckboxes.forEach(checkbox => checkbox.addEventListener("change", () => {
+                syncConfirmButton();
+                syncSelectedCounter();
+                syncSelectAllState();
+            }));
+
+            document.addEventListener("click", (event) => {
+                if (!supervisorList || !supervisorInput) {
+                    return;
+                }
+
+                const target = event.target;
+                if (!supervisorList.contains(target) && target !== supervisorInput) {
+                    supervisorList.classList.remove("show");
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,307 @@
+@page
+@model ITPSystem.Pages.Student.AssessmentMarksModel
+@{
+    ViewData["Title"] = "Assessment Marks";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+        --student-primary: #0f7b6c;
+        --student-accent: #d97706;
+        --student-bg: #f5efe4;
+        --student-card: rgba(255, 255, 255, 0.9);
+        --student-border: rgba(24, 37, 54, 0.09);
+    }
+
+    .marks-portal {
+        font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+        min-height: calc(100vh - 80px);
+        background: linear-gradient(160deg, var(--student-bg) 0%, #edf4f4 52%, #f9fbfc 100%);
+        padding: 2rem 0 2.5rem;
+    }
+
+    .marks-shell {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .marks-header {
+        background: linear-gradient(130deg, #132238, var(--student-primary) 58%, var(--student-accent));
+        color: #fffdf7;
+        border-radius: 22px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 22px 48px rgba(19, 34, 56, 0.18);
+    }
+
+    .marks-title {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem;
+    }
+
+    .marks-subtitle {
+        opacity: 0.9;
+        font-size: 0.95rem;
+    }
+
+    .marks-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .marks-info-item {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 1rem;
+    }
+
+    .marks-info-label {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .marks-info-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-top: 0.3rem;
+    }
+
+    .marks-card {
+        background: var(--student-card);
+        border: 1px solid var(--student-border);
+        border-radius: 18px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 10px 22px rgba(26, 40, 60, 0.06);
+    }
+
+    .marks-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .marks-table thead {
+        background: #f6fafc;
+        border-bottom: 2px solid var(--student-border);
+    }
+
+    .marks-table th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #0f172a;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .marks-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--student-border);
+    }
+
+    .marks-table tbody tr:hover {
+        background: #f9fbfc;
+    }
+
+    .marks-score {
+        font-weight: 700;
+        color: var(--student-primary);
+        font-size: 1.1rem;
+    }
+
+    .marks-percentage {
+        font-size: 0.9rem;
+        color: #617082;
+        font-weight: 500;
+    }
+
+    .marks-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .marks-bar-bg {
+        flex: 1;
+        height: 6px;
+        background: #e5e7eb;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .marks-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--student-primary), var(--student-accent));
+        border-radius: 999px;
+    }
+
+    .marks-total {
+        background: linear-gradient(135deg, rgba(15, 123, 108, 0.05), rgba(217, 119, 6, 0.05));
+        border: 2px solid var(--student-primary);
+        border-radius: 14px;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .marks-total-label {
+        color: #617082;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .marks-total-value {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--student-primary);
+        margin: 0.5rem 0;
+    }
+
+    .marks-remarks {
+        background: #fef9c3;
+        border-left: 4px solid #ca8a04;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .marks-remarks-label {
+        font-weight: 600;
+        color: #92400e;
+        margin-bottom: 0.5rem;
+    }
+
+    .marks-remarks-text {
+        color: #78350f;
+        line-height: 1.6;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #617082;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    @@media (max-width: 768px) {
+        .marks-title {
+            font-size: 1.6rem;
+        }
+        
+        .marks-table {
+            font-size: 0.85rem;
+        }
+        
+        .marks-table th,
+        .marks-table td {
+            padding: 0.75rem;
+        }
+    }
+</style>
+
+<div class="marks-portal">
+    <div class="marks-shell">
+        <div class="marks-header">
+            <h1 class="marks-title">Assessment Marks</h1>
+            <p class="marks-subtitle">Review your internship performance evaluation</p>
+
+            <div class="marks-info">
+                <div class="marks-info-item">
+                    <div class="marks-info-label">Student Name</div>
+                    <div class="marks-info-value">@Model.StudentName</div>
+                </div>
+                <div class="marks-info-item">
+                    <div class="marks-info-label">Student ID</div>
+                    <div class="marks-info-value">@Model.StudentId</div>
+                </div>
+                <div class="marks-info-item">
+                    <div class="marks-info-label">Company</div>
+                    <div class="marks-info-value">@Model.CompanyName</div>
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="marks-card">
+                <div class="alert alert-info mb-0">@Model.Message</div>
+            </div>
+        }
+        else if (Model.HasAssessments)
+        {
+            <div class="marks-card">
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Assessment Criteria</th>
+                            <th style="text-align: center;">Score</th>
+                            <th style="text-align: center;">Max</th>
+                            <th style="text-align: center;">Percentage</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var mark in Model.GroupedMarks)
+                        {
+                            <tr>
+                                <td style="font-weight: 500;">@mark.RubricItem</td>
+                                <td style="text-align: center;"><span class="marks-score">@mark.Score.ToString("F0")</span></td>
+                                <td style="text-align: center;">@mark.MaxScore.ToString("F0")</td>
+                                <td style="text-align: center;"><span class="marks-percentage">@mark.Percentage.ToString("F1")%</span></td>
+                                <td>
+                                    <div class="marks-bar">
+                                        <div class="marks-bar-bg">
+                                            <div class="marks-bar-fill" style="width: @(mark.Percentage)%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="marks-total" style="margin-top: 2rem;">
+                    <div class="marks-total-label">Total Score</div>
+                    <div class="marks-total-value">@Model.TotalScore.ToString("F0") / @Model.TotalMaxScore.ToString("F0")</div>
+                    <div class="marks-percentage">
+                        Overall: @((Model.TotalMaxScore > 0 ? Math.Round((Model.TotalScore / Model.TotalMaxScore) * 100, 2) : 0).ToString("F1"))%
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.OverallRemarks) && Model.OverallRemarks != "-")
+                {
+                    <div class="marks-remarks">
+                        <div class="marks-remarks-label">📝 Supervisor Comments</div>
+                        <div class="marks-remarks-text">@Model.OverallRemarks</div>
+                    </div>
+                }
+            </div>
+
+            <div class="marks-card" style="background: #f0fdf4; border-color: #86efac;">
+                <div style="color: #166534; font-size: 0.9rem; line-height: 1.6;">
+                    <strong>About Your Scores:</strong><br>
+                    • Progress Report Submission & Content: Evaluated based on timely submission and quality of content<br>
+                    • Final Report: Assessed on presentation quality and comprehensiveness<br>
+                    • Business Awareness: Measures your understanding of entrepreneurial opportunities<br>
+                    <strong>Total possible points: 40</strong>
+                </div>
+            </div>
+        }
+    </div>
+</div>

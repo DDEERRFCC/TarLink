@@ -621,8 +621,8 @@ VALUES (
         NULL,
         '2026-06-30',
         1,
-        'Final report not submitted',
-        NULL
+        'Final report submitted',
+        '/uploads/s1_final.pdf'
     ),
     (
         2,
@@ -660,9 +660,9 @@ VALUES (
         'final',
         NULL,
         '2026-06-30',
-        0,
-        'Awaiting final report',
-        NULL
+        4,
+        'Final report submitted late',
+        '/uploads/s2_final.pdf'
     );
 INSERT INTO blacklistcompany (
         created_at,

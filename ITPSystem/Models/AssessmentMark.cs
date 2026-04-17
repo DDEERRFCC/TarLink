@@ -10,7 +10,9 @@ namespace ITPSystem.Models
         public long mark_id { get; set; }
 
         public int application_id { get; set; }
-        public int supervisor_user_id { get; set; }
+
+        [StringLength(16)]
+        public string supervisor_staff_id { get; set; } = string.Empty;
 
         [StringLength(120)]
         [Required]

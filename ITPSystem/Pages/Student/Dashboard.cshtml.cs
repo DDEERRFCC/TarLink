@@ -51,6 +51,10 @@ public class StudentDashboardModel : PageModel
     public string CurrentOtherEvidenceFile { get; private set; } = "-";
     public string TemplateSourceLabel { get; private set; } = "-";
     public bool CanEditCompanyDetail { get; private set; } = true;
+    public bool CanEditCompanySelection { get; private set; } = true;
+    public bool CanEditCompanyUploads { get; private set; } = true;
+    public bool CanEditCompanyAllowanceAndSupervisor { get; private set; } = true;
+    public bool IsApprovedCompanyDetailLimitedEdit { get; private set; }
     public string CompanyDetailActionLabel { get; private set; } = "Submit Company Details";
     public bool CanViewProgressReport { get; private set; }
 
@@ -153,56 +157,61 @@ public class StudentDashboardModel : PageModel
 
         if (!CanEditCompanyDetailForStatus(student.applyStatus))
         {
-            TempData["ErrorMessage"] = "Company details cannot be edited unless the current status is rejected.";
+            TempData["ErrorMessage"] = "Company details cannot be edited for the current application status.";
             return RedirectToPage();
         }
 
         TryValidateModel(Input, nameof(Input));
 
         LoadCompanyOptions();
-        var selectedCompany = Input.CompanyId.HasValue
-            ? CompanyOptions.FirstOrDefault(c => c.CompanyId == Input.CompanyId.Value)
-            : null;
+        var canEditSelection = CanEditCompanySelectionForStatus(student.applyStatus);
+        var isApprovedLimitedEdit = IsApprovedLimitedCompanyEditStatus(student.applyStatus);
+        CompanyOptionItem? selectedCompany;
 
-        if (selectedCompany == null)
+        if (canEditSelection)
+        {
+            selectedCompany = Input.CompanyId.HasValue
+                ? CompanyOptions.FirstOrDefault(c => c.CompanyId == Input.CompanyId.Value)
+                : null;
+        }
+        else
+        {
+            selectedCompany = CompanyOptions.FirstOrDefault(c =>
+                string.Equals(c.Name, student.comName, StringComparison.OrdinalIgnoreCase));
+            Input.CompanyId = selectedCompany?.CompanyId;
+            Input.Address = student.comAddress;
+        }
+
+        if (canEditSelection && selectedCompany == null)
         {
             ModelState.AddModelError("", "Please select a company.");
         }
 
         var selectedAddress = (Input.Address ?? string.Empty).Trim();
-        if (selectedCompany != null && (string.IsNullOrWhiteSpace(selectedAddress) || !selectedCompany.Addresses.Contains(selectedAddress)))
+        if (canEditSelection && selectedCompany != null && (string.IsNullOrWhiteSpace(selectedAddress) || !selectedCompany.Addresses.Contains(selectedAddress)))
         {
             ModelState.AddModelError("", "Please select a valid address for the selected company.");
         }
 
-        var selectedSupervisorName = (Input.CompanySupervisorName ?? string.Empty).Trim();
-        CompanySupervisorOption? selectedSupervisor = null;
-        if (selectedCompany != null)
+        Input.CompanySupervisorName = string.IsNullOrWhiteSpace(Input.CompanySupervisorName)
+            ? null
+            : Input.CompanySupervisorName.Trim();
+        Input.CompanySupervisorEmail = string.IsNullOrWhiteSpace(Input.CompanySupervisorEmail)
+            ? null
+            : Input.CompanySupervisorEmail.Trim();
+
+        if (canEditSelection)
         {
-            selectedSupervisor = selectedCompany.Supervisors
-                .FirstOrDefault(s => string.Equals(s.Name, selectedSupervisorName, StringComparison.OrdinalIgnoreCase));
-
-            if (selectedCompany.Supervisors.Count > 0 && selectedSupervisor == null)
-            {
-                ModelState.AddModelError("", "Please select a valid company supervisor.");
-            }
-
-            if (selectedSupervisor != null)
-            {
-                Input.CompanySupervisorName = selectedSupervisor.Name;
-                Input.CompanySupervisorEmail = selectedSupervisor.Email;
-            }
+            ValidateUpload(Input.FormAcceptanceFile, "Com. Acceptance Form");
+            ValidateUpload(Input.FormAcknowledgementFile, "Parent Ack. Form");
+            ValidateUpload(Input.LetterOfIndemnityFile, "Letter of Indemnity");
+            ValidateUpload(Input.HiredEvidenceFile, "Hired evidence");
+            RequireUploadOrExistingFile(Input.FormAcceptanceFile, student.formAcceptance, "Com. Acceptance Form");
+            RequireUploadOrExistingFile(Input.FormAcknowledgementFile, student.formAcknowledgement, "Parent Ack. Form");
+            RequireUploadOrExistingFile(Input.LetterOfIndemnityFile, student.letterIdentity, "Letter of Indemnity");
         }
 
-        ValidateUpload(Input.FormAcceptanceFile, "Com. Acceptance Form");
-        ValidateUpload(Input.FormAcknowledgementFile, "Parent Ack. Form");
-        ValidateUpload(Input.LetterOfIndemnityFile, "Letter of Indemnity");
-        ValidateUpload(Input.HiredEvidenceFile, "Hired evidence");
-        RequireUploadOrExistingFile(Input.FormAcceptanceFile, student.formAcceptance, "Com. Acceptance Form");
-        RequireUploadOrExistingFile(Input.FormAcknowledgementFile, student.formAcknowledgement, "Parent Ack. Form");
-        RequireUploadOrExistingFile(Input.LetterOfIndemnityFile, student.letterIdentity, "Letter of Indemnity");
-
-        if (!ModelState.IsValid || selectedCompany == null)
+        if (!ModelState.IsValid || (canEditSelection && selectedCompany == null))
         {
             LoadStudentDashboardInfo(setInputFromDb: false);
             LoadDocuments();
@@ -211,19 +220,31 @@ public class StudentDashboardModel : PageModel
             return Page();
         }
 
-        student.comName = selectedCompany.Name;
-        student.comAddress = selectedAddress;
         student.allowance = Input.MonthlyAllowance;
         student.comSupervisor = string.IsNullOrWhiteSpace(Input.CompanySupervisorName) ? null : Input.CompanySupervisorName.Trim();
         student.comSupervisorEmail = string.IsNullOrWhiteSpace(Input.CompanySupervisorEmail) ? null : Input.CompanySupervisorEmail.Trim();
-        student.formAcceptance = SaveUploadedFile(Input.FormAcceptanceFile, "formAcceptance", student.formAcceptance, student);
-        student.formAcknowledgement = SaveUploadedFile(Input.FormAcknowledgementFile, "formAcknowledgement", student.formAcknowledgement, student);
-        student.letterIdentity = SaveUploadedFile(Input.LetterOfIndemnityFile, "letterIdentity", student.letterIdentity, student);
-        student.otherEvidence = SaveUploadedFile(Input.HiredEvidenceFile, "otherEvidence", student.otherEvidence, student);
-        student.applyStatus = "pending";
+
+        if (canEditSelection && selectedCompany != null)
+        {
+            student.comName = selectedCompany.Name;
+            student.comAddress = selectedAddress;
+            student.formAcceptance = SaveUploadedFile(Input.FormAcceptanceFile, "formAcceptance", student.formAcceptance, student);
+            student.formAcknowledgement = SaveUploadedFile(Input.FormAcknowledgementFile, "formAcknowledgement", student.formAcknowledgement, student);
+            student.letterIdentity = SaveUploadedFile(Input.LetterOfIndemnityFile, "letterIdentity", student.letterIdentity, student);
+            student.otherEvidence = SaveUploadedFile(Input.HiredEvidenceFile, "otherEvidence", student.otherEvidence, student);
+            student.applyStatus = "pending";
+        }
+
         student.updated_at = DateTime.Now;
 
         _db.SaveChanges();
+
+        if (isApprovedLimitedEdit)
+        {
+            TempData["SuccessMessage"] = "Company details updated successfully.";
+            return RedirectToPage();
+        }
+
         var emailSent = TrySendSupervisorEmail(student);
         TempData["SuccessMessage"] = emailSent
             ? "Company details submitted successfully. Status is now pending and notification email was sent to supervisor."
@@ -316,12 +337,14 @@ public class StudentDashboardModel : PageModel
             return NotFound();
         }
 
+        var generatedPdfFileName = BuildGeneratedPdfFileName(fullPath);
+
         if (string.Equals(key, "company_acceptance_letter", StringComparison.OrdinalIgnoreCase))
         {
             var fileBytes = CompanyAcceptanceLetterWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
             const string pdfContentTypeCompanyAcceptance = "application/pdf";
             return download
-                ? File(fileBytes, pdfContentTypeCompanyAcceptance, CompanyAcceptanceLetterWordTemplateBuilder.GeneratedFileName)
+                ? File(fileBytes, pdfContentTypeCompanyAcceptance, generatedPdfFileName)
                 : File(fileBytes, pdfContentTypeCompanyAcceptance);
         }
 
@@ -330,7 +353,7 @@ public class StudentDashboardModel : PageModel
             var fileBytes = IndemnityLetterWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
             const string pdfContentTypeIndemnity = "application/pdf";
             return download
-                ? File(fileBytes, pdfContentTypeIndemnity, IndemnityLetterWordTemplateBuilder.GeneratedFileName)
+                ? File(fileBytes, pdfContentTypeIndemnity, generatedPdfFileName)
                 : File(fileBytes, pdfContentTypeIndemnity);
         }
 
@@ -339,7 +362,7 @@ public class StudentDashboardModel : PageModel
             var fileBytes = ParentAcknowledgementFormWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
             const string pdfContentTypeParentAcknowledgement = "application/pdf";
             return download
-                ? File(fileBytes, pdfContentTypeParentAcknowledgement, ParentAcknowledgementFormWordTemplateBuilder.GeneratedFileName)
+                ? File(fileBytes, pdfContentTypeParentAcknowledgement, generatedPdfFileName)
                 : File(fileBytes, pdfContentTypeParentAcknowledgement);
         }
 
@@ -348,8 +371,17 @@ public class StudentDashboardModel : PageModel
             var fileBytes = StudentSupportLetterWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
             const string pdfContentTypeStudentSupport = "application/pdf";
             return download
-                ? File(fileBytes, pdfContentTypeStudentSupport, StudentSupportLetterWordTemplateBuilder.GeneratedFileName)
+                ? File(fileBytes, pdfContentTypeStudentSupport, generatedPdfFileName)
                 : File(fileBytes, pdfContentTypeStudentSupport);
+        }
+
+        if (string.Equals(key, "appointment_confirmation_letter", StringComparison.OrdinalIgnoreCase))
+        {
+            var fileBytes = AppointmentConfirmationLetterWordTemplateBuilder.BuildFromTemplatePath(student, fullPath);
+            const string pdfContentTypeAppointmentConfirmation = "application/pdf";
+            return download
+                ? File(fileBytes, pdfContentTypeAppointmentConfirmation, generatedPdfFileName)
+                : File(fileBytes, pdfContentTypeAppointmentConfirmation);
         }
 
         var safeFileName = Path.GetFileName(fullPath);
@@ -366,6 +398,14 @@ public class StudentDashboardModel : PageModel
         }
 
         return PhysicalFile(fullPath, contentType);
+    }
+
+    private static string BuildGeneratedPdfFileName(string fullPath)
+    {
+        var originalName = Path.GetFileNameWithoutExtension(fullPath);
+        return string.IsNullOrWhiteSpace(originalName)
+            ? "document.pdf"
+            : $"{originalName}.pdf";
     }
 
     private void LoadDocuments()
@@ -385,9 +425,9 @@ public class StudentDashboardModel : PageModel
             ("indemnity_letter", "Indemnity Letter", template?.indemnity_letter_path, true),
             ("company_acceptance_letter", "Company Acceptance Letter", template?.company_acceptance_letter_path, true),
             ("parent_acknowledgement_form", "Parent Acknowledgement Form", template?.parent_acknowledgement_form_path, true),
-            ("company_supervisor_evaluation_form", "Company Supervisor Evaluation Form", template?.company_supervisor_evaluation_form_path, true),
-            ("progress_report_template", "Progress Report Template", template?.progress_report_template_path, true),
-            ("final_report_template", "Final Report Template", template?.final_report_template_path, true),
+            ("company_supervisor_evaluation_form", "Company Supervisor Evaluation Form", template?.company_supervisor_evaluation_form_path, false),
+            ("progress_report_template", "Progress Report Template", template?.progress_report_template_path, false),
+            ("final_report_template", "Final Report Template", template?.final_report_template_path, false),
             ("student_support_letter", "Student Support Letter", template?.student_support_letter_path, true)
         };
 
@@ -396,8 +436,8 @@ public class StudentDashboardModel : PageModel
             {
                 Key = d.Key,
                 Title = d.Title,
-                ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = false }) ?? "#",
-                DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = true }) ?? "#",
+                ViewPath = BuildDocumentPath(d.Key, false),
+                DownloadPath = BuildDocumentPath(d.Key, true),
                 Exists = TemplateDocumentExists(d.StoredPath),
                 CanView = d.CanView
             })
@@ -409,8 +449,8 @@ public class StudentDashboardModel : PageModel
             var approvedDocs = new (string Key, string Title, string? StoredPath, bool CanView)[]
             {
                 ("appointment_confirmation_letter", "Appointment Confirmation Letter", template?.appointment_confirmation_letter_path, true),
-                ("company_supervisor_evaluation_form", "Company Supervisor Evaluation Form", template?.company_supervisor_evaluation_form_path, true),
-                ("warning_letter", "Warning Letter", template?.warning_letter_path, true)
+                ("company_supervisor_evaluation_form", "Company Supervisor Evaluation Form", template?.company_supervisor_evaluation_form_path, false),
+                ("warning_letter", "Warning Letter", template?.warning_letter_path, false)
             };
 
             ApprovedStatusDocuments = approvedDocs
@@ -418,13 +458,18 @@ public class StudentDashboardModel : PageModel
                 {
                     Key = d.Key,
                     Title = d.Title,
-                    ViewPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = false }) ?? "#",
-                    DownloadPath = Url.Page("/Student/Dashboard", "FormDocument", new { file = d.Key, download = true }) ?? "#",
+                    ViewPath = BuildDocumentPath(d.Key, false),
+                    DownloadPath = BuildDocumentPath(d.Key, true),
                     Exists = TemplateDocumentExists(d.StoredPath),
                     CanView = d.CanView
                 })
                 .ToList();
         }
+    }
+
+    private string BuildDocumentPath(string key, bool download)
+    {
+        return Url.Page("/Student/Dashboard", "FormDocument", new { file = key, download }) ?? "#";
     }
 
     private void LoadStudentDashboardInfo(bool setInputFromDb)
@@ -446,6 +491,10 @@ public class StudentDashboardModel : PageModel
         Status = string.IsNullOrWhiteSpace(student.applyStatus) ? "None" : student.applyStatus;
         Remark = string.IsNullOrWhiteSpace(student.remark) ? "-" : student.remark;
         CanEditCompanyDetail = CanEditCompanyDetailForStatus(student.applyStatus);
+        CanEditCompanySelection = CanEditCompanySelectionForStatus(student.applyStatus);
+        CanEditCompanyUploads = CanEditCompanySelection;
+        CanEditCompanyAllowanceAndSupervisor = CanEditCompanyDetail;
+        IsApprovedCompanyDetailLimitedEdit = IsApprovedLimitedCompanyEditStatus(student.applyStatus);
         CompanyDetailActionLabel = GetCompanyDetailActionLabel(student.applyStatus);
         CanViewProgressReport = string.Equals(Status?.Trim(), "Approved", StringComparison.OrdinalIgnoreCase);
         CalculateInternshipProgress(student.Cohort, Status);
@@ -590,22 +639,6 @@ public class StudentDashboardModel : PageModel
 
     private void LoadCompanyOptions()
     {
-        var supervisorOptions = _db.UcSupervisors.AsNoTracking()
-            .Where(s => s.isActive && !string.IsNullOrWhiteSpace(s.name))
-            .Select(s => new CompanySupervisorOption
-            {
-                Name = s.name.Trim(),
-                Email = string.IsNullOrWhiteSpace(s.email) ? null : s.email.Trim()
-            })
-            .ToList()
-            .Where(s => !string.IsNullOrWhiteSpace(s.Name))
-            .GroupBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
-            .Select(g => g
-                .OrderByDescending(x => !string.IsNullOrWhiteSpace(x.Email))
-                .First())
-            .OrderBy(s => s.Name)
-            .ToList();
-
         var companies = _db.Companies.AsNoTracking()
             .Include(c => c.Branches)
             .Where(c => c.Branches.Any(b => (b.status ?? 0) == 1 && (b.visibility ?? 1) == 1))
@@ -625,7 +658,7 @@ public class StudentDashboardModel : PageModel
                     .Where(a => !string.IsNullOrWhiteSpace(a))
                     .Distinct(StringComparer.OrdinalIgnoreCase)
                     .ToList(),
-                Supervisors = supervisorOptions
+                Supervisors = new List<CompanySupervisorOption>()
             })
             .Where(c => c.Addresses.Count > 0)
             .ToList();
@@ -901,7 +934,23 @@ public class StudentDashboardModel : PageModel
         var normalizedStatus = (applyStatus ?? string.Empty).Trim().ToLowerInvariant();
         return string.IsNullOrWhiteSpace(normalizedStatus)
             || normalizedStatus == "none"
+            || normalizedStatus == "pending"
+            || normalizedStatus == "approved"
             || normalizedStatus == "rejected";
+    }
+
+    private static bool CanEditCompanySelectionForStatus(string? applyStatus)
+    {
+        var normalizedStatus = (applyStatus ?? string.Empty).Trim().ToLowerInvariant();
+        return string.IsNullOrWhiteSpace(normalizedStatus)
+            || normalizedStatus == "none"
+            || normalizedStatus == "pending"
+            || normalizedStatus == "rejected";
+    }
+
+    private static bool IsApprovedLimitedCompanyEditStatus(string? applyStatus)
+    {
+        return string.Equals((applyStatus ?? string.Empty).Trim(), "approved", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string GetCompanyDetailActionLabel(string? applyStatus)
@@ -910,6 +959,7 @@ public class StudentDashboardModel : PageModel
         return normalizedStatus switch
         {
             "rejected" => "Resubmit Company Details",
+            "approved" => "Update Company Details",
             _ => "Submit Company Details"
         };
     }

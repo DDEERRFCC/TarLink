@@ -221,13 +221,13 @@ namespace ITPSystem.Pages.Supervisor
             };
         }
 
-        private bool IsSupervisor(out int userId)
+        private bool IsSupervisor(out string supervisorStaffId)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            int.TryParse(rawUserId, out userId);
-            return role == "supervisor";
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
+            var userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(supervisorStaffId) && !string.IsNullOrWhiteSpace(userEmail);
         }
 
         private static string EscapeCsv(string? value)

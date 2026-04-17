@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.IO.Compression;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Runtime.Versioning;
 using System.Text;
 using ITPSystem.Models;
@@ -14,12 +13,17 @@ public static class ParentAcknowledgementFormWordTemplateBuilder
     private const string LetterDatePlaceholder = "<DATE>";
     private const string StartDatePlaceholder = "<START DATE>";
     private const string EndDatePlaceholder = "<END DATE>";
+    private const string CurlyLetterDatePlaceholder = "{DATE}";
+    private const string CurlyStartDatePlaceholder = "{START DATE}";
+    private const string CurlyEndDatePlaceholder = "{END DATE}";
     private const string EncodedLetterDatePlaceholder = "&lt;DATE&gt;";
     private const string EncodedStartDatePlaceholder = "&lt;START DATE&gt;";
     private const string EncodedEndDatePlaceholder = "&lt;END DATE&gt;";
-    private const string TrainingRangePattern = @"Industrial Training\s*\(\s*(?:&lt;START DATE&gt;|<START DATE>)\s*to\s*(?:&lt;END DATE&gt;|<END DATE>)\s*\)";
     private const string ReturnDatePrefixPlaceholder = "DD-MM-";
     private const string ReturnDateSuffixPlaceholder = "YYYY";
+    private const string HighlightTag = "<w:highlight w:val=\"yellow\"/>";
+    private const string LowerTrainingLinePlaceholder =
+        "<w:t>Industrial Training (</w:t></w:r><w:r w:rsidR=\"009D0BD7\"><w:rPr><w:b/><w:u w:val=\"single\"/></w:rPr><w:t>{</w:t></w:r><w:r w:rsidRPr=\"002F407C\"><w:rPr><w:b/><w:highlight w:val=\"yellow\"/><w:u w:val=\"single\"/></w:rPr><w:t>START DATE</w:t></w:r><w:r w:rsidR=\"009D0BD7\"><w:rPr><w:b/><w:u w:val=\"single\"/></w:rPr><w:t>}</w:t></w:r><w:r w:rsidRPr=\"008918D4\"><w:rPr><w:b/><w:u w:val=\"single\"/></w:rPr><w:t xml:space=\"preserve\"> </w:t></w:r><w:r w:rsidRPr=\"008918D4\"><w:rPr><w:b/><w:sz w:val=\"22\"/><w:szCs w:val=\"22\"/><w:u w:val=\"single\"/></w:rPr><w:t xml:space=\"preserve\">to </w:t></w:r><w:r w:rsidR=\"009D0BD7\"><w:rPr><w:b/><w:u w:val=\"single\"/></w:rPr><w:t>{</w:t></w:r><w:r w:rsidRPr=\"002F407C\"><w:rPr><w:b/><w:highlight w:val=\"yellow\"/><w:u w:val=\"single\"/></w:rPr><w:t>END DATE</w:t></w:r><w:r w:rsidR=\"009D0BD7\"><w:rPr><w:b/><w:u w:val=\"single\"/></w:rPr><w:t>}</w:t></w:r><w:r w:rsidRPr=\"008918D4\"><w:rPr><w:b/><w:sz w:val=\"22\"/><w:szCs w:val=\"22\"/><w:u w:val=\"single\"/></w:rPr><w:t>)</w:t>";
 
     public const string GeneratedFileName = "GeneratedParentAcknowledgementForm.pdf";
 
@@ -99,14 +103,18 @@ public static class ParentAcknowledgementFormWordTemplateBuilder
             xml = reader.ReadToEnd();
         }
 
-        xml = ReplaceTrainingRange(xml, internshipStartDate, internshipEndDate);
         xml = xml.Replace(EncodedLetterDatePlaceholder, EscapeXml(letterDate), StringComparison.Ordinal);
         xml = xml.Replace(LetterDatePlaceholder, EscapeXml(letterDate), StringComparison.Ordinal);
+        xml = xml.Replace(CurlyLetterDatePlaceholder, EscapeXml(letterDate), StringComparison.Ordinal);
         xml = xml.Replace(EncodedStartDatePlaceholder, EscapeXml(internshipStartDate), StringComparison.Ordinal);
         xml = xml.Replace(StartDatePlaceholder, EscapeXml(internshipStartDate), StringComparison.Ordinal);
+        xml = xml.Replace(CurlyStartDatePlaceholder, EscapeXml(internshipStartDate), StringComparison.Ordinal);
         xml = xml.Replace(EncodedEndDatePlaceholder, EscapeXml(internshipEndDate), StringComparison.Ordinal);
         xml = xml.Replace(EndDatePlaceholder, EscapeXml(internshipEndDate), StringComparison.Ordinal);
+        xml = xml.Replace(CurlyEndDatePlaceholder, EscapeXml(internshipEndDate), StringComparison.Ordinal);
+        xml = ReplaceLowerTrainingLine(xml, internshipStartDate, internshipEndDate);
         xml = ReplaceReturnDateText(xml, returnByDate);
+        xml = RemoveHighlighting(xml);
 
         entry.Delete();
         var updatedEntry = archive.CreateEntry(entryFullName, CompressionLevel.Optimal);
@@ -129,14 +137,17 @@ public static class ParentAcknowledgementFormWordTemplateBuilder
         return xml.Replace($"{ReturnDatePrefixPlaceholder}{ReturnDateSuffixPlaceholder}", returnByDate, StringComparison.Ordinal);
     }
 
-    private static string ReplaceTrainingRange(string xml, string internshipStartDate, string internshipEndDate)
+    private static string ReplaceLowerTrainingLine(string xml, string internshipStartDate, string internshipEndDate)
     {
-        var replacement = EscapeXml($"Industrial Training ({internshipStartDate} to {internshipEndDate})");
-        return Regex.Replace(
-            xml,
-            TrainingRangePattern,
-            replacement,
-            RegexOptions.CultureInvariant);
+        return xml.Replace(
+            LowerTrainingLinePlaceholder,
+            $"<w:t>Industrial Training ({EscapeXml(internshipStartDate)} to {EscapeXml(internshipEndDate)})</w:t>",
+            StringComparison.Ordinal);
+    }
+
+    private static string RemoveHighlighting(string xml)
+    {
+        return xml.Replace(HighlightTag, string.Empty, StringComparison.Ordinal);
     }
 
     private static string FormatInternshipDate(DateTime? date)
@@ -145,6 +156,7 @@ public static class ParentAcknowledgementFormWordTemplateBuilder
             ? date.Value.ToString("dd MMM yyyy", CultureInfo.InvariantCulture)
             : "______________";
     }
+
 
     private static string GetReturnByDate(DateTime? cohortStartDate)
     {

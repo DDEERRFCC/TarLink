@@ -505,21 +505,15 @@
                     </div>
                     <div class="col-md-3">
                         <label asp-for="Input.comSupervisor" class="form-label">Company Supervisor</label>
-                        <select asp-for="Input.comSupervisor" class="form-select" id="companySupervisorSelect" data-selected="@Model.Input.comSupervisor">
-                            <option value="">-- Select Company Supervisor --</option>
-                            @foreach (var supervisor in Model.SupervisorOptions)
-                            {
-                                <option value="@supervisor.Name">@supervisor.Name</option>
-                            }
-                        </select>
+                        <input asp-for="Input.comSupervisor" class="form-control" id="companySupervisorInput" />
                     </div>
                     <div class="col-md-3">
                         <label asp-for="Input.comSupervisorEmail" class="form-label">Company Supervisor Email</label>
-                        <input asp-for="Input.comSupervisorEmail" class="form-control" id="companySupervisorEmailInput" readonly />
+                        <input asp-for="Input.comSupervisorEmail" class="form-control" id="companySupervisorEmailInput" />
                     </div>
                     <div class="col-md-3">
                         <label asp-for="Input.comSupervisorContact" class="form-label">Company Supervisor Contact</label>
-                        <input asp-for="Input.comSupervisorContact" class="form-control" id="companySupervisorContactInput" readonly />
+                        <input asp-for="Input.comSupervisorContact" class="form-control" id="companySupervisorContactInput" />
                     </div>
                     <div class="col-md-3">
                         <label asp-for="Input.allowance" class="form-label">Allowance</label>
@@ -758,15 +752,11 @@
             const companyNameValue = document.getElementById("companyNameValue");
             const companyNameList = document.getElementById("companyNameList");
             const companyAddressSelect = document.getElementById("companyAddressSelect");
-            const companySupervisorSelect = document.getElementById("companySupervisorSelect");
-            const companySupervisorEmailInput = document.getElementById("companySupervisorEmailInput");
-            const companySupervisorContactInput = document.getElementById("companySupervisorContactInput");
             const ucSupervisorSelect = document.getElementById("ucSupervisorSelect");
             const ucSupervisorEmailInput = document.getElementById("ucSupervisorEmailInput");
             const ucSupervisorContactInput = document.getElementById("ucSupervisorContactInput");
 
             const selectedAddress = companyAddressSelect?.getAttribute("data-selected") || "";
-            const selectedCompanySupervisor = companySupervisorSelect?.getAttribute("data-selected") || "";
             const selectedUcSupervisor = ucSupervisorSelect?.getAttribute("data-selected") || "";
 
             const rebuildAddressOptions = (addresses, preferredAddress) => {
@@ -856,7 +846,6 @@
             };
 
             syncCompanySelection(selectedAddress);
-            applySupervisor(companySupervisorSelect, companySupervisorEmailInput, companySupervisorContactInput);
             applySupervisor(ucSupervisorSelect, ucSupervisorEmailInput, ucSupervisorContactInput);
 
             companyNameInput?.addEventListener("focus", () => {
@@ -869,7 +858,6 @@
                 companyNameList?.classList.add("show");
             });
             companyNameInput?.addEventListener("change", () => syncCompanySelection(""));
-            companySupervisorSelect?.addEventListener("change", () => applySupervisor(companySupervisorSelect, companySupervisorEmailInput, companySupervisorContactInput));
             ucSupervisorSelect?.addEventListener("change", () => applySupervisor(ucSupervisorSelect, ucSupervisorEmailInput, ucSupervisorContactInput));
             document.addEventListener("click", (event) => {
                 if (!companyNameList || !companyNameInput) {

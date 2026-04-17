@@ -1,16 +1,25 @@
 @page
 @model ITPSystem.Pages.Supervisor.NotificationsModel
-<style>
-    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@{
+    var unreadCount = Model.Items.Count(n => !n.is_read);
+    var sentCount = Model.SentNotifications.Count;
+}
 
+<style>
     :root {
         --itp-bg-1: #f5efe4;
         --itp-bg-2: #edf4f4;
         --itp-bg-3: #f9fbfc;
         --itp-text: #182536;
         --itp-muted: #617082;
-        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-primary: #0f7b6c;
+        --itp-primary-dark: #0d5f63;
+        --itp-accent: #d97706;
+        --itp-card: rgba(255, 255, 255, 0.88);
         --itp-border: rgba(24, 37, 54, 0.09);
+        --itp-hero-start: #132238;
+        --itp-hero-mid: #0f7b6c;
+        --itp-hero-end: #d97706;
     }
 
     .sv-portal {
@@ -29,129 +38,329 @@
         padding: 0 1rem;
     }
 
-    .sv-shell {
-        background: var(--itp-card);
+    .notify-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .notify-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(130deg, var(--itp-hero-start), var(--itp-hero-mid) 58%, var(--itp-hero-end));
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .notify-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        pointer-events: none;
+    }
+
+    .notify-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .notify-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .notify-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .notify-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .notify-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        gap: .75rem;
+        flex-wrap: wrap;
+    }
+
+    .notify-back-btn,
+    .notify-toolbar-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        font-weight: 700;
+        border: 1px solid #d6e6e1;
+        background: linear-gradient(180deg, #f9fcfb, #eef7f5);
+        color: #13414a;
+    }
+
+    .notify-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #dff3ef;
+        color: #0d5f63;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .notify-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: .9rem;
+    }
+
+    .notify-stat,
+    .notify-panel {
         border: 1px solid var(--itp-border);
         border-radius: 22px;
-        padding: 1.2rem;
-        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
-        backdrop-filter: blur(10px);
+        background: var(--itp-card);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
-    .sv-title { color: var(--itp-text); font-weight: 700; }
-    .sv-table thead th {
-        background: #f6fafc;
-        color: #607284;
-        font-size: .78rem;
+
+    .notify-stat {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .notify-stat::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, rgba(15, 123, 108, 0.95), rgba(217, 119, 6, 0.7));
+    }
+
+    .notify-stat-label {
+        color: var(--itp-muted);
+        font-size: .8rem;
         font-weight: 700;
         letter-spacing: .05em;
         text-transform: uppercase;
     }
-    .sv-actions .btn { border-radius: 12px; }
-    .sv-muted { color: var(--itp-muted); }
-    .sv-chip {
+
+    .notify-stat-value {
+        margin-top: .4rem;
+        color: var(--itp-text);
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .notify-panel {
+        padding: 1rem;
+    }
+
+    .notify-section-title {
+        margin: 0;
+        color: var(--itp-text);
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .notify-section-copy {
+        margin: .35rem 0 0;
+        color: var(--itp-muted);
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .notify-table {
+        margin-bottom: 0;
+    }
+
+    .notify-table thead th {
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .notify-table td,
+    .notify-table th {
+        padding: .8rem .75rem;
+        vertical-align: middle;
+    }
+
+    .notify-chip {
         display: inline-flex;
         align-items: center;
-        padding: .2rem .55rem;
+        padding: .24rem .65rem;
         border-radius: 999px;
         font-size: .78rem;
-        font-weight: 600;
+        font-weight: 700;
     }
-    .sv-chip-unread { background: #fee2e2; color: #991b1b; }
-    .sv-chip-read { background: #dcfce7; color: #166534; }
-</style>
-<div class="sv-portal">
-<div class="itp-shell">
-<div class="sv-shell">
-<h2 class="sv-title">My Notifications</h2>
 
-@if (!string.IsNullOrWhiteSpace(ViewData["Message"] as string))
-{
-    <div class="alert @(ViewData["IsSuccess"] as string == "true" ? "alert-success" : "alert-danger")">
-        @ViewData["Message"]
-    </div>
-}
+    .notify-chip-unread { background: #fee2e2; color: #991b1b; }
+    .notify-chip-read { background: #dcfce7; color: #166534; }
 
-<div class="mb-3 d-flex justify-content-end">
-    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
-</div>
-
-<form method="post" asp-page-handler="MarkAllRead" class="mb-3">
-    <button class="btn btn-outline-secondary btn-sm" type="submit">Mark All As Read</button>
-</form>
-
-<div class="mb-3 d-flex justify-content-end">
-    <a class="btn btn-primary btn-sm" asp-page="/Supervisor/SendNotification">Send Notification</a>
-</div>
-
-<div class="table-responsive">
-<table class="table table-bordered table-sm align-middle sv-table">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Sender</th>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var n in Model.Items)
-        {
-            <tr>
-                <td>@n.created_at.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@(string.IsNullOrWhiteSpace(n.SenderName) ? "System" : n.SenderName)</td>
-                <td>@n.title</td>
-                <td>
-                    @if (n.is_read)
-                    {
-                        <span class="sv-chip sv-chip-read">Read</span>
-                    }
-                    else
-                    {
-                        <span class="sv-chip sv-chip-unread">Unread</span>
-                    }
-                </td>
-                <td>
-                    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/NotificationDetail" asp-route-notificationId="@n.notification_id">View Details</a>
-                </td>
-            </tr>
+    @@media (max-width: 991.98px) {
+        .notify-stat-grid {
+            grid-template-columns: 1fr;
         }
-    </tbody>
-</table>
-</div>
+    }
+</style>
 
-@if (Model.SentNotifications.Count > 0)
-{
-    <div class="mt-4">
-        <h5 class="sv-title mb-3">Sent Notifications History</h5>
-        <div class="table-responsive">
-            <table class="table table-bordered table-sm align-middle sv-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Title</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var n in Model.SentNotifications)
-                    {
-                        <tr>
-                            <td>@n.created_at.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>@n.title</td>
-                            <td>
-                                <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/SentNotificationDetail" asp-route-notificationId="@n.notification_id">View Details</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+<div class="sv-portal">
+    <div class="itp-shell">
+        <div class="notify-page">
+            <section class="notify-banner">
+                <div>
+                    <span class="notify-kicker">Supervisor Notifications</span>
+                    <h1 class="notify-title">Notifications centre</h1>
+                    <p class="notify-copy">Review incoming updates, keep track of what you sent to students, and manage your communication workflow from a consistent supervisor workspace.</p>
+                </div>
+            </section>
+
+            <div class="notify-toolbar">
+                <a class="notify-back-btn" href="/Supervisor/Dashboard">Back to dashboard</a>
+                <form method="post" asp-page-handler="MarkAllRead">
+                    <button class="notify-toolbar-btn" type="submit">Mark All As Read</button>
+                </form>
+                <a class="notify-toolbar-btn" asp-page="/Supervisor/SendNotification">Send Notification</a>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(ViewData["Message"] as string))
+            {
+                <div class="alert @(ViewData["IsSuccess"] as string == "true" ? "alert-success" : "alert-danger")">
+                    @ViewData["Message"]
+                </div>
+            }
+
+            <section class="notify-stat-grid">
+                <article class="notify-stat">
+                    <div class="notify-stat-label">Received Notifications</div>
+                    <div class="notify-stat-value">@Model.Items.Count</div>
+                </article>
+                <article class="notify-stat">
+                    <div class="notify-stat-label">Unread</div>
+                    <div class="notify-stat-value">@unreadCount</div>
+                </article>
+                <article class="notify-stat">
+                    <div class="notify-stat-label">Sent History</div>
+                    <div class="notify-stat-value">@sentCount</div>
+                </article>
+            </section>
+
+            <section class="notify-panel">
+                <h2 class="notify-section-title">Received notifications</h2>
+                <p class="notify-section-copy">Messages sent to your account appear here with their read status and detail view action.</p>
+                <div class="table-responsive mt-3">
+                    <table class="table notify-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Sender</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Items.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">No notifications received yet.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var n in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@n.created_at.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>@(string.IsNullOrWhiteSpace(n.SenderName) ? "System" : n.SenderName)</td>
+                                        <td>@n.title</td>
+                                        <td>
+                                            @if (n.is_read)
+                                            {
+                                                <span class="notify-chip notify-chip-read">Read</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="notify-chip notify-chip-unread">Unread</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/NotificationDetail" asp-route-notificationId="@n.notification_id">View Details</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="notify-panel">
+                <h2 class="notify-section-title">Sent notifications history</h2>
+                <p class="notify-section-copy">Previously sent messages are grouped here so you can reopen the detail view and review recipients.</p>
+                <div class="table-responsive mt-3">
+                    <table class="table notify-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Title</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.SentNotifications.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center py-4">No sent notifications yet.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var n in Model.SentNotifications)
+                                {
+                                    <tr>
+                                        <td>@n.created_at.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>@n.title</td>
+                                        <td>
+                                            <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/SentNotificationDetail" asp-route-notificationId="@n.notification_id">View Details</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     </div>
-}
 </div>
-</div>
-</div>
-
-
-

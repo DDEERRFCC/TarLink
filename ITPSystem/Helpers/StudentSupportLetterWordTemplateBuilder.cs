@@ -19,8 +19,15 @@ public static class StudentSupportLetterWordTemplateBuilder
     private const string EncodedStudentNamePlaceholder = "&lt;STUD NAME&gt;";
     private const string EncodedStudentIdPlaceholder = "&lt;STUD ID&gt;";
     private const string EncodedStudentProgrammePlaceholder = "&lt;STUD PROGRAMME&gt;";
+    private const string EncodedStudentNamePlaceholderAlt = "&lt;Stud Name&gt;";
     private const string EncodedStartDatePlaceholder = "&lt;START DATE&gt;";
     private const string EncodedEndDatePlaceholder = "&lt;END DATE&gt;";
+    private const string DiplomaStudentNameRuns = "<w:r><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t xml:space=\"preserve\"> </w:t></w:r><w:r w:rsidR=\"00A5668B\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>&lt;Stud Name&gt;</w:t></w:r>";
+    private const string BachelorStudentNameRuns = "<w:r><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t xml:space=\"preserve\"> </w:t></w:r><w:r w:rsidR=\"00FC4D90\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>&lt;Stud Name&gt;</w:t></w:r>";
+    private const string DiplomaStudentIdRuns = "<w:r w:rsidR=\"00A5668B\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t xml:space=\"preserve\">&lt;Stud </w:t></w:r><w:r w:rsidR=\"00A5668B\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>ID</w:t></w:r><w:r w:rsidR=\"00A5668B\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>&gt;</w:t></w:r>";
+    private const string BachelorStudentIdRuns = "<w:r w:rsidR=\"00FC4D90\" w:rsidRPr=\"00FC4D90\"><w:rPr><w:color w:val=\"000000\"/></w:rPr><w:t>&lt;</w:t></w:r><w:r w:rsidR=\"000B0FC5\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>Stud ID</w:t></w:r><w:r w:rsidR=\"00FC4D90\" w:rsidRPr=\"00FC4D90\"><w:rPr><w:color w:val=\"000000\"/></w:rPr><w:t>&gt;</w:t></w:r>";
+    private const string DiplomaStudentProgrammeRuns = "<w:r w:rsidR=\"00A5668B\"><w:rPr><w:color w:val=\"000000\"/></w:rPr><w:t xml:space=\"preserve\"> </w:t></w:r><w:r w:rsidR=\"00A5668B\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t xml:space=\"preserve\">&lt;Stud </w:t></w:r><w:r w:rsidR=\"00A5668B\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>PROGRAMME</w:t></w:r><w:r w:rsidR=\"00A5668B\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>&gt;</w:t></w:r>";
+    private const string BachelorStudentProgrammeRuns = "<w:r w:rsidR=\"00FC4D90\"><w:rPr><w:color w:val=\"000000\"/></w:rPr><w:t xml:space=\"preserve\"> &lt;</w:t></w:r><w:r w:rsidR=\"000B0FC5\"><w:rPr><w:b/><w:smallCaps/></w:rPr><w:t>Stud PROGRAMME</w:t></w:r><w:r w:rsidR=\"00FC4D90\"><w:rPr><w:color w:val=\"000000\"/></w:rPr><w:t>&gt;</w:t></w:r>";
 
     public const string GeneratedFileName = "GeneratedStudentSupportLetter.pdf";
 
@@ -99,10 +106,16 @@ public static class StudentSupportLetterWordTemplateBuilder
 
             xml = xml.Replace(EncodedStudentNamePlaceholder, studentName, StringComparison.Ordinal);
             xml = xml.Replace(StudentNamePlaceholder, studentName, StringComparison.Ordinal);
+            xml = ReplaceStudentNameRuns(xml, DiplomaStudentNameRuns, "00A5668B", studentName);
+            xml = ReplaceStudentNameRuns(xml, BachelorStudentNameRuns, "00FC4D90", studentName);
             xml = xml.Replace(EncodedStudentIdPlaceholder, studentId, StringComparison.Ordinal);
             xml = xml.Replace(StudentIdPlaceholder, studentId, StringComparison.Ordinal);
+            xml = ReplaceRunsWithStyledValue(xml, DiplomaStudentIdRuns, "<w:b/><w:smallCaps/>", studentId, leadingSpace: string.Empty);
+            xml = ReplaceRunsWithStyledValue(xml, BachelorStudentIdRuns, "<w:b/><w:smallCaps/>", studentId, leadingSpace: string.Empty);
             xml = xml.Replace(EncodedStudentProgrammePlaceholder, studentProgramme, StringComparison.Ordinal);
             xml = xml.Replace(StudentProgrammePlaceholder, studentProgramme, StringComparison.Ordinal);
+            xml = ReplaceRunsWithStyledValue(xml, DiplomaStudentProgrammeRuns, "<w:b/><w:smallCaps/>", studentProgramme, leadingSpace: " ");
+            xml = ReplaceRunsWithStyledValue(xml, BachelorStudentProgrammeRuns, "<w:b/><w:smallCaps/>", studentProgramme, leadingSpace: " ");
             xml = xml.Replace(EncodedStartDatePlaceholder, startDate, StringComparison.Ordinal);
             xml = xml.Replace(StartDatePlaceholder, startDate, StringComparison.Ordinal);
             xml = xml.Replace(EncodedEndDatePlaceholder, endDate, StringComparison.Ordinal);
@@ -116,20 +129,28 @@ public static class StudentSupportLetterWordTemplateBuilder
         }
     }
 
+    private static string ReplaceStudentNameRuns(string xml, string placeholderRuns, string rsid, string replacement)
+    {
+        var replacementRuns =
+            $"<w:r><w:rPr><w:b/></w:rPr><w:t xml:space=\"preserve\"> </w:t></w:r>" +
+            $"<w:r w:rsidR=\"{rsid}\"><w:rPr><w:b/></w:rPr><w:t>{EscapeXml(replacement)}</w:t></w:r>";
+
+        return xml.Replace(placeholderRuns, replacementRuns, StringComparison.Ordinal);
+    }
+
+    private static string ReplaceRunsWithStyledValue(string xml, string placeholderRuns, string runPropertiesXml, string replacement, string leadingSpace)
+    {
+        var replacementRuns = string.IsNullOrEmpty(leadingSpace)
+            ? $"<w:r><w:rPr>{runPropertiesXml}</w:rPr><w:t>{EscapeXml(replacement)}</w:t></w:r>"
+            : $"<w:r><w:rPr><w:color w:val=\"000000\"/></w:rPr><w:t xml:space=\"preserve\">{leadingSpace}</w:t></w:r>" +
+              $"<w:r><w:rPr>{runPropertiesXml}</w:rPr><w:t>{EscapeXml(replacement)}</w:t></w:r>";
+
+        return xml.Replace(placeholderRuns, replacementRuns, StringComparison.Ordinal);
+    }
+
     private static string GetStudentProgramme(StudentApplication? student)
     {
-        var programme = (student?.programme ?? string.Empty).Trim().ToUpperInvariant();
-        var level = student?.level;
-
-        return (programme, level) switch
-        {
-            ("RSD", 1) => "Diploma in Software Engineering",
-            ("RIT", 1) => "Diploma in Information Technology",
-            ("RSD", 2) => "Bachelor of Software Engineering (Honours)",
-            ("RIT", 2) => "Bachelor of Information Technology (Honours)",
-            _ when !string.IsNullOrWhiteSpace(programme) => programme,
-            _ => string.Empty
-        };
+        return (student?.programme ?? string.Empty).Trim();
     }
 
     private static string FormatInternshipDate(DateTime? date)

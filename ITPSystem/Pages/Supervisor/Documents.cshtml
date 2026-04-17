@@ -1,8 +1,6 @@
 @page
 @model ITPSystem.Pages.Supervisor.DocumentsModel
 <style>
-    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
     :root {
         --itp-bg-1: #f5efe4;
         --itp-bg-2: #edf4f4;
@@ -11,8 +9,11 @@
         --itp-muted: #617082;
         --itp-primary: #0f7b6c;
         --itp-accent: #d97706;
-        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-card: rgba(255, 255, 255, 0.88);
         --itp-border: rgba(24, 37, 54, 0.09);
+        --itp-hero-start: #132238;
+        --itp-hero-mid: #0f7b6c;
+        --itp-hero-end: #d97706;
     }
 
     .sv-portal {
@@ -31,126 +32,317 @@
         padding: 0 1rem;
     }
 
-    .sv-shell {
-        background: var(--itp-card);
-        border: 1px solid var(--itp-border);
-        border-radius: 22px;
-        padding: 1rem;
-        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
-        backdrop-filter: blur(10px);
+    .docs-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
-    .sv-title { color: var(--itp-text); font-weight: 700; margin: 0 0 .35rem; }
-    .sv-table thead th {
-        background: #f6fafc;
-        color: #607284;
+    .docs-toolbar {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .docs-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(130deg, var(--itp-hero-start), var(--itp-hero-mid) 58%, var(--itp-hero-end));
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .docs-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        pointer-events: none;
+    }
+
+    .docs-banner > * { position: relative; z-index: 1; }
+
+    .docs-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
         font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .docs-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .docs-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .docs-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #d6e6e1;
+        background: linear-gradient(180deg, #f9fcfb, #eef7f5);
+        color: #13414a;
+        font-weight: 700;
+        white-space: nowrap;
+        position: relative;
+        z-index: 3;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+
+    .docs-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #dff3ef;
+        color: #0d5f63;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .docs-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: .9rem;
+    }
+
+    .docs-stat,
+    .docs-panel {
+        border: 1px solid var(--itp-border);
+        border-radius: 22px;
+        background: var(--itp-card);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .docs-stat {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .docs-stat::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, rgba(15, 123, 108, 0.95), rgba(217, 119, 6, 0.7));
+    }
+
+    .docs-stat-label {
+        color: var(--itp-muted);
+        font-size: .8rem;
         font-weight: 700;
         letter-spacing: .05em;
         text-transform: uppercase;
     }
-    .sv-actions .btn { border-radius: 12px; }
-    .sv-alert { border-radius: 12px; }
-    .sv-link { font-weight: 600; }
-    .sv-muted { color: var(--itp-muted); }
-    .sv-section-divider {
-        margin: .6rem 0 1rem;
-        border: 0;
-        border-top: 1px solid #e2e8f0;
+
+    .docs-stat-value {
+        margin-top: .4rem;
+        color: var(--itp-text);
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .docs-panel { padding: 1rem; }
+
+    .docs-section-title {
+        margin: 0;
+        color: var(--itp-text);
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .docs-section-copy {
+        margin: .35rem 0 0;
+        color: var(--itp-muted);
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .docs-table {
+        margin-bottom: 0;
+    }
+
+    .docs-table thead th {
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .docs-table td,
+    .docs-table th {
+        padding: .8rem .75rem;
+        vertical-align: top;
+    }
+
+    .docs-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .45rem .8rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        color: #35516a;
+        background: #fff;
+        border: 1px solid #d6e6e1;
+    }
+
+    @@media (max-width: 991.98px) {
+        .docs-banner-top,
+        .docs-stat-grid {
+            grid-template-columns: 1fr;
+            display: grid;
+        }
     }
 </style>
 <div class="sv-portal">
-<div class="itp-shell">
-<div class="sv-shell">
-<h3 class="sv-title">Document Review</h3>
-@if (!string.IsNullOrWhiteSpace(Model.SelectedStudent))
-{
-    <p class="text-muted" style="color:#14532d; opacity:.7;">Showing documents for: <strong>@Model.SelectedStudent</strong></p>
-}
-<div class="mb-3 d-flex justify-content-end">
-    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Back to Dashboard</a>
+    <div class="itp-shell">
+    <div class="docs-page">
+        <section class="docs-banner">
+            <div>
+                <span class="docs-kicker">Supervisor Workflow</span>
+                <h1 class="docs-title">Document review</h1>
+                <p class="docs-copy">Inspect submitted internship documents, preview uploaded files, and keep supporting records organized in the same committee-style layout.</p>
+            </div>
+        </section>
+
+        <div class="docs-toolbar">
+            <a class="docs-back-btn" href="/Supervisor/Dashboard">Back to dashboard</a>
+        </div>
+
+        <section class="docs-stat-grid">
+            <article class="docs-stat">
+                <div class="docs-stat-label">Students in View</div>
+                <div class="docs-stat-value">@Model.Students.Count</div>
+            </article>
+            <article class="docs-stat">
+                <div class="docs-stat-label">Acceptance Files</div>
+                <div class="docs-stat-value">@Model.Students.Count(x => !string.IsNullOrWhiteSpace(x.formAcceptance))</div>
+            </article>
+            <article class="docs-stat">
+                <div class="docs-stat-label">Other Evidence</div>
+                <div class="docs-stat-value">@Model.Students.Count(x => !string.IsNullOrWhiteSpace(x.otherEvidence))</div>
+            </article>
+        </section>
+
+        <section class="docs-panel">
+            <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+                <div>
+                    <h2 class="docs-section-title">Assigned student documents</h2>
+                    <p class="docs-section-copy">Preview and download uploaded forms, acknowledgements, appointment letters, and additional supporting evidence.</p>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(Model.SelectedStudent))
+                {
+                    <div class="text-muted">Showing documents for <strong>@Model.SelectedStudent</strong>.</div>
+                }
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Message))
+            {
+                <div class="alert alert-success">@Model.Message</div>
+            }
+
+            <div class="table-responsive">
+                <table class="table docs-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Company</th>
+                            <th>Acceptance</th>
+                            <th>Acknowledgement</th>
+                            <th>Final / Other</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model.Students)
+                        {
+                            <tr>
+                                <td>@s.studentName (@s.studentID)</td>
+                                <td>@(string.IsNullOrWhiteSpace(s.comName) ? "-" : s.comName)</td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(s.formAcceptance))
+                                    {
+                                        <div>@s.formAcceptance</div>
+                                        <div class="d-flex flex-wrap gap-2 mt-2">
+                                            <a class="docs-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance" target="_blank" rel="noopener">View</a>
+                                            <a class="docs-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance">Download</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(s.formAcknowledgement))
+                                    {
+                                        <div>@s.formAcknowledgement</div>
+                                        <div class="d-flex flex-wrap gap-2 mt-2">
+                                            <a class="docs-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement" target="_blank" rel="noopener">View</a>
+                                            <a class="docs-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement">Download</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div><strong>Letter:</strong> @(s.letterIdentity ?? "-")</div>
+                                    @if (!string.IsNullOrWhiteSpace(s.letterIdentity))
+                                    {
+                                        <div class="d-flex flex-wrap gap-2 mt-2 mb-2">
+                                            <a class="docs-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity" target="_blank" rel="noopener">View</a>
+                                            <a class="docs-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity">Download</a>
+                                        </div>
+                                    }
+
+                                    <div><strong>Other:</strong> @(s.otherEvidence ?? "-")</div>
+                                    @if (!string.IsNullOrWhiteSpace(s.otherEvidence))
+                                    {
+                                        <div class="d-flex flex-wrap gap-2 mt-2">
+                                            <a class="docs-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence" target="_blank" rel="noopener">View</a>
+                                            <a class="docs-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence">Download</a>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    </div>
 </div>
-
-<hr class="sv-section-divider" />
-
-@if (!string.IsNullOrWhiteSpace(Model.Message))
-{
-    <div class="alert alert-success">@Model.Message</div>
-}
-
-<div class="table-responsive">
-<table class="table table-bordered table-sm align-middle sv-table">
-    <thead>
-        <tr>
-            <th>Student</th>
-            <th>Company</th>
-            <th>Acceptance</th>
-            <th>Acknowledgement</th>
-            <th>Final/Other</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var s in Model.Students)
-        {
-            <tr>
-                <td>@s.studentName (@s.studentID)</td>
-                <td>@s.comName</td>
-                <td>
-                    @if (!string.IsNullOrWhiteSpace(s.formAcceptance))
-                    {
-                        <div>@s.formAcceptance</div>
-                        <div class="d-flex gap-2 mt-1 sv-actions">
-                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance" target="_blank" rel="noopener">View</a>
-                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcceptance">Download</a>
-                        </div>
-                    }
-                    else
-                    {
-                        <span>-</span>
-                    }
-                </td>
-                <td>
-                    @if (!string.IsNullOrWhiteSpace(s.formAcknowledgement))
-                    {
-                        <div>@s.formAcknowledgement</div>
-                        <div class="d-flex gap-2 mt-1 sv-actions">
-                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement" target="_blank" rel="noopener">View</a>
-                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="formAcknowledgement">Download</a>
-                        </div>
-                    }
-                    else
-                    {
-                        <span>-</span>
-                    }
-                </td>
-                <td>
-                    <div><strong>Letter:</strong> @(s.letterIdentity ?? "-")</div>
-                    @if (!string.IsNullOrWhiteSpace(s.letterIdentity))
-                    {
-                        <div class="d-flex gap-2 mt-1 mb-1 sv-actions">
-                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity" target="_blank" rel="noopener">View</a>
-                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="letterIdentity">Download</a>
-                        </div>
-                    }
-
-                    <div><strong>Other:</strong> @(s.otherEvidence ?? "-")</div>
-                    @if (!string.IsNullOrWhiteSpace(s.otherEvidence))
-                    {
-                        <div class="d-flex gap-2 mt-1 sv-actions">
-                            <a class="sv-link" asp-page-handler="View" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence" target="_blank" rel="noopener">View</a>
-                            <a class="sv-link" asp-page-handler="Download" asp-route-applicationId="@s.application_id" asp-route-documentType="otherEvidence">Download</a>
-                        </div>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-
-
-
-

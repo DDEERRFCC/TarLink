@@ -90,7 +90,7 @@ namespace ITPSystem.Pages.Supervisor
 
         private IActionResult UpdateReport(long reportId, byte status, string? remarks, string action, int? selectedApplicationId)
         {
-            if (!IsSupervisor(out var supervisorId))
+            if (!IsSupervisor(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
@@ -113,16 +113,14 @@ namespace ITPSystem.Pages.Supervisor
             report.updated_at = DateTime.UtcNow;
             _db.SaveChanges();
 
-            if (report.applicantId > 0)
+            if (report.applicantId > 0 && !string.IsNullOrWhiteSpace(supervisorStaffId))
             {
-                var studentUser = supervisorId > 0
-                    ? _db.SysUsers.FirstOrDefault(u => u.application_id == report.applicantId)
-                    : null;
+                var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == report.applicantId);
                 if (studentUser != null)
                 {
                     _db.Notifications.Add(new Notification
                     {
-                        from_user_id = supervisorId,
+                        from_user_id = supervisorStaffId,
                         to_user_id = studentUser.user_id,
                         type = "progress_report",
                         title = $"Your progress report was {action}",
@@ -225,13 +223,13 @@ namespace ITPSystem.Pages.Supervisor
             return true;
         }
 
-        private bool IsSupervisor(out int userId)
+        private bool IsSupervisor(out string supervisorStaffId)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            int.TryParse(rawUserId, out userId);
-            return role == "supervisor";
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
+            var userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(supervisorStaffId) && !string.IsNullOrWhiteSpace(userEmail);
         }
 
         public class ReportViewItem

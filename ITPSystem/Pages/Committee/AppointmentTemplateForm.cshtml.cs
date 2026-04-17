@@ -325,20 +325,18 @@ public class CommitteeAppointmentTemplateFormModel : CommitteePageModelBase
 
     private static string BuildSafeUploadFileName(string? originalFileName, string fallbackPrefix)
     {
-        var extension = Path.GetExtension(originalFileName);
-        var safeExtension = string.IsNullOrWhiteSpace(extension) ? ".bin" : extension;
-        var baseName = Path.GetFileNameWithoutExtension(originalFileName);
-
-        if (string.IsNullOrWhiteSpace(baseName))
+        var safeOriginalFileName = Path.GetFileName(originalFileName ?? string.Empty);
+        if (string.IsNullOrWhiteSpace(safeOriginalFileName))
         {
-            baseName = fallbackPrefix;
+            safeOriginalFileName = fallbackPrefix;
         }
 
         var invalidChars = Path.GetInvalidFileNameChars();
-        var sanitizedBaseName = new string(baseName.Select(ch => invalidChars.Contains(ch) ? '_' : ch).ToArray());
-        sanitizedBaseName = sanitizedBaseName.Replace(" ", "-");
+        var sanitizedFileName = new string(safeOriginalFileName.Select(ch => invalidChars.Contains(ch) ? '_' : ch).ToArray());
 
-        return $"{fallbackPrefix}-{DateTime.UtcNow:yyyyMMddHHmmssfff}-{sanitizedBaseName}{safeExtension}";
+        return string.IsNullOrWhiteSpace(sanitizedFileName)
+            ? fallbackPrefix
+            : sanitizedFileName;
     }
 
     private static string BuildCohortLabel(Cohort cohort)

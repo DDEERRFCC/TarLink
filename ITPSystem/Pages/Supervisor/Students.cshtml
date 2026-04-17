@@ -2,8 +2,6 @@
 @model ITPSystem.Pages.Supervisor.StudentsModel
 
 <style>
-    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
     :root {
         --itp-bg-1: #f5efe4;
         --itp-bg-2: #edf4f4;
@@ -13,8 +11,11 @@
         --itp-primary: #0f7b6c;
         --itp-primary-dark: #0d5f63;
         --itp-accent: #d97706;
-        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-card: rgba(255, 255, 255, 0.88);
         --itp-border: rgba(24, 37, 54, 0.09);
+        --itp-hero-start: #132238;
+        --itp-hero-mid: #0f7b6c;
+        --itp-hero-end: #d97706;
     }
 
     .sv-portal {
@@ -33,157 +34,390 @@
         padding: 0 1rem;
     }
 
-    .sv-shell {
-        background: var(--itp-card);
-        border: 1px solid var(--itp-border);
-        border-radius: 22px;
-        padding: 1.3rem;
-        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
-        backdrop-filter: blur(10px);
+    .students-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
-    .sv-header {
-        background: #fff;
-        color: var(--itp-text);
-        border: 1px solid var(--itp-border);
-        border-radius: 16px;
-        padding: 1rem 1.1rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 10px 24px rgba(26, 40, 60, 0.06);
+    .students-toolbar {
+        display: flex;
+        justify-content: flex-end;
     }
 
-    .sv-filter {
-        border: 1px solid var(--itp-border);
-        border-radius: 16px;
-        background: #fff;
-        box-shadow: 0 6px 14px rgba(15, 23, 42, .06);
-        padding: .9rem;
-        margin-bottom: 1rem;
+    .students-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(130deg, var(--itp-hero-start), var(--itp-hero-mid) 58%, var(--itp-hero-end));
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
     }
 
-    .sv-section-title {
-        color: var(--itp-text);
-        font-weight: 700;
+    .students-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        pointer-events: none;
     }
 
-    .sv-chip {
+    .students-banner > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .students-kicker {
         display: inline-flex;
         align-items: center;
-        gap: .35rem;
-        padding: .2rem .55rem;
+        padding: .34rem .72rem;
         border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
         font-size: .78rem;
-        font-weight: 600;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
     }
-    .sv-chip-approved { background: #dcfce7; color: #166534; }
-    .sv-chip-pending { background: #fef9c3; color: #92400e; }
-    .sv-chip-rejected { background: #fee2e2; color: #991b1b; }
 
-    .sv-table thead th {
-        background: #f6fafc;
-        color: #607284;
-        font-size: .78rem;
+    .students-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .students-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .students-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        border: 1px solid #d6e6e1;
+        background: linear-gradient(180deg, #f9fcfb, #eef7f5);
+        color: #13414a;
+        font-weight: 700;
+        white-space: nowrap;
+        position: relative;
+        z-index: 3;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+
+    .students-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #dff3ef;
+        color: #0d5f63;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .students-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: .9rem;
+    }
+
+    .students-stat,
+    .students-panel {
+        border: 1px solid var(--itp-border);
+        border-radius: 22px;
+        background: var(--itp-card);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .students-stat {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .students-stat::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, rgba(15, 123, 108, 0.95), rgba(217, 119, 6, 0.7));
+    }
+
+    .students-stat-label {
+        color: var(--itp-muted);
+        font-size: .8rem;
         font-weight: 700;
         letter-spacing: .05em;
         text-transform: uppercase;
     }
 
-    .sv-actions .btn { border-radius: 12px; }
-    .sv-actions .btn + .btn { margin-left: .35rem; }
-    .sv-muted { color: #607284; }
+    .students-stat-value {
+        margin-top: .4rem;
+        color: var(--itp-text);
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .students-filter-card,
+    .students-table-card {
+        padding: 1rem;
+    }
+
+    .students-section-title {
+        margin: 0;
+        color: var(--itp-text);
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .students-section-copy {
+        margin: .35rem 0 0;
+        color: var(--itp-muted);
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .students-field label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #36506a;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .students-field .form-select,
+    .students-field .form-control {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .students-apply-btn,
+    .students-reset-btn,
+    .students-action-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        border-radius: 14px;
+        font-weight: 700;
+    }
+
+    .students-apply-btn {
+        background: linear-gradient(90deg, var(--itp-primary), var(--itp-accent));
+        border: none;
+        color: #fff;
+    }
+
+    .students-reset-btn,
+    .students-action-btn {
+        background: #fff;
+        border: 1px solid #d6e6e1;
+        color: #35516a;
+        text-decoration: none;
+    }
+
+    .students-table {
+        margin-bottom: 0;
+    }
+
+    .students-table thead th {
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .students-table td,
+    .students-table th {
+        padding: .8rem .75rem;
+        vertical-align: top;
+    }
+
+    .students-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        padding: .24rem .65rem;
+        border-radius: 999px;
+        font-size: .78rem;
+        font-weight: 700;
+    }
+
+    .students-chip-approved { background: #dcfce7; color: #166534; }
+    .students-chip-pending { background: #fef3c7; color: #92400e; }
+    .students-chip-rejected { background: #fee2e2; color: #991b1b; }
+
+    .students-muted {
+        color: var(--itp-muted);
+    }
+
+    @@media (max-width: 991.98px) {
+        .students-banner-top,
+        .students-stat-grid {
+            grid-template-columns: 1fr;
+            display: grid;
+        }
+    }
 </style>
 
 <div class="sv-portal">
-<div class="itp-shell">
-<div class="sv-shell">
-    <div class="sv-header d-flex align-items-center justify-content-between flex-wrap gap-2">
-        <div>
-            <div class="small" style="opacity:.8;">Supervisor Workspace</div>
-            <h3 class="mb-0">Student & Internship Tracking</h3>
+    <div class="itp-shell">
+    <div class="students-page">
+        <section class="students-banner">
+            <div>
+                <span class="students-kicker">Supervisor Workflow</span>
+                <h1 class="students-title">Student applications</h1>
+                <p class="students-copy">Review pending internship placements, confirm student-company details, and record approval outcomes from a committee-style workspace.</p>
+            </div>
+        </section>
+
+        <div class="students-toolbar">
+            <a class="students-back-btn" href="/Supervisor/Dashboard">Back to dashboard</a>
         </div>
-        <a class="btn btn-light btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
+
+        <section class="students-stat-grid">
+            <article class="students-stat">
+                <div class="students-stat-label">Pending Applications</div>
+                <div class="students-stat-value">@Model.CurrentStudents.Count</div>
+            </article>
+            <article class="students-stat">
+                <div class="students-stat-label">Active Filters</div>
+                <div class="students-stat-value">@(Model.level.HasValue ? "1" : "0")</div>
+            </article>
+            <article class="students-stat">
+                <div class="students-stat-label">Visible Students</div>
+                <div class="students-stat-value">@Model.Students.Count</div>
+            </article>
+        </section>
+
+        <section class="students-panel students-filter-card">
+            <h2 class="students-section-title">Filter assigned applications</h2>
+            <p class="students-section-copy">Narrow the current cohort list by academic level before making approval decisions.</p>
+            <form method="get" class="row g-3 align-items-end mt-1">
+                <div class="col-md-5 students-field">
+                    <label>Academic Level</label>
+                    <select class="form-select" asp-for="level">
+                        <option value="">All Levels</option>
+                        <option value="1">1 - Diploma</option>
+                        <option value="2">2 - Degree</option>
+                        <option value="3">3 - Master</option>
+                        <option value="4">4 - PhD</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button type="submit" class="students-apply-btn">Apply Filter</button>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <a class="students-reset-btn" asp-page="/Supervisor/Students">Reset</a>
+                </div>
+            </form>
+        </section>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Message))
+        {
+            <div class="alert alert-info">@Model.Message</div>
+        }
+
+        <section class="students-panel students-table-card">
+            <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+                <div>
+                    <h2 class="students-section-title">Pending applications</h2>
+                    <p class="students-section-copy">Only active-cohort applications that still need supervisor review are shown here.</p>
+                </div>
+            </div>
+
+            @if (!Model.CurrentStudents.Any())
+            {
+                <div class="alert alert-info mb-0">No pending applications found for your filters.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table students-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Academic</th>
+                                <th>Level</th>
+                                <th>Company</th>
+                                <th>Allowance</th>
+                                <th>Supervisor</th>
+                                <th>Status</th>
+                                <th>Remark</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in Model.CurrentStudents)
+                            {
+                                var status = (s.applyStatus ?? string.Empty).Trim().ToLowerInvariant();
+                                var chip = status == "approved" ? "students-chip-approved"
+                                    : status == "rejected" ? "students-chip-rejected"
+                                    : "students-chip-pending";
+                                <tr>
+                                    <td>
+                                        <strong>@s.studentName</strong><br />
+                                        <span class="students-muted">@s.studentID</span>
+                                    </td>
+                                    <td>
+                                        CGPA: @(s.CGPA?.ToString("0.00") ?? "-")<br />
+                                        <span class="students-muted">Programme: @s.programme</span>
+                                    </td>
+                                    <td>@ITPSystem.Pages.Supervisor.StudentsModel.GetLevelLabel(s.level)</td>
+                                    <td>
+                                        @(s.comName ?? "-")<br />
+                                        <span class="students-muted">@(s.comAddress ?? "-")</span>
+                                    </td>
+                                    <td>@(s.allowance?.ToString("0.00") ?? "-")</td>
+                                    <td>
+                                        @(s.comSupervisor ?? "-")<br />
+                                        <span class="students-muted">@(s.ucSupervisor ?? "-")</span>
+                                    </td>
+                                    <td><span class="students-chip @chip">@s.applyStatus</span></td>
+                                    <td>@(string.IsNullOrWhiteSpace(s.remark) ? "-" : s.remark)</td>
+                                    <td>
+                                        @if (string.Equals(s.applyStatus, "pending", System.StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            <form method="post" class="d-grid gap-2">
+                                                <input type="hidden" name="applicationId" value="@s.application_id" />
+                                                <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Reason required for rejection" />
+                                                <div class="d-grid gap-2">
+                                                    <button type="submit" asp-page-handler="Approve" class="students-action-btn">Approve</button>
+                                                    <button type="submit" asp-page-handler="Reject" class="btn btn-danger btn-sm">Reject</button>
+                                                </div>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </section>
     </div>
-
-    <form method="get" class="sv-filter row g-2 align-items-end">
-        <div class="col-md-4">
-            <label class="form-label">Filter by Academic Level</label>
-            <select class="form-select form-select-sm" asp-for="level">
-                <option value="">All Levels</option>
-                <option value="1">1 - Diploma</option>
-                <option value="2">2 - Degree</option>
-                <option value="3">3 - Master</option>
-                <option value="4">4 - PhD</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
-        </div>
-        <div class="col-md-2">
-            <a class="btn btn-outline-secondary btn-sm w-100" asp-page="/Supervisor/Students">Reset</a>
-        </div>
-    </form>
-
-    @if (!string.IsNullOrWhiteSpace(Model.Message))
-    {
-        <div class="alert alert-info">@Model.Message</div>
-    }
-
-    <h5 class="mt-4 sv-section-title">Pending Applications (Active Cohorts)</h5>
-    @if (!Model.CurrentStudents.Any())
-    {
-        <div class="alert alert-info">No pending applications found for your filters.</div>
-    }
-    else
-    {
-        <div class="table-responsive">
-            <table class="table table-bordered table-sm align-middle sv-table">
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th>Academic</th>
-                        <th>Level</th>
-                        <th>Company</th>
-                        <th>Allowance</th>
-                        <th>Supervisor</th>
-                        <th>Application Status</th>
-                        <th>Supervisor Remark</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var s in Model.CurrentStudents)
-                    {
-                        var status = (s.applyStatus ?? string.Empty).Trim().ToLowerInvariant();
-                        var chip = status == "approved" ? "sv-chip-approved"
-                            : status == "rejected" ? "sv-chip-rejected"
-                            : "sv-chip-pending";
-                        <tr>
-                            <td>@s.studentName<br /><small class="sv-muted">@s.studentID</small></td>
-                            <td>CGPA: @(s.CGPA?.ToString("0.00") ?? "-")<br />Programme: @s.programme</td>
-                            <td>@ITPSystem.Pages.Supervisor.StudentsModel.GetLevelLabel(s.level)</td>
-                            <td>@(s.comName ?? "-")<br /><small class="sv-muted">@(s.comAddress ?? "-")</small></td>
-                            <td>@(s.allowance?.ToString("0.00") ?? "-")</td>
-                            <td>@(s.comSupervisor ?? "-")<br /><small class="sv-muted">@(s.ucSupervisor ?? "-")</small></td>
-                            <td><span class="sv-chip @chip">@s.applyStatus</span></td>
-                            <td>@(string.IsNullOrWhiteSpace(s.remark) ? "-" : s.remark)</td>
-                            <td>
-                                @if (string.Equals(s.applyStatus, "pending", System.StringComparison.OrdinalIgnoreCase))
-                                {
-                                    <form method="post" class="mt-2">
-                                        <input type="hidden" name="applicationId" value="@s.application_id" />
-                                        <input type="text" name="remarks" class="form-control form-control-sm mb-2" placeholder="Reason (required for rejection)" />
-                                        <button type="submit" asp-page-handler="Approve" class="btn btn-success btn-sm me-1">Approve</button>
-                                        <button type="submit" asp-page-handler="Reject" class="btn btn-danger btn-sm">Reject</button>
-                                    </form>
-                                }
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
+    </div>
 </div>
-</div>
-</div>
-

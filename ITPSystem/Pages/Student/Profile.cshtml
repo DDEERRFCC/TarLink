@@ -324,9 +324,6 @@
 
                 <div class="profile-hero-actions">
                     <a asp-page="/Student/Dashboard" class="profile-back-btn">Back to Dashboard</a>
-                    <form method="post" asp-page-handler="Logout" class="d-inline">
-                        <button type="submit" class="profile-logout-btn">Logout</button>
-                    </form>
                 </div>
             </div>
         </section>
@@ -426,7 +423,13 @@
 
                             <div class="profile-field profile-field-full">
                                 <label asp-for="Input.Knowledge" class="profile-label">Knowledge</label>
-                                <input asp-for="Input.Knowledge" class="form-control profile-input" maxlength="255" />
+                                <textarea asp-for="Input.Knowledge" class="form-control profile-textarea" maxlength="255"></textarea>
+                            </div>
+
+                            <div class="profile-field">
+                                <label asp-for="Input.CGPA" class="profile-label">CGPA</label>
+                                <input asp-for="Input.CGPA" type="number" step="0.01" min="0" max="4.00" class="form-control profile-input" />
+                                <span asp-validation-for="Input.CGPA" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -489,7 +492,27 @@
                             </div>
                         </div>
                     </section>
+
+                    <section class="profile-card">
+                        <div class="profile-card-head">
+                            <div>
+                                <div class="profile-card-kicker">Security</div>
+                                <h3 class="section-title">Change Password</h3>
+                                <p class="section-copy">Open the password page to update your login password safely.</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-actions mt-0">
+                            <a asp-page="/Student/ChangePassword" class="profile-save-btn">Open Change Password</a>
+                        </div>
+                    </section>
                 </div>
+            </div>
+
+            <div class="profile-actions">
+                <form method="post" asp-page-handler="Logout" class="d-inline">
+                    <button type="submit" class="profile-logout-btn">Logout</button>
+                </form>
             </div>
         }
     </div>

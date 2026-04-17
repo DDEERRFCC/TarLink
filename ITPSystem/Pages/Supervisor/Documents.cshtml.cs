@@ -118,7 +118,7 @@ namespace ITPSystem.Pages.Supervisor
 
         private IActionResult SaveReview(int applicationId, string status, string? remarks)
         {
-            if (!IsSupervisor(out var supervisorId))
+            if (!IsSupervisor(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
@@ -130,12 +130,14 @@ namespace ITPSystem.Pages.Supervisor
                 return RedirectToPage(new { applicationId });
             }
 
-            if (supervisorId > 0)
+            // Find the SysUser corresponding to this supervisor (if available)
+            var supervisorUser = _db.SysUsers.FirstOrDefault(u => u.username == supervisorStaffId || u.email == HttpContext.Session.GetString("UserEmail"));
+            if (supervisorUser != null)
             {
                 _db.DocumentReviews.Add(new DocumentReview
                 {
                     application_id = applicationId,
-                    reviewed_by = supervisorId,
+                    reviewed_by = supervisorUser.user_id,
                     document_type = "application",
                     status = status,
                     remarks = remarks,
@@ -151,14 +153,12 @@ namespace ITPSystem.Pages.Supervisor
             student.updated_at = DateTime.UtcNow;
             _db.SaveChanges();
 
-            var studentUser = supervisorId > 0
-                ? _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId)
-                : null;
-            if (studentUser != null)
+            var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId);
+            if (studentUser != null && supervisorUser != null)
             {
                 _db.Notifications.Add(new Notification
                 {
-                    from_user_id = supervisorId,
+                    from_user_id = supervisorStaffId,
                     to_user_id = studentUser.user_id,
                     type = "document_review",
                     title = $"Your document application was {status}",
@@ -192,13 +192,13 @@ namespace ITPSystem.Pages.Supervisor
             }
         }
 
-        private bool IsSupervisor(out int userId)
+        private bool IsSupervisor(out string supervisorStaffId)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            int.TryParse(rawUserId, out userId);
-            return role == "supervisor";
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
+            var userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(supervisorStaffId) && !string.IsNullOrWhiteSpace(userEmail);
         }
     }
 }

@@ -75,10 +75,15 @@
     .sv-hero-layout {
         position: relative;
         z-index: 1;
-        display: grid;
-        grid-template-columns: minmax(0, 1.2fr) minmax(220px, .8fr);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
         gap: 1.2rem;
-        align-items: start;
+    }
+
+    .sv-hero-content {
+        flex: 1;
+        min-width: 0;
     }
 
     .sv-hero-title {
@@ -100,7 +105,8 @@
         display: flex;
         flex-direction: column;
         gap: .6rem;
-        align-items: flex-start;
+        align-items: flex-end;
+        flex-shrink: 0;
     }
 
     .sv-hero-actions .btn {
@@ -192,6 +198,25 @@
         width: 100%;
     }
 
+    .sv-table-assigned {
+        table-layout: auto;
+    }
+
+    .sv-table-assigned .sv-col-id {
+        width: 8.5rem;
+        white-space: nowrap;
+    }
+
+    .sv-table-assigned .sv-col-email {
+        min-width: 18rem;
+    }
+
+    .sv-table-assigned td.sv-email-cell,
+    .sv-table-assigned th.sv-col-email {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
     .sv-table thead th {
         background: #f6fafc;
         color: #607284;
@@ -231,7 +256,7 @@
 <div class="itp-shell">
     <section class="sv-hero">
         <div class="sv-hero-layout">
-            <div>
+            <div class="sv-hero-content">
                 <div style="opacity:.85; font-size:.9rem;">Supervisor Dashboard</div>
                 <h3 class="sv-hero-title">Welcome, @Model.UserName!</h3>
                 <p class="sv-hero-copy">Monitor student placements, track reviews, and manage approvals in one place.</p>
@@ -289,12 +314,12 @@
                     <span class="text-muted small">@group.Students.Count student(s)</span>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-sm table-bordered align-middle mb-0 sv-table">
+                    <table class="table table-sm table-bordered align-middle mb-0 sv-table sv-table-assigned">
                         <thead>
                             <tr>
                                 <th>Student</th>
-                                <th>ID</th>
-                                <th>Email</th>
+                                <th class="sv-col-id">ID</th>
+                                <th class="sv-col-email">Email</th>
                                 <th>Company</th>
                                 <th>Status</th>
                                 <th>Allowance</th>
@@ -310,7 +335,7 @@
                                 <tr>
                                     <td>@s.studentName</td>
                                     <td>@s.studentID</td>
-                                    <td>@(string.IsNullOrWhiteSpace(s.studentEmail) ? "-" : s.studentEmail)</td>
+                                    <td class="sv-email-cell">@(string.IsNullOrWhiteSpace(s.studentEmail) ? "-" : s.studentEmail)</td>
                                     <td>@(string.IsNullOrWhiteSpace(s.comName) ? "-" : s.comName)</td>
                                     <td><span class="sv-chip @chip">@s.applyStatus</span></td>
                                     <td>@(s.allowance?.ToString("0.00") ?? "-")</td>
@@ -324,6 +349,5 @@
     }
 </div>
 </div>
-
 
 

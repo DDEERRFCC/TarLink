@@ -31,12 +31,12 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnGet()
         {
-            if (!TryGetUserId(out var userId))
+            if (!TryGetSupervisorContext(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            LoadNotification(userId);
+            LoadNotification(supervisorStaffId);
             if (Notification == null)
             {
                 return NotFound();
@@ -48,17 +48,17 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnPostUpdate()
         {
-            if (!TryGetUserId(out var userId))
+            if (!TryGetSupervisorContext(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            var notification = _db.Notifications.FirstOrDefault(n => n.notification_id == notificationId && n.from_user_id == userId);
+            var notification = _db.Notifications.FirstOrDefault(n => n.notification_id == notificationId && n.from_user_id == supervisorStaffId);
             if (notification == null)
             {
                 Message = "Notification not found.";
                 IsSuccess = false;
-                LoadNotification(userId);
+                LoadNotification(supervisorStaffId);
                 LoadReceivers();
                 return Page();
             }
@@ -68,7 +68,7 @@ namespace ITPSystem.Pages.Supervisor
             {
                 Message = "Please enter a title.";
                 IsSuccess = false;
-                LoadNotification(userId);
+                LoadNotification(supervisorStaffId);
                 LoadReceivers();
                 return Page();
             }
@@ -77,7 +77,7 @@ namespace ITPSystem.Pages.Supervisor
             {
                 Message = "Please enter a message.";
                 IsSuccess = false;
-                LoadNotification(userId);
+                LoadNotification(supervisorStaffId);
                 LoadReceivers();
                 return Page();
             }
@@ -105,7 +105,7 @@ namespace ITPSystem.Pages.Supervisor
                 Message = "Notification updated successfully.";
                 IsSuccess = true;
 
-                LoadNotification(userId);
+                LoadNotification(supervisorStaffId);
                 LoadReceivers();
                 return Page();
             }
@@ -113,7 +113,7 @@ namespace ITPSystem.Pages.Supervisor
             {
                 Message = $"Error updating notification: {ex.Message}";
                 IsSuccess = false;
-                LoadNotification(userId);
+                LoadNotification(supervisorStaffId);
                 LoadReceivers();
                 return Page();
             }
@@ -121,12 +121,12 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnPostDelete()
         {
-            if (!TryGetUserId(out var userId))
+            if (!TryGetSupervisorContext(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            var notification = _db.Notifications.FirstOrDefault(n => n.notification_id == notificationId && n.from_user_id == userId);
+            var notification = _db.Notifications.FirstOrDefault(n => n.notification_id == notificationId && n.from_user_id == supervisorStaffId);
             if (notification == null)
             {
                 Message = "Notification not found.";
@@ -157,16 +157,16 @@ namespace ITPSystem.Pages.Supervisor
             {
                 Message = $"Error deleting notification: {ex.Message}";
                 IsSuccess = false;
-                LoadNotification(userId);
+                LoadNotification(supervisorStaffId);
                 LoadReceivers();
                 return Page();
             }
         }
 
-        private void LoadNotification(int userId)
+        private void LoadNotification(string supervisorStaffId)
         {
             Notification = _db.Notifications
-                .FirstOrDefault(n => n.notification_id == notificationId && n.from_user_id == userId);
+                .FirstOrDefault(n => n.notification_id == notificationId && n.from_user_id == supervisorStaffId);
         }
 
         private void LoadReceivers()
@@ -210,12 +210,12 @@ namespace ITPSystem.Pages.Supervisor
             }).Distinct().ToList();
         }
 
-        private bool TryGetUserId(out int userId)
+        private bool TryGetSupervisorContext(out string supervisorStaffId)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            return role == "supervisor" && int.TryParse(rawUserId, out userId);
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(supervisorStaffId);
         }
     }
 

@@ -50,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEFwcG9pbnRtZW50VGVtcGxhdGVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/AssignSupervisor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEFzc2lnblN1cGVydmlzb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Committee/BlacklistCompanies.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tbWl0dGVlXEJsYWNrbGlzdENvbXBhbmllcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -180,6 +184,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/AssessmentMarks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxBc3Nlc3NtZW50TWFya3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudFxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/kimch/OneDrive/桌面/烦人的东西/Y2S3/FYP/TEMPLATE1_2/TEMPLETE 1_2/FYP Programming/ITPSystem/Pages/Student/Dashboard.cshtml]

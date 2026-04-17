@@ -9,7 +9,8 @@ namespace ITPSystem.Models
         [Key]
         public long notification_id { get; set; }
 
-        public int from_user_id { get; set; }
+        [StringLength(16)]
+        public string from_user_id { get; set; } = string.Empty;
         public int to_user_id { get; set; }
 
         [StringLength(60)]

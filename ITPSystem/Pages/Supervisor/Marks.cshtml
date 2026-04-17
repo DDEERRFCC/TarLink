@@ -1,8 +1,6 @@
 @page
 @model ITPSystem.Pages.Supervisor.MarksModel
 <style>
-    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
     :root {
         --itp-bg-1: #f5efe4;
         --itp-bg-2: #edf4f4;
@@ -10,8 +8,12 @@
         --itp-text: #182536;
         --itp-muted: #617082;
         --itp-primary: #0f7b6c;
-        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-accent: #d97706;
+        --itp-card: rgba(255, 255, 255, 0.88);
         --itp-border: rgba(24, 37, 54, 0.09);
+        --itp-hero-start: #132238;
+        --itp-hero-mid: #0f7b6c;
+        --itp-hero-end: #d97706;
     }
 
     .sv-portal {
@@ -30,223 +32,478 @@
         padding: 0 1rem;
     }
 
-    .sv-shell {
-        background: var(--itp-card);
+    .marks-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
+    }
+
+    .marks-toolbar {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .marks-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(130deg, var(--itp-hero-start), var(--itp-hero-mid) 58%, var(--itp-hero-end));
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .marks-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        pointer-events: none;
+    }
+
+    .marks-banner > * { position: relative; z-index: 1; }
+
+    .marks-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .marks-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .marks-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .marks-banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+    }
+
+    .marks-back-btn,
+    .marks-ghost-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .55rem;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: .78rem 1rem;
+        font-weight: 700;
+        position: relative;
+        z-index: 3;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+
+    .marks-back-btn {
+        border: 1px solid #d6e6e1;
+        background: linear-gradient(180deg, #f9fcfb, #eef7f5);
+        color: #13414a;
+    }
+
+    .marks-back-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #f6dfe9;
+        color: #7b264b;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .marks-ghost-btn {
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .marks-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .marks-panel,
+    .marks-stat {
         border: 1px solid var(--itp-border);
         border-radius: 22px;
-        padding: 1rem;
-        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
-        backdrop-filter: blur(10px);
+        background: var(--itp-card);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
     }
-    .sv-title { color: var(--itp-text); font-weight: 700; margin: 0 0 .35rem; }
-    .sv-table thead th {
-        background: #f6fafc;
-        color: #607284;
-        font-size: .78rem;
+
+    .marks-stat {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem 1.05rem;
+    }
+
+    .marks-stat::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 5px;
+        background: linear-gradient(90deg, rgba(15, 123, 108, 0.95), rgba(217, 119, 6, 0.7));
+    }
+
+    .marks-stat-label {
+        color: var(--itp-muted);
+        font-size: .8rem;
         font-weight: 700;
         letter-spacing: .05em;
         text-transform: uppercase;
     }
-    .sv-card {
+
+    .marks-stat-value {
+        margin-top: .4rem;
+        color: var(--itp-text);
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .marks-panel { padding: 1rem; }
+
+    .marks-section-title {
+        margin: 0;
+        color: var(--itp-text);
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .marks-section-copy {
+        margin: .35rem 0 0;
+        color: var(--itp-muted);
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .marks-field label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #36506a;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .marks-field .form-select,
+    .marks-field .form-control {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .marks-rubric-card {
         border: 1px solid var(--itp-border);
         border-radius: 18px;
         background: #fff;
         padding: .95rem;
-        box-shadow: 0 10px 22px rgba(26, 40, 60, 0.06);
+        margin-bottom: .8rem;
     }
-    .sv-actions .btn { border-radius: 12px; }
-    .sv-muted { color: var(--itp-muted); }
-    .sv-section-divider {
-        margin: .6rem 0 1rem;
-        border: 0;
-        border-top: 1px solid #e2e8f0;
+
+    .marks-rubric-section {
+        margin: 1.2rem 0 .6rem;
+        color: #132238;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .marks-meta {
+        border-radius: 14px;
+        border: 1px solid #e5eef7;
+        background: #f6fafc;
+        padding: .7rem .8rem;
+    }
+
+    .marks-save-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        border-radius: 14px;
+        font-weight: 700;
+        background: linear-gradient(90deg, var(--itp-primary), var(--itp-accent));
+        border: none;
+        color: #fff;
+    }
+
+    .marks-table {
+        margin-bottom: 0;
+    }
+
+    .marks-table thead th {
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .marks-table td,
+    .marks-table th {
+        padding: .8rem .75rem;
+        vertical-align: middle;
+    }
+
+    @@media (max-width: 991.98px) {
+        .marks-banner-top,
+        .marks-grid {
+            grid-template-columns: 1fr;
+            display: grid;
+        }
     }
 </style>
 <div class="sv-portal">
-<div class="itp-shell">
-<div class="sv-shell">
-<h3 class="sv-title">Assessment Mark Sheet</h3>
-<div class="mb-3 d-flex justify-content-end gap-2">
-    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Return to Dashboard</a>
-    <a class="btn btn-outline-primary btn-sm" asp-page="/Supervisor/Marks" asp-page-handler="ExportExcel">Export XLSX</a>
-</div>
+    <div class="itp-shell">
+    <div class="marks-page">
+        <section class="marks-banner">
+            <div>
+                <span class="marks-kicker">Supervisor Workflow</span>
+                <h1 class="marks-title">Assessment marks</h1>
+                <p class="marks-copy">Complete rubric scoring for students whose final reports are ready, then review published totals and detail breakdowns in one assessment workspace.</p>
+            </div>
+        </section>
 
-<hr class="sv-section-divider" />
-
-@if (!string.IsNullOrWhiteSpace(Model.Message))
-{
-    <div class="alert alert-success">@Model.Message</div>
-}
-
-<form method="post" class="mb-4 sv-card">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-    <div class="row g-2 align-items-end">
-        <div class="col-md-5">
-            <label class="form-label">Student</label>
-            <select class="form-select" asp-for="Input.ApplicationId" required>
-                <option value="">Select student</option>
-                @foreach (var s in Model.Students)
-                {
-                    var canMark = Model.FinalReportSubmittedIds.Contains(s.application_id);
-                    <option value="@s.application_id" disabled="@(canMark ? null : "disabled")">
-                        @s.studentName (@s.studentID)@(canMark ? "" : " - Final report not submitted")
-                    </option>
-                }
-            </select>
-            <span asp-validation-for="Input.ApplicationId" class="text-danger"></span>
+        <div class="marks-toolbar">
+            <div class="marks-banner-actions">
+                <a class="marks-back-btn" href="/Supervisor/Dashboard">Back to dashboard</a>
+                <a class="marks-ghost-btn" asp-page="/Supervisor/Marks" asp-page-handler="ExportExcel">Export XLSX</a>
+            </div>
         </div>
-    </div>
 
-    @{
-        var currentSection = string.Empty;
-    }
-
-    @for (var i = 0; i < Model.RubricDefinitions.Count; i++)
-    {
-        var def = Model.RubricDefinitions[i];
-        var maxValue = def.MaxScore.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        if (!string.Equals(def.Section, currentSection, StringComparison.Ordinal))
+        @if (!string.IsNullOrWhiteSpace(Model.Message))
         {
-            currentSection = def.Section;
-            <h5 class="mt-4">@currentSection</h5>
+            <div class="alert alert-success">@Model.Message</div>
         }
-        <div class="row g-2 align-items-end border rounded p-2 mb-2">
-            <div class="col-md-5">
-                <label class="form-label">Criteria</label>
-                <div class="form-control-plaintext">@def.Item</div>
-                <input type="hidden" name="Input.RubricScores[@i].RubricItem" value="@def.Item" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Rating Scale</label>
-                <div class="border rounded bg-light p-2 small">
-                    @def.RatingScale
-                </div>
-            </div>
-            <div class="col-md-1">
-                <label class="form-label">Max</label>
-                <div class="form-control-plaintext">@def.MaxScore</div>
-                <input type="hidden" name="Input.RubricScores[@i].MaxScore" value="@maxValue" />
-            </div>
-            <div class="col-md-2">
-                <label class="form-label">Score</label>
-                @{
-                    var maxInt = (int)Math.Floor(def.MaxScore);
-                    var currentScore = Model.Input?.RubricScores != null && Model.Input.RubricScores.Count > i
-                        ? Model.Input.RubricScores[i].Score
-                        : null;
-                }
-                <select class="form-select" name="Input.RubricScores[@i].Score" required>
-                    <option value="">Select</option>
-                    @for (var score = 0; score <= maxInt; score++)
-                    {
-                        var selected = currentScore.HasValue && currentScore.Value == score;
-                        <option value="@score" selected="@(selected ? "selected" : null)">@score</option>
+
+        <section class="marks-grid">
+            <article class="marks-panel">
+                <h2 class="marks-section-title">Assessment form</h2>
+                <p class="marks-section-copy">Only students with a submitted final report can be selected for scoring.</p>
+
+                <form method="post" class="mt-3">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="marks-field mb-3">
+                        <label>Student</label>
+                        <select class="form-select" asp-for="Input.ApplicationId" required>
+                            <option value="">Select student</option>
+                            @foreach (var s in Model.Students)
+                            {
+                                var canMark = Model.FinalReportSubmittedIds.Contains(s.application_id);
+                                <option value="@s.application_id" disabled="@(canMark ? null : "disabled")">
+                                    @s.studentName (@s.studentID)@(canMark ? "" : " - Final report not submitted")
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="Input.ApplicationId" class="text-danger"></span>
+                    </div>
+
+                    @{
+                        var currentSection = string.Empty;
                     }
-                </select>
+
+                    @for (var i = 0; i < Model.RubricDefinitions.Count; i++)
+                    {
+                        var def = Model.RubricDefinitions[i];
+                        var maxValue = def.MaxScore.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                        if (!string.Equals(def.Section, currentSection, StringComparison.Ordinal))
+                        {
+                            currentSection = def.Section;
+                            <h3 class="marks-rubric-section">@currentSection</h3>
+                        }
+
+                        var maxInt = (int)Math.Floor(def.MaxScore);
+                        var currentScore = Model.Input?.RubricScores != null && Model.Input.RubricScores.Count > i
+                            ? Model.Input.RubricScores[i].Score
+                            : null;
+
+                        <div class="marks-rubric-card">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-5">
+                                    <div class="marks-field">
+                                        <label>Criteria</label>
+                                        <div class="form-control-plaintext">@def.Item</div>
+                                        <input type="hidden" name="Input.RubricScores[@i].RubricItem" value="@def.Item" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="marks-field">
+                                        <label>Rating Scale</label>
+                                        <div class="marks-meta small">@def.RatingScale</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="marks-field">
+                                        <label>Max</label>
+                                        <div class="form-control-plaintext">@def.MaxScore</div>
+                                        <input type="hidden" name="Input.RubricScores[@i].MaxScore" value="@maxValue" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="marks-field">
+                                        <label>Score</label>
+                                        <select class="form-select" name="Input.RubricScores[@i].Score" required>
+                                            <option value="">Select</option>
+                                            @for (var score = 0; score <= maxInt; score++)
+                                            {
+                                                var selected = currentScore.HasValue && currentScore.Value == score;
+                                                <option value="@score" selected="@(selected ? "selected" : null)">@score</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="marks-field mt-3">
+                        <label>Overall Comments</label>
+                        <textarea class="form-control" asp-for="Input.OverallRemarks" rows="4" required></textarea>
+                        <span asp-validation-for="Input.OverallRemarks" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-3">
+                        <button class="marks-save-btn w-100" type="submit">Save Assessment</button>
+                    </div>
+                </form>
+            </article>
+
+            <div class="d-grid gap-3">
+                <article class="marks-stat">
+                    <div class="marks-stat-label">Eligible Students</div>
+                    <div class="marks-stat-value">@Model.FinalReportSubmittedIds.Count</div>
+                </article>
+                <article class="marks-stat">
+                    <div class="marks-stat-label">Published Mark Rows</div>
+                    <div class="marks-stat-value">@Model.MarkItems.Count</div>
+                </article>
+                <article class="marks-stat">
+                    <div class="marks-stat-label">Assessed Students</div>
+                    <div class="marks-stat-value">@Model.Summaries.Count(x => x.TotalMax > 0)</div>
+                </article>
             </div>
-        </div>
-    }
+        </section>
 
-    <div class="mt-3">
-        <label class="form-label">Overall Comments</label>
-        <textarea class="form-control" asp-for="Input.OverallRemarks" rows="3" required></textarea>
-        <span asp-validation-for="Input.OverallRemarks" class="text-danger"></span>
-    </div>
+        <section class="marks-panel">
+            <h2 class="marks-section-title">Student marks</h2>
+            <p class="marks-section-copy">Track which students already have assessment totals and open their final report or mark details directly.</p>
+            <div class="table-responsive mt-3">
+                <table class="table marks-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Student ID</th>
+                            <th>Total Mark</th>
+                            <th>Final Report</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Summaries)
+                        {
+                            <tr>
+                                <td>@item.StudentName</td>
+                                <td>@item.StudentId</td>
+                                <td>@item.TotalScore / @item.TotalMax</td>
+                                <td>
+                                    @if (item.FinalReportId.HasValue)
+                                    {
+                                        <a asp-page="/Supervisor/ReportView"
+                                           asp-route-reportId="@item.FinalReportId.Value"
+                                           asp-route-applicationId="@item.ApplicationId">View Final Report</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">-</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.FinalReportSubmitted)
+                                    {
+                                        <a class="btn btn-outline-primary btn-sm"
+                                           asp-page="/Supervisor/Marks"
+                                           asp-route-applicationId="@item.ApplicationId">View Details</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Final report not submitted</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-    <div class="mt-3">
-        <button class="btn btn-primary" type="submit">Save Assessment</button>
-    </div>
-</form>
-
-<h5>Student Marks</h5>
-<div class="table-responsive">
-<table class="table table-bordered table-sm align-middle sv-table">
-    <thead>
-        <tr>
-            <th>Student</th>
-            <th>Student ID</th>
-            <th>Total Mark</th>
-            <th>Final Report</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Summaries)
+        @if (Model.applicationId.HasValue)
         {
-            <tr>
-                <td>@item.StudentName</td>
-                <td>@item.StudentId</td>
-                <td>@item.TotalScore / @item.TotalMax</td>
-                <td>
-                    @if (item.FinalReportId.HasValue)
-                    {
-                        <a asp-page="/Supervisor/ReportView"
-                           asp-route-reportId="@item.FinalReportId.Value"
-                           asp-route-applicationId="@item.ApplicationId">View Final Report</a>
-                    }
-                    else
-                    {
-                        <span class="text-muted">-</span>
-                    }
-                </td>
-                <td>
-                    @if (item.FinalReportSubmitted)
-                    {
-                        <a class="btn btn-outline-primary btn-sm"
-                           asp-page="/Supervisor/Marks"
-                           asp-route-applicationId="@item.ApplicationId">View Details</a>
-                    }
-                    else
-                    {
-                        <span class="text-muted">Final report not submitted</span>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-</div>
-
-@if (Model.applicationId.HasValue)
-{
-    <h5 class="mt-4">Mark Details</h5>
-    @if (!Model.DetailItems.Any())
-    {
-        <div class="alert alert-info">No marks found for the selected student.</div>
-    }
-    else
-    {
-        <div class="table-responsive">
-        <table class="table table-bordered table-sm align-middle sv-table">
-            <thead>
-                <tr>
-                    <th>Rubric</th>
-                    <th>Score</th>
-                    <th>Max</th>
-                    <th>Remarks</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var detail in Model.DetailItems)
+            <section class="marks-panel">
+                <h2 class="marks-section-title">Mark details</h2>
+                <p class="marks-section-copy">The latest saved rubric marks for the selected student are shown below.</p>
+                @if (!Model.DetailItems.Any())
                 {
-                    <tr>
-                        <td>@detail.Mark.rubric_item</td>
-                        <td>@detail.Mark.score</td>
-                        <td>@detail.Mark.max_score</td>
-                        <td>@detail.Mark.remarks</td>
-                        <td>@detail.Mark.created_at.ToString("yyyy-MM-dd")</td>
-                    </tr>
+                    <div class="alert alert-info mt-3 mb-0">No marks found for the selected student.</div>
                 }
-            </tbody>
-        </table>
-        </div>
-    }
-}
+                else
+                {
+                    <div class="table-responsive mt-3">
+                        <table class="table marks-table">
+                            <thead>
+                                <tr>
+                                    <th>Rubric</th>
+                                    <th>Score</th>
+                                    <th>Max</th>
+                                    <th>Remarks</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detail in Model.DetailItems)
+                                {
+                                    <tr>
+                                        <td>@detail.Mark.rubric_item</td>
+                                        <td>@detail.Mark.score</td>
+                                        <td>@detail.Mark.max_score</td>
+                                        <td>@detail.Mark.remarks</td>
+                                        <td>@detail.Mark.created_at.ToString("yyyy-MM-dd")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </section>
+        }
+    </div>
+    </div>
 </div>
-</div>
-</div>
-
-
-
-

@@ -23,12 +23,12 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnGet()
         {
-            if (!TryGetUserId(out var userId))
+            if (!TryGetSupervisorContext(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            LoadNotification(userId);
+            LoadNotification(supervisorStaffId);
             if (Notification == null)
             {
                 return NotFound();
@@ -44,27 +44,27 @@ namespace ITPSystem.Pages.Supervisor
             return Page();
         }
 
-        private void LoadNotification(int userId)
+        private void LoadNotification(string supervisorStaffId)
         {
             Notification = _db.Notifications
-                .FirstOrDefault(n => n.notification_id == notificationId && n.to_user_id == userId);
+                .FirstOrDefault(n => n.notification_id == notificationId && n.from_user_id == supervisorStaffId);
 
             if (Notification != null)
             {
-                var sender = _db.SysUsers.AsNoTracking()
-                    .FirstOrDefault(u => u.user_id == Notification.from_user_id);
+                var sender = _db.UcSupervisors.AsNoTracking()
+                    .FirstOrDefault(u => u.staffId == Notification.from_user_id);
                 SenderName = sender != null 
-                    ? (sender.username ?? sender.email ?? "System")
+                    ? sender.name
                     : "System";
             }
         }
 
-        private bool TryGetUserId(out int userId)
+        private bool TryGetSupervisorContext(out string supervisorStaffId)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            return role == "supervisor" && int.TryParse(rawUserId, out userId);
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(supervisorStaffId);
         }
     }
 }

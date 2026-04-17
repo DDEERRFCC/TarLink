@@ -1,16 +1,19 @@
 @page
 @model ITPSystem.Pages.Supervisor.SummaryReportModel
 <style>
-    @@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
     :root {
         --itp-bg-1: #f5efe4;
         --itp-bg-2: #edf4f4;
         --itp-bg-3: #f9fbfc;
         --itp-text: #182536;
         --itp-muted: #617082;
-        --itp-card: rgba(255, 255, 255, 0.9);
+        --itp-primary: #0f7b6c;
+        --itp-accent: #d97706;
+        --itp-card: rgba(255, 255, 255, 0.88);
         --itp-border: rgba(24, 37, 54, 0.09);
+        --itp-hero-start: #132238;
+        --itp-hero-mid: #0f7b6c;
+        --itp-hero-end: #d97706;
     }
 
     .sv-portal {
@@ -29,150 +32,378 @@
         padding: 0 1rem;
     }
 
-    .sv-shell {
-        background: var(--itp-card);
-        border: 1px solid var(--itp-border);
-        border-radius: 22px;
-        padding: 1rem;
-        box-shadow: 0 14px 30px rgba(26, 40, 60, 0.08);
-        backdrop-filter: blur(10px);
+    .summary-page {
+        display: grid;
+        gap: 1rem;
+        max-width: 1280px;
+        margin: 0 auto;
     }
-    .sv-title { color: var(--itp-text); font-weight: 700; margin: 0 0 .35rem; }
-    .sv-table thead th {
-        background: #f6fafc;
-        color: #607284;
+
+    .summary-toolbar {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .summary-banner {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        padding: 1.35rem;
+        color: #fff;
+        background: linear-gradient(130deg, var(--itp-hero-start), var(--itp-hero-mid) 58%, var(--itp-hero-end));
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.14);
+    }
+
+    .summary-banner::after {
+        content: "";
+        position: absolute;
+        right: -42px;
+        top: -50px;
+        width: 180px;
+        height: 180px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.12);
+        pointer-events: none;
+    }
+
+    .summary-banner > * { position: relative; z-index: 1; }
+
+    .summary-kicker {
+        display: inline-flex;
+        align-items: center;
+        padding: .34rem .72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
         font-size: .78rem;
         font-weight: 700;
-        letter-spacing: .05em;
+        letter-spacing: .08em;
         text-transform: uppercase;
     }
-    .sv-filter { background: #fff; border: 1px solid var(--itp-border); border-radius: 16px; padding: .85rem; }
-    .sv-actions .btn { border-radius: 12px; }
-    .sv-alert { border-radius: 12px; }
-    .sv-muted { color: var(--itp-muted); }
-    .sv-section-divider {
-        margin: .6rem 0 1rem;
-        border: 0;
-        border-top: 1px solid #e2e8f0;
+
+    .summary-title {
+        margin: .55rem 0 .35rem;
+        font-size: clamp(1.55rem, 3vw, 2.2rem);
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .summary-copy {
+        margin: 0;
+        max-width: 72ch;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+    }
+
+    .summary-banner-btn,
+    .summary-banner-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .55rem;
+        padding: .78rem 1rem;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        position: relative;
+        z-index: 3;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+
+    .summary-banner-btn {
+        border: 1px solid #d6e6e1;
+        background: linear-gradient(180deg, #f9fcfb, #eef7f5);
+        color: #13414a;
+    }
+
+    .summary-banner-btn::before {
+        content: "<";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        border-radius: 999px;
+        background: #dff3ef;
+        color: #0d5f63;
+        font-size: .9rem;
+        line-height: 1;
+    }
+
+    .summary-banner-btn-secondary {
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.32);
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .summary-panel,
+    .summary-report-card {
+        border: 1px solid var(--itp-border);
+        border-radius: 22px;
+        background: var(--itp-card);
+        box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+    }
+
+    .summary-panel {
+        padding: 1rem;
+    }
+
+    .summary-section-title {
+        margin: 0;
+        color: var(--itp-text);
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .summary-section-copy {
+        margin: .35rem 0 0;
+        color: var(--itp-muted);
+        line-height: 1.7;
+        font-size: .92rem;
+    }
+
+    .summary-field label {
+        display: block;
+        margin-bottom: .35rem;
+        color: #36506a;
+        font-size: .82rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .summary-field .form-select {
+        min-height: 44px;
+        border-radius: 14px;
+        border-color: #d1ddea;
+        box-shadow: none;
+    }
+
+    .summary-generate-btn,
+    .summary-export-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        border-radius: 14px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .summary-generate-btn {
+        background: linear-gradient(90deg, var(--itp-primary), var(--itp-accent));
+        border: none;
+        color: #fff;
+    }
+
+    .summary-export-btn {
+        background: #fff;
+        border: 1px solid #d6e6e1;
+        color: #35516a;
+    }
+
+    .summary-report-card {
+        overflow: hidden;
+    }
+
+    .summary-report-head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: .75rem;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid #e5eef7;
+        background: linear-gradient(180deg, #ffffff, #f7fbfa);
+    }
+
+    .summary-report-head strong {
+        color: var(--itp-text);
+        font-size: 1rem;
+    }
+
+    .summary-report-head small {
+        color: var(--itp-muted);
+    }
+
+    .summary-report-body {
+        padding: .9rem 1rem 1rem;
+    }
+
+    .summary-table {
+        margin-bottom: 0;
+    }
+
+    .summary-table thead th {
+        background: #f6fafc;
+        color: #607284;
+        font-size: .8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .summary-table td,
+    .summary-table th {
+        padding: .8rem .75rem;
+        vertical-align: middle;
+    }
+
+    @@media (max-width: 991.98px) {
+        .summary-grid,
+        .summary-banner-top {
+            grid-template-columns: 1fr;
+            display: grid;
+        }
     }
 </style>
 <div class="sv-portal">
-<div class="itp-shell">
-<div class="sv-shell">
-<h3 class="sv-title">Summary Report</h3>
-<p class="sv-muted">Overview by cohort and academic level. Report generated date/time: <strong>@Model.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</strong></p>
+    <div class="itp-shell">
+    <div class="summary-page">
+        <section class="summary-banner">
+            <div>
+                <span class="summary-kicker">Supervisor Reporting</span>
+                <h1 class="summary-title">Summary report</h1>
+                <p class="summary-copy">Generate a compact overview of student outcomes, programme distribution, and company placement patterns across the cohorts assigned to you.</p>
+            </div>
+        </section>
 
-<div class="mb-3 d-flex justify-content-end">
-    <a class="btn btn-outline-secondary btn-sm" asp-page="/Supervisor/Dashboard">Back to Dashboard</a>
-</div>
+        <div class="summary-toolbar">
+            <div class="d-flex flex-wrap gap-2">
+                <a class="summary-banner-btn" href="/Supervisor/Dashboard">Back to dashboard</a>
+                <span class="summary-banner-btn-secondary">Generated @Model.GeneratedAt.ToString("yyyy-MM-dd HH:mm:ss")</span>
+            </div>
+        </div>
 
-<hr class="sv-section-divider" />
+        <section class="summary-grid">
+            <article class="summary-panel">
+                <h2 class="summary-section-title">Report filters</h2>
+                <p class="summary-section-copy">Choose a cohort or academic level to narrow the programme and company breakdowns.</p>
+                <form method="get" class="d-grid gap-3 mt-3">
+                    <div class="summary-field">
+                        <label>Cohort</label>
+                        <select class="form-select" asp-for="cohortId" asp-items="Model.CohortOptions">
+                            <option value="">All Cohorts</option>
+                        </select>
+                    </div>
+                    <div class="summary-field">
+                        <label>Academic Level</label>
+                        <select class="form-select" asp-for="level">
+                            <option value="">All Levels</option>
+                            <option value="0">0 - Unknown</option>
+                            <option value="1">1 - Diploma</option>
+                            <option value="2">2 - Degree</option>
+                            <option value="3">3 - Master</option>
+                            <option value="4">4 - PhD</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="summary-generate-btn">Refresh Report</button>
+                    <a class="summary-export-btn"
+                       asp-page-handler="ExportCsv"
+                       asp-route-cohortId="@Model.cohortId"
+                       asp-route-level="@Model.level">Export CSV</a>
+                    <a class="summary-export-btn"
+                       asp-page-handler="ExportExcel"
+                       asp-route-cohortId="@Model.cohortId"
+                       asp-route-level="@Model.level">Export Excel</a>
+                </form>
+            </article>
 
-<form method="get" class="sv-filter row g-2 align-items-end mb-4">
-    <div class="col-md-5">
-        <label class="form-label">Cohort</label>
-        <select class="form-select form-select-sm" asp-for="cohortId" asp-items="Model.CohortOptions">
-            <option value="">All Cohorts</option>
-        </select>
+            <div class="d-grid gap-3">
+                <article class="summary-report-card">
+                    <div class="summary-report-head">
+                        <div>
+                            <strong>Student Breakdown by Programme</strong>
+                            <small>Total students: @Model.Totals.TotalStudents</small>
+                        </div>
+                    </div>
+                    <div class="summary-report-body">
+                        <div class="table-responsive">
+                            <table class="table summary-table">
+                                <thead>
+                                    <tr>
+                                        <th>Programme</th>
+                                        <th>No of Student</th>
+                                        <th>Success</th>
+                                        <th>Failed</th>
+                                        <th>Pending</th>
+                                        <th>Rejected</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var row in Model.ProgrammeSummary)
+                                    {
+                                        <tr>
+                                            <td>@row.Programme</td>
+                                            <td>@row.NoOfStudent</td>
+                                            <td>@row.Success</td>
+                                            <td>@row.Failed</td>
+                                            <td>@row.Pending</td>
+                                            <td>@row.Rejected</td>
+                                        </tr>
+                                    }
+                                    <tr class="fw-bold">
+                                        <td>Total</td>
+                                        <td>@Model.Totals.TotalStudents</td>
+                                        <td>@Model.Totals.TotalSuccess</td>
+                                        <td>@Model.Totals.TotalFailed</td>
+                                        <td>@Model.Totals.TotalPending</td>
+                                        <td>@Model.Totals.TotalRejected</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="summary-report-card">
+                    <div class="summary-report-head">
+                        <div>
+                            <strong>Student Breakdown by Company</strong>
+                            <small>Total applicants: @Model.Totals.TotalApplicantsByCompany</small>
+                        </div>
+                    </div>
+                    <div class="summary-report-body">
+                        <div class="table-responsive">
+                            <table class="table summary-table">
+                                <thead>
+                                    <tr>
+                                        <th>Company Name</th>
+                                        <th>Average Allowance</th>
+                                        <th>Applicant Count</th>
+                                        <th>Programme</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var row in Model.CompanySummary)
+                                    {
+                                        <tr>
+                                            <td>@row.CompanyName</td>
+                                            <td>@row.AverageAllowance.ToString("0.00")</td>
+                                            <td>@row.ApplicantCount</td>
+                                            <td>@(string.IsNullOrWhiteSpace(row.Programmes) ? "-" : row.Programmes)</td>
+                                        </tr>
+                                    }
+                                    <tr class="fw-bold">
+                                        <td>Total</td>
+                                        <td>-</td>
+                                        <td>@Model.Totals.TotalApplicantsByCompany</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
     </div>
-    <div class="col-md-3">
-        <label class="form-label">Academic Level</label>
-        <select class="form-select form-select-sm" asp-for="level">
-            <option value="">All Levels</option>
-            <option value="0">0 - Unknown</option>
-            <option value="1">1 - Diploma</option>
-            <option value="2">2 - Degree</option>
-            <option value="3">3 - Master</option>
-            <option value="4">4 - PhD</option>
-        </select>
     </div>
-    <div class="col-md-1">
-        <button type="submit" class="btn btn-primary btn-sm w-100">Go</button>
-    </div>
-    <div class="col-md-1">
-        <a class="btn btn-outline-success btn-sm w-100"
-           asp-page-handler="ExportCsv"
-           asp-route-cohortId="@Model.cohortId"
-           asp-route-level="@Model.level">CSV</a>
-    </div>
-    <div class="col-md-2">
-        <a class="btn btn-outline-success btn-sm w-100"
-           asp-page-handler="ExportExcel"
-           asp-route-cohortId="@Model.cohortId"
-           asp-route-level="@Model.level">Excel</a>
-    </div>
-</form>
-
-<h5>Student Breakdown by Programme</h5>
-<div class="table-responsive">
-<table class="table table-bordered table-sm align-middle sv-table">
-    <thead>
-        <tr>
-            <th>Programme</th>
-            <th>No of Student</th>
-            <th>Success</th>
-            <th>Failed</th>
-            <th>Pending</th>
-            <th>Rejected</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var row in Model.ProgrammeSummary)
-        {
-            <tr>
-                <td>@row.Programme</td>
-                <td>@row.NoOfStudent</td>
-                <td>@row.Success</td>
-                <td>@row.Failed</td>
-                <td>@row.Pending</td>
-                <td>@row.Rejected</td>
-            </tr>
-        }
-        <tr class="table-secondary fw-bold">
-            <td>Total</td>
-            <td>@Model.Totals.TotalStudents</td>
-            <td>@Model.Totals.TotalSuccess</td>
-            <td>@Model.Totals.TotalFailed</td>
-            <td>@Model.Totals.TotalPending</td>
-            <td>@Model.Totals.TotalRejected</td>
-        </tr>
-    </tbody>
-</table>
 </div>
-
-<h5>Student Breakdown by Company</h5>
-<div class="table-responsive">
-<table class="table table-bordered table-sm align-middle sv-table">
-    <thead>
-        <tr>
-            <th>Company Name</th>
-            <th>Average Allowance</th>
-            <th>Applicant Count</th>
-            <th>Programme</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var row in Model.CompanySummary)
-        {
-            <tr>
-                <td>@row.CompanyName</td>
-                <td>@row.AverageAllowance.ToString("0.00")</td>
-                <td>@row.ApplicantCount</td>
-                <td>@(string.IsNullOrWhiteSpace(row.Programmes) ? "-" : row.Programmes)</td>
-            </tr>
-        }
-        <tr class="table-secondary fw-bold">
-            <td>Total</td>
-            <td>-</td>
-            <td>@Model.Totals.TotalApplicantsByCompany</td>
-            <td>-</td>
-        </tr>
-    </tbody>
-</table>
-</div>
-</div>
-</div>
-
-
-
-

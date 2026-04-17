@@ -300,7 +300,7 @@ CREATE TABLE progressreport (
     -- 1..6 for progress, NULL for final
     dueDate DATE NOT NULL,
     status TINYINT NOT NULL DEFAULT 0,
-    -- 0=pending,1=submitted,2=approved,3=rejected
+    -- 0=pending,1=submitted,2=approved,3=rejected,4=submitted late
     remark TEXT NULL,
     file_path VARCHAR(500) NULL,
     UNIQUE KEY uq_report (applicantId, cohortId, reportType, reportNo),
@@ -402,14 +402,14 @@ CREATE TABLE ucsupervisor (
 CREATE TABLE assessmentmark (
     mark_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     application_id INT NOT NULL,
-    supervisor_user_id INT NOT NULL,
+    supervisor_staff_id VARCHAR(16) NOT NULL,
     rubric_item VARCHAR(120) NOT NULL,
     score DECIMAL(5, 2) NOT NULL,
     max_score DECIMAL(5, 2) NOT NULL,
     remarks TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_assessmentmark_application (application_id),
-    INDEX idx_assessmentmark_supervisor (supervisor_user_id),
+    INDEX idx_assessmentmark_supervisor (supervisor_staff_id),
     CONSTRAINT chk_assessmentmark_rubric CHECK (
         rubric_item IN (
             'Submission of progress reports (CLO6)',
@@ -451,7 +451,7 @@ CREATE TABLE assessmentmark (
         AND score <= max_score
     ),
     CONSTRAINT fk_assessmentmark_application FOREIGN KEY (application_id) REFERENCES studentapplication(application_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_assessmentmark_supervisor FOREIGN KEY (supervisor_user_id) REFERENCES sysuser(user_id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_assessmentmark_supervisor FOREIGN KEY (supervisor_staff_id) REFERENCES ucsupervisor(staffId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- ==============================
 -- NOTIFICATION TABLE
@@ -495,7 +495,7 @@ CREATE TABLE announcement (
     -- targeting (use NULL = no filter / all)
     target_role ENUM('all', 'student', 'supervisor', 'committee') NOT NULL DEFAULT 'all',
     cohort_id INT NULL,
-    faculty VARCHAR(45) NULL,
+    faculty VARCHAR(100) NULL,
     campus VARCHAR(45) NULL,
     -- publishing controls
     is_published TINYINT(1) NOT NULL DEFAULT 1,

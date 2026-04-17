@@ -33,7 +33,7 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnGet()
         {
-            if (!TryGetSupervisorContext(out var userId, out var userEmail))
+            if (!TryGetSupervisorContext(out var supervisorStaffId, out var userEmail))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
@@ -44,7 +44,7 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnPost()
         {
-            if (!TryGetSupervisorContext(out var userId, out var userEmail))
+            if (!TryGetSupervisorContext(out var supervisorStaffId, out var userEmail))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
@@ -82,8 +82,8 @@ namespace ITPSystem.Pages.Supervisor
 
             try
             {
-                // Get the supervisor's user ID
-                var supervisor = _db.SysUsers.FirstOrDefault(u => u.user_id == userId);
+                // Verify the supervisor exists in UcSupervisors
+                var supervisor = _db.UcSupervisors.FirstOrDefault(u => u.staffId == supervisorStaffId);
                 if (supervisor == null)
                 {
                     Message = "Supervisor account not found.";
@@ -112,7 +112,7 @@ namespace ITPSystem.Pages.Supervisor
                     // Create notification
                     var notification = new Notification
                     {
-                        from_user_id = userId,
+                        from_user_id = supervisorStaffId,
                         to_user_id = studentUser.user_id,
                         type = Type.Trim(),
                         title = Title.Trim(),
@@ -161,17 +161,17 @@ namespace ITPSystem.Pages.Supervisor
                 .ToList();
         }
 
-        private bool TryGetSupervisorContext(out int userId, out string userEmail)
+        private bool TryGetSupervisorContext(out string supervisorStaffId, out string userEmail)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             userEmail = string.Empty;
 
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
             userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
 
             return role == "supervisor" 
-                && int.TryParse(rawUserId, out userId) 
+                && !string.IsNullOrWhiteSpace(supervisorStaffId)
                 && !string.IsNullOrWhiteSpace(userEmail);
         }
     }

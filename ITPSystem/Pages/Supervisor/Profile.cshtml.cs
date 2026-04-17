@@ -66,7 +66,21 @@ namespace ITPSystem.Pages.Supervisor
 
             if (applicationIds.Count > 0)
             {
-                PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 1);
+                var assessedApplicationIds = _db.AssessmentMarks.AsNoTracking()
+                    .Where(m => applicationIds.Contains(m.application_id))
+                    .Select(m => m.application_id)
+                    .Distinct()
+                    .ToHashSet();
+
+                PendingReports = _db.ProgressReports.AsNoTracking()
+                    .Count(r => applicationIds.Contains(r.applicantId)
+                        && (
+                            (r.reportType == "progress" && (r.status == 1 || r.status == 4))
+                            || (r.reportType == "final"
+                                && !string.IsNullOrWhiteSpace(r.file_path)
+                                && (r.status == 1 || r.status == 2 || r.status == 4)
+                                && !assessedApplicationIds.Contains(r.applicantId))
+                        ));
                 ApprovedReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 2);
                 RejectedReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 3);
 
@@ -75,29 +89,20 @@ namespace ITPSystem.Pages.Supervisor
                 DocumentReviewsRejected = _db.DocumentReviews.Count(r => applicationIds.Contains(r.application_id) && r.status == "rejected");
             }
 
-            if (userId > 0)
-            {
-                UnreadNotifications = _db.Notifications.Count(n => n.to_user_id == userId && !n.is_read);
-                TotalNotifications = _db.Notifications.Count(n => n.to_user_id == userId);
-                RecentNotifications = _db.Notifications.AsNoTracking()
-                    .Where(n => n.to_user_id == userId)
-                    .OrderByDescending(n => n.created_at)
-                    .Take(5)
-                    .ToList();
-            }
+            // Note: Notifications flow FROM supervisors TO students, so supervisors don't receive notifications
+            // These values remain 0 by default
 
             return Page();
         }
 
-        private bool TryGetSupervisorContext(out int userId, out string userEmail)
+        private bool TryGetSupervisorContext(out string supervisorStaffId, out string userEmail)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
-            var rawUserId = HttpContext.Session.GetString("UserID");
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
 
-            int.TryParse(rawUserId, out userId);
-            return role == "supervisor" && !string.IsNullOrWhiteSpace(userEmail);
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(userEmail) && !string.IsNullOrWhiteSpace(supervisorStaffId);
         }
     }
 }

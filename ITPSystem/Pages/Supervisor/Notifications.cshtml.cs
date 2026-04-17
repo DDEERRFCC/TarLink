@@ -20,7 +20,7 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnGet()
         {
-            if (!TryGetUserId(out var userId))
+            if (!TryGetSupervisorContext(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
@@ -32,39 +32,54 @@ namespace ITPSystem.Pages.Supervisor
                 ViewData["IsSuccess"] = TempData["IsSuccess"];
             }
 
-            LoadReceivedNotifications(userId);
-            LoadSentNotifications(userId);
+            LoadReceivedNotifications();
+            LoadSentNotifications(supervisorStaffId);
             return Page();
         }
 
         public IActionResult OnPostMarkAllRead()
         {
-            if (!TryGetUserId(out var userId))
+            if (!TryGetSupervisorContext(out var supervisorStaffId))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
 
-            var unread = _db.Notifications.Where(n => n.to_user_id == userId && !n.is_read).ToList();
-            foreach (var item in unread)
+            // Get the supervisor's SysUser to mark their received notifications as read
+            var supervisorUser = _db.SysUsers.FirstOrDefault(u => u.username == supervisorStaffId || u.email == HttpContext.Session.GetString("UserEmail"));
+            if (supervisorUser != null)
             {
-                item.is_read = true;
+                var unread = _db.Notifications.Where(n => n.to_user_id == supervisorUser.user_id && !n.is_read).ToList();
+                foreach (var item in unread)
+                {
+                    item.is_read = true;
+                }
+                _db.SaveChanges();
             }
-            _db.SaveChanges();
             return RedirectToPage();
         }
 
-        private void LoadReceivedNotifications(int userId)
+        private void LoadReceivedNotifications()
         {
+            // Get the supervisor's SysUser to find their received notifications
+            var supervisorEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
+            var supervisorUser = _db.SysUsers.FirstOrDefault(u => u.email == supervisorEmail);
+            
+            if (supervisorUser == null)
+            {
+                Items = new List<NotificationItem>();
+                return;
+            }
+
             var notifications = _db.Notifications.AsNoTracking()
-                .Where(n => n.to_user_id == userId)
+                .Where(n => n.to_user_id == supervisorUser.user_id)
                 .OrderByDescending(n => n.created_at)
                 .ToList();
 
-            // Load sender information for each notification
-            var senderIds = notifications.Select(n => n.from_user_id).Distinct().ToList();
-            var senders = _db.SysUsers.AsNoTracking()
-                .Where(u => senderIds.Contains(u.user_id))
-                .ToDictionary(u => u.user_id);
+            // Load sender information for each notification (from UcSupervisors now)
+            var senderStaffIds = notifications.Select(n => n.from_user_id).Distinct().ToList();
+            var senders = _db.UcSupervisors.AsNoTracking()
+                .Where(u => senderStaffIds.Contains(u.staffId))
+                .ToDictionary(u => u.staffId);
 
             Items = notifications.Select(n => new NotificationItem
             {
@@ -77,15 +92,15 @@ namespace ITPSystem.Pages.Supervisor
                 is_read = n.is_read,
                 created_at = n.created_at,
                 SenderName = senders.ContainsKey(n.from_user_id) 
-                    ? (senders[n.from_user_id].username ?? senders[n.from_user_id].email ?? "System")
+                    ? senders[n.from_user_id].name
                     : "System"
             }).ToList();
         }
 
-        private void LoadSentNotifications(int userId)
+        private void LoadSentNotifications(string supervisorStaffId)
         {
             var notifications = _db.Notifications.AsNoTracking()
-                .Where(n => n.from_user_id == userId)
+                .Where(n => n.from_user_id == supervisorStaffId)
                 .OrderByDescending(n => n.created_at)
                 .ToList();
 
@@ -110,19 +125,19 @@ namespace ITPSystem.Pages.Supervisor
             }).ToList();
         }
 
-        private bool TryGetUserId(out int userId)
+        private bool TryGetSupervisorContext(out string supervisorStaffId)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            return role == "supervisor" && int.TryParse(rawUserId, out userId);
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(supervisorStaffId);
         }
     }
 
     public class NotificationItem
     {
         public long notification_id { get; set; }
-        public int from_user_id { get; set; }
+        public string from_user_id { get; set; } = string.Empty;
         public int to_user_id { get; set; }
         public string type { get; set; } = string.Empty;
         public string title { get; set; } = string.Empty;

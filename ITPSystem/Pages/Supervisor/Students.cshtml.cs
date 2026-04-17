@@ -147,7 +147,7 @@ namespace ITPSystem.Pages.Supervisor
 
         private IActionResult UpdateApplicationStatus(int applicationId, string newStatus, string actionLabel, string? remarks)
         {
-            if (!IsSupervisor(out var supervisorId, out var userEmail))
+            if (!IsSupervisor(out var supervisorStaffId, out var userEmail))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
@@ -202,14 +202,12 @@ namespace ITPSystem.Pages.Supervisor
 
             _db.SaveChanges();
 
-            var studentUser = supervisorId > 0
-                ? _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId)
-                : null;
+            var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == applicationId);
             if (studentUser != null)
             {
                 _db.Notifications.Add(new Notification
                 {
-                    from_user_id = supervisorId,
+                    from_user_id = supervisorStaffId,
                     to_user_id = studentUser.user_id,
                     type = "student_application",
                     title = $"Your internship application was {actionLabel}",
@@ -257,15 +255,15 @@ namespace ITPSystem.Pages.Supervisor
             // CurrentStudents and HistoryStudents are available for separate display.
         }
 
-        private bool IsSupervisor(out int userId, out string userEmail)
+        private bool IsSupervisor(out string supervisorStaffId, out string userEmail)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            int.TryParse(rawUserId, out userId);
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
             return role == "supervisor"
-                && !string.IsNullOrWhiteSpace(userEmail);
+                && !string.IsNullOrWhiteSpace(userEmail)
+                && !string.IsNullOrWhiteSpace(supervisorStaffId);
         }
     }
 }

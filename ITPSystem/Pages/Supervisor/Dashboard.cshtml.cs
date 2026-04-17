@@ -100,7 +100,21 @@ namespace ITPSystem.Pages.Supervisor
 
             var applicationIds = Students.Select(s => s.application_id).ToList();
 
-            PendingReports = _db.ProgressReports.Count(r => applicationIds.Contains(r.applicantId) && r.status == 1);
+            var assessedApplicationIds = _db.AssessmentMarks.AsNoTracking()
+                .Where(m => applicationIds.Contains(m.application_id))
+                .Select(m => m.application_id)
+                .Distinct()
+                .ToHashSet();
+
+            PendingReports = _db.ProgressReports.AsNoTracking()
+                .Count(r => applicationIds.Contains(r.applicantId)
+                    && (
+                        (r.reportType == "progress" && (r.status == 1 || r.status == 4))
+                        || (r.reportType == "final"
+                            && !string.IsNullOrWhiteSpace(r.file_path)
+                            && (r.status == 1 || r.status == 2 || r.status == 4)
+                            && !assessedApplicationIds.Contains(r.applicantId))
+                    ));
             PendingDocuments = _db.DocumentReviews.Count(r => r.status == "pending");
             PendingApplications = Students.Count(s => s.applyStatus == "pending");
             ActiveInternships = Students.Count(s => s.applyStatus == "approved");

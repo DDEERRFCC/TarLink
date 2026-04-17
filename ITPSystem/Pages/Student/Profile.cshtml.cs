@@ -51,6 +51,9 @@ public class StudentProfileModel : PageModel
 
         [StringLength(255)]
         public string? Knowledge { get; set; }
+
+        [Range(0, 4.00, ErrorMessage = "CGPA must be between 0.00 and 4.00.")]
+        public decimal? CGPA { get; set; }
     }
 
     public IActionResult OnGet()
@@ -67,32 +70,12 @@ public class StudentProfileModel : PageModel
             return RedirectToPage("/Login/StudentLogin");
         }
 
-        var user = _db.SysUsers.FirstOrDefault(u => u.user_id == userId.Value);
-        if (user?.application_id == null)
+        LoadStudentProfile(userId.Value);
+        if (Student == null)
         {
             StatusMessage = "No linked student application found for this account.";
             return Page();
         }
-
-        Student = _db.StudentApplications.FirstOrDefault(s => s.application_id == user.application_id.Value);
-        if (Student == null)
-        {
-            StatusMessage = "Student profile was not found.";
-            return Page();
-        }
-
-        Input = new InputModel
-        {
-            studentName = Student.studentName,
-            studentEmail = Student.studentEmail,
-            personalEmail = Student.personalEmail,
-            tempAddress = Student.tempAddress,
-            permanentAddress = Student.permanentAddress,
-            permanentContact = Student.permanentContact,
-            ownTransport = Student.ownTransport,
-            healthRemark = Student.healthRemark,
-            Knowledge = Student.Knowledge
-        };
 
         return Page();
     }
@@ -115,6 +98,7 @@ public class StudentProfileModel : PageModel
         if (user?.application_id == null)
         {
             ModelState.AddModelError("", "No linked student application found.");
+            LoadStudentProfile(userId.Value);
             return Page();
         }
 
@@ -127,6 +111,7 @@ public class StudentProfileModel : PageModel
 
         if (!ModelState.IsValid)
         {
+            LoadProfileInputFromStudent();
             return Page();
         }
 
@@ -139,6 +124,7 @@ public class StudentProfileModel : PageModel
         Student.ownTransport = Input.ownTransport;
         Student.healthRemark = string.IsNullOrWhiteSpace(Input.healthRemark) ? null : Input.healthRemark.Trim();
         Student.Knowledge = string.IsNullOrWhiteSpace(Input.Knowledge) ? null : Input.Knowledge.Trim();
+        Student.CGPA = Input.CGPA;
         Student.updated_at = DateTime.Now;
 
         try
@@ -160,6 +146,40 @@ public class StudentProfileModel : PageModel
     {
         HttpContext.Session.Clear();
         return RedirectToPage("/Login/StudentLogin");
+    }
+
+    private void LoadStudentProfile(int userId)
+    {
+        var user = _db.SysUsers.FirstOrDefault(u => u.user_id == userId);
+        if (user?.application_id == null)
+        {
+            return;
+        }
+
+        Student = _db.StudentApplications.FirstOrDefault(s => s.application_id == user.application_id.Value);
+        LoadProfileInputFromStudent();
+    }
+
+    private void LoadProfileInputFromStudent()
+    {
+        if (Student == null)
+        {
+            return;
+        }
+
+        Input = new InputModel
+        {
+            studentName = Student.studentName,
+            studentEmail = Student.studentEmail,
+            personalEmail = Student.personalEmail,
+            tempAddress = Student.tempAddress,
+            permanentAddress = Student.permanentAddress,
+            permanentContact = Student.permanentContact,
+            ownTransport = Student.ownTransport,
+            healthRemark = Student.healthRemark,
+            Knowledge = Student.Knowledge,
+            CGPA = Student.CGPA
+        };
     }
 
     private int? GetUserIdFromSession()

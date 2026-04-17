@@ -48,10 +48,12 @@ public class SupervisorLoginModel : PageModel
         }
 
         HttpContext.Session.SetString("UserRole", "supervisor");
-        HttpContext.Session.SetString("UserID", "0");
+        HttpContext.Session.SetString("UserID", supervisor.staffId);
         HttpContext.Session.SetString("UserName", supervisor.name);
         HttpContext.Session.SetString("UserEmail", supervisor.email ?? "");
         HttpContext.Session.SetString("SupervisorStaffId", supervisor.staffId);
+        HttpContext.Session.SetString("SupervisorFaculty", supervisor.faculty ?? "");
+        HttpContext.Session.SetString("SupervisorCampus", supervisor.campus ?? "");
 
         SuccessMessage = "Login successful.";
 

@@ -2,6 +2,7 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Runtime.Versioning;
 using ITPSystem.Models;
 
@@ -12,8 +13,8 @@ public static class IndemnityLetterWordTemplateBuilder
     private const string TemplateFileName = "FOCS_StudF01 Indemnity Letter (09.11.2022).docx";
     private const string DocumentXmlPath = "word/document.xml";
     private const string CourseTitlePlaceholder = "&lt;course code and title&gt;";
-    private const string LetterDatePlaceholder = "Date: _______________";
     private const string CompanyPlaceholder = "________________________________________________________________";
+    private const string CourseTitleHighlightedRunPattern = "<w:r\\b[^>]*><w:rPr>(?<props>.*?)(<w:highlight\\b[^>]*/>)(?<propsAfter>.*?)</w:rPr><w:t>&lt;course code and title&gt;</w:t></w:r>";
     private const string StartDatePlaceholderPart1 = "from _______________________";
     private const string StartDatePlaceholderPart2 = "_______";
     private const string StartDatePlaceholderPart3 = "__";
@@ -75,15 +76,13 @@ public static class IndemnityLetterWordTemplateBuilder
             xml = reader.ReadToEnd();
         }
 
-        var courseTitle = EscapeXml(GetCourseCodeAndTitle(student));
-        var companyName = GetCompanyName(student?.comName);
+        var courseTitleXml = BuildCourseTitleXml(GetCourseCodeAndTitle(student));
         var startDate = FormatInternshipDate(student?.Cohort?.startDate);
         var endDate = FormatInternshipDate(student?.Cohort?.endDate);
         var letterDate = EscapeXml(DateTime.Today.ToString("dd/MM/yyyy"));
 
-        xml = xml.Replace(CourseTitlePlaceholder, courseTitle, StringComparison.Ordinal);
-        xml = xml.Replace(LetterDatePlaceholder, $"Date: {letterDate}", StringComparison.Ordinal);
-        xml = xml.Replace(CompanyPlaceholder, EscapeXml(companyName), StringComparison.Ordinal);
+        xml = ReplaceCourseTitle(xml, courseTitleXml);
+        xml = xml.Replace(CompanyPlaceholder, CompanyPlaceholder, StringComparison.Ordinal);
         xml = ReplaceStartDate(xml, startDate);
         xml = xml.Replace(EndDatePlaceholder, $"to {EscapeXml(endDate)}.", StringComparison.Ordinal);
         xml = RemoveParagraphContaining(xml, DateHintParagraphAnchor);
@@ -93,6 +92,19 @@ public static class IndemnityLetterWordTemplateBuilder
         using var updatedStream = updatedEntry.Open();
         using var writer = new StreamWriter(updatedStream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         writer.Write(xml);
+    }
+
+    private static string ReplaceCourseTitle(string xml, string courseTitleXml)
+    {
+        var replacedXml = Regex.Replace(
+            xml,
+            CourseTitleHighlightedRunPattern,
+            $"<w:r><w:rPr>${{props}}${{propsAfter}}</w:rPr>{courseTitleXml}</w:r>",
+            RegexOptions.Singleline);
+
+        return replacedXml == xml
+            ? xml.Replace(CourseTitlePlaceholder, courseTitleXml, StringComparison.Ordinal)
+            : replacedXml;
     }
 
     [SupportedOSPlatform("windows")]
@@ -165,20 +177,40 @@ public static class IndemnityLetterWordTemplateBuilder
 
     private static string GetCourseCodeAndTitle(StudentApplication? student)
     {
-        var programme = (student?.programme ?? string.Empty).Trim().ToUpperInvariant();
-        var level = student?.level;
+        return "BAIT305C\nINDUSTRIAL TRAINING";
+    }
 
-        return (programme, level) switch
+    private static string BuildCourseTitleXml(string courseTitle)
+    {
+        var lines = (courseTitle ?? string.Empty)
+            .Split('\n', StringSplitOptions.None)
+            .Select(EscapeXml)
+            .ToArray();
+
+        if (lines.Length == 0)
         {
-            ("RSD", 1) => "RSD Diploma in Software Engineering",
-            ("RIT", 1) => "RIT Diploma in Information Technology",
-            ("RSD", 2) => "RSD Bachelor of Software Engineering (Honours)",
-            ("RIT", 2) => "RIT Bachelor of Information Technology (Honours)",
-            ("RSD", _) => "RSD Software Engineering",
-            ("RIT", _) => "RIT Information Technology",
-            _ when !string.IsNullOrWhiteSpace(programme) => programme,
-            _ => "the relevant course"
-        };
+            return "<w:t></w:t>";
+        }
+
+        if (lines.Length == 1)
+        {
+            return $"<w:t>{lines[0]}</w:t>";
+        }
+
+        var builder = new StringBuilder();
+        for (var i = 0; i < lines.Length; i++)
+        {
+            if (i > 0)
+            {
+                builder.Append("<w:br/>");
+            }
+
+            builder.Append("<w:t>");
+            builder.Append(lines[i]);
+            builder.Append("</w:t>");
+        }
+
+        return builder.ToString();
     }
 
     private static string EscapeXml(string value)
@@ -203,32 +235,6 @@ public static class IndemnityLetterWordTemplateBuilder
         catch
         {
         }
-    }
-
-    private static string FitToPlaceholder(string? value, int length)
-    {
-        var trimmed = (value ?? string.Empty).Trim();
-        if (string.IsNullOrWhiteSpace(trimmed))
-        {
-            return new string('_', length);
-        }
-
-        return trimmed.Length > length
-            ? trimmed[..length]
-            : trimmed.PadRight(length, '_');
-    }
-
-    private static string GetCompanyName(string? value)
-    {
-        var trimmed = (value ?? string.Empty).Trim();
-        if (string.IsNullOrWhiteSpace(trimmed))
-        {
-            return string.Empty;
-        }
-
-        return trimmed.Length > 32
-            ? trimmed[..32]
-            : trimmed;
     }
 
     private static string FormatInternshipDate(DateTime? date)

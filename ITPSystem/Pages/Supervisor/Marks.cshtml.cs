@@ -47,7 +47,7 @@ namespace ITPSystem.Pages.Supervisor
 
         public IActionResult OnPost()
         {
-            if (!IsSupervisor(out var supervisorId, out var userEmail))
+            if (!IsSupervisor(out var supervisorStaffId, out var userEmail))
             {
                 return RedirectToPage("/Login/SupervisorLogin");
             }
@@ -142,6 +142,16 @@ namespace ITPSystem.Pages.Supervisor
                 _db.AssessmentMarks.RemoveRange(existing);
             }
 
+            var supervisor = _db.UcSupervisors.AsNoTracking()
+                .FirstOrDefault(u => u.staffId == supervisorStaffId || u.email == userEmail);
+            if (supervisor == null)
+            {
+                ModelState.AddModelError(string.Empty, "Supervisor account not found.");
+                LoadData(userEmail);
+                InitializeRubrics();
+                return Page();
+            }
+
             var rubricScores = Input.RubricScores ?? new List<RubricScoreInput>();
             foreach (var item in rubricScores)
             {
@@ -149,7 +159,7 @@ namespace ITPSystem.Pages.Supervisor
                 _db.AssessmentMarks.Add(new AssessmentMark
                 {
                     application_id = appId,
-                    supervisor_user_id = supervisorId,
+                    supervisor_staff_id = supervisor.staffId,
                     rubric_item = def.Item,
                     score = item.Score!.Value,
                     max_score = def.MaxScore,
@@ -159,14 +169,12 @@ namespace ITPSystem.Pages.Supervisor
             }
             _db.SaveChanges();
 
-            var studentUser = supervisorId > 0
-                ? _db.SysUsers.FirstOrDefault(u => u.application_id == appId)
-                : null;
+            var studentUser = _db.SysUsers.FirstOrDefault(u => u.application_id == appId);
             if (studentUser != null)
             {
                 _db.Notifications.Add(new Notification
                 {
-                    from_user_id = supervisorId,
+                    from_user_id = supervisorStaffId,
                     to_user_id = studentUser.user_id,
                     type = "assessment",
                     title = "New assessment mark published",
@@ -327,14 +335,13 @@ namespace ITPSystem.Pages.Supervisor
                 .ToList();
         }
 
-        private bool IsSupervisor(out int userId, out string userEmail)
+        private bool IsSupervisor(out string supervisorStaffId, out string userEmail)
         {
-            userId = 0;
+            supervisorStaffId = string.Empty;
             userEmail = HttpContext.Session.GetString("UserEmail") ?? string.Empty;
             var role = (HttpContext.Session.GetString("UserRole") ?? string.Empty).ToLowerInvariant();
-            var rawUserId = HttpContext.Session.GetString("UserID");
-            int.TryParse(rawUserId, out userId);
-            return role == "supervisor" && !string.IsNullOrWhiteSpace(userEmail);
+            supervisorStaffId = HttpContext.Session.GetString("UserID") ?? string.Empty;
+            return role == "supervisor" && !string.IsNullOrWhiteSpace(userEmail) && !string.IsNullOrWhiteSpace(supervisorStaffId);
         }
 
         private static bool IsFinalReportReadyForAssessment(ProgressReport report, int applicationId)
@@ -456,5 +463,4 @@ namespace ITPSystem.Pages.Supervisor
         }
     }
 }
-
 
