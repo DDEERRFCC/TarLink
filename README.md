@@ -14,12 +14,6 @@ It helps manage internship applications, job postings, student profiles, and pro
 - Track application status
 - Submit reports and feedback
 
-### 🏢 Companies
-- Create and manage company profiles
-- Post internship opportunities
-- Review student applications
-- Accept or reject applicants
-
 ### 🛠️ Administrators
 - Manage users (students & companies)
 - Monitor internship progress
